@@ -1,0 +1,28 @@
+placeholders:
+    placeholders:
+        marketing_list_nav_buttons:
+            items:
+                oro_marketing_list_mailchimp_buttons: ~
+        view_navButtons_before:
+            items:
+                oro_mailchimp_email_campaign_buttons: ~
+        view_content_data_email_campaign_status:
+            items:
+                oro_mailchimp_emailcampaign_stats: ~
+        marketing_list_sync_info:
+            items:
+                oro_mailchimp_marketing_list_sync_data: ~
+
+    items:
+        oro_marketing_list_mailchimp_buttons:
+            action: OroMailChimpBundle:MailChimp:connectionButtons
+            applicable: "@oro_mailchimp.placeholder.filter.buttons_filder->isApplicable($entity$)"
+        oro_mailchimp_email_campaign_buttons:
+            action: OroMailChimpBundle:MailChimp:emailCampaignActivityUpdateButtons
+            applicable: "@oro_mailchimp.placeholder.filter.email_campaign->isApplicableOnEmailCampaign($entity$)"
+        oro_mailchimp_emailcampaign_stats:
+            action: OroMailChimpBundle:MailChimp:emailCampaignStats
+            applicable: "@oro_mailchimp.placeholder.filter.email_campaign->isApplicableOnEmailCampaign($entity$)"
+        oro_mailchimp_marketing_list_sync_data:
+            action: OroMailChimpBundle:MailChimp:marketingListSyncStatus
+            applicable: "@oro_mailchimp.placeholder.filter.sync_status->isApplicableOnMarketingList($marketingList$)"

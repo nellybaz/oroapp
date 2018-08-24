@@ -1,0 +1,50 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+{% oro_title_set({params : {"%entityName%": 'N/A'|trans}}) %}
+
+{% set formAction = path('oro_entityextend_entity_create') %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('oro_entityconfig_index')) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'oro_entityconfig_view',
+        'params': {'id': '$id'}
+    }) %}
+    {% if is_granted('oro_entityextend_entity_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'oro_entityextend_entity_create'
+        }) %}
+    {% endif %}
+    {% set html = html ~ UI.saveAndStayButton({
+        'route': 'oro_entityconfig_update',
+        'params': {'id': '$id'}
+    }) %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'oro.entity_extend.config_grid.entities'|trans,
+        'entityTitle': 'oro.entity_extend.config_grid.new_entity'|trans,
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'configentity-create' %}
+    {% set dataBlocks = form_data_blocks(form) %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

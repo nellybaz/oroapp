@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:725;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:9:"updatedAt";a:3:{s:1:"i";i:726;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:7:"product";a:3:{s:1:"i";i:727;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:5:"types";a:3:{s:1:"i";i:728;s:1:"h";b:0;s:1:"t";s:8:"ref-many";}s:5:"image";a:3:{s:1:"i";i:2899;s:1:"h";b:0;s:1:"t";s:5:"image";}s:15:"serialized_data";a:3:{s:1:"i";i:2900;s:1:"h";b:1;s:1:"t";s:5:"array";}}

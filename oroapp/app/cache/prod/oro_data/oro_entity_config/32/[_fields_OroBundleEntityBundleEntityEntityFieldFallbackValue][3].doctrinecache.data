@@ -1,0 +1,2 @@
+0
+a:4:{s:2:"id";a:3:{s:1:"i";i:167;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:8:"fallback";a:3:{s:1:"i";i:168;s:1:"h";b:0;s:1:"t";s:6:"string";}s:11:"scalarValue";a:3:{s:1:"i";i:169;s:1:"h";b:0;s:1:"t";s:6:"string";}s:10:"arrayValue";a:3:{s:1:"i";i:170;s:1:"h";b:0;s:1:"t";s:5:"array";}}

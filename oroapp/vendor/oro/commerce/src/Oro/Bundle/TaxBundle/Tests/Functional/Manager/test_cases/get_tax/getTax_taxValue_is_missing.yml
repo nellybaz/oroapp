@@ -1,0 +1,10 @@
+method: getTax
+reference: empty_order
+configuration: {}
+databaseBefore:
+    'Oro\Bundle\OrderBundle\Entity\Order':
+        empty_order:
+            poNumber: empty_order
+            customer: { class: 'Oro\Bundle\CustomerBundle\Entity\Customer', query: {} }
+            currency: USD
+expectedResult: []

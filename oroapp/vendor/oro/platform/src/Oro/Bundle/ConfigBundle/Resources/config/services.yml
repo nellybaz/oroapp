@@ -1,0 +1,190 @@
+parameters:
+    oro_config.config_bag.class:                                                 Oro\Bundle\ConfigBundle\Config\ConfigBag
+    oro_config.config_definition_bag.class:                                      Oro\Bundle\ConfigBundle\Config\ConfigDefinitionImmutableBag
+    oro_config.global.class:                                                     Oro\Bundle\ConfigBundle\Config\GlobalScopeManager
+    oro_config.user.class:                                                       Oro\Bundle\ConfigBundle\Config\UserScopeManager
+    oro_config.provider.system_configuration.form_provider.class:                Oro\Bundle\ConfigBundle\Provider\SystemConfigurationFormProvider
+
+    oro_config.form.config_subscriber.class:                                     Oro\Bundle\ConfigBundle\Form\EventListener\ConfigSubscriber
+    oro_config.form.handler.config.class:                                        Oro\Bundle\ConfigBundle\Form\Handler\ConfigHandler
+
+    oro_config.type.form.class:                                                  Oro\Bundle\ConfigBundle\Form\Type\FormType
+    oro_config.type.form_field.class:                                            Oro\Bundle\ConfigBundle\Form\Type\FormFieldType
+    oro_config.type.config_checkbox.class:                                       Oro\Bundle\ConfigBundle\Form\Type\ConfigCheckbox
+    oro_config.type.parent_scope_checkbox.class:                                 Oro\Bundle\ConfigBundle\Form\Type\ParentScopeCheckbox
+
+    oro_config.manager.api.class:                                                Oro\Bundle\ConfigBundle\Config\ConfigApiManager
+
+    oro_config.manager.class:                                                    Oro\Bundle\ConfigBundle\Config\ConfigManager
+
+services:
+    oro_config.config_bag:
+        class: %oro_config.config_bag.class%
+        arguments:
+            - []
+            - '@service_container'
+
+    oro_config.config_definition_bag:
+        class: %oro_config.config_definition_bag.class%
+        arguments:
+            - []
+
+    oro_config.cache:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [setNamespace, [ 'oro_config' ] ]
+
+    oro_config.scope_manager.abstract:
+        abstract: true
+        arguments:
+            - '@doctrine'
+            - '@oro_config.cache'
+            - '@event_dispatcher'
+
+    oro_config.scope.user:
+        class: %oro_config.user.class%
+        public: false
+        parent: oro_config.scope_manager.abstract
+        calls:
+            - [setSecurityContext, [ '@security.token_storage' ]]
+        tags:
+            - { name: oro_config.scope, scope: user, priority: 255 }
+
+    oro_config.scope.global:
+        class: %oro_config.global.class%
+        public: false
+        parent: oro_config.scope_manager.abstract
+        tags:
+            - { name: oro_config.scope, scope: global, priority: -255 }
+
+    # a template definition for scoped config managers
+    # actually this service is replaced with an alias to the most priority scoped config manager
+    oro_config.manager:
+        class: %oro_config.manager.class%
+        arguments:
+            - ~ # scope; it is set by Oro\Bundle\ConfigBundle\DependencyInjection\Compiler\SystemConfigurationPass
+            - '@oro_config.config_definition_bag'
+            - '@event_dispatcher'
+
+    oro_config.twig.config_extension:
+        class: Oro\Bundle\ConfigBundle\Twig\ConfigExtension
+        public: false
+        arguments:
+           - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    oro_config.provider.abstract_provider:
+        class: Oro\Bundle\ConfigBundle\Provider\AbstractProvider
+        abstract: true
+        arguments:
+            - '@oro_config.config_bag'
+            - '@translator'
+            - '@form.factory'
+            - '@security.authorization_checker'
+            - '@oro_config.configuration_search_provider.chain'
+        calls:
+            - [setFeatureChecker, ['@oro_featuretoggle.checker.feature_checker']]
+        tags:
+            -  { name: oro_config.configuration_provider }
+
+    oro_config.provider.system_configuration.form_provider:
+        class: %oro_config.provider.system_configuration.form_provider.class%
+        parent: 'oro_config.provider.abstract_provider'
+        lazy: true
+
+    oro_config.form.config_subscriber:
+        class: %oro_config.form.config_subscriber.class%
+        arguments:
+          - '@oro_config.user'
+          - '@oro_entity.doctrine_helper'
+
+    oro_config.type.form:
+        class:                        %oro_config.type.form.class%
+        arguments:
+            - '@oro_config.form.config_subscriber'
+            - '@service_container'
+        tags:
+            - { name: form.type, alias: oro_config_form_type }
+
+    oro_config.type.form_field:
+        class:                        %oro_config.type.form_field.class%
+        tags:
+            - { name: form.type, alias: oro_config_form_field_type }
+
+    oro_config.type.parent_scope_checkbox:
+        class:                        %oro_config.type.parent_scope_checkbox.class%
+        tags:
+            - { name: form.type, alias: oro_config_parent_scope_checkbox_type }
+
+    oro_config.type.config_checkbox:
+        class:                        %oro_config.type.config_checkbox.class%
+        tags:
+            - { name: form.type, alias: oro_config_checkbox }
+
+    oro_config.type.config_file:
+        class: 'Oro\Bundle\ConfigBundle\Form\Type\ConfigFileType'
+        arguments:
+            - '@oro_config.form.config_file_data_transformer'
+        tags:
+            - { name: form.type }
+
+    oro_config.form.handler.config:
+        class: %oro_config.form.handler.config.class%
+        arguments:
+            - '@oro_config.global'
+
+    oro_config.manager.api:
+        class: %oro_config.manager.api.class%
+        arguments:
+            - '@oro_config.provider.system_configuration.form_provider'
+
+    oro_config.form.config_file_data_transformer:
+        class: 'Oro\Bundle\ConfigBundle\Form\DataTransformer\ConfigFileDataTransformer'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@validator'
+
+    oro_config.cache.doctrine_metadata:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'doctrine_metadata_config' ] ]
+
+    oro_config.condition.is_system_config_equal:
+        class: Oro\Bundle\ConfigBundle\Condition\IsSystemConfigEqual
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_workflow.condition, alias: 'is_system_config_equal' }
+            - { name: oro_action.condition, alias: 'is_system_config_equal' }
+
+    oro_config.event_listener.cache_state:
+        class: Oro\Bundle\ConfigBundle\EventListener\CacheStateChangeListener
+        arguments:
+            - '@oro_message_queue.consumption.cache_state'
+        tags:
+            - { name: kernel.event_listener, event: oro_config.update_after, method: onConfigUpdate }
+
+    oro_config.configuration_search_provider.chain:
+        class: Oro\Bundle\ConfigBundle\Provider\ChainSearchProvider
+        public: false
+
+    oro_config.configuration_search_provider.group:
+        class: Oro\Bundle\ConfigBundle\Provider\GroupSearchProvider
+        public: false
+        arguments:
+            - '@oro_config.config_bag'
+            - '@translator'
+        tags:
+            - { name: oro_config.configuration_search_provider, priority: 0 }
+
+    oro_config.configuration_search_provider.field:
+        class: Oro\Bundle\ConfigBundle\Provider\FieldSearchProvider
+        public: false
+        arguments:
+            - '@oro_config.config_bag'
+            - '@translator'
+            - '@oro_config.manager'
+        tags:
+            - { name: oro_config.configuration_search_provider, priority: 10 }

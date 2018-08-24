@@ -1,0 +1,24 @@
+navigation:
+    menu_config:
+        items:
+            oro_cron_schedule:
+                label:    'oro.cron.menu.cron_schedule.label'
+                route:    'oro_cron_schedule_index'
+                position: 70
+                extras:
+                    description: 'oro.cron.menu.cron_schedule.description'
+                    routes:      ['oro_cron_schedule_index']
+
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            oro_cron_schedule: ~
+
+            shortcuts:
+                children:
+                    oro_cron_job_shortcut: ~
+
+    titles:
+        oro_cron_schedule_index: ~

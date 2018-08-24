@@ -1,0 +1,11 @@
+oro.hangoutscall:
+    start_hangouts_dialog:
+        title: "Invite Contacts to a Google Hangout"
+        content_intro: "{0}Click the 'Start a Hangout' button to open a Google Hangout now|{1}Click the 'Start a Hangout' button to invite this user to a Google Hangout now|[2,Inf[Click the 'Start a Hangout' button to invite these users to a Google Hangout now"
+        content_note: You can invite up to 5 users to a Google Hangout by emailing them, or call a single user's phone number and launch a Google Hangout immediately. You will have a chance to alter the invite list before the Hangout begins.
+    messages:
+        connection_error: "Cannot start a Google Hangout session. Google API connection error."
+    log_call_form:
+        title: CRM Call Information
+        field_subject.label: Subject
+        field_subject.notes: Additional comments

@@ -1,0 +1,4 @@
+{# comments form template #}
+<script type="text/html" id="{{ (id ~ '-form')|e('html_attr')|raw }}">
+    {{ render(path('oro_comment_form'))|oro_js_template_content|raw }}
+</script>

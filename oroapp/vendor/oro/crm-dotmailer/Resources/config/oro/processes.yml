@@ -1,0 +1,198 @@
+processes:
+    definitions:
+        dotmailer_email_campaign_creation:
+            label:   'Create Email Campaign for Dotmailer Campaign'
+            enabled: true
+            order:   10
+            entity:  Oro\Bundle\DotmailerBundle\Entity\Campaign
+            exclude_definitions: [dotmailer_email_campaign_creation]
+            actions_configuration:
+                - '@assign_value':
+                    attribute: $.addressBook
+                    value: null
+                - '@call_method':
+                    conditions:
+                        '@not_empty': $addressBooks
+                    parameters:
+                        attribute: $.addressBook
+                        method: first
+                        object: $addressBooks
+                # Prepare constants values
+                - '@assign_constant_value':
+                    attribute: $.statusSent
+                    value: Oro\Bundle\DotmailerBundle\Entity\Campaign::STATUS_SENT
+                - '@assign_constant_value':
+                    attribute: $.scheduleManual
+                    value: Oro\Bundle\CampaignBundle\Entity\EmailCampaign::SCHEDULE_MANUAL
+                - '@assign_constant_value':
+                    attribute: $.dotmailerTransport
+                    value: Oro\Bundle\DotmailerBundle\Transport\DotmailerEmailCampaignTransport::NAME
+                # Create Oro EmailCampaign
+                - '@tree':
+                    # If Oro EmailCampaign not exists and
+                    # Dotmailer Campaign relates to Oro MarketingList and
+                    # Dotmailer Campaign has "sent" status
+                    conditions:
+                        '@and':
+                            - '@empty': $emailCampaign
+                            - '@not_empty': $.addressBook
+                            - '@not_empty': $.addressBook.marketingList
+                            - '@equal': [$status, $.statusSent]
+                    actions:
+                        - '@create_entity': # Create Oro EmailCampaign
+                            class:     Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+                            attribute: $emailCampaign
+                            data:
+                                name: $name
+                                description: $subject
+                                schedule: $.scheduleManual
+                                sent: true
+    #                                    sentAt: $sendTime
+                                senderEmail: $fromAddress
+                                senderName: $fromName
+                                transport: $.dotmailerTransport
+                                owner: $channel.defaultUserOwner
+                                organization: $channel.defaultUserOwner.organization
+                                marketingLIst: $.addressBook.marketingList
+                        - '@create_entity': # Create DotmailerTransportSettings
+                            class:     Oro\Bundle\DotmailerBundle\Entity\DotmailerTransportSettings
+                            attribute: $emailCampaign.transportSettings
+                            data:
+                                channel: $channel
+                        - '@create_entity': # Create Marketing Campaign
+                            class:     Oro\Bundle\CampaignBundle\Entity\Campaign
+                            attribute: $emailCampaign.campaign
+                            data:
+                                name: $name
+                                owner: $channel.defaultUserOwner
+                                organization: $channel.defaultUserOwner.organization
+                        - '@assign_constant_value':
+                              attribute: $emailCampaign.campaign.reportPeriod
+                              value: 'Oro\Bundle\CampaignBundle\Entity\Campaign::PERIOD_DAILY'
+                        - '@translate':
+                              attribute: $emailCampaign.campaign.description
+                              id: oro.dotmailer.campaign.new_marketing_campaign
+                              params:
+                                  campaign_name: $name
+                        - '@call_service_method':
+                              attribute: $emailCampaign.campaign.code
+                              service: oro_dotmailer.campaign_helper
+                              method: generateCode
+                              method_parameters: [$name, $originId]
+                        - '@call_method':
+                              object: $emailCampaign.campaign
+                              method: setCombinedName
+                              method_parameters: [$name, $emailCampaign.campaign.code]
+
+        dotmailer_contact_activity_update:
+            label:   'Synchronizes Oro Marketing List Item with Dotmailer Contact Activity'
+            enabled: true
+            order:   20
+            entity:  Oro\Bundle\DotmailerBundle\Entity\Activity
+            exclude_definitions: [dotmailer_contact_activity_update]
+            actions_configuration:
+                - '@update_email_campaign_dm_statistics': ~
+
+        dotmailer_collect_marketing_activities:
+            label:   'Add Marketing Activities Based on dotmailer Activities'
+            enabled: true
+            order:   20
+            entity:  Oro\Bundle\DotmailerBundle\Entity\Activity
+            actions_configuration:
+                - '@add_marketing_activities':
+                      changeSet: $.changeSet
+
+        dotmailer_handle_contact_state:
+            label:   Check MarketingListItem State for Dotmailer Contact
+            enabled: true
+            entity:  Oro\Bundle\DotmailerBundle\Entity\AddressBookContact
+            exclude_definitions: [dotmailer_handle_contact_state]
+            actions_configuration:
+                # Prepare constants values
+                - '@assign_constant_value':
+                    attribute: $.statusSubscribed
+                    value: Oro\Bundle\DotmailerBundle\Entity\Contact::STATUS_SUBSCRIBED
+                - '@assign_constant_value':
+                    attribute: $.statusSoftBounced
+                    value: Oro\Bundle\DotmailerBundle\Entity\Contact::STATUS_SOFTBOUNCED
+                - '@tree':
+                    conditions:
+                        '@or':
+                            - '@equal': [$status, $.statusSubscribed]
+                            - '@equal': [$status, $.statusSoftBounced]
+                    actions:
+                        - '@remove_marketing_list_unsubscribed_item': ~
+                        - '@remove_marketing_list_removed_item': ~
+                # Create Oro MarketingListUnsubscribedItem
+                - '@dm_create_marketing_list_unsubscribed_item':
+                    conditions:
+                        '@and':
+                            - '@not_equal': [$status, $.statusSubscribed]
+                            - '@not_equal': [$status, $.statusSoftBounced]
+
+        schedule_dotmailer_address_book_synchronization:
+            label:   Schedule Dotmailer Address Book synchronization
+            enabled: true
+            entity:  Oro\Bundle\DotmailerBundle\Entity\AddressBook
+            actions_configuration:
+                - '@tree':
+                    conditions:
+                        '@and':
+                            - '@not_empty': $marketingList
+                            - '@not_empty': $channel
+                    actions:
+                        - '@call_service_method':
+                            service: 'oro_integration.genuine_sync_scheduler'
+                            method: 'schedule'
+                            method_parameters:
+                                - $channel.id
+                                - ~
+                                - { address-book: $id }
+
+        dotmailer_handle_removed_address_book_contact:
+            label:   Update MarketingListItem State in case of Dotmailer contact export was rejected
+            enabled: true
+            entity:  Oro\Bundle\DotmailerBundle\Entity\AddressBookContact
+            actions_configuration:
+                - '@dm_create_marketing_list_removed_item': ~
+
+    triggers:
+        dotmailer_email_campaign_creation:
+            -
+                event:    create
+                queued:   false
+
+        dotmailer_contact_activity_update:
+            -
+                event:    create
+                queued:   false
+            -
+                event:    update
+                queued:   false
+
+        dotmailer_collect_marketing_activities:
+            -
+                event:    create
+                queued:   false
+            -
+                event:    update
+                queued:   false
+
+        dotmailer_handle_contact_state:
+            -
+                event:    create
+                queued:   false
+            -
+                event:    update
+                queued:   false
+
+        dotmailer_handle_removed_address_book_contact:
+            -
+                event:    delete
+                queued:   false
+
+
+        schedule_dotmailer_address_book_synchronization:
+            -
+                event:    update
+                field:    marketingList

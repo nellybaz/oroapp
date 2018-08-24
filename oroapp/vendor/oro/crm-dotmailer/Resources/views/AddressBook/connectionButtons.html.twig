@@ -1,0 +1,83 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+<div class="btn-group pull-left dotmailer-group">
+    {% if addressBook %}
+        {% set html %}
+        {{ UI.dropdownItem({
+            'path': 'javascript:void(0);',
+            'data': {
+                'url': path('oro_dotmailer_synchronize_adddress_book', {id: addressBook.id}),
+                'success-message': 'oro.dotmailer.connection.message.syncronize_scheduled'|trans,
+                'fail-message':  'oro.dotmailer.connection.message.syncronize_schedule_failed'|trans,
+                'action': 'sync-with-dotmailer'
+            },
+            'label': 'oro.dotmailer.connection.button.synchronize'|trans,
+            'class': 'no-hash dotmailer-sync-btn',
+            'iCss': 'fa-refresh'
+        }) }}
+
+        {{ UI.dropdownItem({
+            'path': 'javascript:void(0);',
+            'data': {
+                'url': path('oro_dotmailer_synchronize_adddress_book_datafields', {id: addressBook.id}),
+                'action': 'sync-with-dotmailer'
+            },
+            'label': 'oro.dotmailer.addressbook.sync_datafields'|trans,
+            'class': 'no-hash dotmailer-sync-btn',
+            'iCss': 'fa-refresh'
+        }) }}
+
+        {{ UI.dropdownItem({
+            'path': 'javascript:void(0);',
+            'data': {
+                'url': path('oro_dotmailer_marketing_list_connect', {id: marketingList.id}),
+                'action': 'connect-with-dotmailer-setting-update',
+                'message': 'oro.dotmailer.connection.message.update'|trans,
+                'title': 'oro.dotmailer.connection.dialog.title.update'|trans
+            },
+            'label': 'oro.dotmailer.connection.button.manage_connection'|trans,
+            'class': 'no-hash dotmailer-sync-btn',
+            'iCss': 'fa-pencil-square-o'
+        }) }}
+
+        <li>
+            {{  UI.deleteLink({
+                'dataUrl': path('oro_dotmailer_marketing_list_disconnect', {id: addressBook.id}),
+                'dataRedirect': path('oro_marketing_list_view', {id: marketingList.id}),
+                'dataMessage': 'oro.dotmailer.connection.confirmation.disconnect'|trans,
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-dotmailer-connection',
+                'entity_label': 'oro.dotmailer.connection.name'|trans,
+                'successMessage': 'oro.dotmailer.connection.message.disconnect'|trans,
+                'title': 'oro.dotmailer.connection.button.disconnect'|trans,
+                'label': 'oro.dotmailer.connection.button.disconnect'|trans
+            }) }}
+        </li>
+        {% endset %}
+
+        {{ UI.dropdownButton({
+            'label': 'oro.dotmailer.connection.button.group_name'|trans,
+            'iCss': 'fa-cog',
+            'html': html
+        }) }}
+    {% else %}
+        {{ UI.link({
+            'path': 'javascript:void(0);',
+            'data': {
+                'url': path('oro_dotmailer_marketing_list_connect', {id: marketingList.id}),
+                'action': 'connect-with-dotmailer-setting-update',
+                'message': 'oro.dotmailer.connection.message.connect'|trans,
+                'title': 'oro.dotmailer.connection.dialog.title.connect'|trans
+            },
+            'label': 'oro.dotmailer.connection.button.connect'|trans,
+            'class': 'no-hash btn dotmailer-sync-btn',
+            'iCss': 'icon-dotmailer'
+        }) }}
+    {% endif %}
+</div>
+
+<script type="text/javascript">
+    require(['orodotmailer/js/sync-buttons-handler'], function(Handler){
+        new Handler('.dotmailer-sync-btn');
+    });
+</script>

@@ -1,0 +1,354 @@
+operations:
+    DELETE:
+        exclude_datagrids:
+            - owner-users-select-grid
+            - users-grid
+        exclude_entities:
+            - Oro\Bundle\UserBundle\Entity\Role
+            - Oro\Bundle\UserBundle\Entity\User
+
+    clone_role:
+        extends: CLONE
+        order: 4
+        datagrids:
+            - roles-grid
+        routes:
+            - oro_user_role_index
+            - oro_user_role_update
+            - oro_user_role_view
+        acl_resource: [CREATE, entity:Oro\Bundle\UserBundle\Entity\Role]
+        preactions:
+            - '@tree':
+                conditions:
+                    '@and':
+                        - '@eq': [$.requestRoute, 'oro_action_widget_form']
+                actions:
+                    - '@trans':
+                        id: oro.action.clone.label
+                        attribute: $.clone.label
+                        params:
+                            '{label}': $.clone.label
+                    - '@call_service_method':
+                        attribute: $.aclRoleHandler
+                        service: service_container
+                        method: get
+                        method_parameters: ['oro_user.form.handler.acl_role']
+                    - '@call_method':
+                        object: $.aclRoleHandler
+                        method: createForm
+                        method_parameters: [$.clone]
+                    - '@call_method':
+                        object: $.aclRoleHandler
+                        method: process
+                        method_parameters: [$.data]
+                    - '@call_method':
+                        attribute: $.formView
+                        object: $.aclRoleHandler
+                        method: createView
+                    - '@call_service_method':
+                        attribute: $.privilegesConfig
+                        service: service_container
+                        method: getParameter
+                        method_parameters: ['oro_user.privileges']
+                    - '@call_service_method':
+                        attribute: $.categoryProvider
+                        service: service_container
+                        method: get
+                        method_parameters: ['oro_user.provider.role_privilege_category_provider']
+                    - '@call_method':
+                        attribute: $.tabs
+                        object: $.categoryProvider
+                        method: getTabs
+                    - '@call_service_method':
+                        attribute: $.privilegeCapabilityProvider
+                        service: service_container
+                        method: get
+                        method_parameters: ['oro_user.provider.role_privilege_capability_provider']
+                    - '@call_method':
+                        attribute: $.capabilitySetOptions
+                        object: $.privilegeCapabilityProvider
+                        method: getCapabilitySetOptions
+                        method_parameters: [$.data]
+        frontend_options:
+            show_dialog: false
+            template: 'OroUserBundle:Role:clone.html.twig'
+        attributes:
+            entity:
+                label: ' '
+                type: entity
+                options:
+                  class: 'Oro\Bundle\UserBundle\Entity\Role'
+        form_options:
+            attribute_fields:
+                entity:
+                    form_type: form
+
+    oro_user_edit_role:
+        label: oro.user.role.actions.edit
+        routes:
+            - oro_user_role_view
+        acl_resource: [EDIT, entity:Oro\Bundle\UserBundle\Entity\Role]
+        order: 10
+        groups:
+            - view_navButtons
+        button_options:
+            icon: fa-pencil-square-o
+        actions:
+            - '@redirect':
+                parameters:
+                    route: oro_user_role_update
+                    route_parameters:
+                        id: $id
+
+    reset_password:
+        exclude_datagrids:
+            - owner-users-select-grid
+            - users-select-grid
+        label: oro.user.password.reset_password.label
+        entities:
+            - Oro\Bundle\UserBundle\Entity\User
+        groups:
+            - datagridRowAction
+        datagrids:
+            - users-grid
+        routes:
+            - oro_user_index
+            - oro_user_view
+        preconditions:
+          '@and':
+              - '@or':
+                  - '@not_blank': $.routes[name]
+                  - '@not_blank': $.gridName
+        order: 50
+        acl_resource: [password_management]
+        button_options:
+            icon: fa-unlock-alt
+        frontend_options:
+            confirmation:
+                title: oro.user.reset_password.popup.title
+                okText: oro.user.reset_password.popup.label
+                message: oro.user.reset_password.popup.question
+                message_parameters:
+                    user: $.data.username
+                component: oroui/js/standart-confirmation
+        datagrid_options:
+            mass_action:
+                type: resetpassword
+                label: oro.user.password.reset_password.label
+                icon: unlock-alt
+                route: oro_user_mass_password_reset
+                data_identifier: u.id
+                confirmation: true
+                defaultMessages:
+                    confirm_title: oro.user.reset_password.mass_action.title
+                    confirm_content: oro.user.reset_password.mass_action.question
+                    confirm_ok: oro.user.reset_password.mass_action.label
+                acl_resource: password_management
+                frontend_options:
+                    title: oro.user.reset_password.popup.title
+                    dialogOptions:
+                        modal: true
+                messages:
+                    - success: oro.user.password.force_reset.mass_action.success
+                    - failure: oro.user.password.force_reset.mass_action.failure
+        preconditions:
+            '@equal': [true, $isEnabled]
+        actions:
+            - '@run_action_group':
+                action_group: resetPassword
+                parameters_mapping:
+                    data: $.data
+            - '@redirect':
+                conditions:
+                    '@and':
+                        - '@empty': $.gridName
+                        - '@not_empty': $.routes[name]
+                parameters:
+                    route: $.routes[name]
+            - '@refresh_grid':
+                conditions:
+                    '@and':
+                        - '@empty': $.routes[name]
+                        - '@not_empty': $.gridName
+                parameters: [$.gridName]
+
+    user_enable:
+        exclude_datagrids:
+            - owner-users-select-grid
+            - users-select-grid
+        label: oro.user.action.enable.label
+        acl_resource: oro_user_user_update
+        entities:
+            - Oro\Bundle\UserBundle\Entity\User
+        routes:
+            - oro_user_view
+            - oro_user_index
+        datagrids:
+            - users-grid
+        groups:
+            - datagridRowAction
+            - view_navButtons
+        order: 45
+        button_options:
+            icon: fa-check
+            class: btn-success icons-holder-text
+        datagrid_options:
+            mass_action:
+                type: enableusers
+                label: oro.user.mass_actions.enable_users.label
+                handler: oro_datagrid.mass_action.users_enable_switch.handler.enable
+                route_parameters: []
+                icon: check
+                data_identifier: u.id
+                object_identifier: u
+                defaultMessages:
+                    confirm_title: oro.user.mass_actions.enable_users.confirm_title
+                    confirm_content: oro.user.mass_actions.enable_users.confirm_content
+                    confirm_ok: oro.user.mass_actions.enable_users.confirm_ok
+                acl_resource: oro_user_user_update
+        preconditions:
+            '@equal': [false, $isEnabled]
+        actions:
+            - '@run_action_group':
+                action_group: enableUser
+                parameters_mapping:
+                    data: $.data
+            - '@redirect':
+                conditions:
+                    '@and':
+                        - '@empty': $.gridName
+                        - '@not_empty': $.routes[name]
+                parameters:
+                    route: $.routes[name]
+            - '@refresh_grid':
+                conditions:
+                    '@and':
+                        - '@empty': $.routes[name]
+                        - '@not_empty': $.gridName
+                parameters: [$.gridName]
+
+    user_disable:
+        exclude_datagrids:
+            - owner-users-select-grid
+            - users-select-grid
+        label: oro.user.action.disable.label
+        acl_resource: oro_user_user_update
+        entities:
+            - Oro\Bundle\UserBundle\Entity\User
+        routes:
+            - oro_user_view
+            - oro_user_index
+        datagrids:
+            - users-grid
+        groups:
+            - datagridRowAction
+            - view_navButtons
+        order: 45
+        button_options:
+            icon: fa-ban
+            class: btn-danger icons-holder-text
+        datagrid_options:
+            mass_action:
+                type: disableusers
+                label: oro.user.mass_actions.disable_users.label
+                handler: oro_datagrid.mass_action.users_enable_switch.handler.disable
+                route_parameters: []
+                icon: ban
+                data_identifier: u.id
+                object_identifier: u
+                defaultMessages:
+                    confirm_title: oro.user.mass_actions.disable_users.confirm_title
+                    confirm_content: oro.user.mass_actions.disable_users.confirm_content
+                    confirm_ok: oro.user.mass_actions.disable_users.confirm_ok
+                acl_resource: oro_user_user_update
+        preactions:
+            - '@get_active_user': $.currentUser
+        preconditions:
+            '@and':
+                - '@equal': [true, $isEnabled]
+                - '@not_equal': [$id, $.currentUser.id]
+        actions:
+            - '@run_action_group':
+                action_group: disableUser
+                parameters_mapping:
+                    data: $.data
+            - '@redirect':
+                conditions:
+                    '@and':
+                        - '@empty': $.gridName
+                        - '@not_empty': $.routes[name]
+                parameters:
+                    route: $.routes[name]
+            - '@refresh_grid':
+                conditions:
+                    '@and':
+                        - '@empty': $.routes[name]
+                        - '@not_empty': $.gridName
+                parameters: [$.gridName]
+
+action_groups:
+    resetPassword:
+        parameters:
+            data:
+                type: Oro\Bundle\UserBundle\Entity\User
+        actions:
+            - '@call_service_method':
+                service: oro_user.handler.reset_password_handler
+                method: resetPasswordAndNotify
+                method_parameters: [$.data]
+                attribute: $.sent
+            - '@flush_entity': $.data
+            - '@tree':
+                conditions:
+                    '@and':
+                        - '@eq': [$.sent, true]
+                actions:
+                    - '@flash_message':
+                        message: oro.user.password.force_reset.success.message
+                        type: 'success'
+                        message_parameters:
+                            'email': $.data.email
+            - '@tree':
+                conditions:
+                    '@and':
+                        - '@eq': [$.sent, false]
+                actions:
+                    - '@flash_message':
+                        message: oro.user.password.force_reset.failure.message
+                        type: 'error'
+                        message_parameters:
+                            'email': $.data.email
+
+    enableUser:
+        parameters:
+            data:
+                type: Oro\Bundle\UserBundle\Entity\User
+        actions:
+            - '@assign_value': [$.data.enabled, true]
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.user.action.enable.success
+                type: 'success'
+                message_parameters:
+                    'username': $.data.username
+            - '@tree':
+                conditions:
+                    '@equal': [$.data.auth_status.id, 'expired']
+                actions:
+                    - '@run_action_group':
+                        action_group: resetPassword
+                        parameters_mapping:
+                            data: $.data
+
+    disableUser:
+        parameters:
+            data:
+                type: Oro\Bundle\UserBundle\Entity\User
+        actions:
+            - '@assign_value': [$.data.enabled, false]
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.user.action.disable.success
+                type: 'success'
+                message_parameters:
+                    'username': $.data.username

@@ -1,0 +1,154 @@
+nonuser_billing_not_granted:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+        - [oro_order_address_shipping_allow_manual_backend, null, false]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, false]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_view_customer_user_granted:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, true]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, false]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_use_customer_user_granted:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_user_address_granted:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, true]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_user_address_granted_with_entity:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, true]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: true
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_user_address_granted_with_entity_and_address:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, true]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: true
+    hasEntity: true
+    isAddressGranted: true
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: true
+nonuser_billing_customer_user_address_granted_with_manual:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, false]
+        - ['VIEW;entity:CustomerUserOrderClass', null, true]
+        - [oro_order_address_billing_allow_manual_backend, null, true]
+        - [oro_order_address_billing_customer_user_use_any_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: true
+    hasEntity: ~
+    isAddressGranted: true
+    isCustomerAddressGranted: true
+    isCustomerUserAddressGranted: true
+nonuser_billing_customer_not_granted:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, true]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_without_entity:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, true]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_with_entity:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, true]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: true
+    isAddressGranted: ~
+    isCustomerAddressGranted: ~
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_with_entity_and_addresses:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, true]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+    hasCustomerAddresses: true
+    hasCustomerUserAddresses: ~
+    hasEntity: true
+    isAddressGranted: true
+    isCustomerAddressGranted: true
+    isCustomerUserAddressGranted: ~
+nonuser_billing_customer_with_manual:
+    userClass: Oro\Bundle\UserBundle\Entity\User
+    addressType: billing
+    isGranted:
+        - ['VIEW;entity:CustomerOrderClass', null, true]
+        - ['VIEW;entity:CustomerUserOrderClass', null, false]
+        - [oro_order_address_billing_allow_manual_backend, null, true]
+    hasCustomerAddresses: ~
+    hasCustomerUserAddresses: ~
+    hasEntity: ~
+    isAddressGranted: true
+    isCustomerAddressGranted: true
+    isCustomerUserAddressGranted: true

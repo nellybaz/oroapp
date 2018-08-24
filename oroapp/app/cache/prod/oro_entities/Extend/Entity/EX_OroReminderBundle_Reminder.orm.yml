@@ -1,0 +1,7 @@
+Extend\Entity\EX_OroReminderBundle_Reminder:
+    type: mappedSuperclass
+    fields:
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

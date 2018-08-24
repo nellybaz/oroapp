@@ -1,0 +1,10 @@
+Oro\Bundle\PromotionBundle\Entity\Coupon:
+    coupon{1..100}:
+        owner: '@business_unit'
+        organization: '@organization'
+        code: '<current()>'
+        enabled: true
+        usesPerPerson: '<identity($code + 1)>'
+        usesPerCoupon: '<identity($code + 2)>'
+        validFrom: '<(new DateTime("Jul 1, 2017, 12:00 AM"))>'
+        validUntil: '<(new DateTime("Jul 1, 2018, 12:00 AM"))>'

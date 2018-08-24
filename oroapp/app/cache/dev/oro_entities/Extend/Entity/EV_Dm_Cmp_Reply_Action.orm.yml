@@ -1,0 +1,7 @@
+Extend\Entity\EV_Dm_Cmp_Reply_Action:
+    type: entity
+    table: oro_enum_dm_cmp_reply_action
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

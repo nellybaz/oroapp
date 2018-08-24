@@ -1,0 +1,101 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+<div class="btn-group pull-left">
+{% if staticSegment.id %}
+    {% set html %}
+        {{ UI.dropdownItem({
+            'path': 'javascript:void(0);',
+            'data': {
+                'page-component-module': 'oromailchimp/js/app/components/synchronize-btn-component',
+                'page-component-options': {
+                    'status': constant('Oro\\Bundle\\MailChimpBundle\\Entity\\StaticSegment::STATUS_SCHEDULED')
+                }|json_encode|raw,
+                'url': path('oro_api_update_staticsegment_status', {id: staticSegment.id}),
+                'message': 'oro.abandonedcart.connection.message.syncronize_scheduled'|trans
+            },
+            'id': 'mailchimp-synchronize-btn',
+            'label': 'oro.mailchimp.connection.button.synchronize'|trans,
+            'class': 'no-hash',
+            'iCss': 'fa-refresh'
+        }) }}
+
+        {{ UI.dropdownItem({
+            'path': 'javascript:void(0);',
+            'data': {
+                'url': path('oro_mailchimp_marketing_list_connect', {id: marketingList.id}),
+                'page-component-module': 'oromailchimp/js/app/components/connect-btn-component',
+                'page-component-options': {
+                    'createOnEvent': 'click',
+                    'message': 'oro.mailchimp.connection.message.update'|trans,
+                    'options': {
+                        'title': 'oro.mailchimp.connection.dialog.title.update'|trans,
+                    }
+                }|json_encode|raw
+            },
+            'id': 'mailchimp-connection-btn',
+            'label': 'oro.mailchimp.connection.button.manage_connection'|trans,
+            'class': 'no-hash',
+            'iCss': 'fa-pencil-square-o'
+        }) }}
+
+        {% if relatedCampaigns %}
+            {{ UI.dropdownItem({
+                'path': 'javascript:void(0);',
+                'data': {
+                    'url': path('oro_abandoned_cart_manage_workflow', {id: marketingList.id}),
+                    'page-component-module': 'oromailchimp/js/app/components/connect-btn-component',
+                    'page-component-options': {
+                        'createOnEvent': 'click',
+                        'message': 'oro.abandonedcart.conversion.message.update'|trans,
+                        'options': {
+                            'title': 'oro.abandonedcart.conversion.dialog.title.connect'|trans,
+                        }
+                    }|json_encode|raw
+                },
+                'id': 'mailchimp-connection-btn',
+                'label': 'oro.abandonedcart.conversion.button.enable'|trans,
+                'class': 'no-hash',
+                'iCss': 'fa-usd'
+            }) }}
+        {% endif %}
+        <li>
+            {{  UI.deleteLink({
+                'dataUrl': path('oro_api_delete_staticsegment', {id: staticSegment.id}),
+                'dataRedirect': path('oro_abandoned_cart_list_view', {id: marketingList.id}),
+                'dataMessage': 'oro.abandonedcart.connection.confirmation.disconnect'|trans,
+                'aCss': 'no-hash remove-button',
+                'id': 'btn-remove-mailchimp-connection',
+                'entity_label': 'oro.mailchimp.connection.name'|trans,
+                'successMessage': 'oro.abandonedcart.connection.message.disconnect'|trans,
+                'title': 'oro.mailchimp.connection.button.disconnect'|trans,
+                'label': 'oro.mailchimp.connection.button.disconnect'|trans
+            }) }}
+        </li>
+    {% endset %}
+
+    {{ UI.dropdownButton({
+        'label': 'oro.mailchimp.connection.button.group_name'|trans,
+        'iCss': 'fa-cog',
+        'html': html
+    }) }}
+{% else %}
+    {{ UI.link({
+        'path': 'javascript:void(0);',
+        'data': {
+            'url': path('oro_mailchimp_marketing_list_connect', {id: marketingList.id}),
+            'page-component-module': 'oromailchimp/js/app/components/connect-btn-component',
+            'page-component-options': {
+                'message': 'oro.mailchimp.connection.message.connect'|trans,
+                'createOnEvent': 'click',
+                'options': {
+                    'title': 'oro.mailchimp.connection.dialog.title.connect'|trans
+                }
+            }|json_encode|raw
+        },
+        'id': 'mailchimp-connection-btn',
+        'label': 'oro.mailchimp.connection.button.connect'|trans,
+        'class': 'no-hash btn',
+        'iCss': 'icon-mailchimp'
+    }) }}
+{% endif %}
+</div>

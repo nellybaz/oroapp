@@ -1,0 +1,45 @@
+{% extends "OroCallBundle:Call:activityLink.html.twig" %}
+
+{% block action_controll %}
+    {% set cssClass = 'btn icons-holder-text' %}
+
+    {% if phone is defined %}
+        {% set hangoutOptions = {
+            invites: [{
+                name: entity is not empty ? entity|escape('html') : '',
+                id: phone is not empty ? phone|escape('html') : '',
+                invite_type: 'PHONE'
+            }]
+        } %}
+    {% elseif email is defined %}
+        {% set hangoutOptions = {
+            invites: [{
+                name: entity is not empty ? entity|escape('html') : '',
+                id: email is not empty ? email|escape('html') : '',
+                invite_type: 'EMAIL',
+            }]
+        } %}
+    {% endif %}
+
+    {% if entity is defined and isCallLogApplicable(entity) %}
+        {% set dataUrl = path('oro_call_create', {
+            entityClass: oro_class_name(entity, true),
+            entityId: entity.id,
+            phone: phone is defined ? phone|escape('html') : (email is defined ? email|escape('html') : null)
+        }) %}
+
+        {# options -- are configuration for log-call button #}
+        {% set extraComponentOptions = {
+            onAppStartOptions: {
+                widgetComponentOptions: options.widget|merge({
+                    options: options.widget.options|merge({
+                        url: dataUrl
+                    })
+                }),
+                targetComponentName: 'log-hangout-call-component'
+            }
+        } %}
+    {% endif %}
+
+    {% include "OroHangoutsCallBundle::inviteHangoutLink.html.twig" %}
+{% endblock %}

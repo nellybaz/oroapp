@@ -1,0 +1,7 @@
+{% block _low_inventory_label_widget %}
+    {% if (oro_is_low_inventory_product(product)) %}
+        <p class="product-low-inventory">
+           {{ "oro.inventory.low_inventory.label"|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

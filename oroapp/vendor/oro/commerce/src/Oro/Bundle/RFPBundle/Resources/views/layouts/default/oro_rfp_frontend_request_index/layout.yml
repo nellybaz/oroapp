@@ -1,0 +1,26 @@
+layout:
+    imports:
+        -
+            id: oro_rfp_request_grid
+            root: page_content
+            namespace: requests
+
+    actions:
+        - '@setBlockTheme':
+            themes: 'OroRFPBundle:layouts:default/oro_rfp_frontend_request_index/layout.html.twig'
+
+        - '@setOption':
+            id: page_title
+            optionName: defaultValue
+            optionValue: 'oro.frontend.rfp.request.entity_plural_label'
+
+        - '@appendOption':
+            id: requests_datagrid
+            optionName: grid_render_parameters.toolbarOptions.itemsCounter
+            optionValue:
+                transTemplate: 'oro_frontend.datagrid.pagination.totalRecords.rfq'
+
+        - '@setOption':
+            id: datagrid_toolbar_button_container
+            optionName: visible
+            optionValue: true

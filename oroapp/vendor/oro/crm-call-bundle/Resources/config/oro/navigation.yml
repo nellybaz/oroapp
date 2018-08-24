@@ -1,0 +1,32 @@
+navigation:
+    menu_config:
+        items:
+            call_list:
+                label: 'oro.call.entity_plural_label'
+                route: 'oro_call_index'
+                position: 20
+                extras:
+                    routes: ['oro_call_*']
+                    description: 'oro.call.menu.call_list.description'
+            shortcut_call_list:
+                label: 'oro.call.menu.shortcut_call_list.label'
+                route: 'oro_call_index'
+                extras:
+                    description: 'oro.call.menu.shortcut_call_list.description'
+
+        tree:
+            application_menu:
+                children:
+                    activities_tab:
+                        children:
+                            call_list: ~
+            shortcuts:
+                children:
+                    # shortcut_new_call: ~
+                    shortcut_call_list: ~
+
+    titles:
+        oro_call_index: ~
+        oro_call_view: '%subject%'
+        oro_call_update: '%subject% - Edit'
+        oro_call_create: 'Log Call'

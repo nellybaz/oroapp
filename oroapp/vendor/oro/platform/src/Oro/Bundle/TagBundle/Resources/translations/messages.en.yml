@@ -1,0 +1,112 @@
+oro:
+    tag:
+        menu:
+            shortcut_new_tag.label: Create new Tag
+            shortcut_new_tag.description: Create new tag
+            tag_list.description: Tags list
+            all_tags: All tags
+            my_tags: My tags
+            tags_management.label: Tags Management
+
+        controller:
+            tag.saved.message: "Tag saved"
+        form:
+            choose_tag: "Choose a tag"
+            choose_taxonomy: "Choose a taxonomy"
+            choose_or_create_tag: "Select an existing tag or create a new one"
+        datagrid:
+            usage_count: Usage Count
+            search:      Search by tag
+            search_result: Records tagged as "%name%"
+
+        created_by.label:    Created By
+        entity_description:  Show records tagged by this tag
+        entity_label:        Tag
+        entity_plural_label: Tags
+        id.label:            Id
+        name.label:          Name
+        owner.label:         Owner
+        tagging.label:       Tagging
+        updated_by.label:    Updated By
+        organization.label:  Organization
+
+        action:
+            assign_unassign: "Assign/unassign tags"
+
+        tagging:
+            alias.label:         Alias
+            entity_description:  Represent tagging
+            entity_label:        Tagging
+            entity_name.label:   Entity name
+            entity_plural_label: Taggings
+            id.label:            Id
+            owner.label:         Owner
+            record_id.label:     Record
+            tag.label:           Tag
+
+        tags_label: Tags
+
+        config:
+            enabled: Enable tags
+            disable.alert: Disabling Tags will irreversibly erase all existing tags
+
+        taxonomy:
+            label:                  Taxonomy
+            entity_label:           Taxonomy
+            entity_plural_label:    Taxonomies
+            entity_description:     Units that tags can be grouped into.
+            owner.label:            Owner
+            background_color:
+                label:              Background Color
+                description:        A color that designates a taxonomic unit.
+            id.label:               Id
+            name:
+                label:              Name
+                description:        A name of a taxonomic unit.
+            organization.label:     Organization
+            tags.label:             Tags
+            created:
+                label:              Created at
+                description:        The date and time when a taxonomic unit was created.
+            updated:
+                label:              Updated at
+                description:        The date and time when a taxonomic unit was last updated.
+
+        system_configuration:
+            groups:
+                tag_settings.title: Tag settings
+            fields:
+                taxonomy.label: Taxonomy Colors
+
+    taxonomy:
+        label: Taxonomy
+        menu:
+            shortcut_new_taxonomy.label: Create new Taxonomy
+            shortcut_new_taxonomy.description: Create new taxonomy
+            taxonomy_list.description: Taxonomies list
+            all_taxonomies: All taxonomies
+            my_taxonomies: My taxonomies
+        controller:
+            saved.message: "Taxonomy has been saved"
+        form:
+            choose_taxonomy: "Choose a taxonomy"
+            choose_or_create_taxonomy: "Select an existing taxonomy or create a new one"
+        datagrid:
+            usage_count: Usage Count
+            search:      Search by taxonomy
+        created_by.label:    Created By
+        entity_label:        Taxonomy
+        entity_plural_label: Taxonomies
+        id.label:            Id
+        name.label:          Name
+        owner.label:         Owner
+        tagging.label:       Tagging
+        updated_by.label:    Updated By
+        organization.label:  Organization
+
+        background_color.label:  Color
+        no_color: No color available
+        widgets:
+            taxonomy_information: Taxonomy Information
+        sections:
+            general: General

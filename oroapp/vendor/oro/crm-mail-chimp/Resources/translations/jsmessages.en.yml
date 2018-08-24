@@ -1,0 +1,6 @@
+oro:
+    mailchimp:
+        request.error: 'Sorry, something went wrong while executing request'
+        integration_transport:
+            api_key:
+                check.message: 'Check Api Key'

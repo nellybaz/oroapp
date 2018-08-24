@@ -1,0 +1,2 @@
+0
+a:5:{s:2:"id";a:3:{s:1:"i";i:93;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:7:"command";a:3:{s:1:"i";i:94;s:1:"h";b:0;s:1:"t";s:6:"string";}s:9:"arguments";a:3:{s:1:"i";i:95;s:1:"h";b:0;s:1:"t";s:10:"json_array";}s:13:"argumentsHash";a:3:{s:1:"i";i:96;s:1:"h";b:0;s:1:"t";s:6:"string";}s:10:"definition";a:3:{s:1:"i";i:97;s:1:"h";b:0;s:1:"t";s:6:"string";}}

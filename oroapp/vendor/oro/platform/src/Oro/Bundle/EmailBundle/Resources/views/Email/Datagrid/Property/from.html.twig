@@ -1,0 +1,13 @@
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+
+{% set isNew = record.getValue('is_new') %}
+{% set fromEmailAddressOwnerClass = record.getValue('fromEmailAddressOwnerClass') %}
+{% set fromEmailAddressOwnerId = record.getValue('fromEmailAddressOwnerId') %}
+
+{% if isNew %}<strong>{% endif %}
+{%- if fromEmailAddressOwnerId -%}
+    {{ EA.renderEmailAddressLink(value, fromEmailAddressOwnerClass, fromEmailAddressOwnerId) }}
+{%- else -%}
+    {{ value }}
+{%- endif -%}
+{% if isNew %}</strong>{% endif %}

@@ -1,0 +1,27 @@
+imports:
+    - { resource: 'b2b_quote_backoffice_default/steps.yml' }
+    - { resource: 'b2b_quote_backoffice_default/attributes.yml' }
+    - { resource: 'b2b_quote_backoffice_default/transitions.yml' }
+    - { resource: 'b2b_quote_backoffice_default/transition_definitions.yml' }
+
+workflows:
+    b2b_quote_backoffice_default:
+        entity: Oro\Bundle\SaleBundle\Entity\Quote
+        entity_attribute: quote
+
+        applications: ['default']
+        datagrids: ['quotes-grid']
+        defaults: {active: false}
+
+        exclusive_active_groups: ['b2b_quote_backoffice_flow']
+        exclusive_record_groups: ['b2b_quote_backoffice_flow']
+        disable_operations:
+            oro_sale_notify_customer_by_email: ~
+            oro_sale_expire_quote: ~
+            UPDATE:
+                - Oro\Bundle\SaleBundle\Entity\Quote
+            DELETE:
+                - Oro\Bundle\SaleBundle\Entity\Quote
+
+        start_step: draft
+        force_autostart: true

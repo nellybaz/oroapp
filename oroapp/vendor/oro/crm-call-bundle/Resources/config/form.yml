@@ -1,0 +1,64 @@
+parameters:
+    oro_call.call.form.type.class:         Oro\Bundle\CallBundle\Form\Type\CallType
+    oro_call.call.form.handler.class:      Oro\Bundle\CallBundle\Form\Handler\CallHandler
+    oro_call.call.form.api.handler.class:  Oro\Bundle\CallBundle\Form\Handler\CallApiHandler
+    oro_call.form.type.phone.class:        Oro\Bundle\CallBundle\Form\Type\CallPhoneType
+
+    oro_call.call.form.type.api.class:     Oro\Bundle\CallBundle\Form\Type\CallApiType
+    oro_call.call.manager.api.class:       Oro\Bundle\SoapBundle\Entity\Manager\ApiEntityManager
+
+services:
+    oro_call.call.form.type:
+        class: %oro_call.call.form.type.class%
+        arguments:
+            - "@oro_address.provider.phone"
+        tags:
+            - { name: form.type, alias: oro_call_form }
+
+    oro_call.call.form.type.api:
+        class: %oro_call.call.form.type.api.class%
+        tags:
+            - { name: form.type, alias: oro_call_form_api }
+
+    oro_call.form.type.phone:
+        class: %oro_call.form.type.phone.class%
+        tags:
+            - { name: form.type, alias: oro_call_phone }
+
+    oro_call.call.form.api:
+        class: Symfony\Component\Form\Form
+        factory_method: createNamed
+        factory_service: form.factory
+        arguments:
+            - "call"
+            - "oro_call_form_api"
+            - null
+
+    oro_call.call.form.handler:
+        class: %oro_call.call.form.handler.class%
+        scope: request
+        arguments:
+            - "oro_call_form"
+            - "oro_call_form"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+            - "@oro_address.provider.phone"
+            - "@oro_activity.manager"
+            - "@oro_call.call.activity.manager"
+            - "@oro_entity.routing_helper"
+            - "@form.factory"
+
+    oro_call.call.form.handler.api:
+            class: %oro_call.call.form.api.handler.class%
+            scope: request
+            arguments:
+                - "@oro_call.call.form.api"
+                - "@request"
+                - "@doctrine.orm.entity_manager"
+
+    oro_call.call.manager.api:
+        class: %oro_call.call.manager.api.class%
+        parent: oro_soap.manager.entity_manager.abstract
+        arguments:
+            - %oro_call.call.entity.class%
+            - "@doctrine.orm.entity_manager"

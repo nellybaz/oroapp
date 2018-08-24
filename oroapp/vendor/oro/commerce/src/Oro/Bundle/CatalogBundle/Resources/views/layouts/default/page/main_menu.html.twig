@@ -1,0 +1,25 @@
+{% block _categories_main_menu_widget %}
+    {% if (max_size is not null ) %}
+        {% set categories = categories[0:max_size] %}
+    {%- endif %}
+
+    {% for category in categories -%}
+        {% set hasSublist = category.childCategories is not empty %}
+        <li class="main-menu__item
+            {{ hasSublist ? "main-menu__item--ancestor": "" }}
+            main-menu__item--{{ (block.children|length == 1 ? "floated" : "centered") ~ "-dropdown" }}">
+            {% do block|merge_context({'category': category}) %}
+            {{ block('container_widget') }}
+        </li>
+    {%- endfor %}
+{% endblock %}
+
+{% block _categories_main_menu_list_widget %}
+    {% set attr =  layout_attr_defaults(attr, {
+        '~class': ' main-menu main-menu__categories'
+    }) %}
+
+    <ul {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </ul>
+{% endblock %}

@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:20:{s:2:"id";b:1;s:10:"visitorUid";b:1;s:14:"userIdentifier";b:1;s:15:"firstActionTime";b:1;s:14:"lastActionTime";b:1;s:9:"parsedUID";b:1;s:18:"identifierDetected";b:1;s:12:"parsingCount";b:1;s:2:"ip";b:1;s:6:"client";b:1;s:13:"clientVersion";b:1;s:10:"clientType";b:1;s:2:"os";b:1;s:9:"osVersion";b:1;s:7:"desktop";b:1;s:6:"mobile";b:1;s:3:"bot";b:1;s:15:"trackingWebsite";b:1;s:17:"customer_7c2d0d96";b:1;s:15:"serialized_data";b:1;}}

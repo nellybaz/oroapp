@@ -1,0 +1,87 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({params : {"%name%": entity.name }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_pricing_price_list_index'),
+        'indexLabel': 'oro.pricing.pricelist.entity_plural_label'|trans,
+        'entityTitle': entity.name|default('N/A'|trans)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons_from_configuration.html.twig' with {
+        'alias': 'oro_product_price',
+        'options': {'price_list_id': entity.id, 'unique_job_slug' : entity.id}
+    } %}
+
+    {{ parent() }}
+{% endblock navButtons %}
+
+{% block content_data %}
+    {% set pricingInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'title': 'oro.pricing.widgets.pricing_information'|trans,
+            'url': path('oro_pricing_price_list_info', {id: entity.id})
+        }) }}
+    {% endset %}
+
+    {% set generalSectionBlocks = [{'data' : [pricingInformationWidget]}]%}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.pricing.sections.general'|trans,
+            'class': 'active',
+            'subblocks': generalSectionBlocks
+        }
+    ] %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.pricing.productprice.entity_plural_label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [dataGrid.renderGrid('price-list-product-prices-grid', {price_list_id: entity.id}, { cssClass: 'inner-grid' })]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.customer.customer.entity_plural_label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [dataGrid.renderGrid('price-list-customers-grid', {price_list_id: entity.id}, { cssClass: 'inner-grid' })]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set dataBlocks = dataBlocks|merge([
+        {
+            'title' : 'oro.customer.customergroup.entity_plural_label'|trans,
+            'subblocks': [
+                {
+                    'title' : '',
+                    'useSpan': false,
+                    'data' : [dataGrid.renderGrid('price-list-customer-groups-grid', {price_list_id: entity.id}, { cssClass: 'inner-grid' })]
+                }
+            ]
+        }
+    ]) %}
+
+    {% set id = 'price-list-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+
+    {{ parent() }}
+{% endblock content_data %}

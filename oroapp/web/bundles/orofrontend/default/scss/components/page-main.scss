@@ -1,0 +1,25 @@
+// @theme: default;
+
+.page-main {
+    padding-top: 15px;
+
+    &.offset-none {
+        padding-top: 0;
+    }
+
+    &__content {
+        max-width: $page-main-max-width;
+        margin: $page-main-content-offset;
+
+        @include clearfix();
+    }
+}
+
+@include breakpoint('print') {
+    .page-main {
+        &__content {
+            display: block;
+            margin: 0;
+        }
+    }
+}

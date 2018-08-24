@@ -1,0 +1,56 @@
+{% block oro_customer_frontend_customer_user_role_widget %}
+    {% set fields = [] %}
+    {% for name, child in form %}
+        {% if name not in ['appendUsers', 'removeUsers', 'entity', 'privileges', 'action'] %}
+            {% set fields = fields|merge({(name): '#' ~ child.vars.id}) %}
+        {% endif %}
+    {% endfor %}
+
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = {
+        elSelector: '.btn.role-submit',
+        formName: form.vars.name,
+        formSelector: '#' ~ form.vars.id,
+        labelSelector: '#' ~ form.label.vars.id,
+        privilegesSelector: '#' ~ form.privileges.vars.id,
+        appendUsersSelector: '#roleAppendUsers',
+        removeUsersSelector: '#roleRemoveUsers',
+        fields: fields
+    } %}
+
+    <div data-page-component-module="orouser/js/views/role-view"
+         data-page-component-options="{{ options|json_encode }}">
+    </div>
+
+    {% set customerUserRoleOptions = {
+        customerFieldId: '#' ~ form.customer.vars.id,
+        datagridName: 'frontend-customer-customer-users-grid-update',
+        originalValue: form.customer.vars.value,
+        enableConfirmation: attr.enableConfirmation|default(false),
+        dialogOptions: { className: 'modal modal-primary' }
+    } %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'orocustomer/js/app/components/customer-user-role-component',
+        options: customerUserRoleOptions
+    }) }} >
+        {{ form_row(form.customer) }}
+    </div>
+
+    {{ form_row(form.label) }}
+
+    {{ form_widget(form.appendUsers, {'id': 'roleAppendUsers'}) }}
+    {{ form_widget(form.removeUsers, {'id': 'roleRemoveUsers'}) }}
+{% endblock %}
+
+{% block _oro_customer_frontend_customer_user_role_entity_row %}{% endblock %}
+{% block _oro_customer_frontend_customer_user_role_action_row %}{% endblock %}
+
+{% block _oro_customer_frontend_customer_user_role_label_row %}
+    <div class="grid__column--5 pull-left">
+        {{ form_label(form, 'oro.customer.frontend.sections.customer_user_role.label') }}
+        {{ form_widget(form) }}
+        {{ form_errors(form) }}
+    </div>
+{% endblock %}

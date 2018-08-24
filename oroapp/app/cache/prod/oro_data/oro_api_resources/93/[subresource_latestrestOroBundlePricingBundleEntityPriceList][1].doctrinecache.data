@@ -1,0 +1,2 @@
+0
+a:1:{i:0;a:2:{s:9:"schedules";a:4:{i:0;s:49:"Oro\Bundle\PricingBundle\Entity\PriceListSchedule";i:1;a:1:{i:0;s:49:"Oro\Bundle\PricingBundle\Entity\PriceListSchedule";}i:2;b:1;i:3;a:2:{i:0;s:19:"update_relationship";i:1;s:16:"add_relationship";}}s:10:"priceRules";a:4:{i:0;s:41:"Oro\Bundle\PricingBundle\Entity\PriceRule";i:1;a:1:{i:0;s:41:"Oro\Bundle\PricingBundle\Entity\PriceRule";}i:2;b:1;i:3;a:2:{i:0;s:19:"update_relationship";i:1;s:16:"add_relationship";}}}}

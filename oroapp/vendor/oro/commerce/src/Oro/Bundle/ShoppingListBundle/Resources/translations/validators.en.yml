@@ -1,0 +1,9 @@
+oro:
+    shoppinglist:
+        not_empty: "Shopping List label must not be empty"
+
+        lineitem:
+            already_exists: "Line Item with the same product and unit already exists"
+
+    product_unavailable: "This item is unavailable"
+    non_valid_precision: "This value should be decimal with a precision {{ precision }}"

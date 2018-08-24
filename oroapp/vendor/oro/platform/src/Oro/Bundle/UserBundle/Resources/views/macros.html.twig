@@ -1,0 +1,49 @@
+{% macro collection_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+    <div data-content="{{ name }}">
+        <div class="row-oro">
+            {{ form_errors(form) }}
+            {% for child in form %}
+                {{ form_errors(child) }}
+                {{ form_widget(child) }}
+            {% endfor %}
+            {{ form_rest(form) }}
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{%- macro user_business_unit_name(user, addBrackets = true) -%}
+    {% spaceless %}
+        {% set businessUnit = oro_get_entity_owner(user) %}
+        {% if businessUnit is not null %}
+            {% if is_granted('VIEW', businessUnit) %}
+                {% import 'OroUIBundle::macros.html.twig' as UI %}
+                {% set buView = UI.renderUrl(path('oro_business_unit_view', {'id': businessUnit.id}), businessUnit.name) %}
+            {% else %}
+                {% set buView = businessUnit.name %}
+            {% endif %}
+            {% if addBrackets %}
+                ({{ buView }})
+            {% else %}
+                {{ buView }}
+            {% endif %}
+        {% endif %}
+    {% endspaceless %}
+{%- endmacro -%}
+
+{% macro render_user_name(user) %}
+    {% set userName = user|oro_format_name %}
+    {% if is_granted('VIEW', user) %}
+        {% import 'OroUIBundle::macros.html.twig' as UI %}
+        {{ UI.renderUrl(path('oro_user_view', {'id': user.id}), userName) }}
+    {% else %}
+        {{ userName }}
+    {% endif %}
+{% endmacro %}

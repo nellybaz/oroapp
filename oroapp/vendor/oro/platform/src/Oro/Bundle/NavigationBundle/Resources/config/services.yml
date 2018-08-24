@@ -1,0 +1,535 @@
+parameters:
+    oro_navigation.entity.navigation_item.class:               Oro\Bundle\NavigationBundle\Entity\NavigationItem
+    oro_navigation.entity.navigation_history_item.class:       Oro\Bundle\NavigationBundle\Entity\NavigationHistoryItem
+    oro_navigation.entity.pinbar_tab.class:                    Oro\Bundle\NavigationBundle\Entity\PinbarTab
+    oro_navigation.entity.page_state.class:                    Oro\Bundle\NavigationBundle\Entity\PageState
+    oro_navigation.entity.menu_update.class:                   Oro\Bundle\NavigationBundle\Entity\MenuUpdate
+
+    oro_menu.factory.acl_extension.class:                      Oro\Bundle\NavigationBundle\Menu\AclAwareMenuFactoryExtension
+    oro_menu.factory.class:                                    Knp\Menu\MenuFactory
+
+    oro_menu.configuration_resolver.class:                     Oro\Component\Config\Resolver\SystemAwareResolver
+    oro_menu.builder_chain.class:                              Oro\Bundle\NavigationBundle\Provider\BuilderChainProvider
+    oro_menu.configuration_builder.class:                      Oro\Bundle\NavigationBundle\Menu\ConfigurationBuilder
+
+    oro_navigation.navigation_item_menu.builder.class:         Oro\Bundle\NavigationBundle\Menu\NavigationItemBuilder
+    oro_navigation.navigation_history_menu.builder.class:      Oro\Bundle\NavigationBundle\Menu\NavigationHistoryBuilder
+    oro_navigation.navigation_mostviewed_menu.builder.class:   Oro\Bundle\NavigationBundle\Menu\NavigationMostviewedBuilder
+
+    oro_navigation.item.builder.pinbar.class:                  Oro\Bundle\NavigationBundle\Entity\Builder\PinbarTabBuilder
+    oro_navigation.item.builder.favorite.class:                Oro\Bundle\NavigationBundle\Entity\Builder\NavigationItemBuilder
+    oro_navigation.item.builder.history.class:                 Oro\Bundle\NavigationBundle\Entity\Builder\HistoryItemBuilder
+    oro_navigation.item.factory.class:                         Oro\Bundle\NavigationBundle\Entity\Builder\ItemFactory
+    oro_navigation.item.pinbar.post_persist_listener.class:    Oro\Bundle\NavigationBundle\Entity\Listener\PinbarPostPersist
+
+    oro_navigation.event.response_history.listener.class:      Oro\Bundle\NavigationBundle\Event\ResponseHistoryListener
+    oro_navigation.event.response_hashnav.listener.class:      Oro\Bundle\NavigationBundle\Event\ResponseHashnavListener
+
+    oro_navigation.menu.matcher.voter.request:                 Oro\Bundle\NavigationBundle\Menu\Matcher\Voter\RequestVoter
+    oro_navigation.menu.matcher.voter.routepattern:            Oro\Bundle\NavigationBundle\Menu\Matcher\Voter\RoutePatternVoter
+
+    oro_navigation.title_service.class:                        Oro\Bundle\NavigationBundle\Provider\TitleService
+    oro_navigation.title_translator.class:                     Oro\Bundle\NavigationBundle\Provider\TitleTranslator
+
+    oro_navigation.translation.extractor.class:                Oro\Bundle\NavigationBundle\Title\TranslationExtractor
+
+    oro_navigation.form.type.pagestate.class:                  Oro\Bundle\NavigationBundle\Form\Type\PageStateType
+    oro_navigation.form.handler.pagestate.class:               Oro\Bundle\NavigationBundle\Form\Handler\PageStateHandler
+
+    oro_navigation.breadcrumbs_manager.class:                  Oro\Bundle\NavigationBundle\Menu\BreadcrumbManager
+    oro_navigation.chain_breadcrumbs_manager.class:            Oro\Bundle\NavigationBundle\Menu\ChainBreadcrumbManager
+
+    oro_navigation.menu_update.scope_type:                     menu_default_visibility
+
+services:
+    oro_menu.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_menu' ] ]
+
+    oro_menu_acl_extension:
+        class: %oro_menu.factory.acl_extension.class%
+        arguments:
+            - '@router.default'
+            - '@security.authorization_checker'
+            - '@oro_security.class_authorization_checker'
+            - '@oro_security.token_accessor'
+            - '@logger'
+        tags:
+            - { name: oro_navigation.menu_extension, priority: 100 }
+
+    oro_navigation.menu_extension.routing:
+        class: 'Oro\Bundle\NavigationBundle\Menu\RoutingAwareMenuFactoryExtension'
+        arguments:
+            - '@router.default'
+        tags:
+            - { name: oro_navigation.menu_extension, priority: 110 }
+
+    oro_menu.factory:
+        class: '%oro_menu.factory.class%'
+
+    oro_menu.array_loader:
+        class: 'Knp\Menu\Loader\ArrayLoader'
+        public: false
+        arguments:
+            - "@oro_menu.factory"
+
+    oro_menu.manipulator:
+        class: 'Knp\Menu\Util\MenuManipulator'
+        public: false
+
+    oro_menu.builder_chain:
+        class: '%oro_menu.builder_chain.class%'
+        arguments:
+            - '@oro_menu.factory'
+            - '@oro_menu.array_loader'
+            - '@oro_menu.manipulator'
+        tags:
+            - { name: knp_menu.provider }
+
+    oro_menu.configuration:
+        class: Oro\Bundle\NavigationBundle\Config\MenuConfiguration
+        arguments:
+            - '@oro_navigation.configuration.provider'
+
+    oro_menu.configuration_resolver:
+        class: %oro_menu.configuration_resolver.class%
+        arguments:
+            - '@service_container'
+
+    oro_menu.configuration_builder:
+        class: %oro_menu.configuration_builder.class%
+        arguments:
+            - '@oro_menu.configuration_resolver'
+            - '@oro_menu.factory'
+            - '@event_dispatcher'
+            - '@oro_menu.configuration'
+        tags:
+            - { name: oro_menu.builder }
+
+    oro_navigation.tree.menu_update_tree_handler:
+        class: 'Oro\Bundle\NavigationBundle\JsTree\MenuUpdateTreeHandler'
+        arguments:
+            - '@translator'
+
+    oro_menu.twig.extension:
+        class: Oro\Bundle\NavigationBundle\Twig\MenuExtension
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    oro_navigation.item.builder.pinbar:
+        class: %oro_navigation.item.builder.pinbar.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [ setClassName, [ %oro_navigation.entity.pinbar_tab.class% ]]
+            - [ setNavigationItemClassName, [ %oro_navigation.entity.navigation_item.class% ]]
+        tags:
+            - { name: oro_navigation.item.builder, alias: pinbar }
+
+    oro_navigation.item.builder.favorite:
+        class: %oro_navigation.item.builder.favorite.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [ setClassName, [ %oro_navigation.entity.navigation_item.class% ]]
+        tags:
+            - { name: oro_navigation.item.builder, alias: favorite }
+
+    oro_navigation.item.builder.history:
+        class: %oro_navigation.item.builder.history.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [ setClassName, [ %oro_navigation.entity.navigation_history_item.class% ]]
+        tags:
+            - { name: oro_navigation.item.builder, alias: history }
+
+    oro_navigation.item.builder.mostviewed:
+        class: %oro_navigation.item.builder.history.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+        calls:
+            - [ setClassName, [ %oro_navigation.entity.navigation_history_item.class% ]]
+        tags:
+            - { name: oro_navigation.item.builder, alias: mostviewed }
+
+    oro_navigation.item.factory:
+        class: %oro_navigation.item.factory.class%
+
+    oro_navigation.item.pinbar.post_persist_listener:
+        class: %oro_navigation.item.pinbar.post_persist_listener.class%
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\NavigationBundle\Entity\AbstractPinbarTab', event: postPersist }
+
+    oro_navigation.entity_listener.prepare_url:
+        class: 'Oro\Bundle\NavigationBundle\Entity\Listener\PrepareUrlListener'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\NavigationBundle\Entity\AbstractNavigationItem', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\NavigationBundle\Entity\AbstractNavigationItem', event: preUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\NavigationBundle\Entity\AbstractNavigationHistoryItem', event: prePersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\NavigationBundle\Entity\AbstractNavigationHistoryItem', event: preUpdate }
+
+    oro_navigation.pinbar_menu.builder:
+        class: %oro_navigation.navigation_item_menu.builder.class%
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
+            - '@router'
+        tags:
+            - { name: oro_menu.builder, alias: pinbar }
+            - { name: oro_featuretogle.feature, feature: email }
+
+    oro_navigation.favorites_menu.builder:
+        class: %oro_navigation.navigation_item_menu.builder.class%
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
+            - '@router'
+        tags:
+            - { name: oro_menu.builder, alias: favorite }
+            - { name: oro_featuretogle.feature, feature: email }
+
+    oro_navigation.history_menu.builder:
+        class: %oro_navigation.navigation_history_menu.builder.class%
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
+            - '@router'
+        calls:
+            - [ setMatcher, [ '@knp_menu.matcher' ]]
+            - [ setConfigManager, [ '@oro_config.user' ]]
+        tags:
+            - { name: oro_menu.builder, alias: history }
+            - { name: oro_featuretogle.feature, feature: email }
+
+    oro_navigation.mostviewed_menu.builder:
+        class: %oro_navigation.navigation_mostviewed_menu.builder.class%
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@doctrine.orm.entity_manager'
+            - '@oro_navigation.item.factory'
+            - "@router"
+        calls:
+            - [ setConfigManager, [ '@oro_config.user' ]]
+        tags:
+            - { name: oro_menu.builder, alias: mostviewed }
+            - { name: oro_featuretogle.feature, feature: email }
+
+    knp_voter_request:
+        class: %oro_navigation.menu.matcher.voter.request%
+        tags:
+            - { name: knp_menu.voter, request: true }
+
+    knp_menu.voter.router:
+        class: %oro_navigation.menu.matcher.voter.routepattern%
+        tags:
+            - { name: knp_menu.voter, request: true }
+
+    kernel.listener.nav_history_response:
+        class: %oro_navigation.event.response_history.listener.class%
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onResponse }
+        arguments:
+            - '@oro_navigation.item.factory'
+            - '@security.token_storage'
+            - '@doctrine'
+            - '@oro_navigation.title_service'
+        calls:
+            - [ setHistoryItemEntityFQCN, [ %oro_navigation.entity.navigation_history_item.class% ]]
+            - [ setUserEntityFQCN, [ %oro_user.entity.class% ]]
+            - [ setNavigationHistoryItemType, ['history']]
+
+    oro_navigation.event.master_request_route_listener:
+        class: Oro\Bundle\NavigationBundle\Event\AddMasterRequestRouteListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    oro_navigation.event.js_routing_dump_listener:
+        class: Oro\Bundle\NavigationBundle\Event\JsRoutingDumpListener
+        arguments:
+            - '@oro_ui.dynamic_asset_version_manager'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand }
+
+    oro_navigation.title_service:
+        class: %oro_navigation.title_service.class%
+        arguments:
+          - '@oro_navigation.title_reader.registry'
+          - '@oro_navigation.title_translator'
+          - '@oro_config.user'
+          - '@oro_navigation.chain_breadcrumb_manager.link'
+        lazy: true
+
+    oro_navigation.title_service.link:
+        tags:
+            - { name: oro_service_link, service: oro_navigation.title_service }
+
+    oro_navigation.title_translator:
+        class: %oro_navigation.title_translator.class%
+        public: false
+        arguments:
+          - '@translator.default'
+          - '@oro_config.user'
+
+    oro_navigation.cache.title_annotations:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_navigation_annotations' ] ]
+
+    oro_navigation.cached_reader.title_annotations:
+        parent: annotations.cached_reader
+        arguments:
+            - '@annotation_reader'
+            - '@oro_navigation.cache.title_annotations'
+            - '%kernel.debug%'
+
+    oro_navigation.title_reader.registry:
+        class: Oro\Bundle\NavigationBundle\Title\TitleReader\TitleReaderRegistry
+
+    oro_navigation.title_annotations_reader:
+        class: Oro\Bundle\NavigationBundle\Title\TitleReader\AnnotationsReader
+        arguments:
+            - '@oro_navigation.cached_reader.title_annotations'
+            - '@router'
+            - '@oro_navigation.cache.title_annotations'
+        tags:
+            - { name: oro_navigation.title_reader, priority: 10}
+
+    oro_navigation.cache_warmer.title_annotations:
+        class: Oro\Bundle\NavigationBundle\CacheWarmer\TitleAnnotationsCacheWarmer
+        arguments:
+            - '@oro_navigation.title_annotations_reader'
+        tags:
+            - { name: 'kernel.cache_warmer' }
+
+    oro_navigation.title_config_reader:
+        class: Oro\Bundle\NavigationBundle\Title\TitleReader\ConfigReader
+        arguments:
+            - '@oro_navigation.configuration.provider'
+        tags:
+            - { name: oro_navigation.title_reader, priority: 0}
+
+    oro_navigation.title_service.twig.extension:
+        class: Oro\Bundle\NavigationBundle\Twig\TitleExtension
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    oro_navigation.translation.extractor:
+        class: %oro_navigation.translation.extractor.class%
+        arguments:
+            - '@oro_navigation.title_reader.registry'
+            - '@router'
+        tags:
+            - { name: translation.extractor, alias: navigation_translation_extractor }
+
+    oro_navigation.form.pagestate:
+        class:                        Symfony\Component\Form\Form
+        factory_method:               createNamed
+        factory_service:              form.factory
+        arguments:                    ["pagestate", "pagestate", null]
+
+    oro_navigation.form.type.pagestate:
+        class:                        %oro_navigation.form.type.pagestate.class%
+        tags:
+            - { name: form.type, alias: pagestate }
+
+    oro_navigation.form.type.route_select:
+        class: Oro\Bundle\NavigationBundle\Form\Type\RouteChoiceType
+        arguments:
+            - '@router.default'
+            - '@oro_navigation.title_reader.registry'
+            - '@oro_navigation.title_translator'
+            - '@oro_navigation.title_service.link'
+        tags:
+            - { name: form.type, alias: oro_route_choice }
+
+    oro_navigation.form.handler.pagestate:
+        class: %oro_navigation.form.handler.pagestate.class%
+        scope: request
+        arguments:
+            - "@oro_navigation.form.pagestate"
+            - "@request"
+            - "@doctrine.orm.entity_manager"
+            - "@security.token_storage"
+
+    kernel.listener.hashnav_response:
+        class: %oro_navigation.event.response_hashnav.listener.class%
+        arguments:
+            - '@security.token_storage'
+            - '@templating'
+            - '%kernel.debug%'
+        tags:
+            - { name: kernel.event_listener, event: kernel.response, method: onResponse }
+
+    oro_navigation.twig.hash_nav_extension:
+        class: Oro\Bundle\NavigationBundle\Twig\HashNavExtension
+        tags:
+            - { name: twig.extension }
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+
+    oro_navigation.breadcrumb_manager:
+        class: %oro_navigation.breadcrumbs_manager.class%
+        arguments:
+            - '@oro_menu.builder_chain'
+            - '@knp_menu.matcher'
+            - '@router'
+
+    oro_navigation.chain_breadcrumb_manager.link:
+        tags:
+            - { name: oro_service_link,  service: oro_navigation.chain_breadcrumb_manager }
+
+    oro_navigation.chain_breadcrumb_manager:
+        class: %oro_navigation.chain_breadcrumbs_manager.class%
+        calls:
+          - [ setDefaultManager, [ '@oro_navigation.breadcrumb_manager' ]]
+
+    oro_navigation.menu_update.builder.menu_default_visibility:
+        class: Oro\Bundle\NavigationBundle\Builder\MenuUpdateBuilder
+        arguments:
+            - '@oro_locale.helper.localization'
+            - '@oro_navigation.provider.menu_update_provider'
+        tags:
+            - { name: oro_menu.builder, priority: 100 }
+
+    oro_navigation.manager.menu_update:
+        class: Oro\Bundle\NavigationBundle\Manager\MenuUpdateManager
+        arguments:
+            - "@doctrine"
+            - "@oro_navigation.menu_helper.menu_update"
+            - '%oro_navigation.entity.menu_update.class%'
+            - '%oro_navigation.menu_update.scope_type%'
+
+    oro_navigation.menu_manipulator:
+        class: Knp\Menu\Util\MenuManipulator
+        public: false
+
+    oro_navigation.extension.datasource.menu:
+        class: Oro\Bundle\NavigationBundle\Datagrid\MenuUpdateDatasource
+        arguments:
+            - '@oro_menu.builder_chain'
+            - '@oro_navigation.menu_manipulator'
+            - '%oro_navigation.menu_update.scope_type%'
+            - '@oro_menu.configuration'
+        tags:
+            - { name: oro_datagrid.datasource, type: menu-update }
+
+    oro_navigation.widget_provider.actions.edit_menus:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - oro_edit_menus_button
+            - oro_edit_menus_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: activity }
+            - { name: oro_ui.update_action_provider, group: activity }
+
+    oro_navigation.event_listener.navigation:
+        class: Oro\Bundle\NavigationBundle\EventListener\NavigationListener
+        arguments:
+            - '@security.authorization_checker'
+            - '@oro_security.token_accessor'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    oro_navigation.event_listener.navigation_items:
+        class: Oro\Bundle\NavigationBundle\EventListener\NavigationItemsListener
+        arguments:
+            - '@oro_featuretoggle.checker.feature_checker'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.shortcuts, method: onNavigationConfigure }
+            - { name: kernel.event_listener, event: oro_menu.configure.application_menu, method: onNavigationConfigure }
+
+    oro_navigation.config_extension.feature:
+        class: Oro\Bundle\NavigationBundle\Configuration\FeatureConfigurationExtension
+        tags:
+            - { name: oro_feature.config_extension }
+
+
+    oro_navigation.validator.max_nested_level:
+        class: Oro\Bundle\NavigationBundle\Validator\Constraints\MaxNestedLevelValidator
+        arguments:
+            - '@oro_menu.builder_chain'
+            - '@oro_locale.helper.localization'
+        tags:
+            - { name: validator.constraint_validator }
+
+    oro_navigation.menu_helper.menu_update:
+        class: Oro\Bundle\NavigationBundle\Menu\Helper\MenuUpdateHelper
+        arguments:
+            - '@translator'
+            - '@oro_locale.helper.localization'
+
+    oro_navigation.event_listener.menu_update_cache_flusher:
+        class: Oro\Bundle\NavigationBundle\EventListener\MenuUpdateCacheFlusher
+        arguments:
+            - '@oro_navigation.repository.menu_update'
+            - '@oro_navigation.menu_update.cache'
+            - '@oro_scope.scope_manager'
+            - '%oro_navigation.menu_update.scope_type%'
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.menu_update_change, method: onMenuUpdateScopeChange }
+
+    oro_navigation.repository.menu_update:
+        class: 'Oro\Bundle\NavigationBundle\Entity\Repository\MenuUpdateRepository'
+        parent: oro_entity.abstract_repository
+        arguments:
+            - '%oro_navigation.entity.menu_update.class%'
+        calls:
+            - [ setQueryResultCache, [ '@oro_navigation.menu_update.cache' ] ]
+
+    oro_navigation.menu_update.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_navigation_menu_updates' ] ]
+
+    oro_navigation.data_provider.title:
+        class: Oro\Bundle\NavigationBundle\Layout\DataProvider\NavigationTitleProvider
+        scope: request
+        arguments:
+          - '@oro_navigation.title_service'
+          - '@oro_config.user'
+        tags:
+            - { name: layout.data_provider, alias: title_provider }
+
+    oro_navigation.data_provider.breadcrumb:
+        class: Oro\Bundle\NavigationBundle\Layout\DataProvider\BreadcrumbProvider
+        arguments:
+          - '@oro_navigation.chain_breadcrumb_manager'
+        tags:
+            - { name: layout.data_provider, alias: breadcrumb_provider }
+
+    oro_navigation.scope_criteria_provider.user:
+        parent: oro_user.scope_criteria_provider.user
+        tags:
+            - {name: oro_scope.provider, scopeType: '%oro_navigation.menu_update.scope_type%', priority: 20}
+
+    oro_navigation.configuration.provider:
+        class: Oro\Bundle\NavigationBundle\Provider\ConfigurationProvider
+        arguments:
+            - '@oro_navigation.configuration_provider.cache'
+
+    oro_navigation.configuration_provider.cache:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_navigation_configuration' ] ]
+
+    oro_navigation.event_listener.scope_grid_listener:
+        class: 'Oro\Bundle\NavigationBundle\EventListener\MenuGridListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.menu-by-scope-grid, method: onPreBuild }
+
+    oro_navigation.provider.menu_update_provider:
+        class: 'Oro\Bundle\NavigationBundle\Provider\MenuUpdateProvider'
+        arguments:
+            - '@oro_scope.scope_manager'
+            - '@oro_navigation.manager.menu_update'

@@ -1,0 +1,29 @@
+oro.customer_account_bridge:
+    channel_type.label: Commerce
+    previous_account:
+        entity_label: Previous Account
+    system_configuration:
+        groups:
+            account_settings.title: CRM and Commerce
+            customer_account_settings.title: Account and Customer Relation
+        fields:
+            strategy_creating_customers_account:
+                label: Creation new Account
+                tooltip: An Account is created for every Commerce Customer. An Account is created only for the root Commerce Customer (one without a parent customer). All its children will be assigned to the same account.
+                choices:
+                    each: For each Commerce Customer
+                    root: Only for root Commerce Customer
+        messages:
+            root_warning: You are about to change CRM account creation strategy. All children customers will be assigned to the corresponding root CRM account.
+            each_warning: You are about to change CRM account creation strategy. All customers will be reassigned to each own customer account.
+
+oro.customer:
+    lifetime.label: Lifetime sales value
+    data_channel.label: Channel
+    customer:
+        lifetime.label: Lifetime sales value
+        data_channel.label: Channel
+
+oro.account:
+    import_export:
+        account_doesnt_exists: Unable to find related account for customer "%customer_name%".

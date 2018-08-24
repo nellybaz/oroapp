@@ -1,0 +1,16 @@
+<strong><%= _.__('oro.hangoutscall.start_hangouts_dialog.content_intro', {}, invites.length) %>:</strong>
+
+<% if (invites.length) { %>
+    <table class="invite-hangout-modal-participants">
+    <% _.each(invites, function(item) { %>
+        <tr>
+            <td class="invite-hangout-modal-participant-name"><%- item.name %></td>
+            <td class="invite-hangout-modal-participant-id"><%- item.id %></td>
+        </tr>
+    <% }) %>
+    </table>
+<% } %>
+
+<p class="invite-hangout-modal-note">
+    <%= _.__('oro.hangoutscall.start_hangouts_dialog.content_note') %>
+</p>

@@ -1,0 +1,47 @@
+api:
+    entities:
+        Oro\Bundle\RFPBundle\Entity\Request:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request.md'
+            fields:
+                createdAt:
+                    form_options:
+                        mapped: false
+                updatedAt:
+                    form_options:
+                        mapped: false
+
+        Oro\Bundle\RFPBundle\Entity\RequestProduct:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request_products.md'
+            fields:
+                productSku:
+                    exclude: true
+
+        Oro\Bundle\RFPBundle\Entity\RequestProductItem:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request_product_item.md'
+            fields:
+                value:
+                    form_options:
+                        mapped: false
+                        constraints:
+                            - NotBlank: ~
+                currency:
+                    form_options:
+                        mapped: false
+                        constraints:
+                            - NotBlank: ~
+                productUnitCode:
+                    exclude: true
+
+        Oro\Bundle\RFPBundle\Entity\RequestAdditionalNote:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request_additional_note.md'
+            actions:
+                create: false
+                update: false
+                delete: false
+                delete_list: false
+
+        Extend\Entity\EV_Rfp_Customer_Status:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request.md'
+
+        Extend\Entity\EV_Rfp_Internal_Status:
+            documentation_resource: '@OroRFPBundle/Resources/doc/api/request.md'

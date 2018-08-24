@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:832;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"name";a:3:{s:1:"i";i:833;s:1:"h";b:0;s:1:"t";s:6:"string";}s:9:"customers";a:3:{s:1:"i";i:834;s:1:"h";b:0;s:1:"t";s:8:"ref-many";}s:5:"owner";a:3:{s:1:"i";i:835;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:12:"organization";a:3:{s:1:"i";i:836;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:21:"payment_term_7c4f1e8e";a:3:{s:1:"i";i:2695;s:1:"h";b:0;s:1:"t";s:9:"manyToOne";}s:7:"taxCode";a:3:{s:1:"i";i:2696;s:1:"h";b:0;s:1:"t";s:9:"manyToOne";}s:15:"serialized_data";a:3:{s:1:"i";i:2697;s:1:"h";b:1;s:1:"t";s:5:"array";}}

@@ -1,0 +1,353 @@
+oro:
+    menu:
+        sales_tab.label: 'Sales'
+    sale:
+        quote:
+            entity_label: 'Quote'
+            entity_plural_label: 'Quotes'
+            demands.label: 'Quote Demands'
+            id.label: 'Numeric ID'
+            qid.label: 'Quote #'
+            owner.label: 'Owner'
+            organization.label: 'Organization'
+            valid_until.label: 'Valid Until'
+            quote_products.label: 'Quote Products'
+            request.label: 'Request'
+            customer.label: 'Customer'
+            internal_status.label: 'Internal Status'
+            customer_status.label: 'Customer Status'
+            website.label: 'Website'
+            customer_user.label: 'Customer User'
+            shipping_method_locked.label: 'Shipping Method Locked'
+            allow_unlisted_shipping_method.label: 'Allow Unlisted Shipping Method'
+            prices_changed.label: 'Prices Changed'
+            not_expired.label: 'Not Expired'
+            po_number.label: 'PO Number'
+            ship_until.label: 'Do Not Ship Later Than'
+            price_list.label: 'Price List'
+            expired.label: 'Expired'
+            assigned_users.label: 'Assigned To'
+            assigned_customer_users.label: 'Assigned Customer Users'
+            shipping_estimate_amount.label: 'Shipping Estimate Ammount'
+            shipping_estimate_currency.label: 'Shipping Estimate Currency'
+            shipping_cost.label: 'Shipping Cost'
+            estimated_shipping_cost.label: 'Estimated Shipping Cost'
+            overridden_shipping_cost.label: 'Overridden Shipping Cost'
+            estimated_shipping_cost_amount.label: 'Estimated Shipping Cost Amount'
+            overridden_shipping_cost_amount.label: 'Overridden Shipping Cost Amount'
+            shipping_cost_amount.label: 'Shipping Cost Amount'
+            shipping_method.label: 'Shipping Method'
+            shipping_method_type.label: 'Shipping Method Type'
+            currency.label: 'Currency'
+            shipping_address.label: 'Shipping Address'
+            contact_information.label: 'Contact Information'
+
+            sections:
+                general: 'General'
+                additional: 'Additional'
+                quote_products: 'Line Items'
+                shipping_information: 'Shipping Information'
+                shipping_address: 'Shipping Address'
+                back.label: 'Back to Quote'
+
+            widgets:
+                quote_information: 'Quote Information'
+
+            notify_customer:
+                label: 'Notify Customer'
+                by_email:
+                    link.text: 'Notify by Email'
+
+            lineitem:
+                product_sku: SKU
+                product: 'Product'
+                requested:
+                    label: ''
+                    quantity: 'Requested Quantity'
+                    price: 'Requested Price'
+                offers:
+                    label: 'Offers'
+                    quantity: 'Quantity'
+                    price: 'Unit Price'
+                    add: 'Add Offer'
+                notes: 'Notes'
+                add: 'Add Product'
+                remove: 'Delete'
+
+            actions:
+                quote_expire: 'Expire Quote'
+                send_no_quote_alert: 'Send no Quote alert for the Request'
+                accept_quote: 'Accept Quote'
+                submit_to_order: 'Accept and Submit to Order'
+
+            message:
+                quote.expire.success: 'Quote #%id% was successfully marked as expired'
+                quote.create.success: 'Quote #%id% successfully created'
+                quote.edit.success: 'Quote #%id% successfully updated'
+                quote.delete.success: 'Quote #%id% successfully deleted'
+                quote.undelete.success: 'Quote #%id% successfully undeleted'
+                quote.sent.success: 'Quote #%id% successfully sent to customer'
+                quote.cancel.success: 'Quote #%id% successfully cancelled'
+                quote.decline.success: 'Quote #%id% successfully declined'
+                quote.submit_for_review.success: 'Quote #%id% successfully submitted for review'
+                quote.review.success: 'Quote #%id% on review'
+                quote.return.success: 'Quote #%id% returned'
+                quote.approve.success: 'Quote #%id% approved'
+                quote.decline_by_reviewer.success: 'Quote #%id% declined'
+
+            form:
+                address:
+                    choose: Select an address
+                    choose_or_create: Select an existing address or enter a other address below
+                    manual: Enter other address
+                    group_label:
+                        customer: Customer Address Book
+                        customer_user: User Address Book
+                shipping_options.label: 'Shipping Options'
+                error:
+                    price_override: 'Price overriding allowed by tier price only'
+
+            datagrid:
+                customer.label: 'Quotes'
+                customer_user.label: 'Quotes'
+
+        system_configuration:
+            groups:
+                sale_contact_info.title: 'Contacts'
+                customer_visible_contact_info.title: 'Customer Visible Contact Info'
+            fields:
+                backend_product_visibility.title: 'Can Be Added to Quotes'
+                contact_info_source_display.label: 'Display'
+                contact_details.label: 'Contact Details'
+                allow_user_configuration.label: 'Allow User Configuration'
+                available_user_options.label: 'Available User Options'
+                contact_info_user_option.label: 'Customer Visible Contact Info'
+                contact_info_manual_text.label: 'Enter Contact Info'
+                guest_contact_info_text.label: 'Guest Contact'
+
+        privilege:
+            category.quotes.label: 'Quotes'
+
+        quoteproduct:
+            entity_label: 'Quote Product'
+            entity_plural_label: 'Quote Products'
+            add_label: 'Add Product'
+            id.label: 'ID'
+            product.label: 'Product'
+            product_replacement.label: 'Suggested Replacement:'
+            product_sku.label: 'Product SKU'
+            product_replacement_sku.label: 'Suggested Replacement SKU'
+            quote.label: 'Quote'
+            quote_product_offers.label: 'Quote Product Offers'
+            quote_product_requests.label: 'Quote Product Requests'
+            request_product_item.label: 'Requested Item'
+            comment.label: 'Seller Notes'
+            comment_customer.label: 'Customer Notes'
+            comment_account.label: 'Customer Notes'
+            product.removed: '{title} - removed'
+            product_replacement.removed: '{title} - removed'
+            free_form_product.label: 'Product (free-form)'
+            free_form_product_replacement.label: 'Product Replacement (free-form)'
+            type:
+                label: 'Type'
+                requested: 'Requested'
+                offer: 'Offer'
+                not_available: 'Not Available'
+            column:
+                product: 'Product'
+                type: 'Type'
+                quote_product_items: 'Offers'
+            select:
+                product: Select product
+                free_form: Free-form entry
+
+        quoteproductoffer:
+            item: '{0}{units}, {price} per {unit}|{1}{units} or more, {price} per {unit}'
+            item_bundled: '{0}{units}, {price} for every {units}|{1}{units} or more, {price} for every {units}'
+            entity_label: 'Quote Product Offer'
+            entity_plural_label: 'Quote Product Offers'
+            add_label: 'Add Offer'
+            id.label: 'ID'
+            quantity.label: 'Quantity'
+            product_unit.label: 'Product Unit'
+            product_unit_code.label: 'Product Unit Code'
+            price.label: 'Price'
+            value.label: 'Price Value'
+            currency.label: 'Price Currency'
+            quote_product.label: 'Quote Product'
+            allow_increments.label: 'or more'
+            price_type:
+                label: 'Price Type'
+                bundled: 'bundled offer'
+                unit: 'at unit price of'
+
+            product_unit.removed: '{title} - removed'
+            product_unit.empty: 'Choose Unit...'
+            column_summary: 'Summary'
+
+        quoteproductrequest:
+            item: '{units}, {price} per {unit}'
+            entity_label: 'Quote Product Request'
+            entity_plural_label: 'Quote Product Requests'
+            add_label: 'Add Request'
+            id.label: 'ID'
+            quantity.label: 'Requested Qty'
+            product_unit.label: 'Product Unit'
+            product_unit_code.label: 'Product Unit Code'
+            price.label: 'Requested Price'
+            value.label: 'Price Value'
+            currency.label: 'Price Currency'
+            quote_product.label: 'Quote Product'
+            request_product_item.label: 'Request Product Item'
+            product_unit.removed: '{title} - removed'
+            product_unit.empty: 'Choose Unit...'
+            column_summary: 'Summary'
+
+        quoteaddress:
+            entity_label: Quote Address
+            entity_plural_label: Quote Addresses
+            id.label: ID
+            customer_address.label: Customer address
+            customer_user_address.label: Customer user address
+            label.label: Label
+            first_name.label: First Name
+            middle_name.label: Middle Name
+            last_name.label: Last Name
+            name_prefix.label: Name Prefix
+            name_suffix.label: Name Suffix
+            organization.label: Organization
+            city.label: City
+            postal_code.label: Zip/Postal Code
+            country.label: Country
+            region.label: State
+            region_text.label: State
+            street.label: Street
+            street2.label: Street 2
+            phone.label: Phone
+
+            no_exist: No shipping address found
+
+        quotedemand:
+            entity_label: 'Quote Demand'
+            entity_plural_label: 'Quote Demands'
+            id.label: 'Id'
+            quote.label: 'Quote'
+            total.label: 'Total'
+            subtotal.label: 'Subtotal'
+            total_currency.label: 'Total Currency'
+            customer.label: 'Customer'
+            customer_user.label: 'Customer User'
+
+        controller:
+            quote:
+                saved.message: 'Quote has been saved'
+                expired.message: 'This quote has expired. You may submit a new request for quote.'
+
+        btn:
+            add_seller_notes: 'Add Seller Notes'
+            remove_seller_notes: 'Remove Seller Notes'
+            send: 'Send'
+            cancel: 'Cancel'
+
+        navigation:
+            view: 'Quote #%id%'
+
+        security:
+            permission:
+                address_shipping_customer_use_any: "Use any shipping address from the customer address book"
+                address_shipping_customer_user_use_default: "Use the default shipping address from the customer user's address book"
+                address_shipping_customer_user_use_any: "Use any shipping address from the customer user's address book"
+                address_shipping_allow_manual: "Enter the shipping address manually"
+                payment_term_customer_can_override: "Override customer payment term"
+                quote_prices_override: "Override quote prices"
+                quote_review_and_approve: "Review and approve quotes"
+                add_free_form_items: "Add free-form items"
+        form:
+            tooltip:
+                  allow_user_configuration: 'When checked, the sales representatives will be able to choose one of the options enabled below.'
+                  guest_contact_info_text: 'You may use this setting to enter the sales contact information that will be shown to non-authenticated visitors.'
+        available_customer_options:
+            type:
+                dont_display.label: "Don't Display Contact Info"
+                customer_user_owner.label: 'Customer User Owner'
+                customer_owner.label: 'Customer Owner'
+                pre_configured.label: 'Pre-Configured'
+        available_user_options:
+            type:
+                dont_display.label: "Don't Display Contact Info"
+                user_profile_data.label: 'Use User Profile Data'
+                enter_manually.label: 'Enter Manually'
+        contact_info_user_options:
+            type:
+                dont_display.label: "Don't Display Contact Info"
+                user_profile_data.label: 'Use My Profile Data'
+                enter_manually.label: 'Enter Manually'
+                use_system.label: 'Use System'
+    frontend:
+        sale:
+            menu:
+                label: 'Sales'
+            quote:
+                entity_plural_label: Quotes
+                qid.label: 'Quote #'
+                customer_user.label: 'Owner'
+                customer_status.label: 'Status'
+                valid_until.label: 'Valid Until'
+                po_number.label: 'PO Number'
+                ship_until.label: 'Do Not Ship Later Than'
+                ship_estimate.label: 'Shipping Estimate'
+                assigned_customer_users.label: 'Assigned To'
+                title.label: 'Quote #%id%'
+                shipping_address.label: 'Shipping Address'
+                sections:
+                    general: 'Quote Information'
+                    back.label: 'Back to Quote List'
+                    quote_products:
+                        label: 'Line Items'
+                        columns:
+                            item: 'Item'
+                            quantity: 'Quantity'
+                            unit_price: 'Unit Price'
+                widgets:
+                    quote_information: 'Quote Information'
+                submit_to_order:
+                    submit: 'Submit'
+                    cancel: 'Cancel'
+                toolbar-actions:
+                    btn:
+                        print: 'Print Quote'
+
+            quoteproduct:
+                product_sku.label: 'SKU #:'
+                product_name.label: 'Product'
+                comment.label: 'Seller Notes'
+                comment_customer.label: 'My Notes'
+                product_replacement.label: 'Suggested Replacement:'
+                column:
+                    product: 'Product'
+                    type: 'Type'
+                    quote_product_items: 'Offers'
+
+            quoteproductoffer:
+                quantity.label: 'Quantity'
+                price.label: 'Price'
+                column_summary: 'Summary'
+                allow_increments.label: 'or more'
+                select_offer.label: 'Select An Offer'
+                quantity_to_order.label: 'Quantity To Order'
+                unit_price.label: 'Unit Price'
+                price_calculating.message: 'Calculating...'
+                not_available.message: 'N/A'
+
+            quoteproductrequest:
+                quantity.label: 'Requested Qty'
+                price.label: 'Target Price'
+                column_summary: 'Summary'
+
+            btn:
+                widget_accept_quote_create_order: 'Submit to Order'
+
+            message:
+                quote.create_order.success: 'Your sales order was submitted successfully'
+                quote.create_order.error: 'Can not create new Order'
+                quote.not_available: 'Quote #%qid% is no longer available'

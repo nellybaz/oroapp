@@ -1,0 +1,40 @@
+{% block oro_dotmailer_transport_check_button_widget %}
+    {% set options = {
+        'pingUrl': path('oro_dotmailer_ping')
+    } %}
+    <div data-page-component-module="orodotmailer/js/app/components/dm-resource-component"
+         data-page-component-options="{{ options|json_encode }}">
+        <div class="control-group">
+            <div class="controls">
+                <div style="margin-top: 10px;display: none;" class="ping-holder">
+                    <button type="{{ type|default('button') }}" {{ block('button_attributes') }}>{{ label|trans({}, translation_domain) }}</button>
+                    <div class="connection-status alert" style="display: none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block oro_dotmailer_transport_check_button_row %}
+    {{ block('button_row') }}
+{% endblock %}
+{% block _oro_dotmailer_datafield_mapping_form_config_entityFields_row %}
+    {% spaceless %}
+        <div class="control-group entity-field-control">
+            {% if label is not sameas(false) %}
+                <div class="control-label wrap">
+                    {{ form_label(form, '' , { label_attr: label_attr}) }}
+                </div>
+            {% endif %}
+            <div class="controls{% if errors|length > 0 %} validation-error{% endif %}">
+                {{ form_widget(form) }}
+                {{ form_errors(form) }}
+            </div>
+            <div class="control-group">
+                <div class="controls fields-container">
+                </div>
+                <a class="btn add-field" href="javascript: void(0);"><i class="icon-plus"></i>{{ 'Add'|trans }}</a>
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}

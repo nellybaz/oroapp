@@ -1,0 +1,37 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+
+{% block content %}
+    <div class="tab-container">
+        <ul class="nav nav-tabs">
+            {% for tab in tabs %}
+                <li{% if activeTab == tab.name %} class="active"{% endif %}><a
+                    href="javascript:void(0);" class="no-hash tab-button"
+                    data-name="{{ tab.name }}" data-url="{{ tab.url }}">
+                        {{ tab.label }}
+                        {% if tab.afterHtml is defined %}
+                            {{ tab.afterHtml|raw }}
+                        {% endif %}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+        <div class="tab-content">
+            <div class="content">
+                {% block tab_content %}
+                    {{ activeTabContent|raw }}
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        view: 'orodashboard/js/app/views/widget-tabs-view',
+        options: {
+            _sourceElement: '#' ~ widgetContentId
+        }
+    }) }}></div>
+
+    {{ parent() }}
+{% endblock %}

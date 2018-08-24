@@ -1,0 +1,2 @@
+0
+a:1:{s:25:"products-select-grid-base";a:2:{s:7:"extends";s:49:"products-select-grid-base-without-default-sorting";s:7:"sorters";a:1:{s:7:"default";a:1:{s:9:"createdAt";s:57:"%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC";}}}}

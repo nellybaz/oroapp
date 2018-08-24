@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:212;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:5:"email";a:3:{s:1:"i";i:213;s:1:"h";b:0;s:1:"t";s:6:"string";}s:6:"sender";a:3:{s:1:"i";i:214;s:1:"h";b:0;s:1:"t";s:6:"string";}s:7:"subject";a:3:{s:1:"i";i:215;s:1:"h";b:0;s:1:"t";s:6:"string";}s:4:"body";a:3:{s:1:"i";i:216;s:1:"h";b:0;s:1:"t";s:4:"text";}s:11:"scheduledAt";a:3:{s:1:"i";i:217;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:11:"processedAt";a:3:{s:1:"i";i:218;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:6:"status";a:3:{s:1:"i";i:219;s:1:"h";b:0;s:1:"t";s:7:"integer";}}

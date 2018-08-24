@@ -1,0 +1,9 @@
+0
+a:1:{s:37:"base-price-list-select-relations-grid";a:7:{s:12:"acl_resource";s:29:"oro_pricing_price_list_update";s:6:"source";a:5:{s:4:"type";s:3:"orm";s:5:"query";a:1:{s:6:"select";a:3:{i:0;s:16:"relatedEntity.id";i:1;s:18:"relatedEntity.name";i:2;s:334:"(CASE WHEN (:price_list_id IS NOT NULL) THEN
+  CASE WHEN (:price_list_id = priceList.id OR relatedEntity.id IN (:data_in)) AND relatedEntity.id NOT IN (:data_not_in)
+  THEN true ELSE false END
+ELSE
+  CASE WHEN relatedEntity.id IN (:data_in) AND relatedEntity.id NOT IN (:data_not_in)
+  THEN true ELSE false END
+END) as has_price_list
+";}}s:15:"bind_parameters";a:1:{i:0;s:13:"price_list_id";}s:5:"hints";a:1:{i:0;s:16:"HINT_PRICE_SHARD";}s:11:"count_hints";a:1:{i:0;s:16:"HINT_PRICE_SHARD";}}s:7:"columns";a:1:{s:14:"has_price_list";a:3:{s:5:"label";s:42:"oro.pricing.pricelist.has_price_list.label";s:8:"editable";b:1;s:13:"frontend_type";s:7:"boolean";}}s:7:"filters";a:1:{s:7:"columns";a:2:{s:14:"has_price_list";a:2:{s:4:"type";s:7:"boolean";s:9:"data_name";s:14:"has_price_list";}s:4:"name";a:2:{s:4:"type";s:6:"string";s:9:"data_name";s:18:"relatedEntity.name";}}}s:7:"sorters";a:3:{s:16:"multiple_sorting";b:1;s:7:"columns";a:2:{s:14:"has_price_list";a:1:{s:9:"data_name";s:14:"has_price_list";}s:4:"name";a:1:{s:9:"data_name";s:18:"relatedEntity.name";}}s:7:"default";a:2:{s:14:"has_price_list";s:57:"%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC";s:4:"name";s:56:"%oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC";}}s:10:"properties";a:1:{s:2:"id";N;}s:7:"options";a:1:{s:12:"rowSelection";a:2:{s:9:"dataField";s:2:"id";s:10:"columnName";s:14:"has_price_list";}}}}

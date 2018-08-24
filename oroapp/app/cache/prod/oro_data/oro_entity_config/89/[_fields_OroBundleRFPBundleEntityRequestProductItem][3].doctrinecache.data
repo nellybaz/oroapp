@@ -1,0 +1,2 @@
+0
+a:7:{s:2:"id";a:3:{s:1:"i";i:1272;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:8:"quantity";a:3:{s:1:"i";i:1273;s:1:"h";b:0;s:1:"t";s:5:"float";}s:15:"productUnitCode";a:3:{s:1:"i";i:1274;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"value";a:3:{s:1:"i";i:1275;s:1:"h";b:0;s:1:"t";s:5:"money";}s:8:"currency";a:3:{s:1:"i";i:1276;s:1:"h";b:0;s:1:"t";s:6:"string";}s:14:"requestProduct";a:3:{s:1:"i";i:1277;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:11:"productUnit";a:3:{s:1:"i";i:1278;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,23 @@
+imports:
+    - {resource: 'workflows/first_workflow.yml'}
+
+workflows:
+    second_workflow:
+        entity: Second\Entity
+        start_step: second_step
+        steps:
+            second_step:
+                order: 1
+                is_final: false
+                allowed_transitions: []
+        attributes: []
+        transitions:
+            second_transition:
+                step_to: second_step
+                transition_definition: second_transition_definition
+                frontend_options:
+                    icon: bar
+        transition_definitions:
+            second_transition_definition: []
+        applications: ['other_application']
+        force_autostart: true

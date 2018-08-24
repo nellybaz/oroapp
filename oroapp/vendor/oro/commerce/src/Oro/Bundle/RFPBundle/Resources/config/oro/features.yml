@@ -1,0 +1,46 @@
+features:
+    rfp:
+        label: oro.rfp.feature.label
+        description: oro.rfp.feature.description
+        toggle: oro_rfp.feature_enabled
+        routes:
+            - 'oro_rfp_request_view'
+            - 'oro_rfp_request_info'
+            - 'oro_rfp_request_index'
+            - 'oro_rfp_request_update'
+            - 'oro_rfp_request_create_order'
+        operations:
+            - 'oro_rfp_create_quote'
+        api_resources:
+            - 'Oro\Bundle\RFPBundle\Entity\Request'
+            - 'Oro\Bundle\RFPBundle\Entity\RequestProduct'
+            - 'Oro\Bundle\RFPBundle\Entity\RequestProductItem'
+        configuration:
+            - 'rfp_notifications'
+            - 'oro_rfp.frontend_product_visibility'
+            - 'oro_rfp.backend_product_visibility'
+
+    rfp_frontend:
+        label: oro.rfp.frontend.feature.label
+        description: oro.rfp.forntend.feature.description
+        toggle: oro_rfp.frontend_feature_enabled
+        dependencies:
+            - 'rfp'
+            - 'guest_rfp'
+        operations:
+            - 'oro_rfp_frontend_request_a_quote'
+            - 'oro_rfp_frontend_request_create'
+            - 'oro_rfp_frontend_request_edit'
+        routes:
+            - 'oro_rfp_frontend_request_view'
+            - 'oro_rfp_frontend_request_index'
+            - 'oro_rfp_frontend_request_create'
+            - 'oro_rfp_frontend_request_update'
+
+    guest_rfp:
+        label: oro.rfp.system_configuration.fields.guest_rfp.label
+        description: oro.rfp.system_configuration.fields.guest_rfp.tooltip
+        toggle: oro_rfp.guest_rfp
+        configuration:
+            - 'guest_rfp_owner_section'
+        strategy: affirmative

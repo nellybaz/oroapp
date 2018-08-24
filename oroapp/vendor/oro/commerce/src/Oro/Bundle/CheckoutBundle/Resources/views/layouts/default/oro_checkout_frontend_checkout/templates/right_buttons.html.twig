@@ -1,0 +1,23 @@
+{% block _checkout_button_continue_right_widget %}
+    {% if transitionData is defined and transitionData %}
+        {% import 'OroCheckoutBundle:layouts/default:layout.html.twig' as _layout %}
+        <div class="order-checkout-widget text-right">
+            <button type="submit"
+                    class="btn {% if transitionData.isAllowed %}btn--info{% endif %} btn--size-m checkout__submit-btn"
+                    {{ _layout.transitionAttrbiutes(transitionData, checkout) }}
+                    {{ _layout.conditionMessages(transitionData) }}
+            >
+                {{ transitionData.transition.label|trans({},'workflows') }}
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block _checkout_button_back_right_widget %}
+    {% if transitionData is defined and transitionData %}
+        {% import 'OroCheckoutBundle:layouts/default:layout.html.twig' as _layout %}
+        <div class="checkout-form__back order-checkout-widget text-right">
+            {{ block_widget(block) }}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% import 'OroHangoutsCallBundle::macros.html.twig' as HangoutsCall %}
+
+{% if hangoutOptions is not defined %}
+    {% set hangoutOptions = {} %}
+{% endif %}
+{% if entity is not empty and entity.phoneNumber is not empty %}
+    {# simple check if a source of a call is an email (because it can be other than phone number) #}
+    {% if entity.phoneNumber matches '{^.+\@.+\..+$}' %}
+        {% set hangoutOptions = hangoutOptions|merge({
+            invites: [{
+                id: entity.phoneNumber|escape('html'),
+                invite_type: 'EMAIL'
+            }]
+        }) %}
+    {% else %}
+        {% set hangoutOptions = hangoutOptions|merge({
+            invites: [{
+                id: entity.phoneNumber|escape('html'),
+                invite_type: 'PHONE'
+            }]
+        }) %}
+    {% endif %}
+{% endif %}
+
+{{ HangoutsCall.renderStartButton({
+    class: 'action btn-group',
+    componentModule: 'orohangoutscall/js/app/components/log-call-component',
+    componentName: 'log-hangout-call-component',
+    dataAttributes: {
+        'action-name': 'hangout-call'
+    },
+    hangoutOptions: hangoutOptions
+}) }}

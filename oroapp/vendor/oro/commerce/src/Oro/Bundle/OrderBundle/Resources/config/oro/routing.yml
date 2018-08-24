@@ -1,0 +1,23 @@
+oro_order:
+    resource:     "@OroOrderBundle/Controller/OrderController.php"
+    type:         annotation
+    prefix:       /order
+
+oro_order_frontend:
+    resource:     "@OroOrderBundle/Controller/Frontend/OrderController.php"
+    type:         annotation
+    prefix:       /customer/order
+    options:
+        frontend: true
+
+oro_order_ajax:
+    resource:     "@OroOrderBundle/Controller/AjaxOrderController.php"
+    type:         annotation
+    prefix:       /order
+
+oro_order_products_frontend:
+     resource:     "@OroOrderBundle/Controller/Frontend/ProductsController.php"
+     type:         annotation
+     prefix:       /customer/order/products
+     options:
+        frontend: true

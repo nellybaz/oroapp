@@ -1,0 +1,84 @@
+<?php
+
+namespace Oro\Bundle\SalesBundle\Handler;
+
+use Doctrine\ORM\EntityManager;
+
+use Symfony\Component\PropertyAccess\PropertyAccess;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+
+use Oro\Bundle\EntityBundle\Form\EntityField\Handler\Processor\AbstractEntityApiHandler;
+
+class B2bCustomerPhoneApiHandler extends AbstractEntityApiHandler
+{
+    const ENTITY_CLASS = 'Oro\Bundle\SalesBundle\Entity\B2bCustomerPhone';
+
+    /** @var EntityManager */
+    protected $entityManager;
+
+    /** @var AuthorizationCheckerInterface */
+    protected $authorizationChecker;
+
+    /**
+     * @param EntityManager                 $entityManager
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     */
+    public function __construct(EntityManager $entityManager, AuthorizationCheckerInterface $authorizationChecker)
+    {
+        $this->entityManager = $entityManager;
+        $this->authorizationChecker = $authorizationChecker;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function beforeProcess($entity)
+    {
+        //check owner (B2bCustomer) entity with 'edit' permission
+        if (!$this->authorizationChecker->isGranted('EDIT', $entity->getOwner())) {
+            throw new AccessDeniedException();
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function afterProcess($entity)
+    {
+        $owner = $entity->getOwner();
+        $owner->setUpdatedAt(new \DateTime('now', new \DateTimeZone('UTC')));
+        $changeSet = $this->getChangeSet($owner);
+        $this->entityManager->persist($owner);
+        $this->entityManager->flush();
+
+        return $changeSet;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getClass()
+    {
+        return self::ENTITY_CLASS;
+    }
+
+    /**
+     * @param $entity
+     *
+     * @return array
+     */
+    protected function getChangeSet($entity)
+    {
+        $accessor = PropertyAccess::createPropertyAccessor();
+        $response = [
+            'fields' => []
+        ];
+
+        if ($accessor->isReadable($entity, 'updatedAt')) {
+            $response['fields']['updatedAt'] = $accessor->getValue($entity, 'updatedAt');
+        }
+
+        return $response;
+    }
+}

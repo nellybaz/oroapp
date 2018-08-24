@@ -1,0 +1,7 @@
+acls:
+    oro_tag_assign_unassign:
+        label: oro.tag.action.assign_unassign
+        type: action
+        group_name: ""
+        bindings: ~
+        category: "application"

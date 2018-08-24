@@ -1,0 +1,31 @@
+Extend\Entity\EX_OroUserBundle_User:
+    type: mappedSuperclass
+    fields:
+        phone:
+            column: phone
+            type: string
+            nullable: true
+            length: 255
+            precision: null
+            scale: null
+            default: null
+        title:
+            column: title
+            type: string
+            nullable: true
+            length: 255
+            precision: null
+            scale: null
+            default: null
+        googleId:
+            column: googleId
+            type: string
+            nullable: true
+            length: 255
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

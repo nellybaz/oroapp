@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:24:{s:2:"id";b:1;s:8:"originId";b:1;s:5:"email";b:1;s:5:"phone";b:1;s:6:"status";b:1;s:9:"firstName";b:1;s:8:"lastName";b:1;s:12:"memberRating";b:1;s:9:"optedInAt";b:1;s:16:"optedInIpAddress";b:1;s:11:"confirmedAt";b:1;s:18:"confirmedIpAddress";b:1;s:8:"latitude";b:1;s:9:"longitude";b:1;s:9:"gmtOffset";b:1;s:9:"dstOffset";b:1;s:8:"timezone";b:1;s:2:"cc";b:1;s:6:"region";b:1;s:13:"lastChangedAt";b:1;s:4:"euid";b:1;s:14:"mergeVarValues";b:1;s:9:"createdAt";b:1;s:9:"updatedAt";b:1;}}

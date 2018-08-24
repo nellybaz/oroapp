@@ -1,0 +1,57 @@
+services:
+    oro_api.get.processor:
+        class: Oro\Bundle\ApiBundle\Processor\GetProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - get
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.get.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Get\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: get, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+    # if you add a new processor in this group, it should be added in the "security_check" group of
+    # actions that execute this action, e.g. look at "security_check" group of "create" or "update" actions
+
+    #
+    # build_query
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # normalize_data
+    #
+
+    #
+    # finalize
+    #
+
+    oro_api.get.validate_result:
+        class: Oro\Bundle\ApiBundle\Processor\Get\ValidateResult
+        tags:
+            - { name: oro.api.processor, action: get, group: finalize, priority: -250 }
+
+    #
+    # normalize_result
+    #

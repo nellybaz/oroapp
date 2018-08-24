@@ -1,0 +1,7 @@
+api:
+    entities:
+        Oro\Bundle\NoteBundle\Entity\Note:
+            documentation_resource: '@OroNoteBundle/Resources/doc/api/note.md'
+            fields:
+                activityTargets:
+                    data_type: association:manyToMany:activity

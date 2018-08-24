@@ -1,0 +1,8 @@
+require({
+    config: {
+        'orohangoutscall/js/app/views/start-button-view': {
+            initialApps: {{ get_hangoutscall_initail_apps()|json_encode|raw }},
+            appHost: {{ app.request.host|json_encode|raw }}
+        }
+    }
+});

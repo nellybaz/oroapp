@@ -1,0 +1,431 @@
+operations:
+    oro_sale_expire_quote:
+        label: oro.sale.quote.actions.quote_expire
+        enabled: true
+        applications: [default]
+        routes:
+            - oro_sale_quote_view
+        datagrids:
+            - quotes-grid
+        order: 40
+        button_options:
+            icon: fa-clock-o
+        frontend_options:
+            confirmation:
+                message: oro.sale.quote.actions.quote_expire_confirm
+                okText: oro.sale.quote.actions.mark_as_expired
+                component: oroui/js/delete-confirmation
+        preconditions:
+            '@equal': [$expired, false]
+        actions:
+            - '@run_action_group':
+                action_group: oro_sale_expire_quote
+                parameters_mapping:
+                    data: $.data
+            - '@flash_message':
+                message: oro.sale.quote.message.quote.expire.success
+                type: 'info'
+                message_parameters:
+                    id: $id
+            - '@redirect':
+                conditions:
+                    '@and':
+                        - '@empty': $.gridName
+                        - '@not_empty': $.routes[name]
+                parameters:
+                    route: $.routes[name]
+
+    oro_sale_notify_customer_by_email:
+        label: oro.sale.quote.notify_customer.by_email.link.text
+        applications: [default]
+        routes:
+            - oro_sale_quote_view
+        order: 20
+        acl_resource: oro_email_email_create
+
+        button_options:
+            icon: fa-envelope
+            group: oro.sale.quote.notify_customer.label
+
+        frontend_options:
+            template: OroSaleBundle:Action:emailNotification.html.twig
+            title: oro.sale.quote.notify_customer.by_email.link.text
+            options:
+                allowMaximize: true
+                allowMinimize: true
+                dblclick: maximize
+                maximizedHeightDecreaseBy: minimize-bar
+                width: 1000
+
+        attributes:
+            email:
+                label: ' '
+                type: object
+                options:
+                    class: Oro\Bundle\EmailBundle\Form\Model\Email
+
+        form_options:
+            attribute_fields:
+                email:
+                    form_type: oro_email_email
+
+        form_init:
+            - '@call_service_method':
+                attribute: $.email
+                service: oro_sale.helper.notification
+                method: getEmailModel
+                method_parameters: [$.data]
+            - '@call_service_method':
+                attribute: $.appendSignature
+                service: oro_config.manager
+                method: get
+                method_parameters: ['oro_email.append_signature']
+
+        preactions:
+            - '@assign_constant_value':
+                attribute: $.sentToCustomerInternalStatus
+                value: Oro\Bundle\SaleBundle\Entity\Quote::INTERNAL_STATUS_SENT_TO_CUSTOMER
+
+        preconditions:
+            '@not_equal': [$.sentToCustomerInternalStatus, $internalStatus.id]
+
+        actions:
+            - '@run_action_group':
+                action_group: oro_sale_notify_customer_by_email
+                parameters_mapping:
+                    email: $.email
+            - '@request_enum_entity':
+                enum_code: 'quote_internal_status'
+                attribute: $internalStatus
+                identifier: 'sent_to_customer'
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.sale.quote.message.quote.sent.success
+                type: 'info'
+                message_parameters:
+                    id: $qid
+
+    oro_sale_accept_quote:
+        label: oro.sale.quote.actions.accept_quote
+        enabled: true
+        applications: [commerce]
+        routes:
+            - oro_sale_quote_frontend_view
+        order: 10
+        button_options:
+            icon: fa-clock-o
+        acl_resource: oro_alternativecheckout_checkout_approve
+        preactions:
+            - '@get_active_user': $.currentUser
+            - '@get_available_workflow_by_record_group':
+                attribute: $.currentWorkflow
+                entity_class: 'Oro\Bundle\CheckoutBundle\Entity\Checkout'
+                group_name: 'b2b_checkout_flow'
+            - '@call_service_method':
+                conditions:
+                    '@not_empty': $.currentUser
+                parameters:
+                    attribute: $.checkout
+                    service: 'oro_sale.provider.quote_checkout'
+                    method: getCheckoutByQuote
+                    method_parameters: [$.data, $.currentUser, $.currentWorkflow.name]
+            - '@tree':
+                conditions:
+                    '@not_empty': $.checkout
+                actions:
+                    - '@call_service_method':
+                        attribute: $.workflowItems
+                        service: oro_workflow.manager
+                        method: getWorkflowItemsByEntity
+                        method_parameters: [$.checkout]
+                    - '@count':
+                        value: $.workflowItems
+                        attribute: $.workflowItemsCount
+                    - '@traverse':
+                        conditions:
+                            '@lte':
+                                parameters: [$.workflowItemsCount, 1]
+                                message: "Count of WorkflowItems must be less than or equal to 1"
+                        parameters:
+                            array: $.workflowItems
+                            value: $.workflowItemTemp
+                            actions:
+                                - '@assign_value':
+                                    attribute: $.workflowItem
+                                    value: $.workflowItemTemp
+        preconditions:
+            '@and':
+                - '@not_empty': $.checkout
+                - '@not_empty': $.workflowItem
+                - '@equal': [$.workflowItem.data.requested_for_approve, true]
+        actions:
+            - '@redirect':
+                route: 'oro_checkout_frontend_checkout'
+                route_parameters:
+                    id: $.checkout.id
+
+    oro_sale_frontend_quote_submit_to_order:
+        label: oro.sale.quote.actions.submit_to_order
+        applications: [commerce]
+        routes:
+            - oro_sale_quote_frontend_view
+        order: 20
+        acl_resource: [CHECKOUT_CREATE, $.data]
+        button_options:
+            icon: fa-pencil-square-o
+            class:  quota-accept-btn
+        preconditions:
+            '@and':
+                - '@quote_acceptable': $.data
+                - '@workflow_available_by_record_group':
+                    group_name: b2b_checkout_flow
+                    entity_class: Oro\Bundle\CheckoutBundle\Entity\Checkout
+        actions:
+            - '@get_active_user': $.currentUser
+            - '@find_entity':
+                class: Oro\Bundle\SaleBundle\Entity\QuoteDemand
+                attribute: $.quoteDemand
+                where:
+                    quote: $.data
+                    customerUser: $.currentUser
+            - '@tree':
+                conditions:
+                    '@empty': $.quoteDemand
+                actions:
+                    - '@create_entity':
+                        parameters:
+                            attribute: $.quoteDemand
+                            class: Oro\Bundle\SaleBundle\Entity\QuoteDemand
+                            data:
+                                quote: $.data
+                                customerUser: $.currentUser
+                    - '@call_service_method':
+                        service: oro_sale.manager.quote_demand_manager
+                        method: recalculateSubtotals
+                        method_parameters: [$.quoteDemand]
+                    - '@flush_entity': $.quoteDemand
+            - '@redirect':
+                 route: 'oro_sale_quote_frontend_choice'
+                 route_parameters: {id: $.quoteDemand.id}
+
+action_groups:
+    oro_sale_quote_duplicate:
+        parameters:
+            quote:
+                type: 'Oro\Bundle\SaleBundle\Entity\Quote'
+            copy_notes:
+                type: bool
+                default: true
+            flush:
+                type: bool
+                default: true
+        actions:
+            - '@create_datetime':
+                attribute: $.currentDatetime
+            - '@run_action_group':
+                action_group: oro_sale_quote_duplicate_fields
+                results:
+                    quoteCopy: $.quoteCopy
+                parameters_mapping:
+                    quote: $.quote
+            - '@assign_value': [$.quoteCopy.createdAt, $.currentDatetime]
+            - '@assign_value': [$.quoteCopy.updatedAt, $.currentDatetime]
+
+            - '@foreach':
+                conditions:
+                    '@equal': [false, $.copy_notes]
+                parameters:
+                    array: $.quoteCopy.quoteProducts
+                    value: $.quoteProduct
+                    actions:
+                        - '@assign_value': [$.quoteProduct.comment, '']
+                        - '@assign_value': [$.quoteProduct.commentCustomer, '']
+
+            - '@flush_entity':
+                conditions:
+                    '@equal': [true, $.flush]
+                parameters:
+                    entity: $.quoteCopy
+
+    oro_sale_quote_duplicate_fields:
+        parameters:
+            quote:
+                type: 'Oro\Bundle\SaleBundle\Entity\Quote'
+        actions:
+            - '@duplicate':
+                target: $.quote
+                attribute: $.quoteCopy
+                settings:
+                    - [[setNull], [propertyName, [id]]]
+                    - [[setNull], [propertyName, [qid]]]
+                    - [[setNull], [propertyName, [demands]]]
+                    - [[setNull], [propertyName, [internal_status]]]
+                    - [[setNull], [propertyName, [customer_status]]]
+                    - [[replaceValue, false], [property, ['%oro_sale.entity.quote.class%', expired]]]
+                    - [[replaceValue, false], [property, ['%oro_sale.entity.quote.class%', pricesChanged]]]
+                    - [[keep], [propertyName, [customerUser]]]
+                    - [[keep], [propertyName, [customer]]]
+                    - [[keep], [propertyName, [organization]]]
+                    - [[keep], [propertyName, [owner]]]
+                    - [[keep], [propertyName, [website]]]
+                    - [[keep], [propertyName, [request]]]
+                    - [[keep], [propertyName, [assignedUsers]]]
+                    - [[keep], [propertyName, [assignedCustomerUsers]]]
+                    - [[keep], [property, ['%oro_sale.entity.quote_address.class%', country]]]
+                    - [[keep], [property, ['%oro_sale.entity.quote_address.class%', region]]]
+                    - [[keep], [property, ['%oro_sale.entity.quote_address.class%', customerAddress]]]
+                    - [[keep], [property, ['%oro_sale.entity.quote_address.class%', customerUserAddress]]]
+                    - [[keep], [propertyType, ['%oro_product.entity.product.class%']]]
+                    - [[keep], [propertyType, ['%oro_product.entity.product_unit.class%']]]
+                    - [[keep], [propertyType, ['%oro_payment_term.entity.payment_term.class%']]]
+                    - [[keep], [propertyType, ['%oro_rfp.entity.request_product_item.class%']]]
+                    - [[collection], [propertyType, ['Doctrine\Common\Collections\Collection']]]
+
+    oro_sale_expire_quote:
+        parameters:
+            data:
+                type: Oro\Bundle\SaleBundle\Entity\Quote
+        conditions:
+            '@equal': [$.data.expired, false]
+        actions:
+            - '@assign_value': [$.data.expired, true]
+            - '@flush_entity': $.data
+
+    oro_sale_notify_customer_by_email:
+        parameters:
+            email:
+                type: Oro\Bundle\EmailBundle\Form\Model\Email
+        acl_resource: oro_email_email_create
+        actions:
+            - '@call_service_method':
+                service: oro_sale.helper.notification
+                method: send
+                method_parameters: [$.email]
+
+    oro_sale_send_no_quote_alert:
+        parameters:
+            data:
+                type: Oro\Bundle\RFPBundle\Entity\Request
+        actions:
+            - '@foreach':
+                array: $.data.customerUser.salesRepresentatives
+                value: $.saleRep
+                actions:
+                    - '@send_email_template':
+                        conditions:
+                            '@not_empty': $.data.customerUser.owner
+                        parameters:
+                            from: $.data.customerUser.owner.email
+                            to: $.saleRep.email
+                            template: 'request_no_quote_alert'
+                            entity: $.data
+            - '@call_method':
+                object: $.data.customerUser.salesRepresentatives
+                method: toArray
+                attribute: $.customerUserSalesReps
+            - '@foreach':
+                array: $.data.customer.salesRepresentatives
+                value: $.saleRep
+                actions:
+                    - '@send_email_template':
+                        conditions:
+                            '@and':
+                                - '@not_empty': $.data.customerUser.owner
+                                - '@not_in': [$.saleRep, $.customerUserSalesReps]
+                        parameters:
+                            from: $.data.customerUser.owner.email
+                            to: $.saleRep.email
+                            template: 'request_no_quote_alert'
+                            entity: $.data
+
+    oro_sale_frontend_quote_accept_and_submit_to_order:
+        parameters:
+            data:
+                type: Oro\Bundle\SaleBundle\Entity\QuoteDemand
+        actions:
+            - '@assign_url':
+                attribute: $.editLink
+                route: oro_sale_quote_frontend_choice
+                route_parameters: { 'id': $.data.id }
+            - '@assign_value':
+                conditions:
+                   '@empty': $.data.quote.shippingCost
+                parameters: [$.disallow_shipping_method_edit, false]
+            - '@assign_value':
+                conditions:
+                   '@not_empty': $.data.quote.shippingCost
+                parameters: [$.disallow_shipping_method_edit, true]
+            - '@call_service_method':
+                service: oro_sale.quote_demand.subtotals_calculator_main
+                method: calculateSubtotals
+                method_parameters: [$.data]
+            - '@tree':
+                conditions:
+                    '@not_empty': $.data.quote.shippingAddress
+                actions:
+                    - '@create_entity':
+                        attribute: $.orderAddress
+                        class: Oro\Bundle\OrderBundle\Entity\OrderAddress
+                        data:
+                            customerAddress: $.data.quote.customerAddress
+                            customerUserAddress: $.data.quote.customerUserAddress
+                            label: $.data.quote.shippingAddress.label
+                            organization: $.data.quote.shippingAddress.organization
+                            street: $.data.quote.shippingAddress.street
+                            street2: $.data.quote.shippingAddress.street2
+                            city: $.data.quote.shippingAddress.city
+                            postalCode: $.data.quote.shippingAddress.postalCode
+                            country: $.data.quote.shippingAddress.country
+                            region: $.data.quote.shippingAddress.region
+                            regionText: $.data.quote.shippingAddress.regionText
+                            namePrefix: $.data.quote.shippingAddress.namePrefix
+                            firstName: $.data.quote.shippingAddress.firstName
+                            middleName: $.data.quote.shippingAddress.middleName
+                            lastName: $.data.quote.shippingAddress.lastName
+                            nameSuffix: $.data.quote.shippingAddress.nameSuffix
+                            phone: $.data.quote.shippingAddress.phone
+                            fromExternalSource: true
+                    - '@assign_value':
+                        parameters: [$.disallow_shipping_address_edit, true]
+            - '@tree':
+                conditions:
+                      '@empty': $.data.quote.shippingAddress
+                actions:
+                    - '@assign_value': [$.orderAddress, null]
+                    - '@assign_value':
+                        parameters: [$.disallow_shipping_address_edit, false]
+            - '@assign_value':
+                conditions:
+                      '@not_empty': $.orderAddress
+                parameters: [$.checkoutData.shippingAddress, $.orderAddress]
+            - '@assign_value':
+                conditions:
+                      '@not_empty': $.data.quote.shippingEstimate
+                parameters: [$.checkoutData.shippingCost, $.data.quote.shippingEstimate]
+            - '@assign_value':
+                conditions:
+                      '@not_empty': $.data.quote.shippingMethod
+                parameters: [$.checkoutData.shippingMethod, $.data.quote.shippingMethod]
+            - '@assign_value':
+                conditions:
+                      '@not_empty': $.data.quote.shippingMethodType
+                parameters: [$.checkoutData.shippingMethodType, $.data.quote.shippingMethodType]
+            - '@assign_value':
+                conditions:
+                      '@empty': $.checkoutData
+                parameters: [$.checkoutData, []]
+            - '@run_action_group':
+                action_group: start_checkout
+                parameters_mapping:
+                    sourceCriteria:
+                        quoteDemand: $.data
+                    force: true
+                    data: $.checkoutData
+                    settings:
+                        allow_manual_source_remove: false
+                        auto_remove_source: false
+                        edit_order_link: $.editLink
+                        disallow_shipping_address_edit: $.disallow_shipping_address_edit
+                        disallow_shipping_method_edit: $.disallow_shipping_method_edit
+                results:
+                    redirectUrl: $.redirectUrl

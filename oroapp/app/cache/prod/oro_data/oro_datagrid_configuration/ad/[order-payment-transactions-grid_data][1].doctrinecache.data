@@ -1,0 +1,2 @@
+0
+a:1:{s:31:"order-payment-transactions-grid";a:2:{s:7:"extends";s:25:"payment-transactions-grid";s:6:"source";a:2:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:2:{i:0;s:66:"payment_transaction.entityClass = '%oro_order.entity.order.class%'";i:1;s:48:"payment_transaction.entityIdentifier = :order_id";}}}s:15:"bind_parameters";a:1:{i:0;s:8:"order_id";}}}}

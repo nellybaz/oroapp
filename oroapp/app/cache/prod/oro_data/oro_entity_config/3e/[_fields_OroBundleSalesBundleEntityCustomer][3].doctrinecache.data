@@ -1,0 +1,2 @@
+0
+a:5:{s:2:"id";a:3:{s:1:"i";i:1301;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:7:"account";a:3:{s:1:"i";i:1302;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:21:"b2b_customer_188b774c";a:3:{s:1:"i";i:2923;s:1:"h";b:0;s:1:"t";s:9:"manyToOne";}s:17:"customer_f2bbc387";a:3:{s:1:"i";i:2924;s:1:"h";b:0;s:1:"t";s:9:"manyToOne";}s:17:"customer_e197f906";a:3:{s:1:"i";i:2925;s:1:"h";b:0;s:1:"t";s:9:"manyToOne";}}

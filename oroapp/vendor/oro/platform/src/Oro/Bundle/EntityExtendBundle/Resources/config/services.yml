@@ -1,0 +1,633 @@
+parameters:
+    oro_entity_extend.migration.config_processor.options.path: %kernel.cache_dir%/oro_migration/extend_config_options.bin
+    oro_entity_extend.migration.initial_entity_config_state.path: %kernel.cache_dir%/oro_migration/initial_entity_config_state.bin
+
+    oro_entity_extend.datagrid.extension.additional_fields.class:     Oro\Bundle\EntityExtendBundle\Grid\AdditionalFieldsExtension
+    oro_entity_extend.datagrid.extension.dynamic_fields.class:        Oro\Bundle\EntityExtendBundle\Grid\DynamicFieldsExtension
+    oro_entity_extend.form.extension.dynamic_fields.class:            Oro\Bundle\EntityExtendBundle\Form\Extension\DynamicFieldsExtension
+    oro_entity_extend.tools.dumper.class:                     Oro\Bundle\EntityExtendBundle\Tools\ExtendConfigDumper
+    oro_entity_extend.entity_config_dumper.extension.index.class:     Oro\Bundle\EntityExtendBundle\Tools\DumperExtensions\IndexEntityConfigDumperExtension
+    oro_entity_extend.entity_config_dumper.extension.relation.class:  Oro\Bundle\EntityExtendBundle\Tools\DumperExtensions\RelationEntityConfigDumperExtension
+    oro_entity_extend.entity_config_dumper.extension.enum.class:      Oro\Bundle\EntityExtendBundle\Tools\DumperExtensions\EnumEntityConfigDumperExtension
+    oro_entity_extend.extend.entity_processor.class:          Oro\Bundle\EntityExtendBundle\Extend\EntityProcessor
+    oro_entity_extend.extend.entity_proxy_generator.class:    Oro\Bundle\EntityExtendBundle\Extend\EntityProxyGenerator
+    oro_entity_extend.extend.field_type_helper.class:         Oro\Bundle\EntityExtendBundle\Extend\FieldTypeHelper
+    oro_entity_extend.validator.not_sql_keyword.class:        Oro\Bundle\EntityExtendBundle\Validator\Constraints\NotSqlKeywordValidator
+    oro_entity_extend.validator.unique_keys.class:            Oro\Bundle\EntityExtendBundle\Validator\Constraints\UniqueKeysValidator
+    oro_entity_extend.validator.unique_enum_name.class:       Oro\Bundle\EntityExtendBundle\Validator\Constraints\UniqueEnumNameValidator
+    oro_entity_extend.migration.config_processor.class:       Oro\Bundle\EntityExtendBundle\Migration\ExtendConfigProcessor
+    oro_entity_extend.migration.cleanup_marketing.post_up.listener.class: Oro\Bundle\EntityExtendBundle\EventListener\CleanupMarketingPostUpMigrationListener
+    oro_entity_extend.migration.refresh_cache.post_up.listener.class:  Oro\Bundle\EntityExtendBundle\EventListener\RefreshExtendCachePostUpMigrationListener
+    oro_entity_extend.migration.update_config.post_up.listener.class:  Oro\Bundle\EntityExtendBundle\EventListener\UpdateExtendConfigPostUpMigrationListener
+    oro_entity_extend.migration.update_indices.post_up.listener.class: Oro\Bundle\EntityExtendBundle\EventListener\UpdateExtendIndicesPostUpMigrationListener
+    oro_entity_extend.migration.entity_metadata_helper.class: Oro\Bundle\EntityExtendBundle\Migration\EntityMetadataHelper
+    oro_entity_extend.migration.options_manager.class:        Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsManager
+    oro_entity_extend.migration.options_parser.class:         Oro\Bundle\EntityExtendBundle\Migration\ExtendOptionsParser
+    oro_entity_extend.migration.extension.extend.class:       Oro\Bundle\EntityExtendBundle\Migration\Extension\ExtendExtension
+    oro_entity_extend.migration.extension.rename.class:       Oro\Bundle\EntityExtendBundle\Migration\Extension\RenameExtension
+    oro_entity_extend.entity_generator.class:                 Oro\Bundle\EntityExtendBundle\Tools\EntityGenerator
+    oro_entity_extend.entity_generator.extension.class:       Oro\Bundle\EntityExtendBundle\Tools\GeneratorExtensions\ExtendEntityGeneratorExtension
+    oro_entity_extend.relation_builder.class:                 Oro\Bundle\EntityExtendBundle\Tools\RelationBuilder
+    oro_entity_extend.association_builder.class:              Oro\Bundle\EntityExtendBundle\Tools\AssociationBuilder
+    oro_entity_extend.datagrid.column_options_guesser.class:  Oro\Bundle\EntityExtendBundle\Grid\ExtendColumnOptionsGuesser
+    oro_entity_extend.datagrid.action.type.ajaxdeletefield.class:  Oro\Bundle\EntityExtendBundle\Grid\Action\AjaxDeleteFieldAction
+    oro_entity_extend.validation_loader.class:                Oro\Bundle\EntityExtendBundle\Validator\ExtendFieldValidationLoader
+    oro_entity_extend.listener.extend_field_value_render.class:  Oro\Bundle\EntityExtendBundle\EventListener\ExtendFieldValueRenderListener
+    oro_entity_extend.importexport.normalizer.enum.class:     Oro\Bundle\EntityExtendBundle\ImportExport\Serializer\EnumNormalizer
+    oro_entity_extend.listener.before_map_object_search_listener.class: Oro\Bundle\EntityExtendBundle\EventListener\BeforeMapObjectSearchListener
+    oro_entity_extend.association_manager.class:              Oro\Bundle\EntityExtendBundle\Entity\Manager\AssociationManager
+    oro_entity_extend.entity_alias_provider.class:            Oro\Bundle\EntityExtendBundle\Provider\ExtendEntityAliasProvider
+    oro_entity_extend.entity_class_name_provider.enum.class:  Oro\Bundle\EntityExtendBundle\Provider\EnumEntityClassNameProvider
+    oro_entity_extend.enum_value_provider.class:              Oro\Bundle\EntityExtendBundle\Provider\EnumValueProvider
+    oro_entity_extend.dictionary_value_list_provider.enum.class: Oro\Bundle\EntityExtendBundle\Provider\EnumValueListProvider
+    oro_entity_extend.field_type_provider.class:              Oro\Bundle\EntityExtendBundle\Provider\FieldTypeProvider
+
+    validator.builder.factory.class: Oro\Bundle\EntityExtendBundle\Validator\Validation
+
+services:
+    # the metadata factory for default entity manager
+    # it is declared as a service to allow make it as the persistent service for MQ consumer
+    # see Oro/Bundle/EntityExtendBundle/Resources/config/oro/app.yml
+    # and Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\EntityManagerPass
+    oro_entity_extend.orm.metadata_factory:
+        class: Oro\Bundle\EntityExtendBundle\Mapping\ExtendClassMetadataFactory
+
+    oro_entity_extend.entity.cache.warmer:
+        public: true
+        class: Oro\Bundle\EntityExtendBundle\Cache\EntityCacheWarmer
+        arguments:
+            - "@oro_entity_extend.tools.dumper"
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_config.config_cache_warmer"
+        tags:
+            - { name: kernel.cache_warmer, priority: 30 }
+
+    oro_entity_extend.datagrid.extension.fields_helper:
+        class: Oro\Bundle\EntityExtendBundle\Grid\FieldsHelper
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_featuretoggle.checker.feature_checker"
+
+    oro_entity_extend.datagrid.extension.additional_fields:
+        class: %oro_entity_extend.datagrid.extension.additional_fields.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity.orm.entity_class_resolver"
+            - "@oro_datagrid.datagrid.guesser"
+            - "@oro_entity_extend.datagrid.extension.fields_helper"
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_entity_extend.datagrid.extension.dynamic_fields:
+        class: %oro_entity_extend.datagrid.extension.dynamic_fields.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity.orm.entity_class_resolver"
+            - "@oro_datagrid.datagrid.guesser"
+            - "@oro_entity_extend.datagrid.extension.fields_helper"
+            - "@oro_featuretoggle.checker.feature_checker"
+        tags:
+            - { name: oro_datagrid.extension }
+
+    oro_entity_extend.form.extension.dynamic_fields_helper:
+        class: Oro\Bundle\EntityExtendBundle\Form\Util\DynamicFieldsHelper
+        public: false
+        arguments:
+            - '@oro_entity_config.config_manager'
+            - '@oro_featuretoggle.checker.feature_checker'
+            - '@oro_entity.doctrine_helper'
+            - "@router"
+            - "@translator"
+
+    oro_entity_extend.form.extension.dynamic_fields:
+        class: %oro_entity_extend.form.extension.dynamic_fields.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity.doctrine_helper"
+            - '@oro_entity_extend.form.extension.dynamic_fields_helper'
+        tags:
+            - { name: form.type_extension, alias: form, extended_type: 'Symfony\Component\Form\Extension\Core\Type\FormType' }
+
+    oro_entity_extend.entity_generator:
+        class: %oro_entity_extend.entity_generator.class%
+        arguments:
+            - %kernel.cache_dir%
+
+    oro_entity_extend.entity_generator.extension:
+        class: %oro_entity_extend.entity_generator.extension.class%
+        tags:
+            - { name: oro_entity_extend.entity_generator_extension, priority: 255 }
+
+    oro_entity_extend.tools.dumper:
+        class: %oro_entity_extend.tools.dumper.class%
+        arguments:
+            - "@oro_entity_config.entity_manager_bag"
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.db_id_name_generator"
+            - "@oro_entity_extend.extend.field_type_helper"
+            - "@oro_entity_extend.entity_generator"
+            - "@oro_entity_config.provider.extend_entity_config_provider"
+            - %kernel.cache_dir%
+
+    oro_entity_extend.entity_config_dumper.extension.association:
+        abstract: true
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.association_builder"
+
+    oro_entity_extend.entity_config_dumper.extension.index:
+        class: %oro_entity_extend.entity_config_dumper.extension.index.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.extend.field_type_helper"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension, priority: -255 }
+
+    oro_entity_extend.entity_config_dumper.extension.relation:
+        class: %oro_entity_extend.entity_config_dumper.extension.relation.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.extend.field_type_helper"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension, priority: 255 }
+
+    oro_entity_extend.entity_config_dumper.extension.enum:
+        class: %oro_entity_extend.entity_config_dumper.extension.enum.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.relation_builder"
+            - "@oro_entity_extend.extend.field_type_helper"
+            - "@oro_entity_extend.db_id_name_generator"
+            - "@oro_entity_config.provider.extend_entity_config_provider"
+        tags:
+            - { name: oro_entity_extend.entity_config_dumper_extension }
+
+    oro_entity_extend.listener.config_listener:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\EntityConfigListener
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_config.entity.create, method: updateEntity }
+            - { name: kernel.event_listener, event: oro.entity_config.entity.update, method: updateEntity }
+            - { name: kernel.event_listener, event: oro.entity_config.field.create, method: createField }
+            - { name: kernel.event_listener, event: oro.entity_config.field.rename, method: renameField }
+            - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush }
+
+    oro_entity_extend.db_id_name_generator:
+        alias: oro_migration.db_id_name_generator
+
+    oro_entity_extend.validator.not_sql_keyword:
+        class: %oro_entity_extend.validator.not_sql_keyword.class%
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.not_sql_keyword }
+
+    oro_entity_extend.validator.unique_keys:
+        class: %oro_entity_extend.validator.unique_keys.class%
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.unique_keys }
+
+    oro_entity_extend.validator.unique_extend_entity_field_validator:
+        class: Oro\Bundle\EntityExtendBundle\Validator\Constraints\UniqueExtendEntityFieldValidator
+        arguments:
+            - "@oro_entity_extend.extend.field_name_validation_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.unique_extend_entity_field }
+
+    oro_entity_extend.validator.unique_extend_entity_method_name_validator:
+        class: Oro\Bundle\EntityExtendBundle\Validator\Constraints\UniqueExtendEntityMethodNameValidator
+        arguments:
+            - '@oro_entity_extend.extend.field_name_validation_helper'
+            - '@oro_entity_extend.tools.class_method_name_checker'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.unique_extend_entity_method_name }
+
+    oro_entity_extend.validator.default_relation_field:
+        class: Oro\Bundle\EntityExtendBundle\Validator\Constraints\DefaultRelationFieldValidator
+        arguments:
+            - "@oro_entity_extend.extend.field_name_validation_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.default_relation_field }
+
+    oro_entity_extend.validator.multi_enum_snapshot:
+        class: Oro\Bundle\EntityExtendBundle\Validator\Constraints\MultiEnumSnapshotFieldValidator
+        arguments:
+            - "@oro_entity_extend.extend.field_name_validation_helper"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.multi_enum_snapshot }
+
+    oro_entity_extend.validator.unique_enum_name:
+        class: %oro_entity_extend.validator.unique_enum_name.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.unique_enum_name }
+
+    oro_entity_extend.validator.non_extended_entity_bidirectional:
+        class: Oro\Bundle\EntityExtendBundle\Validator\Constraints\NonExtendedEntityBidirectionalValidator
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_entity_extend.validator.non_extended_entity_bidirectional }
+
+    oro_entity_extend.migration.config_processor:
+        class: %oro_entity_extend.migration.config_processor.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+
+    oro_entity_extend.extend.entity_processor:
+        class: %oro_entity_extend.extend.entity_processor.class%
+        arguments:
+            - "@oro_platform.maintenance"
+            - "@oro_entity_config.tools.command_executor"
+            - "@logger"
+            - '@event_dispatcher'
+            - '@?profiler'
+
+    oro_entity_extend.extend.entity_proxy_generator:
+        class: %oro_entity_extend.extend.entity_proxy_generator.class%
+        arguments:
+            - "@oro_entity_config.entity_manager_bag"
+            - "@oro_entity_config.provider.extend"
+            - %kernel.cache_dir%
+
+    oro_entity_extend.extend.field_type_helper:
+        class: %oro_entity_extend.extend.field_type_helper.class%
+        arguments:
+            - []
+
+    oro_entity_extend.extend.field_name_validation_helper:
+        class: Oro\Bundle\EntityExtendBundle\Validator\FieldNameValidationHelper
+        arguments:
+            - "@oro_entity_config.provider.extend"
+            - "@event_dispatcher"
+
+    oro_entity_extend.migration.cleanup_marketing_entity_config.post_up.listener:
+        class: %oro_entity_extend.migration.cleanup_marketing.post_up.listener.class%
+        arguments:
+            - '@kernel'
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -80 }
+
+    oro_entity_extend.migration.refresh_cache_before_entity_config_update.post_up.listener:
+        class: %oro_entity_extend.migration.refresh_cache.post_up.listener.class%
+        arguments:
+            - "@oro_entity_config.tools.command_executor"
+            - "@oro_entity_config.config_manager"
+            - %oro_entity_extend.migration.initial_entity_config_state.path%
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.pre_up, method: onPreUp, priority: 100 }
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -85 }
+
+    oro_entity_extend.migration.update_config.post_up.listener:
+        class: %oro_entity_extend.migration.update_config.post_up.listener.class%
+        arguments:
+            - "@oro_entity_config.tools.command_executor"
+            - %oro_entity_extend.migration.config_processor.options.path%
+            - %oro_entity_extend.migration.initial_entity_config_state.path%
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -100 }
+
+    oro_entity_extend.migration.update_indices.post_up.listener:
+        class: %oro_entity_extend.migration.update_indices.post_up.listener.class%
+        arguments:
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - "@oro_entity_extend.extend.field_type_helper"
+        tags:
+            - { name: kernel.event_listener, event: oro_migration.post_up, method: onPostUp, priority: -120 }
+
+    oro_entity_extend.migration.entity_metadata_helper:
+        class: %oro_entity_extend.migration.entity_metadata_helper.class%
+        arguments:
+            - "@doctrine"
+
+    oro_entity_extend.migration.options_manager:
+        class: %oro_entity_extend.migration.options_manager.class%
+
+    oro_entity_extend.migration.options_parser:
+        class: %oro_entity_extend.migration.options_parser.class%
+        arguments:
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - "@oro_entity_extend.extend.field_type_helper"
+            - "@oro_entity_config.config_manager"
+
+    oro_entity_extend.migration.extension.extend:
+        class: %oro_entity_extend.migration.extension.extend.class%
+        arguments:
+            - "@oro_entity_extend.migration.options_manager"
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - '@oro_entity_config.provider_config_bag'
+        tags:
+            - { name: oro_migration.extension, extension_name: extend }
+
+    oro_entity_extend.migration.extension.converToExtend:
+        class: Oro\Bundle\EntityExtendBundle\Migration\Extension\ConvertToExtendExtension
+        arguments:
+            - "@oro_entity_extend.migration.options_manager"
+            - "@oro_entity_extend.migration.entity_metadata_helper"
+            - "@oro_entity_config.config_model_manager"
+        tags:
+            - { name: oro_migration.extension, extension_name: conver_to_extend }
+
+    oro_entity_extend.migration.extension.rename:
+        class: %oro_entity_extend.migration.extension.rename.class%
+        arguments:
+            - "@oro_entity_extend.migration.options_manager"
+        tags:
+            - { name: oro_migration.extension, extension_name: rename, priority: -10 }
+
+    oro_entity_extend.relation_builder:
+        class: %oro_entity_extend.relation_builder.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+
+    oro_entity_extend.association_builder:
+        class: %oro_entity_extend.association_builder.class%
+        arguments:
+            - "@doctrine"
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.relation_builder"
+
+    oro_entity_extend.enum_synchronizer:
+        class: 'Oro\Bundle\EntityExtendBundle\Tools\EnumSynchronizer'
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@doctrine"
+            - "@translator"
+            - "@oro_entity_config.translation.helper"
+
+    oro_entity_extend.twig.extension.dynamic_fields:
+        class: Oro\Bundle\EntityExtendBundle\Twig\DynamicFieldsExtension
+        public: false
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: twig.extension }
+
+    oro_entity_extend.twig.extension.enum:
+        class: Oro\Bundle\EntityExtendBundle\Twig\EnumExtension
+        public: false
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: twig.extension }
+        calls:
+            - [setEnumValueProvider, ["@oro_entity_extend.enum_value_provider"]]
+
+    oro_entity_extend.datagrid.column_options_guesser:
+        class: %oro_entity_extend.datagrid.column_options_guesser.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: oro_datagrid.column_options_guesser }
+
+    oro_entity_extend.datagrid.action.type.ajaxdeletefield:
+        class: %oro_entity_extend.datagrid.action.type.ajaxdeletefield.class%
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: ajaxdeletefield }
+
+    oro_entity_extend.datagrid.action.type.ajaxrestorefield:
+        class: Oro\Bundle\EntityExtendBundle\Grid\Action\AjaxRestoreFieldAction
+        scope: prototype
+        tags:
+            - { name: oro_datagrid.extension.action.type, type: ajaxrestorefield }
+
+    oro_entity_extend.validation_loader:
+        class: %oro_entity_extend.validation_loader.class%
+        public: false
+        arguments:
+            - "@oro_entity_config.provider.extend"
+            - "@oro_entity_config.provider.form"
+        calls:
+            -
+                - addConstraints
+                -
+                    - integer
+                    -
+                        - Regex:
+                            pattern: '/^[\d+]*$/'
+                            message: "This value should contain only numbers."
+
+    oro_entity_extend.listener.extend_field_value_render:
+        class: %oro_entity_extend.listener.extend_field_value_render.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@router"
+            - "@doctrine"
+            - "@security.authorization_checker"
+            - "@oro_entity.entity_class_name_helper"
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_extend_event.before_value_render, method: beforeValueRender }
+
+    oro_entity_extend.importexport.normalizer.enum:
+        class: %oro_entity_extend.importexport.normalizer.enum.class%
+        arguments:
+            - "@oro_entity.helper.field_helper"
+        tags:
+            - { name: oro_importexport.normalizer, priority: 20 }
+
+    oro_entity_extend.listener.before_map_object_search_listener:
+        class: %oro_entity_extend.listener.before_map_object_search_listener.class%
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: kernel.event_listener, event: oro_search.search_mapping_collect, method: prepareEntityMapEvent }
+
+    oro_entity_extend.listener.search_entity_config_listener:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\SearchEntityConfigListener
+        arguments:
+            - "@oro_search.provider.search_mapping"
+            - "@oro_search.async.indexer"
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush }
+            - { name: kernel.event_listener, event: oro.entity_config.post_flush, method: postFlush }
+
+    oro_entity_extend.association_manager:
+        class: %oro_entity_extend.association_manager.class%
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@oro_entity_extend.acl_helper.link"
+            - "@oro_entity.doctrine_helper"
+            - "@oro_entity.entity_name_resolver"
+            - "@oro_featuretoggle.checker.feature_checker"
+        lazy: true
+
+    oro_entity_extend.acl_helper.link:
+        tags:
+            - { name: oro_service_link, service: oro_security.acl_helper }
+
+    oro_entity_extend.exclusion_provider:
+        class: Oro\Bundle\EntityExtendBundle\Provider\ExtendExclusionProvider
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: oro_entity.exclusion_provider.default }
+            - { name: oro_entity.exclusion_provider.api, priority: 10 }
+
+    oro_entity_extend.exclusion_provider.enum:
+        class: Oro\Bundle\EntityExtendBundle\Provider\EnumExclusionProvider
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: oro_entity.exclusion_provider.api, priority: -50 }
+
+    oro_entity_extend.entity_alias_provider:
+        class: %oro_entity_extend.entity_alias_provider.class%
+        public: false
+        arguments:
+            - "@oro_entity.entity_alias_config_bag"
+            - "@oro_entity_config.config_manager"
+        tags:
+            - { name: oro_entity.alias_provider, priority: -90 }
+
+    oro_entity_extend.entity_class_name_provider.enum:
+        class: %oro_entity_extend.entity_class_name_provider.enum.class%
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@translator"
+        tags:
+            - { name: oro_entity.class_name_provider, priority: -110 }
+
+    oro_entity_extend.enum_value_provider:
+        class: %oro_entity_extend.enum_value_provider.class%
+        arguments:
+            - "@oro_entity.doctrine_helper"
+        calls:
+            - [setEnumTranslationCache, ["@oro_entity_extend.cache.enum_translation_provider"]]
+
+    oro_entity_extend.dictionary_value_list_provider.enum:
+        class: %oro_entity_extend.dictionary_value_list_provider.enum.class%
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+            - "@doctrine"
+        tags:
+            - { name: oro_entity.dictionary_value_list_provider, priority: -90 }
+
+    oro_entity_extend.field_type_provider:
+        class: %oro_entity_extend.field_type_provider.class%
+        public: false
+        arguments:
+            - "@oro_entity_config.config_manager"
+            -
+                - string
+                - integer
+                - smallint
+                - bigint
+                - boolean
+                - decimal
+                - date
+                - datetime
+                - text
+                - float
+                - money
+                - percent
+                - file
+                - image
+                - enum
+                - multiEnum
+                - html_escaped
+            -
+                #BAP-5875
+                #- oneToOne
+                - oneToMany
+                - manyToOne
+                - manyToMany
+
+    oro_entity_extend.entity_alias_config_listener:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\EntityAliasConfigListener
+        arguments:
+            - '@oro_entity.entity_alias_resolver'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush }
+
+    # Helpers
+    oro_entity_extend.tools.class_method_name_checker:
+        class: Oro\Bundle\EntityExtendBundle\Tools\ClassMethodNameChecker
+
+    oro_entity_extend.model.action.request_enum_entity:
+        class: Oro\Bundle\EntityExtendBundle\Model\Action\RequestEnumEntity
+        arguments:
+            - '@oro_action.expression.context_accessor'
+            - '@doctrine'
+        tags:
+            - { name: oro_action.action, alias: request_enum_entity }
+
+    oro_entity_extend.cache_warmer_aggregate:
+        class: Oro\Bundle\EntityExtendBundle\Cache\CacheWarmerAggregate
+        arguments:
+            - ~ # link to "cache_warmer" service; injected by Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\CacheWarmerPass
+            - ~ # link to "oro_entity_extend.cache_warmer" service; injected by Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\CacheWarmerPass
+            - '@oro_entity.database_checker.state_manager'
+
+    oro_entity_extend.cache_warmer:
+        class: Symfony\Component\HttpKernel\CacheWarmer\CacheWarmerAggregate
+        arguments:
+            - [] # warmers; injected by Oro\Bundle\EntityExtendBundle\DependencyInjection\Compiler\CacheWarmerPass
+
+    oro_entity_extend.console_command_listener:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\ConsoleCommandListener
+        arguments:
+            - '@oro_entity.database_checker.state_manager'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand, priority: 255 }
+
+    oro_entity_extend.enum_entity_name_provider:
+        class: Oro\Bundle\EntityExtendBundle\Provider\EnumEntityNameProvider
+        public: false
+        tags:
+            - { name: oro_entity.name_provider, priority: 0 }
+
+    oro_entity_extend.event_listener.entity_structure_options_listener:
+        class: 'Oro\Bundle\EntityExtendBundle\EventListener\EntityExtendedStructureOptionsListener'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_entity.structure.options, method: onOptionsRequest }
+
+    oro_entity_extend.async.orm_metadata_factory_clearer:
+        class: Oro\Bundle\EntityExtendBundle\Async\OrmMetadataFactoryClearer
+        public: false
+        arguments:
+            - '@service_container'
+            - 'oro_entity_extend.orm.metadata_factory'
+        tags:
+            - { name: oro_message_queue.consumption.clearer, priority: -10 }
+
+    oro_entity_extend.cache.enum_translation:
+        public: false
+        parent: oro.cache.abstract
+        calls:
+            - [setNamespace, ['oro_entity_extend_enum_trans']]
+
+    oro_entity_extend.cache.enum_translation_provider:
+        class: Oro\Bundle\EntityExtendBundle\Cache\EnumTranslationCache
+        public: false
+        arguments:
+            - '@translator'
+            - '@oro_entity_extend.cache.enum_translation'
+
+    oro_entity_extend.listener.cache.enum_value.abstract:
+        abstract: true
+        arguments:
+            - '@oro_entity_extend.cache.enum_translation_provider'
+
+    oro_entity_extend.listener.cache.enum_value_translation:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\Cache\EnumValueTranslationListener
+        parent: oro_entity_extend.listener.cache.enum_value.abstract
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation', event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation', event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation', event: postRemove }
+
+    oro_entity_extend.listener.cache.enum_value:
+        class: Oro\Bundle\EntityExtendBundle\EventListener\Cache\EnumValueListener
+        parent: oro_entity_extend.listener.cache.enum_value.abstract
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue', event: postPersist }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue', event: postUpdate }
+            - { name: doctrine.orm.entity_listener, entity: 'Oro\Bundle\EntityExtendBundle\Entity\AbstractEnumValue', event: postRemove }

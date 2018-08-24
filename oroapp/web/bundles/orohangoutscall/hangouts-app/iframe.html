@@ -1,0 +1,32 @@
+<html>
+<head>
+    <script type="text/javascript">
+        var token;
+        // Hangouts App to Oro instance
+        window.addEventListener('message', function (e) {
+            var data = e.data;
+            if (!data.token) {
+                return;
+            }
+            if (data.name === 'application-start') {
+                token = data.token;
+            }
+            // push a message into the chain (there are might be not processed ones)
+            var messages = localStorage.getItem(data.token);
+            messages = messages ? JSON.parse(messages) : [];
+            messages.push(data);
+            localStorage.setItem('from-app:' + data.token, JSON.stringify(messages));
+        });
+        // Oro instance to Hangouts App
+        setInterval(function() {
+            var key = 'to-app:' + token;
+            var event = localStorage.getItem(key);
+            if (event) {
+                localStorage.removeItem(key);
+                window.parent.postMessage(JSON.parse(event), '*');
+            }
+        }, 50);
+    </script>
+</head>
+<body></body>
+</html>

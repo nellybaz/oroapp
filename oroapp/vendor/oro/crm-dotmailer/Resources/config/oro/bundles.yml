@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\DotmailerBundle\OroDotmailerBundle, priority: 110 }

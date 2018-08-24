@@ -1,0 +1,426 @@
+{% block block_widget -%}
+{%- endblock %}
+
+{% block block_label -%}
+    {% if label is defined and label is not same as(false) %}
+        {%- if label is empty -%}
+            {% set label = id|humanize %}
+        {%- endif -%}
+        <label{{ block('block_label_attributes') }}>{{ label|block_text(translation_domain) }}</label>
+    {%- endif %}
+{%- endblock %}
+
+{% block block_row -%}
+    {{ block_label(block) -}}
+    {{ block_widget(block) -}}
+{%- endblock %}
+
+{% block block_attributes -%}
+    {% set renderer = 'block_attributes_base' %}
+    {%- if attr_renderer is defined -%}
+        {% set renderer = attr_renderer %}
+    {%- endif -%}
+    {{- block(renderer) -}}
+{%- endblock %}
+
+{% block block_attributes_base -%}
+    {%- if attr.class is defined -%}
+        {% set attr = attr|merge({
+        class: attr.class|replace({'{{ class_prefix }}': class_prefix})
+        }) %}
+    {%- endif -%}
+    {%- if hidden -%}
+        {% set attr = attr|merge({
+            class: attr.class|default('') ~ ' hidden'
+        }) %}
+    {%- endif -%}
+    {% set attributesThatContainsUri = ['src', 'href', 'action', 'cite', 'data', 'poster'] %}
+    {%- for attrname, attrvalue in attr -%}
+        {%- if (attrvalue is iterable) -%}
+            {% set attrvalue = attrvalue|json_encode() %}
+        {%- endif -%}
+        {%- if attrname is same as('title') -%}
+            {{- ' ' ~ attrname }}="{{ attrvalue|block_text(translation_domain)|e('html_attr') }}"
+        {% elseif attrname in attributesThatContainsUri %}
+            {{- ' ' ~ attrname }}="{{ attrvalue|e('html')|replace({'&amp;': '&'})|raw }}"
+        {% else %}
+            {{- ' ' ~ attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock %}
+
+{% block block_label_attributes -%}
+    {%- if label_attr.class is defined -%}
+        {% set label_attr = label_attr|merge({
+            class: label_attr.class|replace({'{{ class_prefix }}': class_prefix})
+        }) %}
+    {%- endif -%}
+    {%- for attrname, attrvalue in label_attr -%}
+        {%- if attrname is same as('title') -%}
+            {{- ' ' ~ attrname }}="{{ attrvalue|block_text(translation_domain) }}"
+        {% else %}
+            {{- ' ' ~ attrname }}="{{ attrvalue }}"
+        {%- endif -%}
+    {%- endfor -%}
+{%- endblock %}
+
+{% block icon_block -%}
+    <i class="fa-{{ icon }}{% if icon_class is defined %} {{ icon_class }}{% endif %}"></i>
+{%- endblock %}
+
+{% block input_widget -%}
+    {% set attr = attr|merge({
+        type: type,
+    }) %}
+
+    {% if name is defined %}
+        {% set attr = attr|merge({
+            name: name
+        }) %}
+    {% endif %}
+
+    {% if placeholder is defined %}
+        {% set attr = attr|merge({
+            placeholder: placeholder|block_text(translation_domain)
+        }) %}
+    {% endif %}
+
+    {% if value is defined %}
+        {% set attr = attr|merge({
+            value: value
+        }) %}
+    {% endif %}
+
+    {% if type == 'password' %}
+        {% set attr = attr|merge({
+            autocomplete: 'off'
+        }) %}
+    {% endif %}
+
+    <input{{ block('block_attributes') }}/>
+{%- endblock %}
+
+{% block container_widget -%}
+    {% for child in block if child.vars.visible -%}
+        {{ block_widget(child) }}
+    {%- endfor %}
+{%- endblock %}
+
+{% block root_widget %}
+<!DOCTYPE {{ doctype|default('html') }}>
+<html>
+    {{ block_widget(block) }}
+</html>
+{% endblock %}
+
+{% block head_widget %}
+    <head{{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </head>
+{% endblock %}
+
+{% block title_widget -%}
+    {% spaceless %}
+        <title>{{ value|block_text(translation_domain) }}</title>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block page_title_widget -%}
+    {% spaceless %}
+        {% set value = value|block_text(translation_domain) %}
+        {% if value|length %}
+            {{ value }}
+        {% endif %}
+    {% endspaceless %}
+{%- endblock %}
+
+{% block meta_widget %}
+    {% if charset is defined %}
+        {% set attr = attr|merge({
+            charset: charset
+        }) %}
+    {% endif %}
+
+    {% if content is defined %}
+        {% set attr = attr|merge({
+            content: content
+        }) %}
+    {% endif %}
+
+    {% if http_equiv is defined %}
+        {% set attr = attr|merge({
+            http_equiv: http_equiv
+        }) %}
+    {% endif %}
+
+    {% if name is defined %}
+        {% set attr = attr|merge({
+            name: name
+        }) %}
+    {% endif %}
+
+    {% spaceless %}
+        <meta{{ block('block_attributes') }}/>
+    {% endspaceless %}
+{% endblock %}
+
+{% block script_widget %}
+    {% set attr = attr|merge({
+        type: type,
+    }) %}
+
+    {% if src is defined %}
+        {% set attr = attr|merge({
+            src: src
+        }) %}
+    {% endif %}
+
+    {% if async != false %}
+        {% set attr = attr|merge({
+            async: 'async'
+        }) %}
+    {% endif %}
+
+    {% if defer != false %}
+        {% set attr = attr|merge({
+            defer: 'defer'
+        }) %}
+    {% endif %}
+
+    {% if crossorigin is defined %}
+        {% set attr = attr|merge({
+            crossorigin: crossorigin
+        }) %}
+    {% endif %}
+
+    {% spaceless %}
+        {%- if attr.src is defined and attr.src is not empty -%}
+            <script{{ block('block_attributes') }}></script>
+        {% else %}
+            <script{{ block('block_attributes') }}>
+                {{ content|raw }}
+            </script>
+        {%- endif -%}
+    {% endspaceless %}
+{% endblock %}
+
+{% block style_widget %}
+    {% set attr = attr|merge({
+        type: type,
+    }) %}
+
+    {% if src is defined %}
+        {% set attr = attr|merge({
+            href: src
+        }) %}
+    {% endif %}
+
+    {% if media is defined %}
+        {% set attr = attr|merge({
+            media: media
+        }) %}
+    {% endif %}
+
+    {% if scoped != false %}
+        {% set attr = attr|merge({
+            scoped: 'scoped'
+        }) %}
+    {% endif %}
+
+    {% if crossorigin is defined %}
+        {% set attr = attr|merge({
+            crossorigin: crossorigin
+        }) %}
+    {% endif %}
+
+    {% spaceless %}
+        {%- if attr.href is defined and attr.href is not empty -%}
+            <link rel="stylesheet"{{ block('block_attributes') }}/>
+        {% else %}
+            <style{{ block('block_attributes') }}>
+                {{ content|raw }}
+            </style>
+        {%- endif -%}
+    {% endspaceless %}
+{% endblock %}
+
+{% block body_widget %}
+    <body{{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </body>
+{% endblock %}
+
+{% block form_start_widget %}
+    {% set attr = form.vars.attr|merge(attr) %}
+    {% if attr.id is not defined %}
+        {% set attr = attr|merge({
+            id: form.vars.id
+        }) %}
+    {% endif %}
+    {%- for attrname, attrvalue in attr if attrvalue is iterable -%}
+        {% set attr = attr|merge({
+            (attrname): attrvalue|json_encode
+        }) %}
+    {%- endfor -%}
+
+    {% set options = {attr: attr} %}
+    {% set action = form_action is defined ? form_action : (form_route_name is defined ? path(form_route_name, form_route_parameters) : null) -%}
+    {% if action is not same as(null) %}
+        {% set options =  options|merge({action: action}) %}
+    {% endif %}
+
+    {% if form_method is defined %}
+        {% if method not in ['GET', 'POST'] -%}
+            {% set form_method = 'POST' %}
+        {%- endif -%}
+        {% set options =  options|merge({method: form_method}) %}
+    {% endif %}
+
+    {% if form_multipart is defined %}
+        {% set options =  options|merge({multipart: form_multipart}) %}
+    {% endif %}
+
+    {{ form_start(form, options) }}
+    {%- if form_method is defined -%}
+        <input type="hidden" name="_method" value="{{ method }}" />
+    {%- endif -%}
+{% endblock %}
+
+{% block form_fields_widget %}
+    {{ form_widget(form) }}
+{% endblock %}
+
+{% block form_end_widget %}
+    {{ form_end(form,  {'render_rest': render_rest}) }}
+{% endblock %}
+
+{% block form_field_widget %}
+    {{ form_row(form) }}
+{% endblock %}
+
+{% block form_errors_widget %}
+    {% if form.vars.errors|length > 0 %}
+        <div{{ block('block_attributes') }}>
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block fieldset_widget %}
+    <fieldset{{ block('block_attributes') }}>
+        <legend>{{ title|block_text(translation_domain) }}</legend>
+        {{ block_widget(block) }}
+    </fieldset>
+{% endblock %}
+
+{% block text_widget -%}
+    {% if escape %}
+        {{- text|block_text(translation_domain) -}}
+    {% else %}
+        {{- text|block_text(translation_domain)|raw -}}
+    {% endif %}
+{%- endblock %}
+
+{% block link_widget -%}
+    {% spaceless %}
+        <a{{ block('block_attributes') }} href="{{ path is defined ? path : path(route_name, route_parameters) }}">
+            {%- if icon is defined %}{{ block('icon_block') }}{% endif %}
+            {%- if text is defined %}{{ text|block_text(translation_domain) }}{% endif -%}
+        </a>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block button_widget -%}
+    {% if type is same as('input') %}
+        {{- block('button_widget_input') -}}
+    {% else %}
+        {{- block('button_widget_button') -}}
+    {% endif %}
+{%- endblock %}
+
+{% block button_widget_input -%}
+    {% spaceless %}
+        <input{{ block('block_attributes') }}
+            type="{{ action in ['submit', 'reset'] ? action : 'button' }}"
+            {%- if name is defined %} name="{{ name }}"{% endif %}
+            {%- if value is defined or text is defined %} value="{{ value is defined ? value : text|block_text(translation_domain) }}"{% endif %}/>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block button_widget_button -%}
+    {% spaceless %}
+        <button{{ block('block_attributes') }}
+                type="{{ action in ['submit', 'reset'] ? action : 'button' }}"
+            {%- if action in ['submit', 'reset'] %} type="{{ action }}"{% endif %}
+            {%- if name is defined %} name="{{ name }}"{% endif %}
+            {%- if value is defined %} value="{{ value }}"{% endif %}>
+            {%- if icon is defined %}{{ block('icon_block') }}{% endif %}
+            {%- if text is defined %}{{ text|block_text(translation_domain) }}{% endif -%}
+        </button>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block external_resource_widget %}
+    {% set attr = attr|merge({
+        rel: rel,
+        href: href,
+    }) %}
+
+    {% if type is defined %}
+        {% set attr = attr|merge({
+            type: type
+        }) %}
+    {% endif %}
+
+    {% if hreflang is defined %}
+        {% set attr = attr|merge({
+        hreflang: hreflang
+        }) %}
+    {% endif %}
+
+    <link{{ block('block_attributes') }}/>
+{% endblock %}
+
+{% block list_widget -%}
+    {% spaceless %}
+        <ul{{ block('block_attributes') }}>
+        {% for child in block if child.vars.visible -%}
+            {% if child.vars.own_template is defined and child.vars.own_template -%}
+                {{ block_widget(child) }}
+            {%- else %}
+                <li>{{ block_widget(child) }}</li>
+            {%- endif %}
+        {%- endfor %}
+        </ul>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block ordered_list_widget -%}
+    {% if type is defined %}
+        {% set attr = attr|merge({
+        type: type
+        }) %}
+    {% endif %}
+
+    {% if start is defined %}
+        {% set attr = attr|merge({
+        start: start
+        }) %}
+    {% endif %}
+
+    {% spaceless %}
+        <ol{{ block('block_attributes') }}>
+        {% for child in block if child.vars.visible -%}
+            {% if child.vars.own_template is defined and child.vars.own_template -%}
+                {{ block_widget(child) }}
+            {%- else %}
+                <li>{{ block_widget(child) }}</li>
+            {%- endif %}
+        {%- endfor %}
+        </ol>
+    {% endspaceless %}
+{%- endblock %}
+
+{% block list_item_widget -%}
+    <li{{ block('block_attributes') }}>{{ block_widget(block) }}</li>
+{%- endblock %}

@@ -1,0 +1,23 @@
+{% block __oro_customer_user_role_permission_grid__datagrid_widget %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set tabsOptions = layout_attr_defaults(options.tabsOptions, {
+        'useDropdown': true
+    }) %}
+
+    {% set capabilitySetOptions = layout_attr_defaults(options.capabilitySetOptions, {
+        'readonly': options.readonly|default(false)
+    }) %}
+
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'orouser/js/components/role/entity-category-tabs-component',
+        options: tabsOptions
+    }) }}></div>
+
+    {{ block_widget(block) }}
+
+    <div class="role-capability-set" {{ UI.renderPageComponentAttributes({
+        module: 'orouser/js/components/role/capability-set-component',
+        options: capabilitySetOptions
+    }) }}></div>
+{% endblock %}

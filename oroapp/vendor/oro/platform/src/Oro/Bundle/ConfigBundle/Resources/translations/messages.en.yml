@@ -1,0 +1,31 @@
+oro:
+    config:
+        module_label: "System configuration"
+
+        actions:
+            collapse_all:  "Collapse All"
+            expand_all:    "Expand All"
+            save_settings: "Save settings"
+            restore_saved_values: "Reset"
+
+        menu:
+            system_configuration.label:       "Configuration"
+            system_configuration.description: "System configuration"
+
+        controller:
+            config.saved.message: "Configuration saved"
+            page.reload.message:  "Please wait until page will be reloaded..."
+
+        system_configuration:
+            groups:
+                platform.title: "System Configuration"
+                general_setup.title: "General Setup"
+            use_default: "Use default"
+            desktop_only: "System configuration is not available in mobile version. Please open the page on the desktop."
+        acl:
+            action:
+                general.label: Access system configuration
+
+    dashboard:
+        widgets:
+            quick_launchpad.title: "Settings"

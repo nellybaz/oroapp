@@ -1,0 +1,2 @@
+0
+a:1:{s:33:"public-system-calendar-event-grid";a:3:{s:7:"extends";s:31:"base-system-calendar-event-grid";s:6:"source";a:1:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:22:"calendar.public = true";}}}}s:20:"action_configuration";s:88:"@oro_calendar.system_calendar_event.datagrid_helper->getPublicActionConfigurationClosure";}}

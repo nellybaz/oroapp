@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:13:{s:2:"id";b:1;s:12:"workflowName";b:1;s:8:"entityId";b:1;s:11:"entityClass";b:1;s:7:"created";b:1;s:7:"updated";b:1;s:14:"serializedData";b:1;s:11:"currentStep";b:1;s:10:"definition";b:1;s:17:"transitionRecords";b:1;s:13:"aclIdentities";b:1;s:21:"restrictionIdentities";b:1;s:15:"serialized_data";b:1;}}

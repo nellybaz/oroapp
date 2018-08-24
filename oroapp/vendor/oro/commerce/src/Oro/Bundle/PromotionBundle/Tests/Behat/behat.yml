@@ -1,0 +1,215 @@
+oro_behat_extension:
+  suites:
+    OroPromotionBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroCheckoutBundle::FeatureContext
+        - OroConfigBundle::FeatureContext
+        - OroShoppingListBundle::ShoppingListContext
+        - OroDataGridBundle::GridContext
+        - OroFormBundle::FormContext
+        - OroPromotionBundle::PromotionContext
+        - OroEmailBundle::EmailContext
+        - OroApplicationBundle::CommerceMainContext
+        - OroCustomerBundle::FrontendGridContext
+        - OroConfigBundle::FeatureContext
+        - OroOrderBundle::OrderContext
+        - OroShippingBundle::FeatureContext
+        - OroShoppingListBundle::FeatureContext
+        - OroImportExportBundle::ImportExportContext:
+          - '@oro_entity.entity_alias_resolver'
+          - '@oro_importexport.processor.registry'
+      paths:
+        - '@OroPromotionBundle/Tests/Behat/Features'
+
+  pages:
+    Promotion Create:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Page\PromotionCreate
+      route: 'oro_promotion_create'
+    Promotion Edit:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Page\PromotionEdit
+      route: 'oro_promotion_update'
+    Promotion View:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Page\PromotionView
+      route: 'oro_promotion_view'
+
+  elements:
+    Promotion Form:
+      selector: 'form[name="oro_promotion"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Name: 'oro_promotion[rule][name]'
+          Discount Value: 'oro_promotion[discountConfiguration][options][amount_discount_value][value]'
+          Discount Value (%): 'oro_promotion[discountConfiguration][options][percent_discount_value]'
+          Activate At (first):
+            type: 'css'
+            locator: '.schedule-intervals [name$="[activeAt]"]:first-child'
+          Deactivate At (first):
+            type: 'css'
+            locator: '.schedule-intervals [name$="[deactivateAt]"]:first-child'
+          Labels: 'oro_promotion[labels][values][default]'
+          Descriptions: 'oro_promotion[descriptions][values][default]'
+          Discount: 'oro_promotion[discountConfiguration][type]'
+          Type: 'oro_promotion[discountConfiguration][options][discount_type]'
+          Currency: 'oro_promotion[discountConfiguration][options][amount_discount_value][currency]'
+
+    Coupon Form:
+      selector: 'form[name="oro_promotion_coupon_type"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Coupon Code: 'oro_promotion_coupon_type[code]'
+          Promotion:
+            type: 'xpath'
+            locator: '//div[contains(@id,"s2id_oro_promotion_coupon_type_promotion-uid")]//input'
+          Enabled: 'oro_promotion_coupon_type[enabled]'
+          Uses per Coupon: 'oro_promotion_coupon_type[usesPerCoupon]'
+          Uses Per Person: 'oro_promotion_coupon_type[usesPerPerson]'
+          Valid From: 'oro_promotion_coupon_type[validFrom]'
+          Valid Until: 'oro_promotion_coupon_type[validUntil]'
+
+    PromotionBackendOrder:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionBackendOrder
+      selector: 'div.layout-content'
+
+    PromotionBackendOrderLineItem:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionBackendOrderLineItem
+      selector: 'tr'
+
+    PromotionBackendLineItemDiscountTable:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Table
+      selector: 'table.applied_discounts-result-grid'
+
+    PromotionCheckoutStep:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionCheckoutStep
+      selector: 'div[data-role="checkout-content"]'
+
+    PromotionCheckoutStepLineItem:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionCheckoutStepLineItem
+      selector: 'table.checkout-order-summary__grid > tbody > tr.checkout-order-summary__grid-tr'
+
+    PromotionOrder:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionOrder
+      selector: '.page-content'
+
+    PromotionOrderLineItem:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionOrderLineItem
+      selector: 'tr.grid-row'
+
+    PromotionShoppingList:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionShoppingList
+      selector: '#shopping_list_view_container_content'
+
+    PromotionShoppingListLineItem:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionShoppingListLineItem
+      selector: 'div.shopping-list-line-items__item-wrapper'
+
+    PromotionOrderForm:
+      class: Oro\Bundle\PromotionBundle\Tests\Behat\Element\PromotionOrderForm
+      selector: "form[name='oro_order_type']"
+      options:
+        mapping:
+          SKU1ProductQuantity: oro_order_type[lineItems][0][quantity]
+          SKU2ProductQuantity: oro_order_type[lineItems][1][quantity]
+
+    CouponCodePreview:
+      selector: 'div#coupon-code-preview'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Promotions Grid Button:
+      selector: '.entity-select-btn'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Assigned Coupons Grid:
+      selector: 'div[data-page-component-name="promotion-coupons-assigned-to-promotion-grid"]'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+
+    Export Grid:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//div[contains(@id,"grid-promotion-coupons-assigned-to-promotion-grid")]//a/../../../../div[@class="extra-actions-panel"]'
+        type: xpath
+
+    CSV:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//div[contains(@id,"grid-promotion-coupons-assigned-to-promotion-grid")]//a[@title="CSV"]'
+        type: xpath
+
+    Promotions:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\CollectionTable
+      selector: 'div.oro-promotions-collection > table'
+
+    Added Coupons:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Table
+      selector: 'div.added-coupons-container table'
+
+    Coupons Selection Button:
+      selector: '.coupon-select .entity-select-btn'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Coupons Selection:
+      selector: 'div.ui-dialog div.grid-container'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+
+    Close Coupons Selection:
+      selector:
+        type: xpath
+        locator: '//span[@class="ui-dialog-title" and text()[contains(.,"Select Coupon Code")]]/following-sibling::div[@class="ui-dialog-titlebar-buttonpane"]/button[contains(@class,"ui-dialog-titlebar-close")]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Highlighted Suggestion:
+      selector: '.select2-highlighted'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Product:
+      selector: '.order-line-item-type-product .select2-offscreen'
+      class: Oro\Bundle\FormBundle\Tests\Behat\Element\Select2Entity
+
+    Quantity:
+      selector: '[data-name="field__quantity"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Coupon Validation Error:
+        selector: '.select-coupon-validation-container'
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Close Line Item Discount Promotion Details:
+      selector:
+        type: xpath
+        locator: '//span[@class="ui-dialog-title" and text()[contains(.,"Line Item Discount Promotion")]]/following-sibling::div[@class="ui-dialog-titlebar-buttonpane"]/button[contains(@class,"ui-dialog-titlebar-close")]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    CouponCodeInput:
+      selector: 'input[data-role="coupon-code"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    IHaveACouponCode:
+      selector: 'div.collapse-view__trigger:contains("I have a Coupon Code")'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    CouponsList:
+      selector: 'ul.coupons-list'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Coupon Delete Button:
+      selector: 'button[data-role="remove-coupon"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    FlatRateShippingMethod:
+      selector: 'label:contains("Flat Rate:")'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    FlatRate2ShippingMethod:
+      selector: 'label:contains("Flat Rate 2:")'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+    BackendFlatRate2ShippingMethod:
+      selector: 'label:contains("Flat Rate 2")'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Restrictions:
+      selector:
+        type: xpath
+        locator: '//label[@class="control-label" and text()[contains(.,"Restrictions")]]/following-sibling::div[@class="controls"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element

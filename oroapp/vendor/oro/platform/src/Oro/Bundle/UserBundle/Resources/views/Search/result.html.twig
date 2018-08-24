@@ -1,0 +1,33 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\UserBundle\Entity\User or null
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = true %}
+
+{% set recordUrl = indexer_item.recordUrl %}
+{% set image = entity ? entity.avatar : null %}
+
+{% if entity %}
+    {% block additional_info %}
+        <div class="pull-left">
+            {% if entity.enabled %}
+                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled fa-circle"></i>{{ 'Active'|trans }}</div>
+            {% else %}
+                <div class="badge badge-disabled status-disabled"><i class="icon-status-disabled fa-circle"></i>{{ 'Inactive'|trans }}</div>
+            {% endif %}
+        </div>
+    {% endblock %}
+{% endif %}
+
+{% set title = entity ? entity|oro_format_name : indexer_item.recordTitle %}
+{% set entityType = oro_entity_config_value(indexer_item.entityName, 'label')|trans %}
+
+{% set entityInfo = [
+    {'title': 'oro.ui.created_at'|trans, 'value': entity.createdAt ? entity.createdAt|oro_format_datetime : 'N/A'},
+    {'title': 'oro.ui.updated_at'|trans, 'value': entity.updatedAt ? entity.updatedAt|oro_format_datetime : 'N/A'},
+    {'title': 'oro.user.last_login.label'|trans, 'value': entity.lastLogin ? entity.lastLogin|oro_format_datetime : 'N/A'},
+    {'title': 'oro.user.login_count.label'|trans, 'value': entity.loginCount|default(0)}
+] %}

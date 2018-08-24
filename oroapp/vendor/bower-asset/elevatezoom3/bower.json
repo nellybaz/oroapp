@@ -1,0 +1,23 @@
+{
+  "name": "elevatezoom",
+  "homepage": "https://github.com/qodeboy-forks/elevatezoom",
+  "authors": [
+    "Andy Eades <http://www.elevateweb.co.uk>"
+  ],
+  "description": "A jQuery image zoom plugin, with tints, easing and gallery integration.",
+  "main": "",
+  "keywords": [
+    "zoom",
+    "effects",
+    "elements",
+    "zooming"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

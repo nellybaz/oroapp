@@ -1,0 +1,78 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% set entityName = entity.id
+    ? entity|oro_format_name|default('oro.entity.item'|trans({'%id%': entity.id}))
+    : 'oro.ui.create_entity'|trans({'%entityName%': entity_config.get('label')|trans})
+%}
+{% oro_title_set({params : {"%entityName%": entityName} }) %}
+
+{% set formAction = path('oro_entity_update', {entityName: entity_name, id: entity.id}) %}
+
+{% set audit_entity_class = entity_config.getId.getClassName|replace('\\', '_') %}
+{% set audit_entity_id = entity.id %}
+{% set audit_title  = (entity_config.get('label')|trans)|default('N/A') %}
+
+{% block navButtons %}
+    {% if entity.id and is_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_entity_delete', {'entityName': entity_class, 'id': entity.id}),
+            'dataRedirect': path('oro_entity_index', {'entityName': entity_class}),
+            'aCss': 'no-hash remove-button',
+            'dataId': entity.id,
+            'id': 'btn-remove-account',
+            'entity_label': entity_config.get('label')|default('N/A')|trans
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.cancelButton(path('oro_entity_index', {entityName: entity_name})) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'oro_entity_view',
+        'params': {'entityName': entity_name, 'id': '$id'}
+    }) %}
+    {% if is_granted('CREATE', 'entity:' ~ entity_class) %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'oro_entity_update',
+            'params': {'entityName': entity_name}
+        }) %}
+    {% endif %}
+    {% if entity.id or is_granted('EDIT', 'entity:' ~ entity_class) %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'oro_entity_update',
+            'params': {'entityName': entity_name, 'id': '$id'}
+        }) %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      'entity',
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'oro.entity.plural_label'|trans,
+        'entityTitle': entityName,
+        'additional': [
+            {
+                'indexPath'  : path('oro_entity_index', {entityName: entity_name}),
+                'indexLabel' : (entity_config.get('label')|trans)|default('N/A')
+            },
+        ]
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    {{ parent() }}
+{% endblock stats %}
+
+{% block content_data %}
+    {% set id = 'custom_entity-update' %}
+    {% set dataBlocks = form_data_blocks(form) %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks
+    }%}
+
+    {{ parent() }}
+{% endblock content_data %}

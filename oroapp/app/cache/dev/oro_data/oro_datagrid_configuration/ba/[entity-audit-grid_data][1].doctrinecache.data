@@ -1,0 +1,9 @@
+0
+a:1:{s:17:"entity-audit-grid";a:5:{s:7:"options";a:1:{s:10:"entityHint";s:9:"histories";}s:12:"acl_resource";s:23:"oro_entityconfig_manage";s:6:"source";a:2:{s:4:"type";s:3:"orm";s:5:"query";a:3:{s:6:"select";a:2:{i:0;s:3:"log";i:1;s:122:"CONCAT(
+  CONCAT(
+      CONCAT(u.firstName, ' '),
+      CONCAT(u.lastName, ' ')
+  ),
+  CONCAT(' - ', u.email)
+) as author
+";}s:4:"from";a:1:{i:0;a:2:{s:5:"table";s:52:"Oro\Bundle\EntityConfigBundle\Audit\Entity\ConfigLog";s:5:"alias";s:3:"log";}}s:4:"join";a:2:{s:4:"left";a:1:{s:4:"user";a:2:{s:4:"join";s:8:"log.user";s:5:"alias";s:1:"u";}}s:5:"inner";a:1:{s:5:"diffs";a:3:{s:4:"join";s:9:"log.diffs";s:5:"alias";s:4:"diff";s:13:"conditionType";s:4:"WITH";}}}}}s:7:"columns";a:3:{s:6:"author";a:3:{s:5:"label";s:39:"oro.entity_config.config_log.user.label";s:4:"type";s:5:"field";s:13:"frontend_type";s:6:"string";}s:5:"diffs";a:5:{s:5:"label";s:40:"oro.entity_config.config_log.diffs.label";s:4:"type";s:4:"twig";s:8:"template";s:42:"OroEntityConfigBundle:Audit:data.html.twig";s:13:"frontend_type";s:4:"html";s:7:"context";a:1:{s:14:"config_manager";s:33:"@oro_entity_config.config_manager";}}s:8:"loggedAt";a:3:{s:5:"label";s:44:"oro.entity_config.config_log.logged_at.label";s:4:"type";s:5:"field";s:13:"frontend_type";s:8:"datetime";}}s:7:"sorters";a:2:{s:7:"columns";a:2:{s:6:"author";a:1:{s:9:"data_name";s:6:"author";}s:8:"loggedAt";a:1:{s:9:"data_name";s:12:"log.loggedAt";}}s:7:"default";a:1:{s:8:"loggedAt";s:57:"%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC";}}}}

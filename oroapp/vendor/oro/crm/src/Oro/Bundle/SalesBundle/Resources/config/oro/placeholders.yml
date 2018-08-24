@@ -1,0 +1,34 @@
+placeholders:
+    placeholders:
+        quick_launchpad_left_column:
+            items:
+                leads_launchpad:
+                    order: 20
+        quick_launchpad_right_column:
+            items:
+                opportunities_launchpad:
+                    order: 20
+
+        oro_account_channel_info_b2b:
+            items:
+                oro_sales_account_channel_info: ~
+
+    items:
+        leads_launchpad:
+            template:   OroSalesBundle:Dashboard:leadsLaunchpad.html.twig
+
+        opportunities_launchpad:
+            template:   OroSalesBundle:Dashboard:opportunitiesLaunchpad.html.twig
+
+        oro_sales_account_channel_info:
+            action: OroSalesBundle:B2bCustomer:accountCustomersInfo
+
+        oro_sales_create_opportunity_button:
+            template: OroSalesBundle:Opportunity:createOpportunityButton.html.twig
+            applicable: "@oro_sales.customer.account_config_provider->isCustomerClass($entity$)"
+            acl: [oro_sales_opportunity_create]
+
+        oro_sales_create_opportunity_link:
+            template: OroSalesBundle:Opportunity:createOpportunityLink.html.twig
+            applicable: "@oro_sales.customer.account_config_provider->isCustomerClass($entity$)"
+            acl: [oro_sales_opportunity_create]

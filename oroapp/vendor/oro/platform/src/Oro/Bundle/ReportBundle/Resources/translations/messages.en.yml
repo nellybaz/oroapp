@@ -1,0 +1,117 @@
+oro:
+    query_designer:
+        aggregates:
+            identifier:
+                Count:
+                    name: Count
+                    hint: Number of items
+            string:
+                Count:
+                    name: Count
+                    hint: Number of items
+            number:
+                Count:
+                    name: Count
+                    hint: Number of items
+                Sum:
+                    name: Sum
+                    hint: Sum of all values
+                Avg:
+                    name: Average
+                    hint: Average of values
+                Min:
+                    name: Min
+                    hint: Minimum value
+                Max:
+                    name: Max
+                    hint: Maximum value
+            date:
+                Count:
+                    name: Count
+                    hint: Number of items
+                Min:
+                    name: Min
+                    hint: Minimum value
+                Max:
+                    name: Max
+                    hint: Maximum value
+
+        filter:
+            boolean.select_value.label: Select Value
+
+    report:
+        menu:
+            manage_reports.label:   Manage Custom Reports
+        type:
+            table: Table
+        datagrid:
+            column:
+                name:               Name
+                entity:             Entity
+                report_type:        Report type
+                time_period.label:  Time Period
+            row:
+                action:
+                    view:           View
+        form:
+            designer:               Designer
+            chart_designer:         Chart Designer
+            date_grouping:          Date grouping
+            columns:                Columns
+            grouping:               Grouping
+            filters:                Filters
+            choose_report_type:     Choose a report type...
+            use_skip_empty_periods.label:  Allow to skip empty time periods
+            use_date_grouping_filter.label: Enable grouping by date
+            date_grouping_field.label: Date field
+            date_group_section.label: Grouping by date
+
+        chart_options.label: Chart Options
+        definition.label:    Definition
+        description.label:   Description
+        entity.label:        Entity
+        entity_label:        Report
+        entity_description:  Represent Report
+        entity_plural_label: Reports
+        id.label:            Id
+        name.label:          Name
+        owner.label:         Owner
+        type.label:          Report type
+        organization.label:  Organization
+
+        reporttype:
+            entity_label:        Report Type
+            entity_plural_label: Report Types
+            entity_description:  Represent Report Type
+            name.label:          Name
+            label.label:         Label
+            chart.label:         Chart
+            hasChart:
+                label:   Report design
+                tooltip: Add chart to the report
+
+        action:
+            view_sql.label: View SQL query of a report/segment
+        system_configuration:
+            groups:
+                report_settings.title: Reports settings
+            fields:
+                display_sql_query.label: Display SQL in Reports and Segments
+                display_sql_query.tooltip: Displays SQL query of a report or segment on its View page
+        filter:
+            grouping.label: Grouping
+            skip_empty_periods.label: Skip Empty Periods
+
+"New Report": New Report
+"Manage Custom Reports": Manage Custom Reports
+"Manage Custom Reports - Reports": Manage Custom Reports - Reports
+"Create Report - Reports": Create Report - Reports
+"%report.name% - Edit - Reports": '%report.name% - Edit - Reports'
+"%report.name% - Reports": '%report.name% - Reports'
+
+"Edit report": Edit report
+"Delete report": Delete report
+"Are you sure you want to delete this report?": Are you sure you want to delete this report?
+"Report deleted": Report deleted
+"Report saved": Report saved
+"Invalid report configuration": No data to show. Please go to the edit report page and make sure the report was configured properly.

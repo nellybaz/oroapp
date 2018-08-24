@@ -1,0 +1,1 @@
+# Oro Entity Serializer Component

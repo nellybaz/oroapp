@@ -1,0 +1,145 @@
+services:
+    oro_test.listener.interactive_execution_subscriber:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Listener\InteractiveExecutionSubscriber'
+
+    oro_test.listener.js_logger_subscriber:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Listener\JsLogSubscriber'
+        arguments:
+            - '@mink'
+            - '%kernel.log_dir%'
+        tags:
+            - { name: 'event_dispatcher.subscriber' }
+
+    oro_test.listener.suite_aware_subscriber:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Listener\SuiteAwareSubscriber
+        arguments:
+            - ~
+        tags:
+            - { name: 'event_dispatcher.subscriber' }
+
+    oro_element_factory:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Element\OroElementFactory'
+        arguments:
+            - '@mink'
+            - '@mink.selectors_handler'
+            - []
+        tags:
+            - { name: 'suite_aware' }
+
+    oro_page_factory:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Element\OroPageFactory'
+        arguments:
+            - '@oro_element_factory'
+            - []
+
+    oro_behat_page_object_initializer:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Context\Initializer\OroPageObjectInitializer'
+        arguments:
+            - '@oro_element_factory'
+            - '@oro_page_factory'
+        tags:
+            - { name: 'context.initializer' }
+
+    oro_behat_session_alias_provider:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Context\SessionAliasProvider
+
+    oro_behat_session_alias_initializer:
+        class: 'Oro\Bundle\TestFrameworkBundle\Behat\Context\Initializer\SessionAliasAwareInitializer'
+        arguments:
+            - '@oro_behat_session_alias_provider'
+        tags:
+            - { name: 'context.initializer' }
+
+    oro_behat_fixture_loader_initializer:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Context\Initializer\FixtureLoaderInitializer
+        arguments:
+            - '@oro_test.context.fixture_loader'
+        tags:
+            - { name: 'context.initializer' }
+
+    oro_behat_extension.message_queue_isolator_initializer:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Context\Initializer\MessageQueueIsolatorInitializer
+        tags:
+            - { name: 'context.initializer' }
+            - { name: 'message_queue_isolator_aware' }
+
+    oro_test.context.fixture_loader:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\FixtureLoader
+        arguments:
+            - '@symfony2_extension.kernel'
+            - '@oro_test.entity_class_resolver'
+            - '@oro_test.entity_supplement'
+            - '@oro_test.alice_loader'
+
+    oro_test.entity_class_resolver:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\EntityClassResolver
+        arguments: ['@oro_entity.entity_alias_resolver']
+
+    oro_test.entity_supplement:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\EntitySupplement
+        arguments:
+            - '@symfony2_extension.kernel'
+            - '@oro_test.reference_repository'
+            - '@oro_security.owner.metadata_provider.chain'
+
+    oro_test.reference_repository:
+        class: Nelmio\Alice\Instances\Collection
+        factory: ['@oro_test.alice_loader', getReferenceRepository]
+
+    oro_behat_extension.fixtures.doctrine_entity_populator:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\DoctrineEntityPopulator
+        arguments:
+            - '@symfony2_extension.kernel'
+
+    oro_behat_extension.fixtures.yml_parser:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\OroYamlParser
+        arguments:
+            - '@oro_test.alice_loader'
+        calls:
+            - [setKernel, ['@symfony2_extension.kernel']]
+
+    oro_behat_extension.suite.oro_suite_generator:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Suite\OroSuiteGenerator
+        arguments:
+            - '@symfony2_extension.kernel'
+        tags:
+            - { name: 'suite.generator', priority: 100 }
+
+    oro_test.faker_generator:
+        class: Faker\Generator
+
+    oro_test.provider.xss_payload_provider:
+        class: Oro\Bundle\TestFrameworkBundle\Provider\XssPayloadProvider
+
+    oro_test.encoder.mcrypt:
+        class: Oro\Bundle\SecurityBundle\Encoder\Mcrypt
+        arguments: [ %kernel.secret% ]
+
+    oro_test.faker.provider.xss:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Faker\Provider\XssProvider
+        arguments:
+            - '@oro_test.faker_generator'
+            - '@oro_test.provider.xss_payload_provider'
+            - '@oro_test.encoder.mcrypt'
+
+    oro_test.alice_loader:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Fixtures\OroAliceLoader
+        calls:
+            - [addPopulator, ['@oro_behat_extension.fixtures.doctrine_entity_populator']]
+            - [addParser, ['@oro_behat_extension.fixtures.yml_parser']]
+            - [addProvider, ['@oro_test.faker.provider.xss']]
+
+    oro_test.environment.handler.feature_environment_handler:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Environment\Handler\FeatureEnvironmentHandler
+        arguments:
+            - '@context.factory'
+            - '@symfony2_extension.kernel'
+        tags:
+            - { name: 'environment.handler', priority: 100 }
+
+    oro_test.context.oro_behat_class_resolver:
+        class: Oro\Bundle\TestFrameworkBundle\Behat\Context\OroBehatClassResolver
+        arguments:
+            - '@symfony2_extension.kernel'
+        tags:
+            - { name: 'context.class_resolver' }

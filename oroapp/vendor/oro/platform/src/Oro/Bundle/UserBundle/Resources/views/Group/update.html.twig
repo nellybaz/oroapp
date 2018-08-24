@@ -1,0 +1,103 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% set entityId = form.vars.value.id %}
+{% oro_title_set({params : { "%group%": form.vars.value.name, "%entityName%": 'oro.user.group.entity_label'|trans  } }) %}
+{% set gridName = 'group-users-grid' %}
+{% set formAction = entityId ? path('oro_user_group_update', { 'id': entityId}) : path('oro_user_group_create') %}
+
+{% block navButtons %}
+    {% if entityId and is_granted('DELETE', form.vars.value) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_group', {'id': entityId}),
+            'dataRedirect': path('oro_user_group_index'),
+            'aCss': 'no-hash remove-button',
+            'dataId': entityId,
+            'id': 'btn-remove-group',
+            'entity_label': 'oro.user.group.entity_label'|trans
+        }) }}
+        {{ UI.buttonSeparator() }}
+    {% endif %}
+    {{ UI.cancelButton(path('oro_user_group_index')) }}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'oro_user_group_index'
+    }) %}
+    {% if is_granted('oro_user_group_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'oro_user_group_create'
+        }) %}
+    {% endif %}
+    {% if form.vars.value.id or is_granted('oro_user_group_update') %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'oro_user_group_update',
+            'params': {'id': '$id'}
+        }) %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if entityId %}
+        {% set breadcrumbs = {
+            'entity':      form.vars.value,
+            'indexPath':   path('oro_user_group_index'),
+            'indexLabel': 'oro.user.group.entity_plural_label'|trans,
+            'entityTitle': form.vars.value.name
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'oro.user.group.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'group-profile' %}
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [
+            {
+                'title': '',
+                'data': [
+                    form_widget(form.appendUsers, {'id': 'groupAppendUsers'}),
+                    form_widget(form.removeUsers, {'id': 'groupRemoveUsers'}),
+                    form_row(form.name)
+                ]
+            }
+        ]
+    }] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set dataBlocks = dataBlocks|merge([{
+        'title' : 'oro.user.entity_plural_label'|trans,
+        'subblocks':
+        [
+            {
+                'title' : null,
+                'useSpan': false,
+                'data' : [dataGrid.renderGrid(gridName, {group_id: entityId}, { cssClass: 'inner-grid' })]
+            }
+        ]
+    }]) %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

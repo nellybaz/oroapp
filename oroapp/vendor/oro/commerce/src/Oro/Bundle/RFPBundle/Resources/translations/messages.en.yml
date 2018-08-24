@@ -1,0 +1,310 @@
+oro:
+    menu:
+        sales_tab.label:                'Sales'
+    rfp:
+        request:
+            entity_label:               'Request For Quote'
+            entity_label_short:         'Request'
+            entity_plural_label:        'Requests For Quote'
+            entity_description:         The document used for negotiations on a better price, more convenient quantities of products, or additional services.
+            id.label:                   'RFQ #'
+            first_name:
+                label:                  'First Name'
+                description:            The first name of the customer user who placed the RFQ.
+            last_name:
+                label:                  'Last Name'
+                description:            The last name of the customer user who placed the RFQ.
+            email:
+                label:                  'Email Address'
+                description:            The email of the customer user who placed the RFQ.
+            phone:
+                label:                 'Phone Number'
+                description:            The phone of the customer user who placed the RFQ.
+            company:
+                label:                  'Company'
+                description:            The company that the customer user who placed the RFQ belongs to.
+            role:
+                label:                  'Role'
+                description:            The role of the customer user who placed the RFQ.
+            customer_status:
+                label:                  'Customer Status'
+                description:            The status of the RFQ that reflects the step of its management in the front store.
+            internal_status:
+                label:                  'Internal Status'
+                description:            The status of the RFQ that reflects the step of its backoffice management.
+            note:
+                label:                  'Notes'
+                description:            The additional information or comments regarding the RFQ.
+            request_additional_notes:
+                label:                  'Request Additional Notes'
+                description:            The IDs of the notes placed with requests to provide more info on the RFQ and replies to them.
+            customer_user:
+                label:                  'Submitted By'
+                description:            The customer user that submitted the RFQ.
+            customer:
+                label:                  'Customer'
+                description:            The customer that the customer user who placed the RFQ belongs to.
+            organization.label:         'Organization'
+            owner.label:                'Owner'
+            po_number:
+                label:                  'PO Number'
+                description:            The purchase order number provided in the RFQ.
+            ship_until:
+                label:                  'Do Not Ship Later Than'
+                description:            The date and time before which the order based on the RFQ must be shipped.
+            request_products:
+                label:                  'Request Products'
+                description:            The IDs of the products that the RFQ is made for.
+            assigned_users:
+                label:                  'Assigned To'
+                description:            The IDs of the customer users that will receive the order delivery.
+            assigned_customer_users:
+                label:                  'Assigned Customer Users'
+                description:            The ID of the user who acts as an order fulfillment officer.
+            cancellation_reason:
+                label:                  'Cancelation reason'
+                description:            The reason for the RFQ cancellation.
+            cancellation_success.label: 'Cancellation was successful'
+            deleted_at:
+                label:                  'Deleted At'
+                description:            The date and time when the RFQ has been deleted.
+
+            website:
+                label:              'Website'
+                description:        'A website where the Request For Quote is created.'
+
+
+            submit.label:               'Submit Request For Quote'
+            cancel.label:               'Cancel'
+
+            message:
+                request_saved:          'Your Request For Quote successfully saved!'
+
+        requestproduct:
+            entity_label:               'Request Product'
+            entity_plural_label:        'Request Products'
+            entity_description:         The product that the RFQ is made for.
+            add_label:                  'Add Line Item'
+            id.label:                   'ID'
+            product:
+                label:                  'Product'
+                description:            The ID of the product that the RFQ is made for.
+            product_sku.label:          'Product SKU'
+            request:
+                label:                  'Request'
+                description:            The ID of the RFQ that includes the product.
+            request_product_items:
+                label:                  'Request Product Lines'
+                description:            The product line item added to the request for quote. That is, price per unit for a specific quantity of a selected product.
+            comment:
+                label:                  'Notes'
+                description:            The note made regarding the individual product in the RFQ.
+            message:
+                product.blank:          'Please select a product'
+
+        requestproductitem:
+            item:                       '{units}, {price} per {unit}'
+            entity_label:               'Request Product Line'
+            entity_plural_label:        'Request Product Lines'
+            entity_description:         The product line item added to the request for quote. That is, price per unit for a specific quantity of a selected product.
+            add_label:                  'Add Request Item'
+            id.label:                   'ID'
+            quantity:
+                label:                  'Requested Quantity'
+                description:            The quantity of the selected product in the RFQ.
+            request_product:
+                label:                  'Request Product'
+                description:            The product for which the RFQ is made.
+            product_unit:
+                label:                  'Product Unit'
+                description:            The product unit for which the suggested price in the RFQ is defined.
+            product_unit_code.label:    'Product Unit Code'
+            price.label:                'Target Price'
+            value:
+                label:                  'Price Value'
+                description:            The price suggested for the specific quantity of the selected product in the RFQ.
+            currency:
+                label:                  'Price Currency'
+                description:            The currency in which the suggested price for the selected product in the RFQ is defined.
+
+        requestadditionalnote:
+            entity_label: 'Request Additional Note'
+            entity_plural_label: 'Request Additional Notes'
+            entity_description: 'Notes added to the RFQ by the sales person as a Request More Information note or by the buyer as a Provide More Information note.'
+            id.label: 'ID'
+            request:
+                label: 'Request'
+                description: 'The Request related to the note.'
+            type:
+                label: 'Type'
+                description: 'The type of the note.'
+                customer_note.label: 'Customer Note'
+                seller_note.label: 'Seller Note'
+            author:
+                label: 'Author'
+                description: 'First and last name of the user who created the note.'
+            user_id:
+                label: 'User Id'
+                description: 'Identifier of the user who created the note.'
+            text:
+                label: 'Text'
+                description: 'The text of the note.'
+            created_at.label: 'Created At'
+            updated_at.label: 'Updated At'
+
+        menu:
+            request_list.description:   'List of Requests'
+            shortcut_request_list.description: 'Shows list of existing Requests'
+
+        sections:
+            general:    'General'
+            note:       'Notes'
+            additional: 'Additional'
+            request_products: 'Line Items'
+            label_translation: 'Labels'
+
+        system_configuration:
+            groups:
+                sales.title: 'Sales'
+                rfq.title: 'Request For Quote'
+                notifications.title: 'Notifications'
+                guest_rfp.title: 'Guest RFQ'
+                guest_rfp_owner.title: 'Guest RFQ Owner Settings'
+            fields:
+                feature_enabled.label: 'Enable RFQ'
+                frontend_feature_enabled.label: 'Enable RFQ (Store Front)'
+                backend_product_visibility.title: 'Can Be Added to RFQs'
+                frontend_product_visibility.title: 'Can Be Added to RFQs'
+                notification:
+                    sales_reps:
+                        label: 'Notify assigned sales representatives of the customer'
+                        always_notify_sale_reps_of_customer: 'Always'
+                        if_no_sales_reps_assigned: 'If user has no sales reps assigned'
+                    customer_user_record:
+                        label: 'Notify the owner of the customer user record'
+                        always_notify_owner: 'Always'
+                        if_no_sales_reps_assigned: 'If user has no sales reps assigned'
+                    customer:
+                        label: 'Notify the owner of the customer'
+                        always_notify_owner: 'Always'
+                        if_no_sales_reps_assigned: 'If customer has no sales reps assigned'
+                guest_rfp:
+                    title: 'Enable Guest RFQ'
+                    tooltip: 'Enable Guest RFQ'
+                default_guest_rfp_owner:
+                    title: 'Default guest RFQ owner'
+                    tooltip: 'Default guest RFQ owner'
+        message:
+            requestproductitem.unit.removed: '{title} - removed'
+
+        datagrid:
+            action_restore: 'Restore'
+            customer.label: 'Requests For Quote'
+            customer_user.label: 'Requests For Quote'
+
+        controller:
+            request:
+                saved.message: 'Request has been saved'
+
+        action:
+            request:
+                updated.message: 'Your Request For Quote has been successfully updated'
+                resubmitted.message: 'Your Request For Quote has been successfully resubmitted'
+
+        btn:
+            delete: 'Delete'
+            restore: 'Restore'
+            create_quote: 'Create Quote'
+            add_to_rfp: 'Get Quote'
+            create_rfp: 'Submit'
+            edit: 'Edit'
+            resubmit: 'Resubmit'
+
+        widget:
+            cancel_title: 'Cancel RFQ'
+
+        frontend:
+            request:
+                title.label: 'Products'
+                lineitem:
+                    product: 'Product'
+                    requested:
+                        label: ''
+                        quantity: 'Requested Quantity'
+                        price: 'Target Price'
+                        add: 'Add Another Line'
+                    notes: 'Notes'
+                    add: 'Add Another Product'
+                    qty: 'QTY'
+
+        feature:
+            label: 'Request For Quote'
+            description: 'Request For Quote allows users to place Requests for chosen products'
+
+    frontend:
+        feature:
+            label: 'Request For Quote (Store Front)'
+            description: 'Request For Quote allows users to place Requests for chosen products'
+        product:
+            view:
+                request_a_quote: 'Request a Quote'
+        rfp:
+            list: 'RFQs'
+            request:
+                create.label: 'New Quote'
+                entity_label: 'Request For Quote'
+                entity_label_short: 'Request'
+                entity_plural_label: 'Requests For Quote'
+                create_title.label: 'Request A Quote'
+                edit_title.label: 'Request For Quote #%id%'
+                id.label: 'RFQ #'
+                first_name.label: 'First Name'
+                last_name.label: 'Last Name'
+                email.label: 'Email Address'
+                phone.label: 'Phone Number'
+                company.label: 'Company'
+                role.label: 'Role'
+                customer_status.label: 'Status'
+                customer_user.label: 'Owner'
+                is_draft.label: 'Draft'
+                po_number.label: 'PO Number'
+                ship_until.label: 'Do Not Ship Later Than'
+                assigned_customer_users.label: 'Assigned To'
+                create_form.back.label: 'Back'
+                create_form.submit.label: 'Submit Request For Quote'
+                create_form.send.label: 'Submit Request'
+                page_title.label: 'RFQ #%id%: %firstName% %lastName%'
+                title.label: 'Request For Quote #%id%'
+                cancellation_reason.label: 'Cancelation Reason'
+                note.label: 'Notes'
+                sections:
+                    general: 'Information'
+                    notes.label: 'Notes'
+                    back.label: 'Back to List'
+                    request_products:
+                        label: 'Line Items'
+                        columns:
+                            item.label: 'Item'
+                            quantity.label: 'Requested Quantity'
+                            price.label: 'Target Price'
+                resubmitted.message: 'Your <a href="%viewLink%">Request For Quote</a> has been successfully resubmitted.'
+                success:
+                    thank_you.label: 'Thank You For Your Request!'
+                    request_number.label: 'Your request number is'
+                    click_to_review.label: 'click here to review'
+                    receive_email.label: 'You will receive a confirmation email with your request details.'
+                    done.label: 'Done'
+            requestproduct:
+                product_sku.label: 'Item #:'
+                comment.label: 'Notes'
+            action:
+                request.edit: 'Edit'
+            data_storage:
+                cannot_be_added_to_rfq: 'Some products are not available and cannot be added to RFQ:'
+                no_products_be_added_to_rfq: 'No products could be added to RFQ.'
+                no_qty_products_cant_be_added_to_rfq: 'Products with no quantities have not been added to this request.'
+            toolbar-actions:
+                btn:
+                    print: 'Print RFQ'
+
+oro.order.orderlineitem.offers.label: 'Requested QTY and price'

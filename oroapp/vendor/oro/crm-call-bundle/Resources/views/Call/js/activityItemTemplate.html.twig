@@ -1,0 +1,62 @@
+{% extends 'OroActivityListBundle:ActivityList/js:activityItemTemplate.html.twig' %}
+{% import 'OroActivityBundle::macros.html.twig' as AC %}
+
+{% set entityClass = 'Oro\\Bundle\\CallBundle\\Entity\\Call' %}
+{% set entityName = oro_entity_config_value(entityClass, 'label')|trans %}
+
+{% block activityDetails %}
+    {{ entityName }}
+    <% var template = (verb == 'create')
+        ? {{ 'oro.call.created_by'|trans|json_encode|raw }}
+        : {{ 'oro.call.changed_by'|trans|json_encode|raw }};
+    %>
+    <%= _.template(template, { interpolate: /\{\{(.+?)\}\}/g })({
+        user: owner_url ? '<a class="user" href="' + owner_url + '">' +  _.escape(owner) + '</a>' :  '<span class="user">' + _.escape(owner) + '</span>',
+        date: '<i class="date">' + createdAt + '</i>',
+        editor: editor_url ? '<a class="user" href="' + editor_url + '">' +  _.escape(editor) + '</a>' : _.escape(editor),
+        editor_date: '<i class="date">' + updatedAt + '</i>'
+    }) %>
+{% endblock %}
+
+{% block activityActions %}
+    {% set action %}
+        <% if (editable) { %>
+            {{ AC.activity_context_link() }}
+        <% } %>
+    {% endset %}
+    {% set actions = [action] %}
+
+    {% set action %}
+        <a href="<%= routing.generate('oro_call_view', {'id': relatedActivityId}) %>"
+           title="{{ 'oro.call.view_call'|trans({'{{ entity }}': entityName}) }}"><i
+                class="fa-eye hide-text">{{ 'oro.call.view_call'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.call.view_call'|trans({'{{ entity }}': entityName}) }}
+        </a>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (editable) { %>
+        <a href="#" class="action item-edit-button"
+           title="{{ 'oro.call.update_call'|trans({'{{ entity }}': entityName}) }}"
+           data-action-extra-options="{{ {dialogOptions: {width: 1000}}|json_encode }}">
+            <i class="fa-pencil-square-o hide-text">{{ 'oro.call.update_call'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.call.update_call'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (removable) { %>
+        <a href="#" class="action item-remove-button"
+           title="{{ 'oro.call.delete_call'|trans({'{{ entity }}': entityName}) }}">
+            <i class="fa-trash-o hide-text">{{ 'oro.call.delete_call'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.call.delete_call'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {{ parent() }}
+{% endblock %}

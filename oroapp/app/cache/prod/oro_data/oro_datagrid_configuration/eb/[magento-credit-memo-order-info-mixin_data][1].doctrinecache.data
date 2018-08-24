@@ -1,0 +1,2 @@
+0
+a:1:{s:36:"magento-credit-memo-order-info-mixin";a:1:{s:7:"columns";a:2:{s:11:"orderNumber";a:2:{s:5:"label";s:41:"oro.magento.datagrid.columns.increment_id";s:5:"order";i:65;}s:14:"orderCreatedAt";a:3:{s:5:"label";s:43:"oro.magento.datagrid.columns.orderCreatedAt";s:13:"frontend_type";s:8:"datetime";s:5:"order";i:66;}}}}

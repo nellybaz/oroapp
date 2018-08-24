@@ -1,0 +1,2 @@
+0
+a:1:{i:0;a:2:{s:7:"product";a:4:{i:0;s:39:"Oro\Bundle\ProductBundle\Entity\Product";i:1;a:1:{i:0;s:39:"Oro\Bundle\ProductBundle\Entity\Product";}i:2;b:0;i:3;a:2:{i:0;s:16:"add_relationship";i:1;s:19:"delete_relationship";}}s:4:"unit";a:4:{i:0;s:43:"Oro\Bundle\ProductBundle\Entity\ProductUnit";i:1;a:1:{i:0;s:43:"Oro\Bundle\ProductBundle\Entity\ProductUnit";}i:2;b:0;i:3;a:2:{i:0;s:16:"add_relationship";i:1;s:19:"delete_relationship";}}}}

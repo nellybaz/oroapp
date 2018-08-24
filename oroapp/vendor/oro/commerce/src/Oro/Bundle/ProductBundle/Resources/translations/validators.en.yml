@@ -1,0 +1,78 @@
+oro:
+    product:
+        validators:
+            logical_expression.message: 'Invalid logical expression'
+            logical_expression_disallowed.message: 'Logical expressions are not allowed'
+            division_by_zero.message: 'Expression contains division by zero'
+            field_is_not_allowed.message: 'Field "%fieldName%" is not allowed to be used'
+            field_is_not_allowed_as.message: 'Field "%fieldName%" is not allowed to be used as "%inputName%"'
+
+        product_variant_links:
+            unique_variants_combination.message: "Can't save product variants. Configurable attribute combinations should be unique."
+            variant_field_required.message: "Can't save product variants. Configurable attribute should be selected"
+            has_no_filled_field.message: "Can't save product variants. Product \"%product_sku%\" has no filled field(s) \"%fields%\" "
+
+        attribute_family:
+            used_in_product_variant_field.message: "Attributes %names% used as configurable attributes in products: %products%"
+            empty_configurable_attributes.message: "Configurable product requires at least one filterable attribute of the Select or Boolean type to enable product variants. The provided product family does not fit for configurable products."
+
+        product_variant_field:
+            unique_variants_combination_simple_product.message: "The values of additional fields provided cannot be saved because they will violate unique constraint of variant fields in these configurable products: %products%"
+            message: "Can't save configurable attribute. Field \"{{ field }}\" doesn't exist in product"
+            unique_variant_links_when_empty_variant_field_in_simple: "Field \"%variantField%\" can not be empty. It is used in the following configurable products: %products%"
+
+        product_by_sku:
+            not_found: SKU not found
+
+        at_least_one_item: Please add at least one item
+
+        sku.blank: SKU should not be blank.
+
+        names.blank: Product Name should not be blank.
+
+        productlineitem:
+            quantity:
+                greaterThanZero: Quantity should be greater than 0
+
+        productunit:
+            invalid: 'Please enter valid unit of measurement'
+            precision.blank: Precision should not be blank.
+            unit.blank: Unit should not be blank.
+
+        unit_precisions_items:
+            blank: 'Please add one or more product units.'
+
+        frontend:
+            quick_add:
+                invalid_file_type: This file type is not allowed
+                invalid_format: Invalid format
+                validation:
+                    not_found: 'Item number {{ value }} not found.'
+                    product_not_found: 'Item number {{ sku }} not found.'
+                    invalid_precision: 'Invalid precision for unit ''{{ unit }}''.'
+                    invalid_unit: 'Unit ''{{ unit }}'' doesn''t exist for product {{ sku }}.'
+                    quantity_min: 'Quantity should be greater than 0.'
+                    quantity_max: 'Quantity should be less than {{ limit }}.'
+
+        product_image:
+            not_blank: 'The file cannot be blank'
+            type_restriction: 'You cannot choose more than %maxNumber% images with type "%type%"'
+
+        product_image_type:
+            invalid_type: 'The provided product image type "%type%" is not valid'
+            already_exists: 'The provided product image type "%type%" already exists in product image collection'
+            type_restriction: 'You cannot choose multiple types with the same value "%type%"'
+
+        product_collection:
+            unique_segment_name.message: 'This name already in use'
+            blank_filters_or_included: "Should be specified filters or added some products manually."
+            blank_condition_item: "Conditions in filters should not be blank."
+            blank_condition_group: "Conditions groups in filters should not be blank."
+
+        related_items:
+            related_product:
+                relation_already_exists: "Relation between products already exists."
+
+"Related Items functionality is disabled.": "Related Items functionality is disabled."
+"It is not possible to create relations from product to itself.": "It is not possible to create relations from product to itself."
+"It is not possible to add more items, because of the limit of relations.": "It is not possible to add more items, because of the limit of relations."

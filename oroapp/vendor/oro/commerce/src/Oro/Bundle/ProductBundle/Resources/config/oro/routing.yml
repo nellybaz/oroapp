@@ -1,0 +1,64 @@
+oro_product:
+    resource:     "@OroProductBundle/Controller/ProductController.php"
+    type:         annotation
+    prefix:       /product
+
+oro_product_unit_ajax:
+    resource:     "@OroProductBundle/Controller/AjaxProductUnitController.php"
+    type:         annotation
+    prefix:       /product-unit
+
+oro_product_grid_count_ajax:
+    resource:     "@OroProductBundle/Controller/AjaxGetProductsCountController.php"
+    type:         annotation
+    prefix:       /product-grid
+
+oro_product_frontend_product:
+    resource: "@OroProductBundle/Controller/Frontend/ProductController.php"
+    type: annotation
+    prefix: /product
+    options:
+        frontend: true
+
+oro_product_frontend_product_ajax:
+    resource: "@OroProductBundle/Controller/Frontend/AjaxProductController.php"
+    type: annotation
+    prefix: /product
+    options:
+        frontend: true
+
+oro_product_frontend_unit_ajax:
+    resource:     "@OroProductBundle/Controller/Frontend/AjaxProductUnitController.php"
+    type:         annotation
+    prefix:       /product-unit
+    options:
+        frontend: true
+
+oro_product_frontend_variant_ajax:
+    resource:     "@OroProductBundle/Controller/Frontend/AjaxProductVariantController.php"
+    type:         annotation
+    prefix:       /product-variant
+    options:
+        frontend: true
+
+oro_product_frontend_quick_add:
+    resource:     "@OroProductBundle/Controller/Frontend/QuickAddController.php"
+    type:         annotation
+    prefix:       /customer/product/quick-add
+    options:
+        frontend: true
+
+oro_product_inline_edit_api:
+    resource:     "@OroProductBundle/Resources/config/oro/routing_api.yml"
+    type:         rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+oro_brand:
+    resource:     "@OroProductBundle/Controller/BrandController.php"
+    type:         annotation
+    prefix:       /brand
+

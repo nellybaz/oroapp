@@ -1,0 +1,22 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set treeOptions = {
+    'data' : oro_category_list(),
+    'defaultCategoryId': defaultCategoryId,
+    'nodeId': defaultCategoryId,
+    'view' : 'orocatalog/js/app/views/product-sidebar-view'
+} %}
+
+{% embed "OroUIBundle::jstree.html.twig" with {
+    data: {
+        'label': 'oro.catalog.category.entity_plural_label'|trans,
+        'treeOptions': treeOptions
+    }
+} %}
+    {% block content %}
+        {{ block('search') }}
+        <div class="include-sub-categories-choice">{{ form_row(includeSubcategoriesForm) }}</div>
+        <div class="include-not-categorized-product-choice">{{ form_row(includeNotCategorizedProductForm) }}</div>
+        {{ block('tree') }}
+    {% endblock content %}
+{% endembed %}

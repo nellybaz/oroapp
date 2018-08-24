@@ -1,0 +1,13 @@
+.link {
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+
+    &.disabled {
+        text-decoration: none;
+
+        cursor: default;
+    }
+}

@@ -1,0 +1,104 @@
+Oro\Bundle\PromotionBundle\Entity\Promotion:
+    properties:
+        rule:
+            - Valid: ~
+        useCoupons:
+            - NotBlank: ~
+        schedules:
+            - Valid: ~
+        scopes:
+            - Oro\Bundle\CustomerBundle\Validator\Constraints\ScopeWithCustomerGroupAndCustomer: ~
+            - Valid: ~
+        productsSegment:
+            - Valid: ~
+        labels:
+            - Valid: ~
+        descriptions:
+            - Valid: ~
+
+Oro\Bundle\PromotionBundle\Entity\PromotionSchedule:
+    constraints:
+        - Oro\Bundle\CronBundle\Validator\Constraints\ScheduleIntervalsIntersection: ~
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\DatesChain:
+            chain:
+                activeAt: 'Activate At'
+                deactivateAt: 'Deactivate At'
+
+Oro\Bundle\PromotionBundle\Entity\Coupon:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
+            fields: [code]
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\DatesChain:
+            chain:
+                validFrom: 'Valid From'
+                validUntil: 'Valid Until'
+    properties:
+        code:
+            - NotBlank:
+                groups: [ all_coupon_fields ]
+            - Length:
+                min: 1
+                max: 255
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\AlphanumericDash: ~
+        validFrom:
+            - Date: ~
+        validUntil:
+            - Date: ~
+        usesPerCoupon:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 0
+                max: 2147483647
+        usesPerPerson:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 0
+                max: 2147483647
+
+Oro\Bundle\PromotionBundle\CouponGeneration\Options\CouponGenerationOptions:
+    constraints:
+        - Oro\Bundle\PromotionBundle\Validator\Constraints\CouponCodeLength:
+            groups: ['generation']
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\DatesChain:
+            chain:
+                validFrom: 'Valid From'
+                validUntil: 'Valid Until'
+    properties:
+        owner:
+            - NotBlank:
+                groups: ['generation']
+        couponQuantity:
+            - NotBlank:
+                groups: ['generation']
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 1
+                max: 2147483647
+        usesPerCoupon:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 0
+                max: 2147483647
+        usesPerPerson:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 0
+                max: 2147483647
+        codeLength:
+            - NotBlank: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 1
+                max: 255
+        codeType:
+            - NotBlank: ~
+        codePrefix:
+            - Length:
+                max: 100
+        codeSuffix:
+            - Length:
+                max: 100
+        dashesSequence:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Integer: ~
+            - Range:
+                min: 1

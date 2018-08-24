@@ -1,0 +1,2 @@
+0
+a:1:{s:21:"simplified-email-grid";a:2:{s:7:"extends";s:15:"base-email-grid";s:7:"options";a:1:{s:14:"toolbarOptions";a:2:{s:27:"turnOffToolbarRecordsNumber";i:5;s:14:"addResetAction";b:0;}}}}

@@ -1,0 +1,2 @@
+0
+a:3:{s:8:"grouping";a:1:{s:6:"groups";a:1:{i:0;s:10:"dictionary";}}s:6:"extend";a:7:{s:5:"owner";s:6:"System";s:9:"is_extend";b:0;s:5:"state";s:6:"Active";s:10:"is_deleted";b:0;s:11:"upgradeable";b:1;s:6:"origin";s:6:"System";s:10:"pk_columns";a:1:{i:0;s:4:"name";}}s:4:"enum";a:0:{}}

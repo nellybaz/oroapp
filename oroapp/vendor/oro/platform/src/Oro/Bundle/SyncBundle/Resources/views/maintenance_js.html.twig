@@ -1,0 +1,30 @@
+<script type="text/javascript">
+    require(['orosync/js/sync', 'oroui/js/modal', 'orotranslation/js/translator'],
+    function(sync, Modal, __) {
+        var dialog = null;
+
+        sync.subscribe('oro/maintenance', function (response) {
+            var userId = null;
+            {% if app.user is not null %}
+                userId = {{ app.user.id|raw }};
+            {% endif %}
+
+            if (response.isOn && (!userId || parseInt(userId) != parseInt(response.userId))) {
+                var regExp = new RegExp('\n', 'g');
+                if (dialog) {
+                    dialog.close();
+                    dialog.remove();
+                }
+                dialog = new Modal({
+                    'content': __('oro.platform.maintenance_mode_on_message').replace(regExp, '<br/>'),
+                    'className': 'modal oro-modal-danger oro-modal-maintenance',
+                    'allowCancel': false,
+                    'title': __('oro.platform.maintenance_mode_on_title')
+                });
+                dialog.open();
+            } else if (dialog) {
+                dialog.close();
+            }
+        });
+    });
+</script>

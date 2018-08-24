@@ -1,0 +1,172 @@
+method: getTax
+reference: simple_order
+configuration:
+    use_as_base_by_default: destination
+    destination: shipping_address
+    start_calculation_on: total
+    start_calculation_with: unit_price
+    product_prices_include_tax: true
+databaseBefore:
+    'Oro\Bundle\OrderBundle\Entity\OrderAddress':
+        us_ca_billing_address:
+            country: { class: 'Oro\Bundle\AddressBundle\Entity\Country', query: { iso2Code: 'US' } }
+            region: { class: 'Oro\Bundle\AddressBundle\Entity\Region', query: { combinedCode: 'US-CA' } }
+    'Oro\Bundle\OrderBundle\Entity\Order':
+        simple_order:
+            poNumber: simple_order
+            customer: { class: 'Oro\Bundle\CustomerBundle\Entity\Customer', query: { name: 'customer.orphan' } }
+            currency: USD
+            shippingAddress: '@us_ca_billing_address'
+    'Oro\Bundle\ProductBundle\Entity\Product':
+        product_1:
+            sku: product_1
+            taxCode: '@product_tax_code'
+            addName: ['@product_name_1']
+        product_2:
+            sku: product_2
+            taxCode: '@product_tax_code'
+            addName: ['@product_name_2']
+        product_3:
+            sku: product_3
+            taxCode: '@product_tax_code'
+            addName: ['@product_name_3']
+        product_4:
+            sku: product_4
+            taxCode: '@product_tax_code'
+            addName: ['@product_name_4']
+    'Oro\Bundle\CurrencyBundle\Entity\Price':
+        usd_price_3.42:
+            value: 3.42
+            currency: USD
+        usd_price_8.55:
+            value: 8.55
+            currency: USD
+        usd_price_18.05:
+            value: 18.05
+            currency: USD
+        usd_price_24.80:
+            value: 24.80
+            currency: USD
+    'Oro\Bundle\OrderBundle\Entity\OrderLineItem':
+        order_line_item_1:
+            productSku: order_line_item_1
+            order: '@simple_order'
+            quantity: 41
+            price: '@usd_price_3.42'
+            product: '@product_1'
+        order_line_item_2:
+            productSku: order_line_item_2
+            order: '@simple_order'
+            quantity: 15
+            price: '@usd_price_8.55'
+            product: '@product_2'
+        order_line_item_3:
+            productSku: order_line_item_3
+            order: '@simple_order'
+            quantity: 13
+            price: '@usd_price_18.05'
+            product: '@product_3'
+        order_line_item_4:
+            productSku: order_line_item_4
+            order: '@simple_order'
+            quantity: 35
+            price: '@usd_price_24.80'
+            product: '@product_4'
+    'Oro\Bundle\TaxBundle\Entity\ProductTaxCode':
+        product_tax_code:
+            code: product_tax_code
+    'Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue':
+        product_name_1:
+            string: 'product 1'
+        product_name_2:
+            string: 'product 2'
+        product_name_3:
+            string: 'product 3'
+        product_name_4:
+            string: 'product 4'
+    'Oro\Bundle\TaxBundle\Entity\TaxRule':
+        tax_rule_1:
+            tax: { class: 'Oro\Bundle\TaxBundle\Entity\Tax', query: { code: 'TAX1' } }
+            taxJurisdiction: { class: 'Oro\Bundle\TaxBundle\Entity\TaxJurisdiction', query: { code: 'TAX3' } }
+            productTaxCode: '@product_tax_code'
+            customerTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode', query: { code: 'TAX1' } }
+        tax_rule_2:
+            tax: { class: 'Oro\Bundle\TaxBundle\Entity\Tax', query: { code: 'TAX3' } }
+            taxJurisdiction: { class: 'Oro\Bundle\TaxBundle\Entity\TaxJurisdiction', query: { code: 'TAX3' } }
+            productTaxCode: '@product_tax_code'
+            customerTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode', query: { code: 'TAX1' } }
+expectedResult:
+    total:
+        includingTax: '1371.12'  # 140.22 + 128.25 + 234.65 + 868
+        excludingTax: '1166.91'  # 119.33624 + 109.149 + 199.7021 + 738.724 = 1166.91134
+        taxAmount: '204.21'      # 20.88376 + 19.101 + 34.9479 + 129.2767 = 204.20936
+        adjustment: '-0.0006'    # -0.0034 + -0.0021 + 0.0011 + 0.0038
+        currency: 'USD'
+    taxes:
+        - { tax: 'TAX1', rate: '0.1', taxableAmount: '1166.91', taxAmount: '116.69', currency: 'USD' }  # 1166.91 * 0.1
+        - { tax: 'TAX3', rate: '0.075', taxableAmount: '1166.91', taxAmount: '87.52', currency: 'USD' } # 1166.91 * 0.075
+    items:
+        -
+            row:
+                includingTax: '140.22'  # 3.42 * 41
+                excludingTax: '119.34'  # 2.91064 * 41 = 119.33624
+                taxAmount: '20.88'      # 0.50936 * 41 = 20.88376
+                adjustment: '0.0038'    # 20.88376 - 20.88
+                currency: 'USD'
+            unit:
+                includingTax: '3.42'
+                excludingTax: '2.91'    # 3.42 - 0.50936 = 2.91064
+                taxAmount: '0.51'       # 3.42 * 0.175 / 1.175 = 0.50936
+                adjustment: '-0.0006'   # 0.50936 - 0.51
+                currency: 'USD'
+            taxes:
+                - { tax: 'TAX1', rate: '0.1', taxableAmount: '119.34', taxAmount: '11.93', currency: 'USD' }   # 119.34 * 0.1
+                - { tax: 'TAX3', rate: '0.075', taxableAmount: '119.34', taxAmount: '8.95', currency: 'USD' }  # 119.34 * 0.075
+        -
+            row:
+                includingTax: '128.25'  # 8.55 * 15
+                excludingTax: '109.15'  # 7.2766 * 15 = 109.149
+                taxAmount: '19.1'       # 1.2734 * 15 = 19.101
+                adjustment: '0.0011'    # 19.101 - 19.1
+                currency: 'USD'
+            unit:
+                includingTax: '8.55'
+                excludingTax: '7.28'    # 8.55 - 1.2734 = 7.2766
+                taxAmount: '1.27'       # 8.55 * 0.175 / 1.175 = 1.2734
+                adjustment: '0.0034'    # 1.2734 - 1.27
+                currency: 'USD'
+            taxes:
+                - { tax: 'TAX1', rate: '0.1', taxableAmount: '109.15', taxAmount: '10.91', currency: 'USD' }   # 109.149 * 0.1
+                - { tax: 'TAX3', rate: '0.075', taxableAmount: '109.15', taxAmount: '8.19', currency: 'USD' }  # 109.149 * 0.075
+        -
+            row:
+                includingTax: '234.65'  # 18.05 * 13
+                excludingTax: '199.7'   # 15.3617 * 13 = 199.7021
+                taxAmount: '34.95'      # 2.6883 * 13 = 34.9479
+                adjustment: '-0.0021'   # 34.9479 - 34.95
+                currency: 'USD'
+            unit:
+                includingTax: '18.05'
+                excludingTax: '15.36'   # 18.05 - 2.6883 = 15.3617
+                taxAmount: '2.69'       # 18.05 * 0.175 / 1.175 = 2.6883
+                adjustment: '-0.0017'   # 2.6883 - 2.69
+                currency: 'USD'
+            taxes:
+                - { tax: 'TAX1', rate: '0.1', taxableAmount: '199.7', taxAmount: '19.97', currency: 'USD' }    # 199.7 * 0.1
+                - { tax: 'TAX3', rate: '0.075', taxableAmount: '199.7', taxAmount: '14.98', currency: 'USD' }  # 199.7 * 0.075
+        -
+            row:
+                includingTax: '868'     # 24.8 * 35
+                excludingTax: '738.72'  # 21.1064 * 35 = 738.724
+                taxAmount: '129.28'     # 3.69362 * 35 = 129.2767
+                adjustment: '-0.0034'    # 129.2767 - 129.28
+                currency: 'USD'
+            unit:
+                includingTax: '24.8'
+                excludingTax: '21.11'   # 24.8 - 3.6936 = 21.1064
+                taxAmount: '3.69'       # 24.8 * 0.175 / 1.175 = 3.69362
+                adjustment: '0.0036'    # 3.6936 - 3.69
+                currency: 'USD'
+            taxes:
+                - { tax: 'TAX1', rate: '0.1', taxableAmount: '738.72', taxAmount: '73.87', currency: 'USD' }    # 738.72 * 0.1
+                - { tax: 'TAX3', rate: '0.075', taxableAmount: '738.72', taxAmount: '55.4', currency: 'USD' }   # 738.72 * 0.075

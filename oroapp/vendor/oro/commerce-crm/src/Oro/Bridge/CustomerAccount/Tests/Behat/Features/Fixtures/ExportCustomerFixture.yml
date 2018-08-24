@@ -1,0 +1,153 @@
+Oro\Bundle\UserBundle\Entity\User:
+    second_user:
+        username: user2
+        email: user2@example.com
+        firstName: New
+        lastName: Owner
+        password: password
+        salt: salt
+        organization: '@organization'
+        owner: '@business_unit'
+
+Oro\Bundle\PaymentTermBundle\Entity\PaymentTerm:
+    net_30:
+        label: 'net 30'
+    net_60:
+        label: 'net 60'
+    net_90:
+        label: 'net 90'
+
+Oro\Bundle\TaxBundle\Entity\CustomerTaxCode:
+    tax_code_1:
+        code: 'Tax_code_1'
+    tax_code_2:
+        code: 'Tax_code_2'
+    tax_code_3:
+        code: 'Tax_code_3'
+
+Oro\Bundle\AccountBundle\Entity\Account:
+    acc_company_A:
+        name: 'Company A'
+        organization: '@organization'
+        owner: '@admin'
+    acc_company_A_east:
+        name: 'Company A - East Division'
+        organization: '@organization'
+        owner: '@admin'
+    acc_company_A_west:
+        name: 'Company A - West Division'
+        organization: '@organization'
+        owner: '@admin'
+    acc_customer_G:
+        name: 'Customer G'
+        organization: '@organization'
+        owner: '@admin'
+    acc_partner_C:
+        name: 'Partner C'
+        organization: '@organization'
+        owner: '@admin'
+    acc_wholesaler_B:
+        name: 'Wholesaler B'
+        organization: '@organization'
+        owner: '@admin'
+
+Oro\Bundle\SalesBundle\Entity\Customer:
+    sales_customer_1:
+        account: '@acc_company_A'
+        customer_e197f906: '@company_A'
+    sales_customer_2:
+        account: '@acc_company_A_east'
+        customer_e197f906: '@company_A_east'
+    sales_customer_3:
+        account: '@acc_company_A_west'
+        customer_e197f906: '@company_A_west'
+    sales_customer_4:
+        account: '@acc_wholesaler_B'
+        customer_e197f906: '@wholesaler_B'
+    sales_customer_5:
+        account: '@acc_partner_C'
+        customer_e197f906: '@partner_C'
+    sales_customer_6:
+        account: '@acc_customer_G'
+        customer_e197f906: '@customer_G'
+
+Extend\Entity\EV_Acc_Internal_Rating:
+    1_of_5:
+        __construct:
+            - '1_of_5'
+            - '1_of_5'
+    2_of_5:
+        __construct:
+            - '2_of_5'
+            - '2_of_5'
+    3_of_5:
+        __construct:
+            - '3_of_5'
+            - '3_of_5'
+    4_of_5:
+        __construct:
+            - '4_of_5'
+            - '4_of_5'
+    5_of_5:
+        __construct:
+            - '5_of_5'
+            - '5_of_5'
+Oro\Bundle\CustomerBundle\Entity\CustomerGroup:
+    all_customers:
+        name: 'All Customers'
+    partners:
+        name: 'Partners'
+    wholesale_customers:
+        name: 'Wholesale Customers'
+
+Oro\Bundle\CustomerBundle\Entity\Customer:
+    company_A:
+        name: 'Company A'
+        organization: '@organization'
+        owner: '@admin'
+        group: '@all_customers'
+        internal_rating: '@2_of_5'
+        payment_term_7c4f1e8e: '@net_30'
+        taxCode: '@tax_code_1'
+    company_A_east:
+        name: 'Company A - East Division'
+        organization: '@organization'
+        owner: '@admin'
+        parent: '@company_A'
+        group: '@all_customers'
+        internal_rating: '@1_of_5'
+        payment_term_7c4f1e8e: '@net_90'
+        taxCode: '@tax_code_1'
+    company_A_west:
+        name: 'Company A - West Division'
+        organization: '@organization'
+        owner: '@admin'
+        parent: '@company_A'
+        group: '@all_customers'
+        internal_rating: '@1_of_5'
+        payment_term_7c4f1e8e: '@net_60'
+        taxCode: '@tax_code_1'
+    customer_G:
+        name: 'Customer G'
+        organization: '@organization'
+        owner: '@second_user'
+        group: '@wholesale_customers'
+        internal_rating: '@3_of_5'
+        payment_term_7c4f1e8e: '@net_60'
+        taxCode: '@tax_code_3'
+    partner_C:
+        name: 'Partner C'
+        organization: '@organization'
+        owner: '@second_user'
+        group: '@partners'
+        internal_rating: '@4_of_5'
+        payment_term_7c4f1e8e: '@net_30'
+        taxCode: '@tax_code_3'
+    wholesaler_B:
+        name: 'Wholesaler B'
+        organization: '@organization'
+        owner: '@second_user'
+        group: '@all_customers'
+        internal_rating: '@4_of_5'
+        payment_term_7c4f1e8e: '@net_60'
+        taxCode: '@tax_code_2'

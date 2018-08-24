@@ -1,0 +1,89 @@
+system_configuration:
+    groups:
+        design:
+            title: oro_frontend.system_configuration.groups.design.title
+        theme:
+            title: oro_frontend.system_configuration.groups.theme.title
+            icon: 'fa-picture-o'
+            configurator: '@oro_frontend.form.configurator.theme::configure'
+        theme_settings:
+            title: oro_frontend.system_configuration.groups.theme_settings.title
+        commerce:
+            title: oro_frontend.system_configuration.groups.commerce.title
+            icon:  fa-shopping-cart
+        page_templates:
+            title: oro_frontend.system_configuration.groups.page_templates.title
+        guests:
+            title: oro_frontend.system_configuration.groups.guests.title
+        website_access:
+            title: oro_frontend.system_configuration.groups.website_access.title
+        filter_settings:
+            title: oro_frontend.system_configuration.groups.filter_settings.title
+
+    fields:
+        oro_frontend.frontend_theme:
+            data_type: string
+            type: oro_frontend_theme_select
+            priority: 100
+            options:
+                label: oro_frontend.system_configuration.fields.frontend_theme.label
+
+        oro_frontend.page_templates:
+            data_type: array
+            type: oro_frontend_page_template_collection
+            priority: 90
+            options:
+                required: false
+                label: oro_frontend.system_configuration.fields.page_template_routes.label
+                block: theme
+                subblock: page_templates
+
+        oro_frontend.guest_access_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 2000
+            options:
+                label: oro_frontend.system_configuration.fields.guest_access_enabled.label
+                tooltip: oro_frontend.system_configuration.fields.guest_access_enabled.tooltip
+                required: false
+
+        oro_frontend.filter_value_selectors:
+            data_type: string
+            type: choice
+            search_type: choice
+            priority: 100
+            options:
+                required: false
+                label: oro_frontend.system_configuration.fields.filter_value_selectors.label
+                tooltip: oro_frontend.system_configuration.fields.filter_value_selectors.tooltip
+                choices:
+                    dropdown: oro_frontend.system_configuration.fields.filter_value_selectors.option.dropdown
+                    all_at_once: oro_frontend.system_configuration.fields.filter_value_selectors.option.all_at_once
+
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    design:
+                        priority: 800
+                        children:
+                            theme:
+                                children:
+                                    theme_settings:
+                                        children:
+                                            - oro_frontend.frontend_theme
+                                    page_templates:
+                                        children: []
+                                    filter_settings:
+                                        children:
+                                            - oro_frontend.filter_value_selectors
+                    guests:
+                        priority: 2000
+                        children:
+                            website_access:
+                                priority: 100
+                                children:
+                                    website_access:
+                                        priority: 100
+                                        children:
+                                            - oro_frontend.guest_access_enabled

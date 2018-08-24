@@ -1,0 +1,28 @@
+{
+    "name": "oro/translation-bundle",
+    "type": "symfony-bundle",
+    "description": "BAP Translation Bundle",
+    "keywords": ["BAP", "translation"],
+    "homepage": "https://github.com/laboro/TranslationBundle",
+    "license": "MIT",
+    "require": {
+        "php": "7.1.*",
+        "ext-zip" : "*",
+        "symfony/symfony": "2.8.*, !=2.8.10",
+        "doctrine/data-fixtures": "@dev",
+        "doctrine/doctrine-fixtures-bundle": "@dev",
+        "gedmo/doctrine-extensions": "2.3.*",
+        "oro/log": "dev-master",
+        "genemu/form-bundle": "2.1.*",
+        "oro/requirejs-bundle": "dev-master"
+    },
+    "autoload": {
+        "psr-0": { "Oro\\Bundle\\TranslationBundle": "" }
+    },
+    "target-dir": "Oro/Bundle/TranslationBundle",
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

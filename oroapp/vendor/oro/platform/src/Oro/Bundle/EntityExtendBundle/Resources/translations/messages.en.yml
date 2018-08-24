@@ -1,0 +1,160 @@
+"Your config changes will be applied to schema.": "Your config changes will be applied to schema."
+"It may take few minutes...": "It may take few minutes..."
+"Field successfully deleted": "Field successfully deleted"
+
+# TODO: these labels are not used for now. Should be fixed in BAP-10441
+"System": "System"
+"Custom": "Custom"
+"New": "New"
+"Requires update": "Requires update"
+"Active": "Active"
+"Deleted": "Deleted"
+"Restored": "Requires update"
+
+oro:
+    entity_extend:
+        datagrid:
+            enum:
+                filter.empty:       None
+            dictionary:
+                filter.empty:       None
+        form:
+            data_type_group:
+                fields:             Fields
+                relations:          Relations
+            data_type:
+                choose_value:       Choose a field type...
+
+                string:             String
+                integer:            Integer
+                smallint:           SmallInt
+                bigint:             BigInt
+                boolean:            Boolean
+                decimal:            Decimal
+                date:               Date
+                datetime:           DateTime
+                time:               Time
+                text:               Text
+                float:              Float
+                money:              Currency
+                percent:            Percent
+                duration:           Duration
+                oneToOne:           One to one
+                oneToMany:          One to many
+                manyToOne:          Many to one
+                manyToMany:         Many to many
+                enum:               Select
+                multiEnum:          Multi-Select
+                html_escaped:       HTML
+
+                ref-one:            System relation
+                ref-many:           System relation
+                array:              Binary (Array)
+                json_array:         Binary (JSON array)
+                simple_array:       Binary (Simple array)
+                object:             Binary (Object)
+
+                inverse_relation:   Reuse "%field_name%" of %entity_name%
+                currency:           Currency
+                money_value:        Money Value
+            field_name.label:       Field name
+            name.label:             Name
+            key.label:              Key
+            target_entity:          Target entity
+            target_field:           Target field
+            relation:
+                entity_data_fields: Related entity data fields
+                entity_info_title:  Related entity info title
+                entity_detailed:    Related entity detailed
+
+        enum_name:    Option Set Name
+        enum_public:  Public
+        enum_options: Options
+        enum_name.tooltip: ""
+        enum_public.tooltip: Public option sets can be reused in other entities.
+        enum_options.tooltip: >
+            Some options could be defined as system and can't be deleted.
+            Deleting an option will remove it from all records that use it.
+        enum_options.priority.tooltip: Click and drag to reorder.
+        enum_options.default.tooltip: If marked, this option will be selected by default for new records.
+        action:
+            apply_changes: "Apply entityconfig changes"
+            apply_attribute_schema_changes: "Apply attributes changes"
+            config_entity_grid:
+                unique: "Unique entity unique keys"
+                create: "Create custom entity"
+                remove: "Remove custom entity"
+                unremove: "Unremove custom entity"
+            config_field_grid:
+                create: "Create custom field"
+                update: "Update custom field"
+                remove: "Remove custom field"
+                unremove: "UnRemove custom field"
+        controller:
+            config_entity:
+                message:
+                    saved: "Entity saved"
+            config_field:
+                message:
+                    saved: "Field saved"
+                    deleted: "Field successfully deleted"
+                    restored: "Field was restored"
+                    cannot_be_restored: "This field cannot be restored because a field with similar name exists."
+        unique_keys: "Unique Keys"
+
+        entity_config:
+            extend:
+                entity:
+                    grid_action:
+                        remove: "Remove"
+                        restore: "Restore"
+                    layout_action:
+                        create_entity: "Create entity"
+                    items:
+                        owner: "Type"
+                        is_extend: "Is Extend"
+                        state: "Schema status"
+                        is_deleted: "Deleted"
+                field:
+                    grid_action:
+                        remove: "Remove"
+                        restore: "Restore"
+                    layout_action:
+                        manage_unique_keys: "Manage unique keys"
+                        create_field: "Create field"
+                        update_schema: "Update schema"
+                    items:
+                        owner: "Type"
+                        state: "Schema status"
+                        length: "Length"
+                        precision: "Precision"
+                        scale: "Scale"
+                        is_deleted: "Deleted"
+                        bidirectional: "Bidirectional"
+            search:
+                field:
+                    items:
+                        searchable: "Searchable"
+                        searchable.tooltip: The field will appear in search results after the completion of reindex job that might take some time.
+                        title_field: "The search result title (deprecated)"
+                        title_field.tooltip: This setting is deprecated since 2.0. Create table-column string fields instead to be used as human-readable title.
+                entity:
+                    items:
+                        searchable.tooltip: The entity will appear in search results after the completion of reindex job that might take some time.
+
+        config_grid:
+            entities: Entities
+            new_entity: New entity
+            unique_keys: Unique keys
+            new_field: New field
+
+    entityextend:
+        enumvalue:
+            id.label:               Id
+            id.description:         The unique identifier of the option
+            name.label:             Name
+            name.description:       The option name
+            priority.label:         Priority
+            priority.description:   A number is used to sort options
+            default.label:          Is Default
+            default.description:    Determines if this option is selected by default for new records

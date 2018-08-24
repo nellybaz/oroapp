@@ -1,0 +1,34 @@
+.product-tier-prices {
+    position: relative;
+    left: -1px;
+
+    display: inline-block;
+    width: 27px;
+
+    vertical-align: middle;
+
+    border: 1px solid get-color('additional', 'light');
+    border-radius: 0 3px 3px 0;
+    background-color: get-color('additional', 'ultra');
+
+    &.disabled {
+        .popover-trigger {
+            cursor: default;
+            opacity: .5;
+        }
+    }
+}
+
+input {
+    &:hover, &:focus {
+        + .product-tier-prices {
+            border-color: $input-border-color-focus-state;
+        }
+    }
+
+    &.error {
+        + .product-tier-prices {
+            border-color: $input-border-color-error-state;
+        }
+    }
+}

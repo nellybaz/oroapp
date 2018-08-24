@@ -1,0 +1,81 @@
+system_configuration:
+    groups:
+        user_settings:
+            icon:  fa-key
+            title: oro.user.system_configuration.groups.user_settings.title
+        password_complexity_rules:
+            icon:  fa-usd
+            title: oro.user.system_configuration.groups.password_complexity_rules.title
+
+    fields:
+        oro_user.password_min_length:
+            data_type: integer
+            type: integer
+            search_type: text
+            priority: 40
+            options:
+                label:  oro.user.system_configuration.fields.password_min_length.label
+                constraints:
+                    - Range:
+                        min: 1
+
+        oro_user.password_numbers:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 30
+            options:
+                label: oro.user.system_configuration.fields.password_numbers.label
+                required: false
+
+        oro_user.password_lower_case:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 25
+            options:
+                label: oro.user.system_configuration.fields.password_lower_case.label
+                required: false
+
+        oro_user.password_upper_case:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 20
+            options:
+                label: oro.user.system_configuration.fields.password_upper_case.label
+                required: false
+
+        oro_user.password_special_chars:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 10
+            options:
+                label: oro.user.system_configuration.fields.password_special_chars.label
+                tooltip: oro.user.system_configuration.fields.password_special_chars.tooltip
+                required: false
+
+        oro_user.send_password_in_invitation_email:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 10
+            options:
+                label: oro.user.system_configuration.fields.send_password_in_invitation_email.label
+                tooltip: oro.user.system_configuration.fields.send_password_in_invitation_email.tooltip
+                required: false
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            user_settings:
+                                priority: 100
+                                children:
+                                    password_complexity_rules:
+                                        children:
+                                            - oro_user.password_min_length
+                                            - oro_user.password_numbers
+                                            - oro_user.password_lower_case
+                                            - oro_user.password_upper_case
+                                            - oro_user.password_special_chars
+                                            # The backend user should not be able to enable this option in the UI
+                                            #- oro_user.send_password_in_invitation_email

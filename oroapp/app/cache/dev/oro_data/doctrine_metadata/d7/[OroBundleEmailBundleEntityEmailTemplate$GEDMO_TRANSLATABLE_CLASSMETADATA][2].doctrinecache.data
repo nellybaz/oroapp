@@ -1,0 +1,2 @@
+
+a:4:{s:16:"translationClass";s:54:"Oro\Bundle\EmailBundle\Entity\EmailTemplateTranslation";s:6:"fields";a:2:{i:0;s:7:"subject";i:1;s:7:"content";}s:6:"locale";s:6:"locale";s:14:"useObjectClass";s:43:"Oro\Bundle\EmailBundle\Entity\EmailTemplate";}

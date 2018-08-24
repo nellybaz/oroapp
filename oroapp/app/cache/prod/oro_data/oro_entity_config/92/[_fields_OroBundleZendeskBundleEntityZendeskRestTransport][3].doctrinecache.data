@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:2174;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:3:"url";a:3:{s:1:"i";i:2175;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"email";a:3:{s:1:"i";i:2176;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"token";a:3:{s:1:"i";i:2177;s:1:"h";b:0;s:1:"t";s:6:"string";}s:16:"zendeskUserEmail";a:3:{s:1:"i";i:2178;s:1:"h";b:0;s:1:"t";s:6:"string";}s:7:"channel";a:3:{s:1:"i";i:2179;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

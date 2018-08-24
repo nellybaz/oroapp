@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:2041;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:7:"mailbox";a:3:{s:1:"i";i:2042;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:5:"owner";a:3:{s:1:"i";i:2043;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:8:"assignTo";a:3:{s:1:"i";i:2044;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:8:"priority";a:3:{s:1:"i";i:2045;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:6:"status";a:3:{s:1:"i";i:2046;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

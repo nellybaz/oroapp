@@ -1,0 +1,180 @@
+oro_behat_extension:
+  elements:
+    Lead:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//ul[@class="context-items-dropdown dropdown-menu"]/li[contains(text(),"Lead")]'
+        type: xpath
+
+    Opportunity Form:
+      selector: 'form[name="oro_sales_opportunity_form"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Budget Amount: 'oro_sales_opportunity_form[budgetAmount][value]'
+          Budget Currency: 'oro_sales_opportunity_form[budgetAmount][currency]'
+
+    ImportLead:
+      selector: 'div[class="opportunity-card-view card-view ui-sortable-handle"]'
+
+    Closed Lost:
+      selector:
+        locator: '//div[7][@class="board-column ui-sortable"]'
+        type: xpath
+
+    CustomerOpportunitiesGrid:
+      selector: "div[id^='grid-sales-b2bcustomer-opportunities-grid-customer'] div.grid-container"
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+
+    OpportunityProbabilitiesConfigForm:
+      selector: 'form[name="opportunity"]'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Element\OpportunityProbabilitiesConfigForm
+
+    SalesB2bCustomerForm:
+      selector: 'form[name="oro_sales_b2bcustomer_form"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+
+    Develop Opportunity Form:
+      selector: 'form[name="oro_workflow_transition"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Budget Amount: 'oro_workflow_transition[budget_amount][value]'
+          Customer need: 'oro_workflow_transition[customer_need]'
+          Proposed solution: 'oro_workflow_transition[proposed_solution]'
+
+    Close As Won Opportunity Form:
+      selector: 'form[name="oro_workflow_transition"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Close Revenue: 'oro_workflow_transition[close_revenue][value]'
+
+    Close As Lost Opportunity Form:
+      selector: 'form[name="oro_workflow_transition"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Close reason: 'oro_workflow_transition[close_reason_name]'
+
+    Quotes Grid:
+      selector: '[id^="grid-opportunity-quotes-grid"]'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Element\QuotesGrid
+
+    Quote Line Items:
+      selector: '.quote-lineitems'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Product:
+            type: 'css'
+            locator: '.quote-lineitem-product-select .select2-offscreen[type="text"]'
+          Unit Price: 'oro_sale_quote[quoteProducts][0][quoteProductOffers][0][price][value]'
+
+    Unit Price:
+      selector: '[name="oro_sale_quote[quoteProducts][0][quoteProductOffers][0][price][value]"]'
+
+    Shipping Address:
+      selector: '[data-name="field__customer-address"]'
+      class: Oro\Bundle\FormBundle\Tests\Behat\Element\Select2Entity
+
+    Calculate Shipping:
+      selector: '[data-role="possible_shipping_methods_btn"]'
+
+    Shipping Method Form:
+      selector: 'div.possible_shipping_methods_form'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Method:
+            type: 'xpath'
+            locator: "//input[@name='possibleShippingMethodType']"
+            element: PrettyCheckbox
+
+    Customer Quotes Grid:
+      selector: '.grid-container'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\FrontendGrid
+
+    Quote View Grid:
+      selector: '.oro-grid-table'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\FrontendTableGrid
+
+    ConfigurationLocalizationForm:
+      selector: 'form[name="localization"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Locale Use Default: 'localization[oro_locale___locale][use_parent_scope_value]'
+          Locale: 'localization[oro_locale___locale][value]'
+          Primary Location Use Default: 'localization[oro_locale___country][use_parent_scope_value]'
+          Primary Location: 'localization[oro_locale___country][value]'
+
+    EuroAsDefaultValue:
+      selector:
+          type: xpath
+          locator: '//td[text()[contains(.,"EUR")]]/parent::tr/*[1]//input'
+
+    OpportunityStatusFilter:
+       selector:
+           type: xpath
+           locator: '//div[text()[contains(.,"Status")]]'
+
+    OpportunityStatusFilerSelectButton:
+       selector:
+           type: xpath
+           locator: '//button[text()[contains(.,"is not any of")]]'
+
+    OpportunityStatusFilerSelectField:
+       selector:
+           type: xpath
+           locator: '//button[text()[contains(.,"is not any of")]]/ancestor::div[contains(@class, "choice-filter")]/div[contains(@class, "value-field-frame")]/div/ul'
+
+  pages:
+    Opportunity Index:
+      route: 'oro_sales_opportunity_index'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\OpportunityIndex
+
+    Opportunity Create:
+      route: 'oro_sales_opportunity_create'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\OpportunityCreate
+
+    Opportunity View:
+      route: 'oro_sales_opportunity_view'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\OpportunityView
+
+    Lead Index:
+      route: 'oro_sales_lead_index'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\LeadIndex
+
+    Lead Create:
+      route: 'oro_sales_lead_create'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\LeadCreate
+
+    Lead View:
+      route: 'oro_sales_lead_view'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\LeadView
+
+    Customer Quotes List:
+      route: 'oro_sale_frontend_quote'
+      class: Oro\Bundle\SalesBundle\Tests\Behat\Page\CustomerQuotes
+
+  suites:
+    OroSalesBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+        - OroDataGridBundle::GridContext
+        - OroFormBundle::FormContext
+        - OroSecurityBundle::ACLContext
+        - OroImportExportBundle::ImportExportContext:
+          - '@oro_entity.entity_alias_resolver'
+          - '@oro_importexport.processor.registry'
+        - OroAddressBundle::AddressContext
+        - OroSalesBundle::SalesContext
+        - OroSalesBundle::FeatureContext
+        - OroNavigationBundle::FeatureContext
+        - OroSalesBundle::SalesFeatureToggleContext
+        - OroConfigBundle::FeatureContext
+        - OroQueryDesignerBundle::QueryDesignerContext
+      paths:
+        - '@OroSalesBundle/Tests/Behat/Features'

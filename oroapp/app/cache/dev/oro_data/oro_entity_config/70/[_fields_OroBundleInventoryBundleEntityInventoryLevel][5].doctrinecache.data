@@ -1,0 +1,2 @@
+0
+a:5:{s:2:"id";a:3:{s:1:"i";i:2055;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:8:"quantity";a:3:{s:1:"i";i:2056;s:1:"h";b:0;s:1:"t";s:7:"decimal";}s:7:"product";a:3:{s:1:"i";i:2057;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:20:"productUnitPrecision";a:3:{s:1:"i";i:2058;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:15:"serialized_data";a:3:{s:1:"i";i:3018;s:1:"h";b:1;s:1:"t";s:5:"array";}}

@@ -1,0 +1,7 @@
+// @theme: default
+
+@include breakpoint('tablet') {
+    .shopping-list-navigation {
+        display: none;
+    }
+}

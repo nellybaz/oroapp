@@ -1,0 +1,18 @@
+{% set invites = [] %}
+{#
+    Get attendees of the event applicable for hangouts invitation:
+    - email is not empty
+    - status is not declined
+    - user is not owner user
+#}
+{% for attendee in entity.childAttendees %}
+    {% if attendee.statusCode != constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_DECLINED') and attendee.email is not empty %}
+        {% set invites = invites|merge([{
+            id: attendee.email,
+            invite_type: 'EMAIL'
+        }]) %}
+    {% endif %}
+{% endfor %}
+<div class="pull-left btn-group">
+    {% include "OroHangoutsCallBundle::startHangoutButton.html.twig" %}
+</div>

@@ -1,0 +1,249 @@
+connector:
+    name: oro_importexport
+    jobs:
+        dotmailer_address_book_import:
+            title: oro.dotmailer.connector.address_book.job
+            type: import
+            steps:
+                importAddressBooks:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.address_book
+                        processor: oro_dotmailer.importexport.processor.address_book
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 100
+                removeNotExistingAddressBooks:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.importexport.reader.address_book.remove
+                        processor: oro_dotmailer.importexport.processor.address_book.remove
+                        writer:    oro_dotmailer.importexport.writer.import.remove
+
+        dotmailer_campaign_import:
+            title: oro.dotmailer.connector.campaign.job
+            type: import
+            steps:
+                importCampaigns:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.campaign
+                        processor: oro_dotmailer.importexport.processor.campaign
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 100
+                removeCampaigns:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.importexport.reader.campaign.remove
+                        processor: oro_dotmailer.importexport.processor.remove_campaign
+                        writer:    oro_dotmailer.importexport.writer.import.removed_contact
+                    parameters:
+                        batch_size: 100
+
+        dotmailer_unsubscribed_contact_import:
+            title: oro.dotmailer.connector.unsubscribed_contact.job
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.unsubscribed_contact
+                        processor: oro_dotmailer.importexport.processor.unsubscribed_contact
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+                unsubscribed_from_account_contacts_import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                          reader:    oro_dotmailer.importexport.reader.unsubscribed_from_account_contact
+                          processor: oro_dotmailer.importexport.processor.unsubscribed_from_account_contact
+                          writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+
+        dotmailer_new_contacts:
+            title: oro.dotmailer.connector.contact.job
+            type:  import
+            steps:
+                importNewContacts:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.contact
+                        processor: oro_dotmailer.importexport.processor.contact
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+                updateEntityFields:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\UpdateEntityFieldsStep
+                    services:
+                        reader:          oro_dotmailer.importexport.reader.update_entity_field_from_contacts
+                        processor:       oro_dotmailer.importexport.processor.update_entity_field_from_contacts
+                        writer:          oro_dotmailer.importexport.writer.import
+                        contextRegistry: oro_importexport.context_registry
+                        registry:        doctrine
+                        entityListener:  oro_dotmailer.listener.entity_update
+                    parameters:
+                        batch_size: 1000
+
+        dotmailer_activity_contact_import:
+            title: oro.dotmailer.connector.activity_contact.job
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\ActivityStep
+                    services:
+                        reader:        oro_dotmailer.connector.activity_contact
+                        processor:     oro_dotmailer.importexport.processor.activity_contact
+                        writer:        oro_dotmailer.importexport.writer.import
+                        processLogger: oro_workflow.process.logger
+                    parameters:
+                        batch_size: 1000
+
+        dotmailer_campaign_click_import:
+            title: oro.dotmailer.connector.campaign_click.job
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.campaign_click
+                        processor: oro_dotmailer.importexport.processor.campaign_click
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+
+        dotmailer_campaign_open_import:
+            title: oro.dotmailer.connector.campaign_open.job
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.campaign_open
+                        processor: oro_dotmailer.importexport.processor.campaign_open
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+
+        dotmailer_campaign_summary_import:
+            title: oro.dotmailer.connector.campaign_summary.job
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.campaign_summary
+                        processor: oro_dotmailer.importexport.processor.campaign_summary
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 100
+
+        # This Job responsible for receive not exported contacts from Dotmailer.
+        # Import from Dotmailer will not cover this case because there could be not synced contact with Oro if DM
+        # contact is unsubscribed before initial sync.
+        # In this case we will not import such unsubscription.
+        # Also we can't get them all, because it can be very large ammount of data (most of which is not needed).
+        # Also there is a lot of more not direct reasons.
+        dotmailer_import_not_exported_contact:
+            title: oro.dotmailer.import_not_exported_contact.job
+            type: import
+            steps:
+                importRejectedExports:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\ImportRejectedExportsStep
+                    services:
+                        reader:           oro_dotmailer.importexport.reader.export.rejected_contact
+                        processor:        oro_dotmailer.importexport.processor.export.rejected_contact
+                        writer:           oro_dotmailer.importexport.writer.export.rejected_contact
+                        contextRegistry:  oro_importexport.context_registry
+                        registry:         doctrine
+                    parameters:
+                        batch_size: 1000
+                importExportErrorReports:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\ImportExportErrorReportsStep
+                    services:
+                        reader:           oro_dotmailer.importexport.reader.not_exported_contact
+                        processor:        oro_dotmailer.importexport.processor.not_exported_contact
+                        writer:           oro_dotmailer.importexport.writer.import
+                        contextRegistry:  oro_importexport.context_registry
+                        registry:         doctrine
+                    parameters:
+                        batch_size: 100
+
+        dotmailer_contact_export:
+            title: oro.dotmailer.connector.contact_export.job
+            type: import
+            steps:
+                removeContacts:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.importexport.reader.removed_contact_export
+                        processor: oro_dotmailer.importexport.processor.export_removed
+                        writer:    oro_dotmailer.importexport.writer.export.removed_contacts
+                    parameters:
+                        batch_size: 1000
+                updateMarketingListStateItems:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.importexport.reader.unsubscribed_contact_sync
+                        processor: oro_dotmailer.importexport.processor.unsubscribed_contact_sync
+                        writer:    oro_dotmailer.importexport.writer.unsubscribed_contact_sync
+                    parameters:
+                        batch_size: 1000
+                syncMarketingListItemsWithContacts:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\ContactSyncStep
+                    services:
+                        reader:    oro_dotmailer.connector.export_contacts
+                        processor: oro_dotmailer.importexport.processor.contact_sync
+                        writer:    oro_dotmailer.importexport.writer.contact_sync
+                    parameters:
+                        batch_size: 1000
+                exportContacts:
+                    title: import
+                    class: Oro\Bundle\DotmailerBundle\Step\ExportItemStep
+                    services:
+                        reader:           oro_dotmailer.importexport.reader.scheduled_for_export
+                        processor:        oro_dotmailer.importexport.processor.export_contact
+                        writer:           oro_dotmailer.importexport.writer.export.contacts
+                        contextRegistry:  oro_importexport.context_registry
+                        registry:         doctrine
+                    parameters:
+                        batch_size: 10000
+
+        dotmailer_datafield_import:
+            title: oro.dotmailer.connector.datafield.job
+            type: import
+            steps:
+                importDataFields:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.connector.datafield
+                        processor: oro_dotmailer.importexport.processor.datafield
+                        writer:    oro_dotmailer.importexport.writer.import
+                    parameters:
+                        batch_size: 1000
+                removeNotExistingDataFields:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_dotmailer.importexport.reader.datafield.remove
+                        processor: oro_dotmailer.importexport.processor.datafield.remove
+                        writer:    oro_dotmailer.importexport.writer.import.remove

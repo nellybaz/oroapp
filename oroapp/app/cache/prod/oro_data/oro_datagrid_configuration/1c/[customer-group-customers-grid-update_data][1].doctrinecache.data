@@ -1,0 +1,3 @@
+0
+a:1:{s:36:"customer-group-customers-grid-update";a:2:{s:7:"extends";s:42:"customer-group-customers-grid-update-basic";s:6:"source";a:2:{s:5:"query";a:1:{s:6:"select";a:1:{i:0;s:142:"(CASE WHEN (:group = customer.group OR customer.id IN (:data_in)) AND customer.id NOT IN (:data_not_in) THEN true ELSE false END) as hasGroup
+";}}s:15:"bind_parameters";a:1:{i:0;a:1:{s:4:"name";s:5:"group";}}}}}

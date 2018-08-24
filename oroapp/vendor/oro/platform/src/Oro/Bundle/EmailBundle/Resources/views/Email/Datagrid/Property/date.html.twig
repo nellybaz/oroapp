@@ -1,0 +1,10 @@
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+
+{% set date = record.getValue('receivedAt') %}
+{% set isNew = record.getValue('is_new') %}
+
+<span class="nowrap">
+    {%- if isNew %}<strong>{% endif -%}
+    {{ EA.date_smart_format(date) }}
+    {%- if isNew %}</strong>{% endif -%}
+</span>

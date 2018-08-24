@@ -1,0 +1,215 @@
+{% macro calendar_event_view_template(id) %}
+
+<script type="text/template" id="activity-context-activity-list">
+    <div class="context-item" style="border: none" data-cid="<%= entity.cid %>">
+        <span data-id="<%- entity.get('targetId') %>">
+            <span class="<%- entity.get('icon') %>"></span>
+
+            <% if (entity.get('link')) { %>
+                <a href="<%- entity.get('link') %>">
+                    <span class="context-label" title="<%- entity.get('title') %>"><%- entity.get('title') %></span>
+                </a>
+            <% } else { %>
+                <span class="context-label" title="<%- entity.get('title') %>"><%- entity.get('title') %></span>
+            <% } %>
+            <% if (editable) { %>
+                <i class="fa-close"></i>
+            <% } %>
+        </span>
+    </div>
+</script>
+
+<script type="text/html" id="{{ id }}">
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import 'OroCalendarBundle::invitations.html.twig' as invitations %}
+    {% macro rawLink(parameters) %}
+        {% spaceless %}
+            <a href="{{ parameters.path }}" {% for dataItemName,dataItemValue in parameters.data %} data-{{ dataItemName }}="{{ dataItemValue|e('html_attr')|raw }}"{% endfor %} title="{{ parameters.title }}">{{ parameters.label|trim }}</a>
+        {% endspaceless %}
+    {% endmacro %}
+    <div class="widget-content">
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.title.label'|trans, '<%= formatter.string(title) %>') }}
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.description.label'|trans, '<%= formatter.html(description) %>') }}
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.start.label'|trans, '<%= formatter.dateTime(start) %>') }}
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.end.label'|trans, '<%= formatter.dateTime(end) %>') }}
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.all_day.label'|trans, '<%= formatter.bool(allDay) %>') }}
+                {{ UI.renderHtmlProperty('oro.calendar.calendarevent.organizer.label'|trans, '<%= organizerHTML %>') }}
+                <% if (recurrence) { %>
+                    {{ UI.renderHtmlProperty('oro.calendar.calendarevent.recurrence.label'|trans, '<%= formatter.string(recurrencePattern) %>') }}
+                <% } %>
+                <% if (recurringEventId && recurrencePattern) { %>
+                    {{ UI.renderHtmlProperty('oro.calendar.calendarevent.recurrence.exception.label'|trans, '<%= formatter.string(recurrencePattern) %>') }}
+                <% } %>
+
+                <% var attendeesView = _.map(attendees, function (attendee) {
+                    var attendeeName = attendee.displayName;
+                    if (attendee.fullName) {
+                        attendeeName = attendee.fullName;
+                    }
+
+                    if (attendee.email) {
+                        attendeeName = attendeeName ? attendeeName + ' (' + attendee.email + ')' : attendee.email;
+                    }
+
+                    return attendeeName;
+                }); %>
+                <% if (attendeesView.length > 0) { %>
+                    {{ UI.renderAttribute('oro.calendar.calendarevent.attendees.label'|trans, '<div class="calendar-event-attendees-widget"><%= attendeesView.join(", ") %></div>') }}
+                <% } %>
+                <% if (editableInvitationStatus) { %>
+                    <% var properties = []; %>
+                    {% set statuses=[
+                        constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_ACCEPTED'),
+                        constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_TENTATIVE'),
+                        constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_DECLINED'),
+                    ] %}
+                    {% for status in statuses %}
+                        <% if (invitationStatus !== "{{ status }}") { %>
+                            <% var link='{{
+                                    _self.rawLink({
+                                        'label': invitations.calendar_event_invitation_going_status(status),
+                                        'title': invitations.calendar_event_invitation_going_status(status),
+                                        'path': '%path%',
+                                        'data':  {
+                                            'page-component-module': 'oroui/js/app/components/view-component',
+                                            'page-component-options': {
+                                                'view':'orocalendar/js/app/views/change-status-view',
+                                                'triggerEventName': 'widget_success:attendee_status:change'
+                                            }|json_encode
+                                        }
+                                    })
+                                }}';
+                                link = link.replace('%path%', invitationUrls["{{ status }}"]);
+                                properties.push(link);
+                            %>
+                        <% } else { %>
+                            <% properties.push('{{ invitations.calendar_event_invitation_going_status(status) }}'); %>
+                        <% } %>
+                    {% endfor %}
+                    <div class="invitation-response">
+                        {{ UI.renderHtmlProperty('oro.calendar.calendarevent.action.going_status.label'|trans, '<%= formatter.html(properties.join("&nbsp")) %>') }}
+                    </div>
+                <% } %>
+
+                <div class="activity-context-activity">
+                {{ UI.renderAttribute('oro.activity.contexts.label'|trans, '<div class="activity-context-activity-items"></div>') }}
+                </div>
+                {% placeholder calendar_event_widget_view_additional_properties %}
+            </div>
+            <div class="widget-actions form-actions" style="display: none;">
+                <% if (id != null && removable) { %>
+                {{
+                    UI.deleteButton({
+                        'aCss': 'no-hash',
+                        'id': 'btn-remove-calendarevent',
+                        'dataMessage': 'oro.calendar.delete_event.confirmation'|trans,
+                        'title': 'oro.calendar.delete_event.title'|trans,
+                        'label': 'Delete'|trans,
+                        'data': {'action-name': 'delete', 'url': 'oro_calendar_event_delete'}
+                    })
+                }}
+                <% } %>
+                <% if (id == null || (id != null && editable)) { %>
+                <button class="btn" type="button" data-action-name="edit">{{ 'oro.ui.edit'|trans }}</button>
+                <% } %>
+                {% placeholder calendar_event_widget_view_actions_jstemplate %}
+            </div>
+        </div>
+    </div>
+</script>
+{% endmacro %}
+
+{% macro calendar_event_form_template(id, form) %}
+<script type="text/html" id="{{ id }}">
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import 'OroCalendarBundle::invitations.html.twig' as invitations %}
+    {% set calendarEventDateRange = {
+        module: 'orocalendar/js/app/components/calendar-event-date-range-component',
+        name: 'calendar-event-date-range',
+        options: {
+            nativeMode: isMobileVersion()
+        }
+    } %}
+    {% set calendarEventRecurrence = {
+        module: 'orocalendar/js/app/components/calendar-event-recurrence-component',
+        name: 'calendar-event-recurrence',
+        options: {
+            inputNamePrefixes: form.recurrence.vars.full_name
+        }
+    } %}
+    {% set rightColumn %}
+        <div {{ UI.renderPageComponentAttributes(calendarEventDateRange) }}>
+            {{ form_row(form.start) }}
+            {{ form_row(form.end) }}
+            {{ form_row(form.allDay) }}
+        </div>
+        <% if (editAsException || recurringEventId) { %>
+            {{ UI.renderHtmlProperty(
+                'oro.calendar.calendarevent.recurrence.exception.label'|trans,
+                '<%= recurrencePattern %>'
+            ) }}
+        <% } else { %>
+            <div {{ UI.renderPageComponentAttributes(calendarEventRecurrence) }}></div>
+        <% } %>
+    {% endset %}
+    {% set leftColumn %}
+        {% if form.calendar is defined %}
+            <% if (!id) { %>
+                {{ form_row(form.calendar) }}
+            <% } %>
+        {% endif %}
+        {{ form_row(form.title) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.backgroundColor) }}
+        {% if form.calendarUid is defined %}
+            {{ form_row(form.calendarUid) }}
+        {% endif %}
+        {{ form_row(form.attendees) }}
+        <% if (!recurrence) { %>
+            {{ form_row(form.reminders) }}
+        <% } %>
+        {{ form_row(form.notifyAttendees) }}
+        {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+            {{ form_row(child) }}
+        {% endfor %}
+        {{ invitations.notify_attendees_component() }}
+    {% endset %}
+
+    <div class="widget-content">
+        <div class="alert alert-error" style="display: none;"></div>
+        <div class="form-container">
+            <form id="{{ form.vars.id }}" name="{{ form.vars.name }}" action="#">
+                <fieldset class="form form-horizontal">
+                    <div class="span6">
+                        {{ leftColumn|oro_js_template_content|raw }}
+                    </div>
+                    <div class="span6">
+                        {{ rightColumn|oro_js_template_content|raw }}
+                    </div>
+                    <div class="widget-actions form-actions" style="display: none;">
+                        <% if (id != null && removable) { %>
+                        {{
+                            UI.deleteButton({
+                                'aCss': 'no-hash',
+                                'id': 'btn-remove-calendarevent',
+                                'dataMessage': 'oro.calendar.delete_event.confirmation'|trans,
+                                'title': 'oro.calendar.delete_event.title'|trans,
+                                'label': 'Delete'|trans,
+                                'data': {'action-name': 'delete', 'url': 'oro_calendar_event_delete'}
+                            })
+                        }}
+                        <% } %>
+                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        <% if (id == null || (id != null && editable)) { %>
+                        <button class="btn btn-primary" type="submit">{{ 'Save'|trans }}</button>
+                        <% } %>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+        {{ oro_form_js_validation(form)|oro_js_template_content|raw }}
+    </div>
+</script>
+{% endmacro %}

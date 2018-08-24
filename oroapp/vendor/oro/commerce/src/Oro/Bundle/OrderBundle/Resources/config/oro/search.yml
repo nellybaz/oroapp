@@ -1,0 +1,38 @@
+search:
+    Oro\Bundle\OrderBundle\Entity\Order:
+        alias:                          oro_order
+        title_fields:                   [identifier]
+        route:
+            name:                       oro_order_view
+            parameters:
+                id:                     id
+        search_template:                OroOrderBundle:Order:searchResult.html.twig
+        fields:
+            -
+                name:                   identifier
+                target_type:            text
+                target_fields:          [identifier]
+            -
+                name:                   customer
+                relation_type:          many-to-one
+                relation_fields:
+                    -
+                        name:           name
+                        target_type:    text
+                        target_fields:  [name]
+            -
+                name:                   customerUser
+                relation_type:          many-to-one
+                relation_fields:
+                    -
+                        name:           email
+                        target_type:    text
+                        target_fields:  [email]
+                    -
+                        name:           firstName
+                        target_type:    text
+                        target_fields:  [firstName]
+                    -
+                        name:           lastName
+                        target_type:    text
+                        target_fields:  [lastName]

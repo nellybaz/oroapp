@@ -1,0 +1,14 @@
+navigation:
+    menu_config:
+        items:
+            activities_tab:
+                label:    'oro.activity.menu.activities_tab.label'
+                uri:      '#'
+                position: 30
+                extras:
+                    icon: fa-puzzle-piece
+
+        tree:
+            application_menu:
+                children:
+                    activities_tab: ~

@@ -1,0 +1,12 @@
+<div class="widget-content"
+     data-page-component-module="oroworkflow/js/app/components/activate-form-widget-component"
+     data-page-component-options="{{ {
+         '_wid': app.request.get('_wid'),
+         'success': savedId is defined,
+         'deactivated': deactivated is defined ? deactivated|join(', ') : null,
+         'selectors': {'form': '#' ~ form.vars.id},
+         'error': error is defined ? error : null
+     }|json_encode }}">
+
+     {{ form_row(form) }}
+</div>

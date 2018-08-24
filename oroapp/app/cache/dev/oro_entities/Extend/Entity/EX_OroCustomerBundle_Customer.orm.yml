@@ -1,0 +1,15 @@
+Extend\Entity\EX_OroCustomerBundle_Customer:
+    type: mappedSuperclass
+    fields:
+        lifetime:
+            column: lifetime
+            type: money
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

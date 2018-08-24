@@ -1,0 +1,2 @@
+0
+a:7:{s:2:"id";a:3:{s:1:"i";i:1870;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:7:"zipCode";a:3:{s:1:"i";i:1871;s:1:"h";b:0;s:1:"t";s:6:"string";}s:13:"zipRangeStart";a:3:{s:1:"i";i:1872;s:1:"h";b:0;s:1:"t";s:6:"string";}s:11:"zipRangeEnd";a:3:{s:1:"i";i:1873;s:1:"h";b:0;s:1:"t";s:6:"string";}s:9:"createdAt";a:3:{s:1:"i";i:1874;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"updatedAt";a:3:{s:1:"i";i:1875;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:15:"taxJurisdiction";a:3:{s:1:"i";i:1876;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

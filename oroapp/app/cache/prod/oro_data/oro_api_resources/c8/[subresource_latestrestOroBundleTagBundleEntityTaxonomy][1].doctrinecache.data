@@ -1,0 +1,2 @@
+0
+a:1:{i:0;a:2:{s:5:"owner";a:4:{i:0;s:33:"Oro\Bundle\UserBundle\Entity\User";i:1;a:1:{i:0;s:33:"Oro\Bundle\UserBundle\Entity\User";}i:2;b:0;i:3;a:3:{i:0;s:19:"update_relationship";i:1;s:16:"add_relationship";i:2;s:19:"delete_relationship";}}s:12:"organization";a:4:{i:0;s:49:"Oro\Bundle\OrganizationBundle\Entity\Organization";i:1;a:1:{i:0;s:49:"Oro\Bundle\OrganizationBundle\Entity\Organization";}i:2;b:0;i:3;a:3:{i:0;s:19:"update_relationship";i:1;s:16:"add_relationship";i:2;s:19:"delete_relationship";}}}}

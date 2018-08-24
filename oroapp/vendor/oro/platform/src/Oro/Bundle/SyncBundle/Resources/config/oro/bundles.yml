@@ -1,0 +1,3 @@
+bundles:
+    - JDare\ClankBundle\JDareClankBundle
+    - { name: Oro\Bundle\SyncBundle\OroSyncBundle, priority: -246 }

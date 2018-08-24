@@ -1,0 +1,42 @@
+"Could not perform action": "Could not perform action"
+
+oro:
+    user:
+        update_status.label: Update status
+        suggest_password.label: Suggest password
+        show_hide_password.label: Show/hide password
+        reset_password:
+            flash:
+                success: Reset password email has been sent to user
+            popup:
+                question: User <b>{{ user }}</b> will receive the email to reset password and will be disabled from login.
+                title: Reset password
+                label: Reset
+            mass_action:
+                question: The selected users will receive reset password by email and will be disabled from login.
+                title: Reset password
+                label: Reset
+        change_password:
+            flash:
+                success: The password has been changed
+        mass_actions:
+            enable_users:
+                confirm_title: Disable Users
+                confirm_content: Selected users will be enabled.
+                confirm_ok: Apply
+            disable_users:
+                confirm_title: Enable users
+                confirm_content: Selected users will be disabled.
+                confirm_ok: Apply
+        apikey_gen:
+            new_key:
+                success: Generate key was successful. New key:{{ new_api_key }}
+    role:
+        tabs:
+            all.label: All
+            system_capabilities.label: System Capabilities
+        capability_block:
+            label: Capabilities
+            select_all: Select All
+            no_capabilities_available: This group has no capabilities
+        content_outdated: "The current role has been updated. Please, <a href=\"#\" onclick=\"window.location.reload(false);return false;\">refresh the page</a> to view new changes"

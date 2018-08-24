@@ -1,0 +1,340 @@
+"No workflow items are available": "No workflow items are available"
+"Disabled": "Disabled"
+"Active": "Active"
+"Current Step": "Current Step"
+"Status": "Status"
+"Workflow Name": "Workflow Name"
+"Start Date": "Start Date"
+"Are you sure you want to delete this workflow item?": "Are you sure you want to delete this workflow item?"
+"Delete workflow item": "Delete workflow item"
+"Actions": "Actions"
+"Step information saved": "Step information saved"
+Update: Update
+New: New
+Save: Save
+'Transition name': 'Transition name'
+From step: From step
+To step: To step
+Warning message: Warning message
+Button: Button
+Button style: Button style
+Button preview: Button preview
+Attributes: Attributes
+View form: View form
+Popup window: Popup window
+Separate page: Separate page
+Cancel: Cancel
+OK: OK
+This value should be {{ limit }} or more.: This value should be {{ limit }} or more.
+This value should be {{ limit }} or less.: This value should be {{ limit }} or less.
+This value should be a valid number.: This value should be a valid number.
+Name: Name
+Final: Final
+Start: Start
+Inactive: Inactive
+Configuration: Configuration
+Transitions: Transitions
+Add transition: Add transition
+Add transition to this step: Add transition to this step
+Step: Step
+Position: Position
+Update this step: Update this step
+Clone this step: Clone this step
+Delete this step: Delete this step
+Entity field: Entity field
+Label: Label
+Leave empty for system value: Leave empty for system value
+Required: Required
+Add: Add
+Reset: Reset
+Apply: Apply
+Info: Info
+System: System
+Yes: Yes
+No: No
+Update field: Update field
+Delete field: Delete field
+Update this transition: Update this transition
+Clone this transition: Clone this transition
+Delete this transition: Delete this transition
+General: General
+Add step: Add step
+Auto sort: Auto sort
+Designer: Designer
+Workflow steps and transitions: Workflow steps and transitions
+Unmet conditions: Unmet conditions
+Submit: Submit
+General Information: General Information
+Create Workflow: Create Workflow
+Workflow activated: Workflow activated
+Workflow deactivated: Workflow deactivated
+There are no transitions yet.: There are no transitions yet.
+Reset workflow data: Reset workflow data
+Show Transition Labels: Show Transition Labels
+
+oro:
+    workflow:
+        permission:
+            update_configuration:
+                label: Configure
+            VIEW_WORKFLOW: View Workflow
+            PERFORM_TRANSITIONS: Perform transitions
+            PERFORM_TRANSITION: Perform transition
+        translation:
+            workflow.label: Workflow
+            context:
+                workflow_label: 'Workflow "{{ workflow_label }}" -> Name'
+                step_label: 'Workflow "{{ workflow_label }}" -> Step "{{ step_label }}" -> Label'
+                transition_label: 'Workflow "{{ workflow_label }}" -> Transition "{{ transition_label }}" -> Label'
+                transition_warning_message: 'Workflow "{{ workflow_label }}" -> Transition "{{ transition_label }}" -> Warning Message'
+                transition_attribute_label: 'Workflow "{{ workflow_label }}" -> Transition "{{ transition_label }}" -> Attribute "{{ transition_attribute_label }}"'
+                workflow_attribute_label: 'Workflow "{{ workflow_label }}" -> Attribute "{{ workflow_attribute_label }}"'
+        action:
+            process:
+                activate:   Activate
+                deactivate: Deactivate
+
+            workflow:
+                reset_data: Reset workflow "{workflow}"
+                go_to_translations: 'To translations grid'
+
+        block:
+            title:
+                process_info: Process Information
+                general_information: General Information
+                steps_and_transitions: Steps & Transitions
+            view:
+                process:
+                    trigger:
+                        description: '%when% after the %after% has been %event%'
+                        when:
+                            immediately: Immediately
+                        after:
+                            property: property
+                            entity:   entity
+                        event:
+                            create:  created
+                            delete:  deleted
+                            update:  updated
+                        cron.description: 'Cron expression: {{ cron }}'
+                workflow:
+                    default_step: Default step
+
+        entity_config:
+            active_workflow:
+                label: 'Active workflow'
+                none:  'none'
+
+            show_step_in_grid.choice:
+                hide: 'Hide'
+                show: 'Show'
+
+            show_step_in_grid.label: 'Workflow step in grid'
+
+
+        event:
+            notification:
+                workflow_transition: Workflow transition
+
+        menu:
+            process_definition_list.description:  Process management UI
+            workflow_definition_list.description: Workflow management UI
+
+        notification:
+            process:
+                activated:   Process has been activated successfully
+                deactivated: Process has been deactivated successfully
+            workflow:
+                could_not_be_cloned: 'Workflow could not be cloned'
+                could_not_be_saved: 'Workflow could not be saved'
+
+        status:
+            system.label: 'System'
+            readonly.label: 'Read-only'
+
+        processdefinition:
+            entity_label:                 Process
+            entity_plural_label:          Processes
+            actions_configuration.label:  Actions configuration
+            enabled.label:                Enabled
+            execution_order.label:        Execution order
+            name.label:                   Code
+            label.label:                  Name
+            related_entity.label:         Related entity
+            datagrid.view:                View
+            exclude_definitions.label:    Exclude Definitions
+            pre_conditions_configuration.label: Pre-conditons configuration
+
+        processtrigger:
+            entity_label:         Process Trigger
+            entity_plural_label:  Process Triggers
+            id.label:             ID
+            definition.label:     Process definition
+            event.label:          Event
+            field.label:          Field
+            priority.label:       Priority
+            queued.label:         Queued
+            time_shift.label:     Time shift
+            cron.label:           Cron Expression
+
+        variable:
+            save:
+                success_message: "Workflow configuration successfully updated."
+
+        transition:
+            start: "Start %workflow%"
+            form:
+                submit.label: Submit
+                cancel.label: Cancel
+
+        workflowdefinition:
+            entity_label:                 Workflow
+            entity_plural_label:          Workflows
+            label.label:                  Name # this translation has been chosen because it doesn't confuse users
+            system.label:                 System
+            configuration.label:          Configuration
+            entity_acls.label:            Entity ACLs
+            entity_attribute_name.label:  Entity attribute name
+            name.label:                   Code # this translation has been chosen because it doesn't confuse users
+            name.description:             "The name of the workflow"
+            related_entity.label:         Related entity
+            related_entity.description:   "The related entity is the entity for which the workflow is created. When the workflow is active, it can be launched and executed on the records of its related entity."
+            start_step.label:             Default step
+            start_step.tooltip:          "When a default step is specified, all newly created records of the Related entity will have a workflow associated to them; and the workflow will be in the default step. If no step is selected, all newly created records will have no workflow associated to them, and it must be launched with one of the starting transitions."
+            steps.label:                  Steps
+            steps_display_ordered.label:  Display steps ordered
+            steps_display_ordered.description: "When this box is selected, all workflow steps will be shown on the Related entity view page so the entire progression path can be seen. Otherwise, only the current step and the past steps of the workflow will be shown.<br/><strong>Note:</strong> We recommend not to check this box for non-linear workflows where two or more steps have the same priority to avoid confusion."
+            active.label:                 Active
+            priority.label:               "Priority"
+            groups.label:                 Groups
+            exclusive_active_groups.label: "Exclusive Active Groups"
+            exclusive_record_groups.label: "Exclusive Record Groups"
+            scopes.label:                 Workflow Scopes
+            applications.label:           "Applications"
+            transition_name.label:        Transition Name
+
+            attribute:
+                property_path.tooltip:    "This is the field of the workflow entity or its related entities that will be appear on the view form of the transition. Use these if you want user to add or edit some entity data in the transition."
+                label.tooltip:            "Use this if you want to re-label the entity field on the view form of the transition. If you leave this field blank, a system value will be used as a label."
+                required.tooltip:         "Check this box if you want to require the user to add some information to this entity field. Note that this requirement applies to the view form of transition only, and has no effect on entity attributes."
+
+            transition:
+                name.tooltip:             "This is an user-interface name for the transition. If Button label is not provided, the name also appears on the transition button and as the title of the transition form."
+                step_from.tooltip:        "The workflow step, for which the transition button should appear on the entity page."
+                step_to.tooltip:          "The step to which the workflow will progress after the transition is performed."
+                display_type.tooltip:     "Transition attributes can appear in one of two available forms: In the popup window, which is a default transition behavior suitable for most cases, or on the separate page, which should be used with care and only for attribute-heavy transitions."
+                destination_page:
+                    default.label: 'Original Page'
+                    name.label: 'Entity Index Page'
+                    view.label: 'Entity View Page'
+                message.tooltip:          "If you want to show a warning popup message to the user before transition is executed, put the text of the warning into this field."
+                icon.tooltip:             "An icon that will appear on the transition button before the transition name."
+                button_color.tooltip:     "This control specifies the visual style of the transition button."
+                button_preview.tooltip:   "This is the live preview of the transition button as it will appear on the entity page."
+                button_label.tooltip:     "This text appears on the transition button and as the title of the transition form. If not provided, the value of the Name field is used."
+                button_title.tooltip:     "This message appears when a user moves the pointer over the transition button. Use it to provide transition description or any other additional information."
+
+            step:
+                name.tooltip:             "The name of the step that will be displayed on the entity record."
+                order.tooltip:            "A number that determines the position of the step in the workflow. The higher is the number, the further is the step from the start"
+                is_final.tooltip:         'This option marks the step as the logical "end" or the outcome of the workflow. This is a purely logical property that is needed to distinguish such steps for drawing the funnel charts or creating reports on the workflow data. Marking the step as final has no effect on the flow itself.'
+
+            datagrid:
+                view: View
+                update: Edit
+                delete: Delete
+                activate: Activate
+                deactivate: Deactivate
+
+            placeholder:
+                select_replacement: Select Workflows
+
+            form:
+                workflow_to_deactivation_message: "The following workflows will be deactivated automatically according to the exclusive workflow group settings:"
+                replace_message: "Optionally you may select workflows to be deactivated. Deactivation will reset workflow data of selected workflows."
+            grid.label: "Workflow Name"
+
+        workflowitem:
+            entity_label:             Workflow Item
+            entity_plural_label:      Workflow Items
+            entity_description:       Represents workflow item
+            id.label:                 ID
+            acl_identities.label:     ACL identities
+            current_step.label:       Current step
+            definition.label:         Workflow definition
+            entity_id.label:          Entity identifier
+            entity_class.label:       Entity class
+            serialized_data.label:    Serialized data
+            transition_records.label: Transition records
+            workflow_name.label:      Workflow name
+
+            related_entity.label:       Workflow Item
+            related_entity.description: Related field for Workflow Item
+
+        workflowstep:
+            entity_label:         Workflow Step
+            entity_plural_label:  Workflow Steps
+            entity_description:   Represents workflow step
+            id.label:             ID
+            definition.label:     Workflow definition
+            final.label:          Is final
+            label.label:          Name # this translation has been chosen because it doesn't confuse users
+            name.label:           Code # this translation has been chosen because it doesn't confuse users
+            step_order.label:     Step order
+
+            related_entity.label:       Workflow Step
+            related_entity.description: Related field for Workflow Step
+            grid.label:                 Step
+
+        basetransitiontrigger:
+            entity_label:              Base Transition Trigger
+            entity_plural_label:       Base Transition Triggers
+            id.label:                  ID
+            workflow_definition.label: Workflow Definition
+            transition_name.label:     Transition Name
+            queued.label:              Is Queued
+
+        transitioncrontrigger:
+            entity_label:              Transition Cron Trigger
+            entity_plural_label:       Transition Cron Triggers
+            id.label:                  ID
+            workflow_definition.label: Workflow Definition
+            transition_name.label:     Transition Name
+            queued.label:              Is Queued
+            cron.label:                Cron Expression
+            filter.label:              Filter
+
+        transitioneventtrigger:
+            entity_label:              Transition Event Trigger
+            entity_plural_label:       Transition Event Triggers
+            id.label:                  ID
+            workflow_definition.label: Workflow Definition
+            transition_name.label:     Transition Name
+            queued.label:              Is Queued
+            entity_class.label:        Entity Class
+            event.label:               Event
+            field.label:               Field Name
+            relation.label:            Relation Expression
+            require.label:             Require Expression
+
+        form:
+            name.label: Name
+            button_label.label: Button label
+            button_title.label: Button title
+            from_step.label: From step
+            to_step.label: To step
+            view_form.label: View form
+            destination_page.label: Destination page
+            warning_message.label: Warning message
+            button_icon.label: Button icon
+            button_style.label: Button style
+            button_preview.label: Button preview
+            entity_field.label: Entity field
+            label.label: Label
+            required.label: Required
+            position.label: Position
+            final.label: Final
+            exclusive_active_groups.tooltip: "Only one of same exclusive active group workflows can be activated in the system at the same time"
+            exclusive_record_groups.tooltip: "Only one workflow can be started for a related entity within a same exclusive record group"
+            choose_workflow: 'Choose a workflow...'
+            choose_transition: 'Choose a transition...'

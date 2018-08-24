@@ -1,0 +1,54 @@
+services:
+    oro_api.add_relationship.processor:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\AddRelationshipProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - add_relationship
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.add_relationship.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\AddRelationship\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: add_relationship, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # transform_data
+    #
+
+    oro_api.add_relationship.build_form_builder:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\AddRelationship\BuildFormBuilder
+        arguments:
+            - '@oro_api.form_helper'
+            - '@form.property_accessor'
+        tags:
+            - { name: oro.api.processor, action: add_relationship, group: transform_data, priority: 100 }
+
+    #
+    # save_data
+    #
+
+    #
+    # normalize_result
+    #

@@ -1,0 +1,62 @@
+{% set widgetId = app.request.get('_wid') %}
+{% set widgetContentId = 'widget-content-' ~ widgetId %}
+{% set widgetType = widgetType|default('dashboard') %}
+{% set widgetClass = (widgetName|replace({'_': '-'}))|lower %}
+{% if not widgetTitle is defined %}
+    {% if not widgetLabel is defined %}
+        {% set widgetTitle = false %}
+    {% elseif widgetConfiguration is defined and widgetConfiguration.title is defined and widgetConfiguration.title.value is not empty %}
+        {% set widgetTitle = widgetConfiguration.title.value|trans %}
+    {% else %}
+        {% set widgetTitle = widgetLabel|trans %}
+    {% endif %}
+{% endif %}
+
+<div id="{{ widgetContentId }}" class="invisible widget-content {{ widgetType }}-widget-content {{ widgetClass }}-widget-content" data-widget-title="{{ widgetTitle }}">
+    {% block content %}
+    {% endblock %}
+    {% if widgetConfiguration is defined %}
+        {% for configName, config in widgetConfiguration %}
+            {% if config.show_on_widget and config.value is not null%}
+                {% if config.value is iterable %}
+                    {% for key,value in config.value %}
+                <div class="widget-config-data"><stong>{{ key|trans }}</stong>: {{ value }}</div>
+                    {% endfor %}
+                {% else %}
+                    {% if config.options is defined and config.options.label is defined %}
+                        {% set label = config.options.label %}
+                    {% else %}
+                        {% set label = configName %}
+                    {% endif %}
+                    {% if config.options is defined and config.options.choices is defined %}
+                        {% set value = config.options.choices[config.value]|trans %}
+                    {% else %}
+                        {% set value = config.value %}
+                    {% endif %}
+                    <div class="widget-config-data"><stong>{{ label|trans }}</stong>: {{ value }}</div>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% block actions %}
+        <div class="widget-actions">
+            {% if actions is defined %}
+                {% for action in actions -%}
+                    {% if action.type is not defined or action.type == "button" %}
+                        {% set cssType = "btn btn-mini " ~ action.class|default('btn-primary') %}
+                    {% else %}
+                        {% set cssType = "dashboard-link" %}
+                    {% endif %}
+                    <a class="dashboard-btn  {{ cssType }}{% if not action.url is defined or not action.url %} no-hash{% endif %}"
+                        href="{{ action.url|default('javascript:void(0);') }}"
+                        {% if action.data is defined %}
+                            {% for dataItemName,dataItemValue in action.data %}
+                            data-{{ dataItemName }}="{{ dataItemValue|e('html_attr')|raw }}"
+                            {% endfor %}
+                        {% endif %}
+                    >{% if action.icon is defined %}<i class="fa-{{ action.icon }}"></i> {% endif %}{{ action.label }}</a>
+                {%- endfor %}
+            {% endif %}
+        </div>
+    {% endblock %}
+</div>

@@ -1,0 +1,11 @@
+"One of the addresses must be set as primary.": "One of the addresses must be set as primary."
+"Role with this name already exists": "Role with this name already exists"
+
+oro:
+    customer:
+        message:
+            password_mismatch: 'The password fields must match.'
+            circular_customer_reference: 'Circular reference detected. ''{{ parentName }}'' cannot be parent of ''{{ customerName }}'' because it''s his child'
+            user_without_role: 'Please select at least one role before you enable the customer user'
+            user_customer_exists: 'This email is already used.'
+            scope_with_customer_and_group: 'Should be chosen only one field. Customer Group or Customer.'

@@ -1,0 +1,30 @@
+oro:
+    integration:
+        error: Error was occurred, please try later.
+        submit: Are you sure you want to change type?
+        change_type: Change Type
+
+        delete_sync_integration_window:
+            content: "Warning: Removing the integration will delete all related data"
+            button_ok: Yes, Delete
+            title: Delete Confirmation
+            success: Integration and all related data were deleted
+        channel.sync_priority.tooltip: >
+            Select if your local version of the data or    the remote application
+            data get priority in the case that both were updated since the last sync process.
+
+        force_sync:
+            title: Confirm full integration re-sync
+            message: 'Attention: This action will start full re-synchronization of all {{ integration_name }} data. It might require some time to complete.'
+            ok: Run Re-sync
+            cancel: Cancel
+
+        activate:
+            fail:
+                message:
+                    Failed to activate integration.
+
+        deactivate:
+            fail:
+                message:
+                    Failed to deactivate integration.

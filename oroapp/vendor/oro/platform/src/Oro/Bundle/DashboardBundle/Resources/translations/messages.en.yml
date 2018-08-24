@@ -1,0 +1,115 @@
+oro:
+    dashboard:
+        title:
+            main:            Dashboard
+            quick_launchpad: Quick Launchpad
+            chose_dashboard: Choose dashboard
+            label: Widget title
+            use_default.label: Use default
+
+        entity_label:        Dashboard
+        entity_plural_label: Dashboards
+        id.label:            Id
+        is_default.label:    Is Default
+        label.label:         Label
+        management_title:    Manage Dashboards
+        name.label:          Name
+        owner.label:         Owner
+        widgets.label:       Widgets
+        organization.label:  Organization
+        options.label:       Options
+
+        start_dashboard: Clone from
+        start_dashboard.empty_value: Blank Dashboard
+
+        quick_launchpad_widget_description: This widget gives you access to most commonly used actions and pages
+
+        grid:
+            fields:
+                grid_view.label: Grid view
+
+        no_data_found:    No data found
+
+        no_one_available: You have no dashboards available
+
+        empty_column_message:
+            allowed: Drag your widgets here or <a class="dashboard-widgets-add" href="#">add a new widget</a>.
+            denied: No available widgets
+
+        add_dashboard_widgets:
+            add_to_dashboard: Add
+            add_widget: Add widget
+
+        list: List
+
+        saved_message: Dashboard saved
+
+        menu:
+            dashboards_tab:
+                label: Dashboards
+            dashboards_list:
+                label: Manage Dashboards
+
+        label: Label
+        owner: Owner
+
+        tools_dropdown:
+            label: Tools
+        edit_dashboard_link:
+            title: Edit current dashboard
+            text:  Edit
+        create_dashboard_link:
+            title: Create new dashboard
+            text:  Create
+        delete_dashboard_link:
+            title: Remove current dashboard
+            text:  Delete dashboard
+        chart:
+            year.label: Year
+            month.label: Month
+            date.label: Week
+            day.label: Day
+            time.label: Hour
+        date_range.label: Date range
+        query_filter:
+            label: Advanced Filter
+            collapse: Collapse
+            expand: Expand
+        previous_date_range.label: Compare with previous period
+        datagrid:
+            columns:
+                actions: Actions
+            actions:
+                move_column.label: Move column
+                move_column_up.label: Move column up
+                move_column_down.label: Move column down
+                add.label: Add
+                add_all.label: Add all
+                delete.label: Delete column
+        form.choose_business_unit: Choose a business unit...
+
+        widget:
+            configuration:
+                success: Widget has been successfully configured
+            big_number:
+                choose_metrics: Choose Metrics
+                metrics: Metrics
+                choose_metrics_placeholder: Choose Metrics...
+                metricName: Metric name
+                no_changes: No changes
+                compare_to.label: Compare to
+                no_available_metrics: No available metrics
+            filter:
+                date_range:
+                    today: 'Today'
+                    this_week: 'This week'
+                    this_month: 'This month'
+                    this_quarter: 'This quarter'
+                    this_year: 'This year'
+                    all_time: 'All time'
+            sort_by:
+                label: Sort By
+                property.placeholder: Choose a property...
+                order:
+                    asc.label: Ascending
+                    desc.label: Descending

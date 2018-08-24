@@ -1,0 +1,65 @@
+types:
+    main:
+        label: oro.product.productimage.type.main.label
+        dimensions:
+            - product_original
+            - product_gallery_popup
+            - product_gallery_main
+            - product_large
+            - product_extra_large
+            - product_medium
+            - product_small
+        max_number: 1
+    listing:
+        label: oro.product.productimage.type.listing.label
+        dimensions:
+            - product_extra_large
+            - product_small
+            - product_large
+        max_number: 1
+    additional:
+        label: oro.product.productimage.type.additional.label
+        dimensions:
+            - product_original
+            - product_extra_large
+            - product_small
+        max_number: ~
+dimensions:
+    product_original:
+        width: ~
+        height: ~
+        options:
+            applyProductImageWatermark: true
+    product_gallery_popup:
+        width: 610
+        height: 610
+        options:
+            applyProductImageWatermark: true
+    product_gallery_main:
+        width: 378
+        height: auto
+        options:
+            applyProductImageWatermark: true
+    product_extra_large:
+        width: 378
+        height: 378
+        options:
+            applyProductImageWatermark: true
+    product_large:
+        width: 316
+        height: auto
+        options:
+            applyProductImageWatermark: true
+    product_medium:
+        width: 262
+        height: auto
+        options:
+            applyProductImageWatermark: true
+    product_small:
+        width: 82
+        height: 82
+        options:
+            applyProductImageWatermark: true
+    category_medium:
+        width: 315
+        height: 260

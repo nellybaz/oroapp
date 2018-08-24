@@ -1,0 +1,26 @@
+{% if transitionSuccess  %}
+    {% set widgetResponse = {
+        widget: {
+            trigger: [{
+                eventBroker: 'widget',
+                name: 'transitionSuccess',
+                args: [response]
+            }],
+        }
+    } %}
+{% else %}
+    {% set widgetResponse = {
+        widget: {
+            trigger: [{
+                eventBroker: 'widget',
+                name: 'transitionFailure',
+                args: [{
+                    status: responseCode,
+                    message: responseMessage
+                }]
+            }],
+        }
+    } %}
+{% endif %}
+
+{{ widgetResponse|json_encode|raw }}

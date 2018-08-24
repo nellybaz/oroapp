@@ -1,0 +1,27 @@
+oro_behat_extension:
+  suites:
+    OroDataAuditBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroFormBundle::FormContext
+        - OroDataGridBundle::GridContext
+        - OroSecurityBundle::ACLContext
+      paths:
+        - '@OroDataAuditBundle/Tests/Behat/Features'
+
+  elements:
+    Create User Form:
+      selector: 'form[name="oro_user_user_form"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          RoleForTest Role:
+            locator: '//label[contains(text(),"RoleForTest")]/../input'
+            type: xpath
+          OroCRM Organization:
+            locator: '(//div[contains(@class,"organization-structure")]//input[@type="checkbox"][@data-name="organization"])[1]'
+            type: xpath
+
+    Audit History Grid:
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+      selector: 'div[data-page-component-name^="audit-history-grid"]'

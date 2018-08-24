@@ -1,0 +1,2 @@
+0
+a:3:{i:0;O:56:"Oro\Bundle\EntityConfigBundle\Metadata\Annotation\Config":6:{s:4:"mode";s:7:"default";s:9:"routeName";s:0:"";s:9:"routeView";s:0:"";s:11:"routeCreate";s:0:"";s:13:"defaultValues";a:0:{}s:6:"routes";a:0:{}}i:1;O:26:"Doctrine\ORM\Mapping\Table":5:{s:4:"name";s:9:"oro_scope";s:6:"schema";N;s:7:"indexes";N;s:17:"uniqueConstraints";N;s:7:"options";a:0:{}}i:2;O:27:"Doctrine\ORM\Mapping\Entity":2:{s:15:"repositoryClass";s:56:"Oro\Bundle\ScopeBundle\Entity\Repository\ScopeRepository";s:8:"readOnly";b:0;}}

@@ -1,0 +1,43 @@
+oro:
+    note:
+        enabled:              Enable notes
+
+        entity_label:         Note
+        entity_plural_label:  Notes
+        entity_description:   Additional information that a user can leave about an entity record.
+
+        id.label:             Id
+        add.label:            Add
+        save.label:           Save
+        message:
+            label:            Message
+            description:      The note text.
+        attachment:
+            label:            Attachment
+            description:      The file that is attached to the note.
+        owner.label:          Created By
+        organization.label:   Organization
+        updated_by:
+            label:            Updated By
+            description:      The user who last updated the note record.
+        target:
+            label:            Target
+            description:      The entity record that the note was made about. The note is displayed on the view page of this record.
+
+        action:
+            add:              Add note
+            edit:             Edit note
+            remove:           Remove note
+
+        no_notes_exist:       No notes found
+        widget_updated_by:    Updated by {{ user }}
+        note_added_by:        added by {{ user }}
+        note_updated_by:      added by {{ user }}, updated by {{ editor }}
+        note_update:          Update {{ entity }}
+        note_delete:          Delete {{ entity }}
+        note_saved:           Note saved
+
+    entity_merge:
+        merge_modes:
+            notes_unite: Append
+            notes_replace: Replace

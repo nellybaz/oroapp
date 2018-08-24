@@ -1,0 +1,152 @@
+oro:
+    workflow:
+        quote_flow:
+            label: 'Quote flow'
+            step:
+                open:
+                    label: 'Open'
+                quote_created:
+                    label: 'Quote created'
+            attribute:
+                status:
+                    label: 'Status'
+                quote:
+                    label: 'Quote'
+                customer:
+                    label: 'Customer'
+            transition:
+                quote_send:
+                    label: 'To Quote Sent Step'
+                    warning_message: ''
+                quote_create:
+                    label: 'Create Quote'
+                    warning_message: ''
+                quote_add:
+                    label: 'Create Quote'
+                    warning_message: ''
+        commerce_opportunity_flow:
+            label: 'OroCommerce Opportunity Flow'
+            step:
+                'step:starting_point':
+                    label: 'Start Opportunity Management Flow'
+                open:
+                    label: 'Open'
+                quote_created:
+                    label: 'Quote created'
+                won:
+                    label: 'Won'
+                lost:
+                    label: 'Lost'
+            attribute:
+                opportunity_name:
+                    label: 'Opportunity name'
+                notes:
+                    label: 'Notes'
+                contact:
+                    label: 'Contact'
+                probability:
+                    label: 'Probability'
+                budget_amount:
+                    label: 'Budget Amount'
+                customer_need:
+                    label: 'Customer'
+                proposed_solution:
+                    label: 'Proposed Solution'
+                close_reason_name:
+                    label: 'Close reason name'
+                close_reason:
+                    label: 'Close Reason'
+                close_revenue:
+                    label: 'Close revenue'
+                close_date:
+                    label: 'Close Date'
+                status:
+                    label: 'Status'
+                quote:
+                    label: 'Quote'
+                customer:
+                    label: 'Customer'
+            transition:
+                __start__:
+                    label: 'Start Opportunity Management Flow'
+                    warning_message: ''
+                    attribute:
+                        probability:
+                            label: 'Probability'
+                        status:
+                            label: 'Status'
+                develop:
+                    label: 'Develop'
+                    warning_message: ''
+                    attribute:
+                        budget_amount:
+                            label: 'Budget Amount'
+                        close_date:
+                            label: 'Close Date'
+                        contact:
+                            label: 'Contact'
+                        customer_need:
+                            label: 'Customer'
+                        probability:
+                            label: 'Probability'
+                        proposed_solution:
+                            label: 'Proposed Solution'
+                        status:
+                            label: 'Status'
+                close_won:
+                    label: 'Close as won'
+                    warning_message: ''
+                    attribute:
+                        close_date:
+                            label: 'Close Date'
+                        close_revenue:
+                            label: 'Close revenue'
+                close_lost:
+                    label: 'Close as lost'
+                    warning_message: ''
+                    attribute:
+                        close_date:
+                            label: 'Close Date'
+                        close_reason_name:
+                            label: 'Close reason name'
+                reopen:
+                    label: 'Reopen'
+                    warning_message: ''
+                    attribute:
+                        budget_amount:
+                            label: 'Budget Amount'
+                        close_date:
+                            label: 'Close Date'
+                        contact:
+                            label: 'Contact'
+                        customer_need:
+                            label: 'Customer'
+                        notes:
+                            label: 'Notes'
+                        probability:
+                            label: 'Probability'
+                        proposed_solution:
+                            label: 'Proposed Solution'
+                        status:
+                            label: 'Status'
+                quote_create:
+                    label: 'Create quote'
+                    warning_message: ''
+                quote_develop:
+                    label: 'Develop'
+                    warning_message: ''
+                    attribute:
+                        budget_amount:
+                            label: 'Budget Amount'
+                        close_date:
+                            label: 'Close Date'
+                        contact:
+                            label: 'Contact'
+                        customer_need:
+                            label: 'Customer'
+                        probability:
+                            label: 'Probability'
+                        proposed_solution:
+                            label: 'Proposed Solution'
+                        status:
+                            label: 'Status'

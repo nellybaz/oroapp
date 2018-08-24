@@ -1,0 +1,37 @@
+oro:
+    shoppinglist:
+        entity_label: Shopping List
+        line_item_save:
+            flash:
+                success: Line Item has been saved
+        menu:
+            add_products:
+                success.message: Successfully added to shopping list
+                error.message: Failed to add to shopping list
+        widget:
+            add_to_new_shopping_list: Create New Shopping List
+        datagrid:
+            add_to_shopping_list: Add To Shopping List
+        actions:
+            add_to_shopping_list: Add to {{ shoppingList }}
+            line_items_in_shopping_list: '{{ lineItems }} in {{ shoppingList }}'
+            in_shopping_lists: In Shopping Lists
+            in_shopping_list: In Shopping List
+            update_shopping_list: Update {{ shoppingList }}
+            shopping_list_set_as_default: Shopping list {{ shoppingList }} has been set as default.
+        create_order_confirmation:
+            title: 'Confirmation'
+            message: 'This shopping list contains configurable products with no variations. Proceed to checkout without these products?'
+            accept_button_title: 'Proceed'
+            cancel_button_title: 'Cancel'
+        create_rfp_confirmation:
+            title: 'Confirmation'
+            message: 'This shopping list contains configurable products with no variations. Proceed to RFQ without these products?'
+            accept_button_title: 'Proceed'
+            cancel_button_title: 'Cancel'
+    frontend:
+        shoppinglist:
+            messages:
+                delete_title: Delete Confirmation
+            matrix_grid_order:
+                item_number: 'Item #'

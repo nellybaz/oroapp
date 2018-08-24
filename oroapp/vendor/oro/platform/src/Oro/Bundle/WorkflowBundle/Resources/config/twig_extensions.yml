@@ -1,0 +1,8 @@
+services:
+    oro_workflow.twig.extension.workflow:
+        class: 'Oro\Bundle\WorkflowBundle\Twig\WorkflowExtension'
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }

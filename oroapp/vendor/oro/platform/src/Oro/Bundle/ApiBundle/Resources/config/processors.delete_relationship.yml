@@ -1,0 +1,54 @@
+services:
+    oro_api.delete_relationship.processor:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\DeleteRelationshipProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - delete_relationship
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.delete_relationship.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\DeleteRelationship\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: delete_relationship, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # load_data
+    #
+
+    #
+    # transform_data
+    #
+
+    oro_api.delete_relationship.build_form_builder:
+        class: Oro\Bundle\ApiBundle\Processor\Subresource\DeleteRelationship\BuildFormBuilder
+        arguments:
+            - '@oro_api.form_helper'
+            - '@form.property_accessor'
+        tags:
+            - { name: oro.api.processor, action: delete_relationship, group: transform_data, priority: 100 }
+
+    #
+    # save_data
+    #
+
+    #
+    # normalize_result
+    #

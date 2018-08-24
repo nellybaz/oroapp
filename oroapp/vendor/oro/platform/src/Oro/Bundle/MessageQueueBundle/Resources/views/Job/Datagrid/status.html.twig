@@ -1,0 +1,5 @@
+{% import 'OroMessageQueueBundle::macros.html.twig' as UI %}
+
+{% set job = record.rootEntity %}
+
+<span class="label {{ UI.getJobStatusClass(job) }}">{{ job.status|trans }}</span>

@@ -1,0 +1,22 @@
+styles:
+    inputs:
+        - 'bundles/orocustomer/default/scss/settings/global-settings.scss'
+        - 'bundles/orocustomer/default/scss/variables/primary-menu-container-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/primary-menu-title-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/map-popover-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/registration-instructions-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/topbar-customer-menu-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/permissions-grid-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/action-permissions-config.scss'
+        - 'bundles/orocustomer/default/scss/variables/customer-user-role-edit-config.scss'
+
+        - 'bundles/orocustomer/default/scss/components/customer-form.scss'
+        - 'bundles/orocustomer/default/scss/components/address-form.scss'
+        - 'bundles/orocustomer/default/scss/components/address-form-actions.scss'
+        - 'bundles/orocustomer/default/scss/components/address-form-outer.scss'
+        - 'bundles/orocustomer/default/scss/components/capabilities.scss'
+        - 'bundles/orocustomer/default/scss/components/address-list.scss'
+        - 'bundles/orocustomer/default/scss/components/topbar-customer-menu.scss'
+        - 'bundles/orocustomer/default/scss/components/info-list.scss'
+
+        - 'bundles/orocustomer/default/scss/styles.scss'

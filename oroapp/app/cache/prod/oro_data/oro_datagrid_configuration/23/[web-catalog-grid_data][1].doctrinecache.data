@@ -1,0 +1,2 @@
+0
+a:1:{s:16:"web-catalog-grid";a:3:{s:7:"extends";s:23:"web-catalog-select-grid";s:7:"options";a:2:{s:17:"entity_pagination";b:1;s:12:"mass_actions";a:1:{s:6:"delete";a:1:{s:7:"enabled";b:0;}}}s:7:"actions";a:1:{s:4:"view";a:6:{s:4:"type";s:8:"navigate";s:5:"label";s:20:"oro.grid.action.view";s:4:"link";s:9:"view_link";s:4:"icon";s:3:"eye";s:12:"acl_resource";s:20:"oro_web_catalog_view";s:9:"rowAction";b:1;}}}}

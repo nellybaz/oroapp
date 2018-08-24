@@ -1,0 +1,771 @@
+empty:
+    config: []
+    expected: []
+
+null_fields:
+    config:
+        fields: ~
+    expected: []
+
+empty_fields:
+    config:
+        fields: []
+    expected: []
+
+default_exclusion_policy:
+    config:
+        exclusion_policy: none
+    expected:
+        exclusion_policy: none
+
+exclusion_policy:
+    config:
+        exclusion_policy: all
+    expected:
+        exclusion_policy: all
+
+null_exclusion_policy:
+    config:
+        exclusion_policy: null
+    expected: []
+    error: 'The value null is not allowed for path "entity.exclusion_policy". Permissible values: "all", "none"'
+
+invalid_exclusion_policy:
+    config:
+        exclusion_policy: invalid
+    expected: []
+    error: 'The value "invalid" is not allowed for path "entity.exclusion_policy". Permissible values: "all", "none"'
+
+documentation_resource:
+    config:
+        documentation_resource: test.md
+    expected:
+        documentation_resource: [test.md]
+
+empty_documentation_resource:
+    config:
+        documentation_resource: ''
+    expected: []
+    error: 'The path "entity.documentation_resource.0" cannot contain an empty value, but got "".'
+
+empty_order_by:
+    config:
+        order_by: []
+    expected: []
+
+order_by:
+    config:
+        order_by:
+            field1: ASC
+            field2: DESC
+    expected:
+        order_by:
+            field1: ASC
+            field2: DESC
+
+invalid_direction_in_order_by:
+    config:
+        order_by:
+            field1: other
+    expected: []
+    error: 'The value "other" is not allowed for path "entity.order_by.field1". Permissible values: "ASC", "DESC"'
+
+empty_identifier_field_names:
+    config:
+        identifier_field_names: []
+    expected: []
+
+empty_identifier_field_name:
+    config:
+        identifier_field_names: ['']
+    expected: []
+    error: 'The path "entity.identifier_field_names.0" cannot contain an empty value, but got "".'
+
+invalid_identifier_field_names:
+    config:
+        identifier_field_names: 123
+    expected: []
+    error: 'Invalid type for path "entity.identifier_field_names". Expected array, but got integer'
+
+default_max_results:
+    config:
+        max_results: ~
+    expected: []
+    error: 'Invalid type for path "entity.max_results". Expected int, but got NULL.'
+
+zero_max_results:
+    config:
+        max_results: 0
+    expected:
+        max_results: 0
+
+unlimited_max_results:
+    config:
+        max_results: -1
+    expected:
+        max_results: -1
+
+invalid_max_results:
+    config:
+        max_results: -2
+    expected: []
+    error: 'The value -2 is too small for path "entity.max_results". Should be greater than or equal to -1'
+
+empty_hints:
+    config:
+        hints: []
+    expected: []
+
+hints:
+    config:
+        hints:
+            - HINT_1
+            - {name: HINT_2}
+            - {name: HINT_3, value: class}
+    expected:
+        hints:
+            - {name: HINT_1}
+            - {name: HINT_2}
+            - {name: HINT_3, value: class}
+
+invalid_hints:
+    config:
+        hints:
+            - {name: HINT_1, value: class, extra: val}
+    expected: []
+    error: 'Unrecognized option "extra" under "entity.hints.0"'
+
+empty_post_serialize:
+    config:
+        post_serialize: ~
+    expected: []
+
+post_serialize:
+    config:
+        post_serialize: [class, method]
+    expected:
+        post_serialize: [class, method]
+
+description_cannot_be_set_in_config:
+    config:
+        description: test
+    expected: []
+    error: 'Unrecognized option "description" under "entity"'
+
+documentation_cannot_be_set_in_config:
+    config:
+        documentation: test
+    expected: []
+    error: 'Unrecognized option "documentation" under "entity"'
+
+acl_resource_cannot_be_set_in_config:
+    config:
+        acl_resource: test_acl_resource
+    expected: []
+    error: 'Unrecognized option "acl_resource" under "entity"'
+
+page_size_cannot_be_set_in_config:
+    config:
+        page_size: 123
+    expected: []
+    error: 'Unrecognized option "page_size" under "entity"'
+
+disable_sorting_cannot_be_set_in_config:
+    config:
+        disable_sorting: true
+    expected: []
+    error: 'Unrecognized option "disable_sorting" under "entity"'
+
+enable_inclusion:
+    config:
+        disable_inclusion: false
+    expected:
+        disable_inclusion: false
+
+disable_inclusion:
+    config:
+        disable_inclusion: true
+    expected:
+        disable_inclusion: true
+
+invalid_value_for_disable_inclusion:
+    config:
+        disable_inclusion: 123
+    expected: []
+    error: 'Invalid type for path "entity.disable_inclusion". Expected boolean, but got integer'
+
+enable_fieldset:
+    config:
+        disable_fieldset: false
+    expected:
+        disable_fieldset: false
+
+disable_fieldset:
+    config:
+        disable_fieldset: true
+    expected:
+        disable_fieldset: true
+
+invalid_value_for_disable_fieldset:
+    config:
+        disable_fieldset: 123
+    expected: []
+    error: 'Invalid type for path "entity.disable_fieldset". Expected boolean, but got integer'
+
+enable_meta_properties:
+    config:
+        disable_meta_properties: false
+    expected:
+        disable_meta_properties: false
+
+disable_meta_properties:
+    config:
+        disable_meta_properties: true
+    expected:
+        disable_meta_properties: true
+
+invalid_value_for_disable_meta_properties:
+    config:
+        disable_meta_properties: 123
+    expected: []
+    error: 'Invalid type for path "entity.disable_meta_properties". Expected boolean, but got integer'
+
+all_attributes:
+    config:
+        exclusion_policy: all
+        documentation_resource: [test.md]
+        order_by:
+            id: DESC
+        max_results: 50
+        identifier_field_names: ['id']
+        hints:
+            - HINT_1
+            - {name: HINT_2, value: hint_val2}
+        post_serialize: [class, method]
+    expected:
+        exclusion_policy: all
+        documentation_resource: [test.md]
+        order_by:
+            id: DESC
+        max_results: 50
+        identifier_field_names: ['id']
+        hints:
+            - {name: HINT_1}
+            - {name: HINT_2, value: hint_val2}
+        post_serialize: [class, method]
+
+empty_field:
+    config:
+        fields:
+            field1: ~
+            field2: []
+    expected:
+        fields:
+            field1: []
+            field2: []
+
+field_exclude:
+    config:
+        fields:
+            field1:
+                exclude: true
+            field2:
+                exclude: false
+    expected:
+        fields:
+            field1:
+                exclude: true
+            field2:
+                exclude: false
+
+invalid_field_exclude:
+    config:
+        fields:
+            field1:
+                exclude: 123
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.exclude". Expected boolean, but got integer.'
+
+field_property_path:
+    config:
+        fields:
+            field1:
+                property_path: path1
+    expected:
+        fields:
+            field1:
+                property_path: path1
+
+null_field_property_path:
+    config:
+        fields:
+            field1:
+                property_path: null
+    expected: []
+    error: 'The path "entity.fields.field1.property_path" cannot contain an empty value, but got null.'
+
+empty_field_property_path:
+    config:
+        fields:
+            field1:
+                property_path: ""
+    expected: []
+    error: 'The path "entity.fields.field1.property_path" cannot contain an empty value, but got "".'
+
+field_meta_property:
+    config:
+        fields:
+            field1:
+                meta_property: true
+            field2:
+                meta_property: false
+    expected:
+        fields:
+            field1:
+                meta_property: true
+            field2:
+                meta_property: false
+
+invalid_field_meta_property:
+    config:
+        fields:
+            field1:
+                meta_property: 123
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.meta_property". Expected boolean, but got integer.'
+
+field_collapse:
+    config:
+        fields:
+            field1:
+                collapse: true
+            field2:
+                collapse: false
+    expected:
+        fields:
+            field1:
+                collapse: true
+            field2:
+                collapse: false
+
+invalid_field_collapse:
+    config:
+        fields:
+            field1:
+                collapse: 123
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.collapse". Expected boolean, but got integer.'
+
+data_transformer_should_not_be_supported:
+    config:
+        fields:
+            field1:
+                data_transformer: 'test_data_transformer'
+    expected: []
+    error: 'Unrecognized option "data_transformer" under "entity.fields.field1"'
+
+field_description:
+    config:
+        fields:
+            field1:
+                description: path1
+    expected:
+        fields:
+            field1:
+                description: path1
+
+null_field_description:
+    config:
+        fields:
+            field1:
+                description: null
+    expected: []
+    error: 'The path "entity.fields.field1.description" cannot contain an empty value, but got null.'
+
+empty_field_description:
+    config:
+        fields:
+            field1:
+                description: ""
+    expected: []
+    error: 'The path "entity.fields.field1.description" cannot contain an empty value, but got "".'
+
+empty_field_target_type:
+    config:
+        fields:
+            field1:
+                target_type: ""
+    expected: []
+    error: 'The value "" is not allowed for path "entity.fields.field1.target_type". Permissible values: "to-many", "to-one", "collection"'
+
+invalid_field_target_type:
+    config:
+        fields:
+            field1:
+                target_type: test
+    expected: []
+    error: 'The value "test" is not allowed for path "entity.fields.field1.target_type". Permissible values: "to-many", "to-one", "collection"'
+
+to_one_field_target_type:
+    config:
+        fields:
+            field1:
+                target_type: to-one
+    expected:
+        fields:
+            field1:
+                target_type: to-one
+
+to_many_field_target_type:
+    config:
+        fields:
+            field1:
+                target_type: to-many
+    expected:
+        fields:
+            field1:
+                target_type: to-many
+
+collection_field_target_type:
+    config:
+        fields:
+            field1:
+                target_type: collection
+    expected:
+        fields:
+            field1:
+                target_type: to-many
+
+field_target_class_without_target_type:
+    config:
+        fields:
+            field1:
+                target_class: Test\Class
+    expected:
+        fields:
+            field1:
+                target_class: Test\Class
+                target_type: to-one
+
+field_target_class_with_target_type:
+    config:
+        fields:
+            field1:
+                target_class: Test\Class
+                target_type: to-many
+    expected:
+        fields:
+            field1:
+                target_class: Test\Class
+                target_type: to-many
+
+filters_and_sorters:
+    config:
+        filters:
+            exclusion_policy: none
+            fields:
+                field1:
+                    allow_array: false
+                    property_path: path1
+        sorters:
+            exclusion_policy: none
+            fields:
+                field1:
+                    exclude: false
+                    property_path: path1
+    expected:
+        filters:
+            exclusion_policy: none
+            fields:
+                field1:
+                    allow_array: false
+                    property_path: path1
+        sorters:
+            exclusion_policy: none
+            fields:
+                field1:
+                    exclude: false
+                    property_path: path1
+
+field_with_filters_and_sorters:
+    config:
+        fields:
+            field1:
+                filters:
+                    exclusion_policy: none
+                    fields:
+                        field11:
+                            allow_array: false
+                            property_path: path1
+                sorters:
+                    exclusion_policy: none
+                    fields:
+                        field11:
+                            exclude: false
+                            property_path: path1
+    expected:
+        fields:
+            field1:
+                filters:
+                    exclusion_policy: none
+                    fields:
+                        field11:
+                            allow_array: false
+                            property_path: path1
+                sorters:
+                    exclusion_policy: none
+                    fields:
+                        field11:
+                            exclude: false
+                            property_path: path1
+
+field_with_target_entity:
+    config:
+        fields:
+            field1:
+                collapse: true
+                exclusion_policy: all
+                order_by:
+                    id: DESC
+                max_results: 50
+                hints:
+                    - HINT_1
+                    - {name: HINT_2, value: hint_val2}
+    expected:
+        fields:
+            field1:
+                collapse: true
+                exclusion_policy: all
+                order_by:
+                    id: DESC
+                max_results: 50
+                hints:
+                    - {name: HINT_1}
+                    - {name: HINT_2, value: hint_val2}
+
+page_size_should_not_be_set_to_target_entity:
+    config:
+        fields:
+            field1:
+                page_size: 20
+    expected: []
+    error: 'Unrecognized option "page_size" under "entity.fields.field1"'
+
+disable_sorting_should_not_be_set_to_target_entity:
+    config:
+        fields:
+            field1:
+                disable_sorting: true
+    expected: []
+    error: 'Unrecognized option "disable_sorting" under "entity.fields.field1"'
+
+disable_inclusion_should_not_be_set_to_target_entity:
+    config:
+        fields:
+            field1:
+                disable_inclusion: true
+    expected: []
+    error: 'Unrecognized option "disable_inclusion" under "entity.fields.field1"'
+
+disable_fieldset_should_not_be_set_to_target_entity:
+    config:
+        fields:
+            field1:
+                disable_fieldset: true
+    expected: []
+    error: 'Unrecognized option "disable_fieldset" under "entity.fields.field1"'
+
+identifier_field_names_should_not_be_set_to_target_entity:
+    config:
+        fields:
+            field1:
+                identifier_field_names: ['id']
+    expected: []
+    error: 'Unrecognized option "identifier_field_names" under "entity.fields.field1"'
+
+extra_config:
+    config:
+        entity_extra: entity_extra_val
+        fields:
+            field1:
+                field_extra: field1_extra_val
+                filters:
+                    filters_extra: field1_filters_extra_val
+                    fields:
+                        field11:
+                            filter_field_extra: field11_filter_extra_val
+                sorters:
+                    sorters_extra: sorters_extra_val
+                    fields:
+                        field11:
+                            sorter_field_extra: field11_sorter_extra_val
+                test_section:
+                    key1: val1
+        test_section:
+            key1: val1
+    expected:
+        entity_extra: entity_extra_val (added by extension)
+        fields:
+            field1:
+                field_extra: field1_extra_val (added by extension)
+                filters:
+                    filters_extra: field1_filters_extra_val (added by extension)
+                    fields:
+                        field11:
+                            filter_field_extra: field11_filter_extra_val (added by extension)
+                sorters:
+                    sorters_extra: sorters_extra_val (added by extension)
+                    fields:
+                        field11:
+                            sorter_field_extra: field11_sorter_extra_val (added by extension)
+                test_section:
+                    key1: val1
+        test_section:
+            key1: val1
+
+entity_null_form_type:
+    config:
+        form_type: ~
+    expected: []
+
+entity_empty_form_type:
+    config:
+        form_type: ""
+    expected: []
+
+entity_form_type:
+    config:
+        form_type: integer
+    expected:
+        form_type: integer
+
+entity_null_form_options:
+    config:
+        form_options: ~
+    expected: []
+
+entity_empty_form_options:
+    config:
+        form_options: []
+    expected: []
+
+entity_empty_form_event_subscriber:
+    config:
+        form_event_subscriber: []
+    expected: []
+
+entity_one_form_event_subscriber:
+    config:
+        form_event_subscriber: subscriber1
+    expected:
+        form_event_subscriber: [subscriber1]
+
+entity_several_form_event_subscriber:
+    config:
+        form_event_subscriber: [subscriber1, subscriber2]
+    expected:
+        form_event_subscriber: [subscriber1, subscriber2]
+
+entity_invalid_form_event_subscriber:
+    config:
+        form_event_subscriber: ~
+    expected: []
+    error: 'Invalid configuration for path "entity.form_event_subscriber": The value must be a string or an array.'
+
+entity_form:
+    config:
+        form_type: integer
+        form_options:
+            option1: value1
+    expected:
+        form_type: integer
+        form_options:
+            option1: value1
+
+invalid_entity_form_type:
+    config:
+        form_type: []
+    expected: []
+    error: 'Invalid type for path "entity.form_type". Expected scalar, but got array.'
+
+invalid_entity_form_options:
+    config:
+        form_options: test
+    expected: []
+    error: 'Invalid type for path "entity.form_options". Expected array, but got string'
+
+dash_in_field_name:
+    config:
+        fields:
+            test-field: ~
+    expected:
+        fields:
+            test-field: []
+
+field_form:
+    config:
+        fields:
+            field1:
+                form_type: ~
+            field2:
+                form_type: ""
+            field3:
+                form_type: integer
+            field4:
+                form_type: integer
+                form_options: ~
+            field5:
+                form_type: integer
+                form_options: []
+            field6:
+                form_type: integer
+                form_options:
+                    option1: value1
+    expected:
+        fields:
+            field1: []
+            field2: []
+            field3:
+                form_type: integer
+            field4:
+                form_type: integer
+            field5:
+                form_type: integer
+            field6:
+                form_type: integer
+                form_options:
+                    option1: value1
+
+invalid_field_form_type:
+    config:
+        fields:
+            field1:
+                form_type: []
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.form_type". Expected scalar, but got array.'
+
+invalid_field_form_options:
+    config:
+        fields:
+            field1:
+                form_options: test
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.form_options". Expected array, but got string'
+
+field_depends_on:
+    config:
+        fields:
+            field1:
+                depends_on: [field2]
+    expected:
+        fields:
+            field1:
+                depends_on: [field2]
+
+invalid_field_depends_on:
+    config:
+        fields:
+            field1:
+                depends_on: field2
+    expected: []
+    error: 'Invalid type for path "entity.fields.field1.depends_on". Expected array, but got string'

@@ -1,0 +1,15 @@
+datagrids:
+    shopping-list-by-account-grid:
+        extends: shopping-list-grid
+        source:
+            query:
+                where:
+                    and:
+                        - IDENTITY(shopping_list.customer) = :customer_id
+            bind_parameters:
+                - customer_id
+
+    # is modified by listener CustomerAccountGridListener
+    sales-opportunity-by-account-grid:
+        extends: sales-opportunity-grid
+        views_list: ~

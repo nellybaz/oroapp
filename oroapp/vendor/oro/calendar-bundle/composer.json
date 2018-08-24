@@ -1,0 +1,40 @@
+{
+    "name": "oro/calendar-bundle",
+    "type": "symfony-bundle",
+    "description": "Oro Calendar Bundle",
+    "homepage": "https://github.com/oroinc/OroCalendarBundle.git",
+    "keywords": ["Oro", "Calendar"],
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "require": {
+        "php": "7.1.*",
+        "oro/platform": "2.6.*",
+        "bower-asset/fullcalendar": "3.4.0"
+    },
+    "autoload": {
+        "psr-4": { "Oro\\Bundle\\CalendarBundle\\": "" },
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6.x-dev"
+        }
+    }
+}

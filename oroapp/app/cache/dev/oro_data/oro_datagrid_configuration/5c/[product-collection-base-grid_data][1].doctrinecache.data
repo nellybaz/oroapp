@@ -1,0 +1,2 @@
+0
+a:1:{s:28:"product-collection-base-grid";a:3:{s:7:"extends";s:25:"products-select-grid-base";s:7:"columns";a:3:{s:4:"type";a:1:{s:10:"renderable";b:1;}s:9:"createdAt";a:1:{s:10:"renderable";b:0;}s:9:"updatedAt";a:1:{s:10:"renderable";b:0;}}s:7:"options";a:1:{s:13:"routerEnabled";b:0;}}}

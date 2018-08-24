@@ -1,0 +1,28 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% import 'OroProductBundle::image_macros.html.twig' as Image %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {% block sku_and_name %}
+                {{ UI.renderProperty('oro.product.sku.label'|trans, product.sku) }}
+                {{ UI.renderProperty('oro.product.names.label'|trans, product.defaultName) }}
+            {% endblock %}
+            {% set type = 'oro.product.type.' ~ product.type %}
+            {{ UI.renderProperty('oro.product.type.label'|trans, type|trans) }}
+
+            {% block images %}
+                {% if product.images.count %}
+                    {{ UI.renderHtmlProperty(
+                    'oro.product.images.label'|trans,
+                    Image.renderProductImages(product.images, imageTypes)
+                    ) }}
+                {% endif %}
+            {% endblock %}
+        </div>
+        <div class="responsive-block">
+            {{ entityConfig.renderDynamicFields(product) }}
+        </div>
+    </div>
+</div>

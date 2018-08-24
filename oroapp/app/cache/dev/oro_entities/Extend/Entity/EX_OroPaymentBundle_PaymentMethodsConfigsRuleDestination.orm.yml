@@ -1,0 +1,3 @@
+Extend\Entity\EX_OroPaymentBundle_PaymentMethodsConfigsRuleDestination:
+    type: mappedSuperclass
+    fields: {  }

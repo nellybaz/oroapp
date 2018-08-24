@@ -1,0 +1,55 @@
+Extend\Entity\EX_OroMagentoBundle_Cart:
+    type: mappedSuperclass
+    fields:
+        ac_last_contact_date:
+            column: ac_last_contact_date
+            type: datetime
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        ac_last_contact_date_in:
+            column: ac_last_contact_date_in
+            type: datetime
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        ac_last_contact_date_out:
+            column: ac_last_contact_date_out
+            type: datetime
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        ac_contact_count:
+            column: ac_contact_count
+            type: integer
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        ac_contact_count_in:
+            column: ac_contact_count_in
+            type: integer
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        ac_contact_count_out:
+            column: ac_contact_count_out
+            type: integer
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

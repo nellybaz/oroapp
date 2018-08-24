@@ -1,0 +1,3 @@
+Extend\Entity\EX_OroDataAuditBundle_AuditField:
+    type: mappedSuperclass
+    fields: {  }

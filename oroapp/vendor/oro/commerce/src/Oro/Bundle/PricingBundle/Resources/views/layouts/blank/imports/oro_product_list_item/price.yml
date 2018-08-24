@@ -1,0 +1,6 @@
+layout:
+    imports:
+        -
+            id: oro_product_price
+            root: __product_secondary_content_first_container
+    actions: []

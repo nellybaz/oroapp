@@ -1,0 +1,39 @@
+{
+    "name": "oro/marketing",
+    "description": "Oro Marketing Bundles",
+    "homepage": "https://github.com/oroinc/OroCRMMarketingBundle.git",
+    "keywords": ["Oro", "Marketing", "Campaign", "Tracking"],
+    "license": "OSL-3.0",
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-0": {
+            "Oro": "src/"
+        }
+    },
+    "require": {
+        "php": "7.1.*",
+        "oro/platform": "2.6.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6.x-dev"
+        }
+    }
+}

@@ -1,0 +1,68 @@
+# offset test case
+request:
+    search: item
+    offset: 1
+    max_results: ~
+response:
+    records_count: 9
+    count: 8
+    rest:
+        data:
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+            -
+                entity_name: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                record_url: http://localhost%oro_default_prefix%search/
+    soap:
+        item:
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []
+            -
+                entityName: Oro\Bundle\TestFrameworkBundle\Entity\Item
+                recordUrl: http://localhost%oro_default_prefix%search/
+                selectedData: []

@@ -1,0 +1,15 @@
+imports:
+    - { resource: 'task_flow/steps.yml' }
+    - { resource: 'task_flow/attributes.yml' }
+    - { resource: 'task_flow/transitions.yml' }
+    - { resource: 'task_flow/transition_definitions.yml' }
+    - { resource: 'task_flow/entity_restrictions.yml' }
+
+workflows:
+    task_flow:
+        entity: Oro\Bundle\TaskBundle\Entity\Task
+        entity_attribute: task
+        start_step: open
+
+        defaults:
+            active: true

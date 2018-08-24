@@ -1,0 +1,19 @@
+// @theme: blank;
+
+.main-menu-columns {
+    display: flex;
+
+    padding: $main-menu-columns-inner-offset;
+
+    &--single {
+        padding: $main-menu-columns-single-inner-offset;
+    }
+}
+
+@include breakpoint('tablet') {
+    .main-menu-columns {
+        display: block;
+
+        @include safe-area-offset(padding, $main-menu-columns-inner-offset-tablet);
+    }
+}

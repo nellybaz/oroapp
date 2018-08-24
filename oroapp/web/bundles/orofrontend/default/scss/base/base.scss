@@ -1,0 +1,14 @@
+// @theme: default;
+
+@import './reset';
+
+// Links
+a {
+    text-decoration: none;
+
+    @include link();
+
+    @include element-state('hover') {
+        text-decoration: underline;
+    }
+}

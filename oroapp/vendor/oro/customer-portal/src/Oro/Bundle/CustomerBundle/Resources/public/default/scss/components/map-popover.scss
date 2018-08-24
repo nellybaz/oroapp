@@ -1,0 +1,54 @@
+// @theme: default;
+
+.map-popover {
+    min-width: $map-popover-width;
+    width: $map-popover-width;
+    height: $map-popover-height;
+
+    border: $map-popover-height-border;
+    box-shadow: $map-popover-height-box-shadow;
+
+    &__content {
+        width: $map-popover-content-width;
+        height: $map-popover-content-height;
+        padding: $map-popover-content-inner-offset;
+
+        .loader-mask.shown {
+            display: $map-popover-content-loader-mask-shown-display;
+            position: $map-popover-content-loader-mask-shown-position;
+
+            height: $map-popover-content-loader-mask-shown-height;
+        }
+
+        .loader-frame {
+            padding: $map-popover-content-loader-frame-inner-offset;
+        }
+
+        .map-visual {
+            height: $map-popover-content-frame-visual-frame-height;
+        }
+
+        .alert + .map-visual {
+            height: $map-popover-content-frame-alert-visual-frame-height;
+        }
+    }
+
+    &__frame {
+        width: $map-popover-frame-width;
+        height: $map-popover-frame-height;
+
+        .map-box {
+            height: $map-popover-frame-map-box-height;
+        }
+    }
+}
+
+@include breakpoint('tablet') {
+    .map-popover {
+        &__frame {
+            .map-unknown {
+                padding: $map-popover-frame-map-unknown-inner-offset-tablet;
+            }
+        }
+    }
+}

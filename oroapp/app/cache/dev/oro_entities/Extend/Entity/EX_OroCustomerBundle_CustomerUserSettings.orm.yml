@@ -1,0 +1,7 @@
+Extend\Entity\EX_OroCustomerBundle_CustomerUserSettings:
+    type: mappedSuperclass
+    fields:
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

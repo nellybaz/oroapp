@@ -1,0 +1,9 @@
+layout:
+    actions:
+        - '@add':
+            id:        success_message
+            parentId:  content
+            blockType: embed_form_success
+            options:
+                message: '=data["embedded_form_entity"].getSuccessMessage()'
+                form_id: '=data["embedded_form_entity"].getId()'

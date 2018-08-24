@@ -1,0 +1,75 @@
+Oro\Bundle\SalesBundle\Entity\Opportunity:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        probability:
+            - Range:
+                min: 0
+                max: 100
+            - Range:
+                min: 0
+                max: 1
+                groups: [api]
+        status:
+            - NotBlank: ~
+
+Oro\Bundle\SalesBundle\Entity\Lead:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        firstName:
+            - Length:
+                max: 255
+        lastName:
+            - Length:
+                max: 255
+        emails:
+            - Valid: ~
+            - Oro\Bundle\FormBundle\Validator\Constraints\ContainsPrimary:
+                message: One of the emails must be set as primary.
+        status:
+            - NotBlank: ~
+        addresses:
+            - Valid: ~
+        phones:
+            - Valid: ~
+        numberOfEmployees:
+            - Regex: # For frontend validation
+                pattern: '/^[\d+]*$/'
+                message: "This value should contain only numbers."
+
+Oro\Bundle\SalesBundle\Entity\LeadAddress:
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: { groups: ['RequirePeriod'] }
+
+Oro\Bundle\SalesBundle\Entity\SalesFunnel:
+    properties:
+        startDate:
+            - NotBlank: ~
+            - Date: ~
+
+Oro\Bundle\SalesBundle\Entity\B2bCustomer:
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        dataChannel:
+            - NotBlank: ~
+        shippingAddress:
+            - Valid: ~
+        billingAddress:
+            - Valid: ~
+        phones:
+            - Valid: ~
+        emails:
+            - Valid: ~
+
+Oro\Bundle\SalesBundle\Entity\Customer:
+    properties:
+        account:
+            - NotBlank: ~

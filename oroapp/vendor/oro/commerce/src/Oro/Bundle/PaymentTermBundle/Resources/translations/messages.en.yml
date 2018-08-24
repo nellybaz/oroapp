@@ -1,0 +1,56 @@
+oro:
+    paymentterm:
+        channel_type:
+            label: Payment Terms
+        settings:
+            label: Payment Term Settings
+            labels.label: Label
+            short_labels.label: 'Short Label'
+        menu:
+            payment_terms.label:       Payment terms
+            payment_terms.description: List of payment terms
+
+        entity_label: Payment Term
+        entity_plural_label: Payment Terms
+        entity_description: Represents payment terms
+
+        id.label: ID
+        label.label: Label
+        form.choose: 'Choose a payment term...'
+        customer_groups.label: 'Customer Group'
+        customers.label: 'Customer'
+
+        has_payment_term.label: Has Payment Term
+
+        customer:
+            customer_group_defined: '{{ payment_term }} (Defined for Customer Group)'
+
+        controller:
+            paymentterm:
+                saved.message: 'Payment term has been saved'
+                delete.with_two_url.message: 'It is currently being used by some {{ customers }} and {{ customer_groups }}.'
+                delete.with_url.message: ' It is currently being used by some {{ url }}.'
+
+        sections:
+            general_information: General information
+
+        methods:
+            term_method.label: 'Payment Term'
+
+        payment_terms:
+            label: 'Terms: %paymentTerm%'
+
+        delete.message.placeholder: '%confirmationMessage%'
+
+    payment:
+        admin:
+            payment_term.label: 'Payment Terms'
+
+    customer:
+        payment_term_7c4f1e8e:
+            label:              'Payment term'
+            description:        Relationship with the payment term that was selected as a payment method.
+        customergroup:
+            payment_term_7c4f1e8e:
+                label:          'Payment term'
+                description:    Relationship with the payment term that was selected as a payment method.

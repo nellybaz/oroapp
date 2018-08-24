@@ -1,0 +1,19 @@
+layout:
+    imports:
+        -
+            id: oro_rfp_frontend_request_edit
+            root: page_content
+    actions:
+        - '@setOption':
+            id: page_title
+            optionName: defaultValue
+            optionValue:
+                label: 'oro.frontend.rfp.request.edit_title.label'
+                parameters:
+                    '%id%': '=data["entity"].getId()'
+
+        - '@setOption':
+            id: title
+            optionName: params
+            optionValue:
+                '%id%': '=data["entity"].getId()'

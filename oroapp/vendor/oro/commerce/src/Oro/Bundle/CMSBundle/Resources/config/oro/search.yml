@@ -1,0 +1,34 @@
+search:
+    Oro\Bundle\CMSBundle\Entity\Page:
+        alias:                          oro_cms_page
+        title_fields:                   [defaultTitle]
+        route:
+            name:                       oro_cms_page_view
+            parameters:
+                id:                     id
+        search_template:                OroCMSBundle:Page:searchResult.html.twig
+        fields:
+            -
+                name:                   defaultTitle
+                target_type:            text
+                target_fields:          [defaultTitle]
+            -
+                name: titles
+                relation_type: many-to-many
+                relation_fields:
+                    -
+                        name: string
+                        target_type: text
+                        target_fields: [titles]
+            -
+                name:                   defaultSlug
+                target_type:            text
+                target_fields:          [defaultSlug]
+            -
+                name: slugs
+                relation_type: many-to-many
+                relation_fields:
+                    -
+                        name: text
+                        target_type: text
+                        target_fields: [slugs]

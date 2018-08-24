@@ -1,0 +1,29 @@
+{
+    "name": "romanpitak/php-rest-client",
+    "type": "library",
+    "description": "REST client library.",
+    "keywords": [
+        "http",
+        "rest",
+        "client"
+    ],
+    "homepage": "https://github.com/romanpitak/PHP-REST-Client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Roman Piták",
+            "email": "roman@pitak.net",
+            "homepage": "http://pitak.net",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.3",
+        "ext-curl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "RestClient\\": "src/"
+        }
+    }
+}

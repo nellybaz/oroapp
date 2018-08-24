@@ -1,0 +1,296 @@
+operations:
+    oro_order_payment_transaction_capture:
+        label: oro.payment.capture
+        button_options:
+            icon: fa-credit-card
+        applications: [default]
+        datagrids:
+            - order-payment-transactions-grid
+        order: 20
+        preactions:
+            - '@call_service_method':
+                service: oro_payment.payment_method.composite_provider
+                method: hasPaymentMethod
+                method_parameters: [$.data.paymentMethod]
+                attribute: $.paymentMethodExist
+            - '@call_service_method':
+                service: oro_currency.formatter.number
+                method: formatCurrency
+                method_parameters: [$.data.amount, $.data.currency]
+                attribute: $.amountWithCurrency
+            - '@find_entity':
+                class: '%oro_order.entity.order.class%'
+                where:
+                    id: $.data.entityIdentifier
+                attribute: $.order
+        preconditions:
+            '@and':
+                - '@acl_granted': ['CHARGE_AUTHORIZED_PAYMENTS', $.order]
+                - '@equal': [$.data.entity_class, '%oro_order.entity.order.class%']
+                - '@equal': [$.data.action, 'authorize']
+                - '@equal': [$.data.active, true]
+                - '@equal': [$.data.successful, true]
+                - '@equal': [$.paymentMethodExist, true]
+                - '@not':
+                    - '@payment_transaction_was_charged':
+                        transaction: $.data
+        actions:
+            - '@payment_transaction_capture':
+                paymentTransaction: $.data
+                transactionOptions: []
+                attribute: $.result
+            - '@flash_message':
+                conditions:
+                    '@equal': ['$.result[successful]', true]
+                message: oro.order.payment_transaction.capture.result.success
+                message_parameters:
+                    'amount': $.amountWithCurrency
+                type: 'success'
+            - '@flash_message':
+                conditions:
+                    '@equal': ['$.result[successful]', false]
+                message: '$.result[message]'
+                type: 'error'
+        frontend_options:
+            confirmation:
+                title: oro.order.payment_transaction.capture.title
+                message: oro.order.payment_transaction.capture.message
+                message_parameters:
+                    amount: $.amountWithCurrency
+                okText: oro.order.payment_transaction.capture.button.okText
+                component: oroui/js/standart-confirmation
+
+    DELETE:
+        exclude_datagrids:
+            - order-line-items-grid
+            - frontend-orders-grid
+
+    oro_order_update_order:
+        extends: UPDATE
+        replace:
+            - for_all_datagrids
+            - for_all_entities
+            - preconditions
+        preconditions:
+            '@not_blank': $.data
+        datagrids:
+            - customer-user-orders-grid
+
+    oro_order_delete_order:
+        extends: DELETE
+        replace:
+            - for_all_datagrids
+            - for_all_entities
+            - preconditions
+        preconditions:
+            '@not_blank': $.data
+        datagrids:
+            - customer-user-orders-grid
+
+    oro_order_shipping_trackings_change:
+        label: oro.order.widgets.shipping_tracking
+        routes:
+            - oro_order_view
+        acl_resource: [UPDATE, entity:Oro\Bundle\OrderBundle\Entity\Order]
+        button_options:
+            icon: fa-list-alt
+        frontend_options:
+            template: OroOrderBundle:Action:shippingTrackingsChange.html.twig
+            title: oro.order.shipping_tracking.entity_label
+            options:
+                width: 550
+                modal: false
+                stateEnabled: false
+                incrementalPosition: false
+                allowMaximize: true
+                allowMinimize: true
+                dblclick: maximize
+                maximizedHeightDecreaseBy: minimize-bar
+        attributes:
+            shippingTrackings:
+                label: ' '
+                type: entity
+                options:
+                    class: Oro\Bundle\OrderBundle\Entity\OrderShippingTracking
+        form_options:
+            attribute_fields:
+                shippingTrackings:
+                    form_type: Oro\Bundle\OrderBundle\Form\Type\OrderShippingTrackingCollectionType
+                    options:
+                        show_form_when_empty: false
+            attribute_default_values:
+                shippingTrackings:
+                    $.shippingTrackings
+        form_init:
+            - '@assign_value': [$.shippingTrackings, $.data.shippingTrackings]
+        actions:
+            - '@call_service_method':
+                service: oro_order.handler.order_shipping_tracking
+                method: process
+                method_parameters: [$.data, $.form]
+            - '@flash_message':
+                message: oro.order.shipping_tracking.flash.save_success
+                type: 'success'
+            - '@refresh_grid': order-shipping-trackings-grid
+
+    oro_order_cancel:
+        label: oro.order.action.order.cancel
+        enabled: true
+        applications: [default]
+        routes:
+            - oro_order_view
+        button_options:
+            icon: fa-close
+        preconditions:
+            '@equal': [$internalStatus.id, 'open']
+        actions:
+            - '@request_enum_entity':
+                enum_code: 'order_internal_status'
+                attribute: $internalStatus
+                identifier: 'cancelled'
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.order.action.message.order.cancel.success
+                type: 'info'
+                message_parameters:
+                    id: $identifier
+
+    oro_order_close:
+        label: oro.order.action.order.close
+        enabled: true
+        applications: [default]
+        routes:
+            - oro_order_view
+        button_options:
+            icon: fa-window-close-o
+        preconditions:
+            @or:
+                - '@equal': [$internalStatus.id, 'open']
+                - '@equal': [$internalStatus.id, 'cancelled']
+                - '@equal': [$internalStatus.id, 'shipped']
+        actions:
+            - '@request_enum_entity':
+                enum_code: 'order_internal_status'
+                attribute: $internalStatus
+                identifier: 'closed'
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.order.action.message.order.close.success
+                type: 'info'
+                message_parameters:
+                    id: $identifier
+
+    oro_order_archive:
+        label: oro.order.action.order.archive
+        enabled: true
+        applications: [default]
+        routes:
+            - oro_order_view
+        button_options:
+            icon: fa-archive
+        preconditions:
+            '@equal': [$internalStatus.id, 'closed']
+        actions:
+            - '@request_enum_entity':
+                enum_code: 'order_internal_status'
+                attribute: $internalStatus
+                identifier: 'archived'
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.order.action.message.order.archive.success
+                type: 'info'
+                message_parameters:
+                    id: $identifier
+
+    oro_order_mark_as_shipped:
+        label: oro.order.action.order.mark_as_shipped
+        enabled: true
+        applications: [default]
+        routes:
+            - oro_order_view
+        button_options:
+            icon: fa-check
+        preconditions:
+            '@equal': [$internalStatus.id, 'open']
+        actions:
+            - '@request_enum_entity':
+                enum_code: 'order_internal_status'
+                attribute: $internalStatus
+                identifier: 'shipped'
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.order.action.message.order.mark_as_shipped.success
+                type: 'info'
+                message_parameters:
+                    id: $identifier
+
+    oro_order_discount_form:
+        label: oro.order.widgets.order_discount_form
+        frontend_options:
+            template: OroOrderBundle:Action:orderDiscount.html.twig
+        attributes:
+            orderDiscount:
+                label: ' '
+                type: entity
+                options:
+                    class: Oro\Bundle\OrderBundle\Entity\OrderDiscount
+        form_options:
+            validation_groups: [OrderDiscountItemType]
+            attribute_fields:
+                orderDiscount:
+                    form_type: Oro\Bundle\OrderBundle\Form\Type\OrderDiscountItemType
+                    options:
+                        required: true
+                        currency: $.data.currency
+                        total: $.data.total
+        form_init:
+            - '@create_object':
+                class: Oro\Bundle\OrderBundle\Entity\OrderDiscount
+                attribute: $.orderDiscount
+                data:
+                    order: $.data
+            - '@call_method':
+                object: $.data
+                method: addDiscount
+                method_parameters:
+                    - $.orderDiscount
+        actions:
+            - '@flush_entity': $.data
+            - '@flash_message':
+                message: oro.order.orderdiscount.flash.save_success
+                type: 'success'
+
+    oro_order_discount_edit_form:
+        label: oro.order.widgets.order_discount_edit_form
+        extends: oro_order_discount_form
+        button_options:
+            data:
+                submit_label: 'oro.order.orderdiscount.action.apply'
+                class: 'btn-primary'
+
+    oro_order_discount_add_form:
+        label: oro.order.widgets.order_discount_add_form
+        extends: oro_order_discount_form
+        button_options:
+            data:
+                submit_label: 'oro.order.orderdiscount.action.apply'
+                class: 'btn-primary'
+
+    oro_order_add_order_discount:
+        extends: oro_order_discount_add_form
+        label: oro.order.widgets.add_order_discount
+        routes:
+            - oro_order_view
+        acl_resource: [UPDATE, entity:Oro\Bundle\OrderBundle\Entity\Order]
+        button_options:
+            icon: fa-dollar
+        frontend_options:
+            title: oro.order.orderdiscount.add_discount.label
+            options:
+                width: 550
+                stateEnabled: false
+                incrementalPosition: false
+                allowMaximize: false
+                allowMinimize: false
+                dblclick: false
+                maximizedHeightDecreaseBy: minimize-bar

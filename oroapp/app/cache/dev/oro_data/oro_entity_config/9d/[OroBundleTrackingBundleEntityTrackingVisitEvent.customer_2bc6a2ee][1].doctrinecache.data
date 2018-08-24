@@ -1,0 +1,2 @@
+0
+a:2:{i:0;a:1:{s:6:"extend";a:10:{s:5:"owner";s:6:"System";s:5:"state";s:6:"Active";s:9:"is_extend";b:1;s:10:"is_deleted";b:0;s:6:"origin";s:6:"System";s:13:"is_serialized";b:0;s:13:"bidirectional";b:0;s:13:"target_entity";s:40:"Oro\Bundle\MagentoBundle\Entity\Customer";s:12:"target_field";s:2:"id";s:12:"relation_key";s:120:"manyToOne|Oro\Bundle\TrackingBundle\Entity\TrackingVisitEvent|Oro\Bundle\MagentoBundle\Entity\Customer|customer_2bc6a2ee";}}i:1;s:9:"manyToOne";}

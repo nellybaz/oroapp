@@ -1,0 +1,3 @@
+Extend\Entity\EX_OroEntityConfigBundle_AttributeGroup:
+    type: mappedSuperclass
+    fields: {  }

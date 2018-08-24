@@ -1,0 +1,21 @@
+workflows:
+    b2c_flow_order_follow_up:
+        transitions:
+            record_feedback:
+                step_to: contacted
+                is_start: true
+                is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-check'
+                    class: 'btn-primary'
+                transition_definition: record_feedback_definition
+                form_options:
+                    attribute_fields:
+                        feedback:
+                            form_type: textarea
+                            options:
+                                required: false
+                        notes:
+                            form_type: oro_resizeable_rich_text
+                            options:
+                                required: false

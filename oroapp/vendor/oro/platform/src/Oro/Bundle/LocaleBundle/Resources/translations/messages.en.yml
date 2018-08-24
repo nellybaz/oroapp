@@ -1,0 +1,146 @@
+oro.locale:
+    menu:
+        localization:
+            label: Localization
+        localizations:
+            label: Localizations
+
+    localization:
+        entity_label:               'Localization'
+        entity_plural_label:        'Localizations'
+        entity_description:         "Localization item stores locale-specific congiuration: the language code of the locale's main language, a formatting code that is used for the locale, and a parent localization that is used by default whenever the translation for the main language is missing."
+        id.label:                   'Id'
+        name:
+            label:                  'Name'
+            description:            A human readable localization name that helps identify settings for the particular locale.
+        title.label:                'Title'
+        titles:
+            label:                  'Titles'
+            description:            The relationship between the localization item and its localizable label that is used to refer to the localization in the UI.
+        language.label:             'Language'
+        formatting_code:
+            label:                  'Formatting'
+            description:            Code of the formatting style that should apply in the localized instance.
+        child_localizations:
+            label:                  'Child localizations'
+            description:            The relationships between the localization item and other localization items that treat the localization item as a parent localization.
+        parent_localization:
+            label:                  'Parent localization'
+            description:            The relationships between the localization item and its parent localization.
+
+        widgets:
+            localization_information: Localization Information
+
+        sections:
+            general: General
+
+        navigation:
+            view: 'Localization "%name%"'
+
+        form:
+            placeholder:
+                select_parent_localization: 'Please select parent localization...'
+                select_localization: 'Please select localization...'
+                select_language: 'Please select language...'
+                select_formatting: 'Please select formatting...'
+                choose: 'Choose a localization...'
+
+    localizedfallbackvalue:
+        entity_label:         'Localized fallback value'
+        entity_plural_label:  'Localized fallback values'
+        entity_description:   Localizedfallbackvalue stores relationships between the text values (content like name, description, etc.) and their translation data.
+        id.label:             'ID'
+        fallback:
+            label:            'Fallback'
+            description:      The value for the fallback
+        localization:
+            label:            'Localization'
+            description:      The value for the localization, selected language
+        string:
+            label: 'String value'
+            description: The string value for the curent localization
+        text:
+            label: 'Text value'
+            description: The text value for the curent localization, can contain html tags
+
+    fallback:
+        type:
+            parent_localization: 'Parent Localization'
+            default: 'Default Value'
+
+        value:
+            default: 'Default Value'
+
+        use_fallback:
+            label: 'Use'
+
+    controller:
+        localization:
+            saved.message: 'Localization has been saved'
+
+    date_format:
+        day: "MMM d"
+        month: "MMMM Y"
+        quarter: "QQQ Y"
+        year: "'Year' Y"
+
+    address_format:
+        region_name_type:
+            parish: "parish"
+            state: "state"
+            island: "island"
+            county: "county"
+            area: "area"
+            prefecture: "prefecture"
+            do_si: "do_si"
+            department: "department"
+            district: "district"
+            province: "province"
+
+    system_configuration:
+        groups:
+            localization.title: 'Localization'
+            language_settings.title: 'Language Settings'
+            language_languages.title: 'Languages'
+            locale_settings.title: 'Localization options'
+            map_settings.title: 'Map options'
+            localization_settings.title: 'Localization settings'
+        fields:
+            locale.label: 'Locale'
+            country.label: 'Primary Location'
+            format_address_by_address_country.label: 'Format address per country'
+            language.label: 'Default Language'
+            languages.label: 'Supported languages'
+            timezone.label: 'Timezone'
+            currency.label: 'Currency'
+            quarter_start.label: 'First Quarter Starts on'
+            temperature_unit:
+                label: 'Temperature Unit'
+                choices:
+                    fahrenheit: 'Fahrenheit'
+                    celsius: 'Celsius'
+            wind_speed_unit:
+                label: 'Wind Speed Unit'
+                choices:
+                    miles_per_hour: 'Miles per hour'
+                    kilometers_per_hour: 'Kilometers per hour'
+                    meters_per_second: 'Meters per second'
+            enabled_localizations.label: 'Enabled Localizations'
+            default_localization.label: 'Default Localization'
+    formatter:
+        datetime:
+            default: N/A
+    form:
+        tooltip:
+            languages: "Select the languages that can be used for translation of the email templates."
+            locale: "Locale selection affects formatting of numbers, addresses, names, and dates."
+            location: " If Format address per country option is disabled, or there is no country-specific formatting, the addresses will be formatted according to the rules of primary location."
+            format_address_by_address_country: "When this option is selected, addresses will be formatted according to the rules of their countries. Otherwise, the primary location formatting will be applied."
+            language: "Select the system language from the list of installed translations (see System &rarr; Localization &rarr; Languages)."
+            timezone: "Select the timezone of your location. All dates and times will be displayed in the specified timezone."
+            currency: "Select the default currency"
+            quarter_start: "Select the starting date of the first quarter in year."
+            temperature_unit: "Select the temperature unit. This settings will be applied for weather on map."
+            wind_speed_unit: "Select the wind speed unit. This settings will be applied for weather on map."
+
+oro.scope.localization.label: Localization

@@ -1,0 +1,123 @@
+{% macro addToCurrentButton(options) %}
+    {% import _self as buttons %}
+    {% set options = {
+        defaultLabel: 'oro.shoppinglist.entity_label'|trans,
+        actionLabel: 'oro.shoppinglist.actions.add_to_shopping_list'|trans
+    }|merge(options) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro addToButton(options) -%}
+    {% import _self as buttons %}
+    {% set options = {
+        actionLabel: 'oro.shoppinglist.actions.add_to_shopping_list'|trans
+    }|merge(options) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro addToNewButton(options) %}
+    {% import _self as buttons %}
+    {% set dataAttributes = options.dataAttributes|merge({
+        intention: 'new'
+    }) %}
+    {% set options = {
+        actionLabel: 'oro.shoppinglist.actions.add_to_new_shopping_list'|trans
+    }|merge(options)|merge({
+        dataAttributes: dataAttributes
+    }) %}
+    {{ buttons.getButton(options) }}
+{% endmacro %}
+
+{% macro buttonTemplate(options) %}
+    {% import 'OroFrontendBundle:layouts/blank:utils.html.twig' as utils %}
+    {% import _self as buttons %}
+    {{ utils.underscoreRaw(buttons.addToCurrentButton({
+        shoppingList: {
+            id: '<%= id %>',
+            label: '<%= _.escape(label) %>'
+        }
+    }|merge(options))) }}
+{% endmacro %}
+
+{% macro getButton(options) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% set options = {
+        shoppingList: null,
+        defaultLabel: '',
+        aCss: 'btn--info'
+    }|merge(options) %}
+
+    {% set shoppingListId = options.shoppingList ? options.shoppingList.id : null %}
+    {% set shoppingListLabel = options.shoppingList ? options.shoppingList.label : options.defaultLabel %}
+
+    {% set dataAttributes = options.dataAttributes|merge({
+        shoppinglist: {
+            id: shoppingListId,
+            label: shoppingListLabel
+        }
+    }) %}
+
+    {% set buttonOptions = {
+        'dataAttributes': dataAttributes,
+        'aCss': 'btn add-to-shopping-list-button ' ~ options.aCss,
+        'moreButtonExtraClass': 'btn--action',
+        'dataId': shoppingListId,
+        'label' : options.actionLabel|replace({
+            '{{ shoppingList }}': shoppingListLabel
+        })
+    } %}
+    {% if options.dataUrl %}
+        {% set buttonOptions = buttonOptions|merge({
+            'dataUrl': options.dataUrl,
+        }) %}
+    {% endif %}
+    {% if options.pageComponent is defined %}
+        {% set buttonOptions = buttonOptions|merge({
+            'pageComponent': options.pageComponent,
+        }) %}
+    {% endif %}
+
+    <div class="pull-left btn-group icons-holder btn-group--loading">
+        {{ UI.clientLink(buttonOptions) }}
+    </div>
+{% endmacro %}
+
+{% macro getButtonsHtml(options) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% import _self as buttons %}
+    <div class="btn-group full"
+         {{ UI.renderPageComponentAttributes({
+             module: 'oroui/js/app/components/view-component',
+             options: {
+                 view: options.componentModule|default('oroshoppinglist/js/app/views/product-add-to-shopping-list-view'),
+                 buttonTemplate: '<%#' ~ buttons.buttonTemplate(options.current) ~ '#%>',
+                 removeButtonTemplate: options.remove is defined ? '<%#' ~ buttons.buttonTemplate(options.remove) ~ '#%>',
+                 createNewButtonTemplate: '<%#' ~ buttons.buttonTemplate(options.new) ~ '#%>',
+                 shoppingListCreateEnabled: feature_enabled('shopping_list_create'),
+                 emptyMatrixAllowed: oro_config_value('oro_product.matrix_form_allow_empty')
+             }|merge(options.componentOptions|default({}))
+         }) }}
+        >
+        {% if options.shoppingLists is not empty %}
+            {% set existingShoppingLists = [] %}
+            {% for shoppingList in options.shoppingLists %}
+                {% if shoppingList.current %}
+                    {{ buttons.addToCurrentButton(options.current|merge({shoppingList: shoppingList})) }}
+                {% else %}
+                    {%  set existingShoppingLists = existingShoppingLists|merge([shoppingList]) %}
+                {% endif %}
+            {% endfor %}
+            {% for shoppingList in existingShoppingLists %}
+                {{ buttons.addToButton(options.existing|merge({shoppingList: shoppingList})) }}
+            {% endfor %}
+            {% if feature_enabled('shopping_list_create') %}
+                {{ buttons.addToNewButton(options.new) }}
+            {% endif %}
+        {% else %}
+            {% set aCss = options.singleButtonACss is defined ? options.singleButtonACss : "" %}
+            {{ buttons.addToCurrentButton(options.current|merge({shoppingList: null, aCss: aCss})) }}
+        {% endif %}
+    </div>
+{% endmacro %}
+

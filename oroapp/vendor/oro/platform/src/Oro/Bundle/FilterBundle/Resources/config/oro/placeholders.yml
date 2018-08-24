@@ -1,0 +1,12 @@
+placeholders:
+    placeholders:
+        scripts_before:
+            items:
+                filter_templates:
+                    order: 5
+                filter_embedded_templates:
+                    order: 6
+
+    items:
+       filter_embedded_templates:
+            template: OroFilterBundle:Js:embedded_templates.js.twig

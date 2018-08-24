@@ -1,0 +1,14 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+
+{% set message = '' %}
+{% if customerGroupFilterUrl and customerFilterUrl %}
+    {% set message = 'oro.paymentterm.controller.paymentterm.delete.with_two_url.message'|trans({
+        '{{ customers }}': customerFilterUrl,
+        '{{ customer_groups }}': customerGroupFilterUrl}
+    ) %}
+{% elseif customerGroupFilterUrl %}
+    {% set message = 'oro.paymentterm.controller.paymentterm.delete.with_url.message'|trans({'{{ url }}': customerGroupFilterUrl}) %}
+{% elseif customerFilterUrl %}
+    {% set message = 'oro.paymentterm.controller.paymentterm.delete.with_url.message'|trans({'{{ url }}': customerFilterUrl}) %}
+{% endif %}
+{{ 'oro.ui.delete_confirm'|trans({'%entity_label%': 'oro.paymentterm.entity_label'|trans}) }} {{ message|raw }}

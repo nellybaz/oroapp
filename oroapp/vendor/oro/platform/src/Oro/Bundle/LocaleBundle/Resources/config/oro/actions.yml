@@ -1,0 +1,27 @@
+operations:
+    DELETE:
+        exclude_entities:
+            - Oro\Bundle\LocaleBundle\Entity\Localization
+        exclude_datagrids:
+            - oro-locale-localizations-grid
+
+    oro_locale_localization_delete:
+        extends: DELETE
+        for_all_entities: false
+        for_all_datagrids: false
+        replace:
+            - entities
+            - datagrids
+            - exclude_datagrids
+            - exclude_entities
+        entities:
+            - Oro\Bundle\LocaleBundle\Entity\Localization
+        datagrids:
+            - oro-locale-localizations-grid
+        frontend_options:
+            confirmation:
+                message: oro.locale.localization.delete_confirm
+                component: oroui/js/delete-confirmation
+        actions:
+            - '@run_action_group':
+                action_group: oro_translation_language_update_cache_message

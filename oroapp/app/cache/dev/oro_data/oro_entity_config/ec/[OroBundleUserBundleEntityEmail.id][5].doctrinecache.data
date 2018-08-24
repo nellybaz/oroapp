@@ -1,0 +1,2 @@
+0
+a:2:{i:0;a:1:{s:6:"entity";a:4:{s:8:"is_total";b:0;s:17:"is_total_currency";b:0;s:5:"label";s:23:"oro.user.email.id.label";s:11:"description";s:29:"oro.user.email.id.description";}}i:1;s:7:"integer";}

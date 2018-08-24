@@ -1,0 +1,2 @@
+0
+a:2:{i:0;a:1:{s:6:"extend";a:10:{s:5:"owner";s:6:"System";s:5:"state";s:6:"Active";s:9:"is_extend";b:1;s:10:"is_deleted";b:0;s:6:"origin";s:6:"System";s:13:"is_serialized";b:0;s:13:"bidirectional";b:0;s:13:"target_entity";s:36:"Extend\Entity\EV_Rfp_Internal_Status";s:12:"target_field";s:4:"name";s:12:"relation_key";s:98:"manyToOne|Oro\Bundle\RFPBundle\Entity\Request|Extend\Entity\EV_Rfp_Internal_Status|internal_status";}}i:1;s:4:"enum";}

@@ -1,0 +1,2 @@
+0
+a:1:{s:39:"magento-customer-tracking-events-widget";a:3:{s:20:"extended_entity_name";s:41:"%oro_tracking.tracking_visit_event.class%";s:12:"acl_resource";s:25:"oro_tracking_website_view";s:7:"extends";s:20:"tracking-events-grid";}}

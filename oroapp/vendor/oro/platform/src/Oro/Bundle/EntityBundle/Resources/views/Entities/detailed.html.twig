@@ -1,0 +1,15 @@
+{% import 'OroUIBundle::macros.html.twig' as ui %}
+
+<style>
+    .entity-info {min-height: 380px;}
+</style>
+
+<div class="widget-content entity-info form-horizontal box-content row-fluid">
+    <div class="span6">
+        {% if dynamic|length %}
+            {% for label, item in dynamic %}
+                {{ ui.renderProperty(label|trans, item) }}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>

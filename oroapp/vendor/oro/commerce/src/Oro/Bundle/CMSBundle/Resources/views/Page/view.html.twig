@@ -1,0 +1,48 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+
+{% oro_title_set({params : {"%title%": entity.defaultTitle.string }}) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity': entity,
+        'indexPath': path('oro_cms_page_index'),
+        'indexLabel': 'oro.cms.page.entity_plural_label'|trans,
+        'entityTitle': entity.defaultTitle.string|default('N/A'|trans)
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set pageInfo %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_cms_page_info', {id: entity.id}),
+            'alias': 'page-info-widget'
+        }) }}
+    {% endset %}
+
+    {% set pageContent %}
+        <div class="row-fluid form-horizontal">
+            <div class="responsive-block">
+                {{ entity.content|oro_html_sanitize }}
+            </div>
+        </div>
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.cms.sections.general'|trans,
+            'class': 'active',
+            'subblocks': [{'data' : [pageInfo]}]
+        },
+        {
+            'title': 'oro.cms.sections.content'|trans,
+            'class': 'active',
+            'subblocks': [{'data' : [pageContent]}]
+        }
+    ] %}
+
+    {% set id = 'page-view' %}
+    {% set data = {'dataBlocks': dataBlocks} %}
+    {{ parent() }}
+{% endblock content_data %}

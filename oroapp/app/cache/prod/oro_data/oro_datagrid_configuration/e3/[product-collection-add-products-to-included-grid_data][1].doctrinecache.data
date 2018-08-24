@@ -1,0 +1,2 @@
+0
+a:1:{s:48:"product-collection-add-products-to-included-grid";a:2:{s:7:"extends";s:41:"product-collection-add-products-base-grid";s:12:"mass_actions";a:1:{s:3:"add";a:1:{s:10:"event_name";s:34:"product-collection-add-to-included";}}}}

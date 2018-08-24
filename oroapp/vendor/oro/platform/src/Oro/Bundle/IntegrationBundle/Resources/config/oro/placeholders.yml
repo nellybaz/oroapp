@@ -1,0 +1,15 @@
+placeholders:
+    items:
+        force_sync_button:
+            template: OroIntegrationBundle:Integration:forceSyncButton.html.twig
+            applicable: "@oro_integration.manager.types_registry->supportsForceSync($entity.type$)"
+        sync_button:
+            template: OroIntegrationBundle:Integration:syncButton.html.twig
+            applicable: "@oro_integration.manager.types_registry->supportsSync($entity.type$)"
+    placeholders:
+        oro_integration_force_sync_button:
+            items:
+                force_sync_button: ~
+        oro_integration_sync_button:
+            items:
+                sync_button: ~

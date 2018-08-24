@@ -1,0 +1,7 @@
+Extend\Entity\EV_Dm_Df_Type:
+    type: entity
+    table: oro_enum_dm_df_type
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

@@ -1,0 +1,2 @@
+0
+a:4:{s:2:"id";a:3:{s:1:"i";i:2287;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:5:"state";a:3:{s:1:"i";i:2288;s:1:"h";b:0;s:1:"t";s:6:"string";}s:13:"staticSegment";a:3:{s:1:"i";i:2289;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:6:"member";a:3:{s:1:"i";i:2290;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,31 @@
+oro_behat_extension:
+  elements:
+    Report Form:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      selector: "form[id^='oro_report_form']"
+      options:
+        mapping:
+          Name: oro_report_form[name]
+          Entity: oro_report_form[entity]
+          Report Type: oro_report_form[type]
+          Grouping Columns:
+              type: 'css'
+              locator: 'input[name="oro_report_form[grouping][columnNames]"]'
+              element: Select2Entity
+
+    Add Grouping button:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//div[@id="oro_report-grouping-form"]//a[@title="Add"]'
+        type: xpath
+
+  suites:
+    OroReportBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroDataGridBundle::GridContext
+        - OroQueryDesignerBundle::QueryDesignerContext
+        - OroFilterBundle::FilterContext
+        - OroFormBundle::FormContext
+      paths:
+        - '@OroReportBundle/Tests/Behat/Features'

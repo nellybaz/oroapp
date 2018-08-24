@@ -1,0 +1,8 @@
+.shopping-list {
+    &__content {
+        padding: 15px;
+
+        border: 1px solid get-color('additional', 'light');
+        border-top: 0;
+    }
+}

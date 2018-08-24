@@ -1,0 +1,37 @@
+{# Address book widget to use on view entity pages #}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set addressBookOptions = {
+    view: {
+        view: 'oroaddress/js/app/views/address-book-widget-view',
+        wid: app.request.get('_wid'),
+        addresses: render(addressListUrl),
+        addressListUrl: addressListUrl,
+        addressCreateUrl: addressCreateUrl,
+        addressUpdateRoute: {
+            route: addressUpdateRoute,
+            params: {
+                (ownerParam):  entity.id,
+            }
+        },
+        addressDeleteRoute: {
+            route: addressDeleteRoute,
+            params: {
+                (ownerParam):  entity.id,
+            }
+        },
+    }
+} %}
+
+<div class="widget-content" {{ UI.renderPageComponentAttributes(addressBookOptions) }}>
+    {# JS template for address view #}
+    {% include "OroAddressBundle:Js:address.js.twig" %}
+
+    {# widget container and actions #}
+    <div class="widget-actions">
+        {% if address_edit_acl_resource is not defined or is_granted(address_edit_acl_resource) %}
+        <button class="btn btn-mini btn-primary btn-uppercase" type="button" data-action-name="add_address"> + {{ 'Add Address'|trans }}</button>
+        {% endif %}
+    </div>
+    <div class="list-box map-box" id="address-book"></div>
+</div>

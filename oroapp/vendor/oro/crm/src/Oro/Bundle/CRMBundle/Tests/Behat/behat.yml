@@ -1,0 +1,31 @@
+oro_behat_extension:
+  suites:
+    OroCRMBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+        - OroDataGridBundle::GridContext
+        - OroActivityListBundle::ActivityContext
+        - OroFormBundle::FormContext
+        - OroSecurityBundle::ACLContext
+        - OroCalendarBundle::FeatureContext
+        - OroSearchBundle::SearchContext
+      paths:
+        - '@OroCRMBundle/Tests/Behat/Features'
+
+  elements:
+    Account Form:
+      selector: 'form[name="oro_account_form"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Account Name: 'oro_account_form[name]'
+          Description: 'oro_account_form[extend_description]'
+
+  optional_listeners:
+    required_for_fixtures:
+      - 'oro_sales.customers.customer_association_listener'
+
+  optional_listeners:
+    required_for_fixtures:
+      - 'oro_sales.customers.customer_association_listener'

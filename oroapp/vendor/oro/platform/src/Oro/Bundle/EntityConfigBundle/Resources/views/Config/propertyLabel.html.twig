@@ -1,0 +1,5 @@
+{{ value|trans }}
+{% if record.hasValue('entity_icon') is defined %}
+    <i class="{{ record.getValue('entity_icon') }} hide-text pull-right"></i>
+{% endif %}
+

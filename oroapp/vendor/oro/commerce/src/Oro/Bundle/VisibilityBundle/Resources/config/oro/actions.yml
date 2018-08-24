@@ -1,0 +1,24 @@
+operations:
+    UPDATE:
+        exclude_datagrids:
+            - customer-category-visibility-grid
+            - customer-group-product-visibility-grid
+            - customer-product-visibility-grid
+    DELETE:
+        exclude_entities:
+            - Oro\Bundle\CustomerBundle\Entity\CustomerGroup
+        exclude_datagrids:
+            - customer-category-visibility-grid
+            - customer-group-category-visibility-grid
+            - customer-group-product-visibility-grid
+            - customer-product-visibility-grid
+
+    oro_customer_groups_delete:
+        exclude_datagrids:
+            - customer-group-category-visibility-grid
+            - customer-group-product-visibility-grid
+
+    oro_customer_delete:
+        exclude_datagrids:
+            - customer-category-visibility-grid
+            - customer-product-visibility-grid

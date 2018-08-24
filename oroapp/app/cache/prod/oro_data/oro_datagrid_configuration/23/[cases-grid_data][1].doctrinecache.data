@@ -1,0 +1,2 @@
+0
+a:1:{s:10:"cases-grid";a:3:{s:7:"extends";s:14:"base-case-grid";s:7:"filters";a:1:{s:7:"columns";a:2:{s:14:"relatedContact";a:4:{s:5:"label";s:39:"oro.case.datagrid.related_contact.label";s:4:"type";s:6:"string";s:9:"data_name";s:18:"relatedContactName";s:7:"enabled";b:0;}s:14:"relatedAccount";a:4:{s:5:"label";s:39:"oro.case.datagrid.related_account.label";s:4:"type";s:6:"string";s:9:"data_name";s:18:"relatedAccountName";s:7:"enabled";b:0;}}}s:7:"options";a:1:{s:17:"entity_pagination";b:1;}}}

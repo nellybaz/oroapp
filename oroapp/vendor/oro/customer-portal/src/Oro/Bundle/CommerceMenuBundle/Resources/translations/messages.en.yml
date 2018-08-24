@@ -1,0 +1,78 @@
+oro:
+    commercemenu:
+        menuupdate:
+            entity_label: Menu Update
+            entity_plural_label: Menu Update
+            id.label: Id
+            key.label: Key
+            parent_key.label: Parent Key
+            menu.label: Menu
+            titles.label: Title
+            uri.label: Uri
+            active.label: Active
+            priority.label: Priority
+            scope.label: Scope
+            image.label: Image
+            condition.label: Condition
+            website.label: Website
+            custom.label: Is Custom
+            divider.label: Is Divider
+            descriptions.label: Description
+            icon.label: Icon
+            screens.label: Screens
+            roots_plural_label: 'Frontend Menus'
+            website_with_label: 'Website: %website%'
+            reset_message: "Menu \"%menuKey%\" was successfully reset."
+            saved_message: "Menu item saved successfully."
+            deleted_message: "Menu item successfully deleted."
+            menu_user_agent_conditions_collection.label: "User Agent"
+            menu_screens_condition:
+                label: "Exclude on Screens"
+        menu_user_agent_conditions_collection:
+            add_label.label: "Add"
+        menu_user_agent_conditions_collection_group:
+            add_label.label: "And"
+        menu_user_agent_condition:
+            value.label: ""
+            operation:
+                label: ""
+                contains.label: "contains"
+                does_not_contain.label: "does not contain"
+                matches.label: "matches"
+                does_not_match.label: "does not match"
+        customer_menu.label: Edit Frontend Menu
+        customer_group_menu.label: Edit Frontend Menu
+        default:
+            navigation:
+                items:
+                    menu_list_frontend:
+                        label: Frontend Menus
+                        description: Manage frontend menus in default scope type
+        frontend:
+            navigation:
+                items:
+                    telephone.label: '1-800-555-5555'
+                    free_shipping.label: '<span>Fast & Free Shipping</span> for orders over $45'
+                    orders.label: 'Orders'
+                    quotes.label: 'Quotes'
+                    quick_order_form.label: 'Quick Order Form'
+                    about.label: 'About'
+                    information.label: 'Information'
+                    customer_service.label: 'Customer Service'
+                    privacy_policy.label: 'Privacy Policy'
+                    site_map.label: 'Site Map'
+                    search_terms.label: 'Search Terms'
+                    advanced_search.label: 'Advanced Search'
+                    orders_and_returns.label: 'Orders and Returns'
+                    why_buy_from_us.label: 'Why Buy From Us'
+                    shipping_and_returns.label: 'Shipping & Returns'
+                    secure_shopping.label: 'Secure Shopping'
+                    international_shipping.label: 'International Shipping'
+                    my_customer.label: 'My Account'
+                    sign_out.label: 'Sign Out'
+                    view_cart.label: 'View Cart'
+                    my_wishlist.label: 'My Wishlist'
+                    track_my_order.label: 'Track My Order'
+                    help.label: 'Help'
+                    sales.label: 'Sales Representative'
+                    view.label: 'VIEW'

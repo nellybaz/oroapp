@@ -1,0 +1,115 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroCalendarBundle::invitations.html.twig' as invitations %}
+
+{% oro_title_set({params : {"%entity.title%": entity.title, "%entityName%": 'oro.calendar.calendarevent.entity_label'|trans } }) %}
+{% set entityId = entity.id %}
+
+{% block navButtons %}
+    {% set html = UI.saveAndCloseButton({
+        'route': 'oro_calendar_event_view',
+        'params': {'id': '$id'}
+    }) %}
+
+    {% if is_granted('oro_calendar_event_create') %}
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': 'oro_calendar_event_create'
+        }) %}
+    {% endif %}
+
+    {% if is_granted('oro_calendar_event_update') %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'oro_calendar_event_update',
+            'params': {'id': '$id'}
+        }) %}
+    {% endif %}
+    {{ UI.dropdownSaveButton({'html': html}) }}
+    {{ UI.cancelButton(path('oro_calendar_event_index')) }}
+{% endblock %}
+
+{% block pageHeader %}
+    {% if entityId %}
+        {% set breadcrumbs = {
+            'entity':      entity,
+            'indexPath':   path('oro_calendar_event_index'),
+            'indexLabel':  'oro.calendar.calendarevent.entity_plural_label'|trans,
+            'entityTitle': entity.title
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'oro.calendar.calendarevent.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title } %}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'calendarevent-form' %}
+    {% set calendarEventDateRange = {
+        module: 'orocalendar/js/app/components/calendar-event-date-range-component',
+        name: 'calendar-event-date-range',
+        options: {
+            nativeMode: isMobileVersion()
+        }
+    } %}
+
+    {% set general_subblocks_data = [] %}
+
+    {% if not entityId and form.calendar is defined %}
+        {% set general_subblocks_data = general_subblocks_data|merge([form_row(form.calendar)]) %}
+    {% endif %}
+
+    {% set general_subblocks_data = general_subblocks_data|merge([
+        form_row(form.title),
+        form_row(form.description),
+        form_row(form.backgroundColor),
+        form.calendarUid is defined ? form_row(form.calendarUid) : null,
+        form_row(form.attendees),
+        entity.recurrence is null ? form_row(form.reminders) : null,
+        form_row(form.notifyAttendees),
+        invitations.notify_attendees_component()
+    ]) %}
+
+    {# @todo Verify the condition in the code of the last element in data (notifyGuestsComponent) is correct #}
+    {% set dataBlocks = [{
+        'title': 'General Information'|trans,
+        'class': 'active',
+        'subblocks': [
+            {
+                'title': '',
+                'data': general_subblocks_data
+            },
+            {
+                'title': '',
+                'data':  [
+                    '<div ' ~ UI.renderPageComponentAttributes(calendarEventDateRange) ~ '>' ~
+                        form_row(form.start) ~
+                        form_row(form.end) ~
+                        form_row(form.allDay) ~
+                    '</div>',
+                    form.recurrence is defined ? form_row(form.recurrence) : null
+                ]
+            }
+        ]
+    }] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks
+    } %}
+
+    {{ parent() }}
+{% endblock content_data %}

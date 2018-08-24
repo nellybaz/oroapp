@@ -1,0 +1,16 @@
+workflows:
+    b2b_flow_lead:
+        steps:
+            new:
+                order: 10
+                allowed_transitions:
+                    - qualify
+                    - cancel
+            qualified:
+                order: 20
+                allowed_transitions:
+                    - reactivate
+            cancelled:
+                order: 20
+                allowed_transitions:
+                    - reactivate

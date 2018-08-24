@@ -1,0 +1,91 @@
+services:
+    oro_paypal.paypal.payflow.nvp_encoder:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\NVP\Encoder'
+        public: false
+
+    oro_paypal.paypal.payflow_gateway.request.registry:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Request\RequestRegistry'
+        public: false
+        calls:
+            - ['addRequest', ['@oro_paypal.paypal.payflow_gateway.request.authorize']]
+            - ['addRequest', ['@oro_paypal.paypal.payflow.request.delayed_capture']]
+            - ['addRequest', ['@oro_paypal.paypal.payflow_gateway.request.sale']]
+            - ['addRequest', ['@oro_paypal.paypal.payflow.request.void']]
+
+    oro_paypal.paypal.payflow_gateway.request.authorize:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Gateway\Request\AuthorizationRequest'
+        public: false
+
+    oro_paypal.paypal.payflow_gateway.request.sale:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Gateway\Request\SaleRequest'
+        public: false
+
+    oro_paypal.paypal.payflow.request.delayed_capture:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Request\DelayedCaptureRequest'
+        public: false
+
+    oro_paypal.paypal.payflow.request.void:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Request\VoidRequest'
+        public: false
+
+    oro_paypal.paypal.payflow.processor.registry:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Processor\ProcessorRegistry'
+        public: false
+        calls:
+            - ['addProcessor', ['@oro_paypal.paypal.payflow.processor.paypal']]
+
+    oro_paypal.paypal.payflow.processor.paypal:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Processor\PayPal'
+        public: false
+
+    oro_paypal.paypal.payflow_gateway.gateway:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Gateway'
+        public: false
+        scope: prototype
+        arguments:
+            - '@oro_paypal.paypal.payflow.host_address_provider'
+            - '@oro_paypal.paypal.payflow.client.nvp'
+            - '@oro_paypal.paypal.payflow_gateway.request.registry'
+            - '@oro_paypal.paypal.payflow.processor.registry'
+
+    oro_paypal.paypal.payflow_express_checkout.request.registry:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Request\RequestRegistry'
+        public: false
+        calls:
+            - ['addRequest', ['@oro_paypal.paypal.payflow_express_checkout.request.authorize']]
+            - ['addRequest', ['@oro_paypal.paypal.payflow_express_checkout.request.sale']]
+            - ['addRequest', ['@oro_paypal.paypal.payflow.request.delayed_capture']]
+
+    oro_paypal.paypal.payflow_express_checkout.request.authorize:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\ExpressCheckout\Request\AuthorizationRequest'
+        public: false
+
+    oro_paypal.paypal.payflow_express_checkout.request.sale:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\ExpressCheckout\Request\SaleRequest'
+        public: false
+
+    oro_paypal.paypal.payflow_express_checkout.gateway:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Gateway'
+        public: false
+        scope: prototype
+        arguments:
+            - '@oro_paypal.paypal.payflow.host_address_provider'
+            - '@oro_paypal.paypal.payflow.client.nvp'
+            - '@oro_paypal.paypal.payflow_express_checkout.request.registry'
+            - '@oro_paypal.paypal.payflow.processor.registry'
+
+    oro_paypal.paypal.payflow.client.nvp:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Client\NVPClient'
+        public: false
+        arguments:
+            - '@oro_paypal.paypal.payflow.client.http'
+            - '@oro_paypal.paypal.payflow.nvp_encoder'
+
+    oro_paypal.paypal.payflow.client.http:
+        class: 'Guzzle\Http\Client'
+        public: false
+        lazy: true
+
+    oro_paypal.paypal.payflow.host_address_provider:
+        class: 'Oro\Bundle\PayPalBundle\PayPal\Payflow\Gateway\Host\HostAddressProvider'
+        public: false

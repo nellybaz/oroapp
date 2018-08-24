@@ -1,0 +1,2 @@
+0
+a:4:{s:2:"id";a:3:{s:1:"i";i:920;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"data";a:3:{s:1:"i";i:921;s:1:"h";b:0;s:1:"t";s:4:"text";}s:9:"createdAt";a:3:{s:1:"i";i:922;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:5:"event";a:3:{s:1:"i";i:923;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,58 @@
+services:
+    oro_api.delete.processor:
+        class: Oro\Bundle\ApiBundle\Processor\DeleteProcessor
+        public: false
+        arguments:
+            - '@oro_api.processor_bag'
+            - delete
+            - '@oro_api.config_provider'
+            - '@oro_api.metadata_provider'
+
+    #
+    # initialize
+    #
+
+    oro_api.delete.initialize_config_extras:
+        class: Oro\Bundle\ApiBundle\Processor\Delete\InitializeConfigExtras
+        tags:
+            - { name: oro.api.processor, action: delete, group: initialize, priority: 10 }
+
+    #
+    # resource_check
+    #
+
+    #
+    # normalize_input
+    #
+
+    #
+    # security_check
+    #
+
+    #
+    # load_data
+    #
+
+    oro_api.delete.entity_object_security_check:
+        class: \Oro\Bundle\ApiBundle\Processor\Shared\EntityObjectSecurityCheck
+        arguments:
+            - '@security.authorization_checker'
+            - DELETE
+        tags:
+            - { name: oro.api.processor, action: delete, group: data_security_check, priority: 10 }
+
+    #
+    # delete_data
+    #
+
+    oro_api.delete.delete_data_by_handler:
+        class: Oro\Bundle\ApiBundle\Processor\Delete\DeleteDataByDeleteHandler
+        arguments:
+            - '@oro_api.doctrine_helper'
+            - '@service_container'
+        tags:
+            - { name: oro.api.processor, action: delete, group: delete_data, priority: -10 }
+
+    #
+    # normalize_result
+    #

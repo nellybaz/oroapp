@@ -1,0 +1,120 @@
+Oro\Bundle\MailChimpBundle\Entity\MailChimpTransport:
+    properties:
+        apiKey:
+            - NotBlank: ~
+            - Length:
+                min: 32
+            - Regex:
+                pattern: '/^[a-z0-9]{32,}-[a-z]{2,}[0-9]+$/'
+                message: API Key is invalid
+
+Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings:
+    properties:
+        channel:
+            - NotBlank: ~
+#        template:
+#            - NotBlank: ~
+
+Oro\Bundle\MarketingListBundle\Entity\MarketingList:
+    constraints:
+        - Oro\Bundle\MailChimpBundle\Validator\Constraints\EmailColumnConstraint: ~
+
+Oro\Bundle\MailChimpBundle\Entity\StaticSegment:
+    constraints:
+        - Oro\Bundle\MailChimpBundle\Validator\Constraints\UniqueStaticSegmentNameConstraint: ~
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 100
+                maxMessage: "MailChimp Segment name cannot be longer than {{ limit }} characters long"
+        channel:
+            - NotBlank: ~
+        subscribersList:
+            - NotBlank: ~
+        marketingList:
+            - NotBlank: ~
+        syncStatus:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\Member:
+    properties:
+        email:
+            - Email: ~
+            - NotBlank: ~
+        status:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\MemberActivity:
+    properties:
+        email:
+            - Email: ~
+            - NotBlank: ~
+        action:
+            - NotBlank: ~
+        member:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\Campaign:
+    properties:
+        originId:
+            - NotBlank: ~
+        webId:
+            - NotBlank: ~
+        status:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember:
+    properties:
+        staticSegment:
+            - NotBlank: ~
+        member:
+            - NotBlank: ~
+        state:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\SubscribersList:
+    properties:
+        originId:
+            - NotBlank: ~
+        webId:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\Template:
+    properties:
+        originId:
+            - NotBlank: ~
+        type:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar:
+    properties:
+        staticSegment:
+            - NotBlank: ~
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        label:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        tag:
+            - NotBlank: ~
+            - Length:
+                max: 10
+        state:
+            - NotBlank: ~
+
+Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar:
+    proerties:
+        staticSegment:
+            - NotBlank: ~
+        member:
+            - NotBlank: ~
+        state:
+            - NotBlank: ~

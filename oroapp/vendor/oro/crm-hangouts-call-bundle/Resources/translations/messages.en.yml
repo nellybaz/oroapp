@@ -1,0 +1,15 @@
+oro.calendar:
+    calendarevent:
+            use_hangout.label: Call via Hangout
+            use_hangout.tooltip: Please note that Google limits the number of participants in a Hangout. The exact limit depends on your account; the default limit is 5. Only first guests that fit into the limit will be called.
+
+oro.hangoutscall:
+    label: "Hangout"
+    call:
+        hangouts_call: Hangouts call
+    system_configuration:
+        groups:
+            google_hangouts_settings.title: Google Hangouts
+        fields:
+            enable_google_hangouts_for_phone.label: Enable for Phones
+            enable_google_hangouts_for_email.label: Enable for Emails

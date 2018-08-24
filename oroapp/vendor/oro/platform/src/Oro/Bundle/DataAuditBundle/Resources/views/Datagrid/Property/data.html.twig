@@ -1,0 +1,23 @@
+{% import 'OroDataAuditBundle::macros.html.twig' as dataAudit %}
+
+<ul>
+{% for fieldKey, fieldValue in value %}
+    {% if fieldKey == 'auditData' %}
+        {% for collKey, collValue in fieldValue.new %}
+        <li>
+            <b>{{ oro_field_config_value(record.getValue('objectClass'), collKey, 'label')|default(collKey)|trans }}:</b>
+            {% if fieldValue.old|length %}
+                <s>{{ fieldValue.old[collKey] }}</s>
+            {% endif %}
+            {{ collValue }}
+        </li>
+        {% endfor %}
+    {% else %}
+        <li>
+            <b>{{ dataAudit.renderFieldName(record.getValue('objectClass'), fieldKey, fieldValue) }}</b>
+            <s>{{ dataAudit.renderFieldValue(fieldValue.old, fieldValue) }}</s>
+            {{ dataAudit.renderFieldValue(fieldValue.new, fieldValue) }}
+        </li>
+    {% endif %}
+{% endfor %}
+</ul>

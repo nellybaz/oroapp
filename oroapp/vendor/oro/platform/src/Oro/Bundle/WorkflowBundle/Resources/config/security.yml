@@ -1,0 +1,62 @@
+parameters:
+    oro_workflow.security.acl.manager.class: Oro\Bundle\WorkflowBundle\Acl\AclManager
+    oro_workflow.security.acl.voter.entity.class: Oro\Bundle\WorkflowBundle\Acl\Voter\WorkflowEntityVoter
+
+services:
+    oro_workflow.security.acl.manager:
+        class: %oro_workflow.security.acl.manager.class%
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_workflow.registry.system'
+
+    oro_workflow.security.acl.voter.entity:
+        class: %oro_workflow.security.acl.voter.entity.class%
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_workflow.permission_registry'
+        tags:
+            - { name: security.voter, priority: 500 }
+
+    oro_workflow.acl.voter.workflow_edit_voter:
+        class: 'Oro\Bundle\WorkflowBundle\Acl\Voter\WorkflowEditVoter'
+        public: false
+        tags:
+            - { name: security.voter }
+
+    oro_workflow.filter.privilege_workflow_filter:
+        class: 'Oro\Bundle\WorkflowBundle\Acl\Filter\AclPrivilegeWorkflowFilter'
+        public: false
+        tags:
+            - { name: oro.security.filter.acl_privilege }
+
+    oro_workflow.acl.metadata_provider:
+        public: false
+        class: Oro\Bundle\WorkflowBundle\Acl\Extension\WorkflowAclMetadataProvider
+        arguments:
+            - '@doctrine'
+            - '@translator'
+            - '@oro_featuretoggle.checker.feature_checker'
+
+    oro_workflow.acl.extension.workflow:
+        public: false
+        class: Oro\Bundle\WorkflowBundle\Acl\Extension\WorkflowAclExtension
+        arguments:
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.ownership_decision_maker.chain'
+            - '@oro_workflow.manager.system'
+            - '@oro_workflow.acl.metadata_provider'
+            - '@oro_workflow.acl.extension.workflow_transition'
+        tags:
+            - { name: oro_security.acl.extension }
+
+    oro_workflow.acl.extension.workflow_transition:
+        public: false
+        class: Oro\Bundle\WorkflowBundle\Acl\Extension\WorkflowTransitionAclExtension
+        arguments:
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.ownership_decision_maker.chain'
+            - '@oro_workflow.manager.system'

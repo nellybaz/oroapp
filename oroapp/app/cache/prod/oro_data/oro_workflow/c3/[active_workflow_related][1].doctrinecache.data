@@ -1,0 +1,2 @@
+0
+a:7:{s:41:"Oro\Bundle\CheckoutBundle\Entity\Checkout";i:0;s:34:"Oro\Bundle\SaleBundle\Entity\Quote";i:1;s:35:"Oro\Bundle\RFPBundle\Entity\Request";i:2;s:36:"Oro\Bundle\MagentoBundle\Entity\Cart";i:3;s:37:"Oro\Bundle\MagentoBundle\Entity\Order";i:4;s:48:"Oro\Bundle\ContactUsBundle\Entity\ContactRequest";i:5;s:33:"Oro\Bundle\TaskBundle\Entity\Task";i:6;}

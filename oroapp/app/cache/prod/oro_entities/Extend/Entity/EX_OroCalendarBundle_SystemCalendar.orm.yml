@@ -1,0 +1,15 @@
+Extend\Entity\EX_OroCalendarBundle_SystemCalendar:
+    type: mappedSuperclass
+    fields:
+        extend_description:
+            column: extend_description
+            type: text
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

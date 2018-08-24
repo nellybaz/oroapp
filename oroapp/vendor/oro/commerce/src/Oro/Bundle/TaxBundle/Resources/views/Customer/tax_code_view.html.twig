@@ -1,0 +1,12 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set taxCode %}
+    {% if entity %}
+        {{ UI.entityViewLink(entity, entity.code, 'oro_tax_customer_tax_code_view') }}
+    {% elseif groupCustomerTaxCode %}
+        {{ UI.entityViewLink(groupCustomerTaxCode, groupCustomerTaxCode.code, 'oro_tax_customer_tax_code_view') }}
+        ({{ 'oro.tax.customertaxcode.customer_group.view.label'|trans }})
+    {% endif %}
+{% endset %}
+
+{{ UI.renderHtmlProperty('oro.tax.taxcode.label'|trans, taxCode) }}

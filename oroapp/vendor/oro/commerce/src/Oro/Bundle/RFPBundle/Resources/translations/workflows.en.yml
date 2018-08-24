@@ -1,0 +1,97 @@
+oro:
+    workflow:
+        b2b_rfq_backoffice_default:
+            label: 'RFQ Management Flow'
+            step:
+                open:
+                    label: 'Open'
+                processed:
+                    label: 'Processed'
+                more_info_requested:
+                    label: 'More Information Requested'
+                declined:
+                    label: 'Declined'
+                cancelled:
+                    label: 'Cancelled'
+                deleted:
+                    label: 'Deleted'
+            attribute:
+                notes:
+                    label: 'Notes'
+                internal_status_before_deletion:
+                    label: 'Internal Status Before Deletion'
+            transition:
+                __start__:
+                    label: 'Open'
+                    warning_message: ''
+                process_transition:
+                    label: 'Mark as Processed'
+                    warning_message: ''
+                request_more_information_transition:
+                    label: 'Request More Information'
+                    warning_message: ''
+                    attribute:
+                        notes:
+                            label: 'Notes'
+                decline_transition:
+                    label: 'Decline'
+                    warning_message: ''
+                delete_transition:
+                    label: 'Delete'
+                    warning_message: ''
+                cancel_transition:
+                    label: 'Cancel'
+                    warning_message: ''
+                info_provided_transition:
+                    label: 'Info Provided'
+                    warning_message: ''
+                reprocess_transition:
+                    label: 'Reprocess'
+                    warning_message: ''
+                undelete_to_cancelled_transition:
+                    label: 'Undelete'
+                    warning_message: ''
+                undelete_to_open_transition:
+                    label: 'Undelete'
+                    warning_message: ''
+                undelete_to_more_information_requested_transition:
+                    label: 'Undelete'
+                    warning_message: ''
+
+        b2b_rfq_frontoffice_default:
+            label: 'RFQ Submission Flow'
+            step:
+                submitted:
+                    label: 'Submitted'
+                requires_attention:
+                    label: 'Requires Attention'
+                cancelled:
+                    label: 'Cancelled'
+            attribute:
+                notes:
+                    label: 'Notes'
+            transition:
+                __start__:
+                    label: 'Submit'
+                    warning_message: ''
+                more_information_requested_transition:
+                    label: 'Request More Information'
+                    warning_message: ''
+                provide_more_information_transition:
+                    label: 'Provide More Information'
+                    warning_message: ''
+                    attribute:
+                        notes:
+                            label: 'Notes'
+                cancel_transition:
+                    label: 'Cancel'
+                    warning_message: ''
+                decline_transition:
+                    label: 'Decline'
+                    warning_message: ''
+                resubmit_transition:
+                    label: 'Resubmit'
+                    warning_message: ''
+                reopen_transition:
+                    label: 'Reopen'
+                    warning_message: ''

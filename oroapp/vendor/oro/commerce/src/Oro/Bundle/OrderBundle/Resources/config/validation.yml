@@ -1,0 +1,130 @@
+Oro\Bundle\OrderBundle\Entity\Order:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: identifier
+    properties:
+        poNumber:
+            - Length:
+                max: 255
+        shipUntil:
+            - Date: ~
+        currency:
+            - Currency: ~
+        totalValue:
+            - Type:
+                type: numeric
+            - Range:
+                min: 0
+                max: 999999999999999999
+                minMessage: 'oro.order.total.min.error.label'
+                maxMessage: 'oro.order.total.max.error.label'
+        subtotalValue:
+            - Type:
+                type: numeric
+            - Range:
+                min: 0
+                max: 999999999999999999
+                minMessage: 'oro.order.subtotal.min.error.label'
+                maxMessage: 'oro.order.subtotal.max.error.label'
+        customer:
+            - NotBlank: ~
+        lineItems:
+            - Count:
+                min: 1
+                minMessage: 'oro.order.orderlineitem.count'
+            - Valid: ~
+        discounts:
+            - Valid: ~
+        billingAddress:
+            - Valid: ~
+        shippingAddress:
+            - Valid: ~
+
+Oro\Bundle\OrderBundle\Entity\OrderLineItem:
+    constraints:
+        - Oro\Bundle\OrderBundle\Validator\Constraints\LineItemProduct: ~
+    properties:
+        order:
+            - NotBlank: ~
+        productSku:
+            - NotBlank:
+                groups: [ Import ]
+            - Length:
+                max: 255
+                groups: [ Import ]
+        quantity:
+            - NotBlank: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Decimal: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\GreaterThanZero: ~
+        priceType:
+            - NotBlank: ~
+        productUnit:
+            - NotBlank:
+                message: 'oro.product.productunit.invalid'
+        productUnitCode:
+            - NotBlank:
+                groups: [ Import ]
+        price:
+            - NotBlank: ~
+            - Valid: ~
+        freeFormProduct:
+            - Length:
+                max: 255
+
+Oro\Bundle\OrderBundle\Entity\OrderAddress:
+    constraints:
+        - Oro\Bundle\AddressBundle\Validator\Constraints\ValidRegion: ~
+        - Oro\Bundle\AddressBundle\Validator\Constraints\NameOrOrganization: ~
+    properties:
+        street:
+            - NotBlank: ~
+        city:
+            - NotBlank: ~
+        postalCode:
+            - NotBlank: ~
+        country:
+            - NotBlank: ~
+        phone:
+            - Length:
+                max: 255
+
+Oro\Bundle\OrderBundle\Entity\OrderDiscount:
+    constraints:
+        - Oro\Bundle\OrderBundle\Validator\Constraints\DiscountType:
+            groups: [Default, OrderDiscountItemType]
+    properties:
+        percent:
+            - NotBlank:
+                groups: [Default, OrderDiscountItemType]
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: numeric
+            - Range:
+                groups: [Default, OrderDiscountItemType]
+                min: -100
+                max: 100
+        amount:
+            - NotBlank:
+                groups: [Default, OrderDiscountItemType]
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: numeric
+            - Range:
+                groups: [Default, OrderDiscountItemType]
+                min: 0
+                max: 999999999999999999
+        type:
+            - Type:
+                groups: [Default, OrderDiscountItemType]
+                type: string
+        order:
+            - Oro\Bundle\OrderBundle\Validator\Constraints\Discounts: ~
+            - Oro\Bundle\OrderBundle\Validator\Constraints\Discounts:
+                errorMessage: 'oro.order.discounts.sum.error.single_discount.label'
+                groups: [OrderDiscountItemType]
+
+Oro\Bundle\OrderBundle\Entity\OrderShippingTracking:
+    properties:
+        method:
+            - NotBlank: ~
+        number:
+            - NotBlank: ~

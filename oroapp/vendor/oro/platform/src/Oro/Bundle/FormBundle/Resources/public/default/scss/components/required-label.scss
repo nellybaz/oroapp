@@ -1,0 +1,7 @@
+// @theme: default;
+
+.required-label {
+    padding: $offset-x 0;
+
+    color: get-color('ui', 'error-dark');
+}

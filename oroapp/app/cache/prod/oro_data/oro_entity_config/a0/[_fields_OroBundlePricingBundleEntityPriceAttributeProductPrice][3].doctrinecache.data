@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:1205;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:10:"productSku";a:3:{s:1:"i";i:1206;s:1:"h";b:0;s:1:"t";s:6:"string";}s:8:"quantity";a:3:{s:1:"i";i:1207;s:1:"h";b:0;s:1:"t";s:5:"float";}s:5:"value";a:3:{s:1:"i";i:1208;s:1:"h";b:0;s:1:"t";s:5:"money";}s:8:"currency";a:3:{s:1:"i";i:1209;s:1:"h";b:0;s:1:"t";s:6:"string";}s:9:"priceList";a:3:{s:1:"i";i:1210;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:7:"product";a:3:{s:1:"i";i:1211;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:4:"unit";a:3:{s:1:"i";i:1212;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

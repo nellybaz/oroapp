@@ -1,0 +1,75 @@
+connector:
+    name: oro_importexport
+    jobs:
+        entity_export_to_csv:
+            title: "Entity Export to CSV"
+            type: export
+            steps:
+                export:
+                    title:     export
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.entity
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    oro_importexport.writer.csv
+                    parameters: ~
+        entity_export_template_to_csv:
+            title: "Entity Template Export to CSV"
+            type: export_template
+            steps:
+                export_template:
+                    title:     export_template
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.template_fixture
+                        processor: oro_importexport.processor.export_template_delegate
+                        writer:    oro_importexport.writer.csv
+                    parameters: ~
+        entity_import_validation_from_csv:
+            title: "Entity Import Validation from CSV"
+            type: import_validation
+            steps:
+                import_validation:
+                    title:     import_validation
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.csv
+                        processor: oro_importexport.processor.import_validation_delegate
+                        writer:    oro_importexport.writer.doctrine_clear
+                    parameters: ~
+        entity_import_from_csv:
+            title: "Entity Import from CSV"
+            type: import
+            steps:
+                import:
+                    title:     import
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.csv
+                        processor: oro_importexport.processor.import_delegate
+                        writer:    oro_importexport.writer.entity
+                    parameters: ~
+        entity_export_to_xlsx:
+            title: "Entity Export to XLS"
+            type: export
+            steps:
+                export:
+                    title:     export
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.entity
+                        processor: oro_importexport.processor.export_delegate
+                        writer:    oro_importexport.writer.xlsx
+                    parameters: ~
+        entity_export_template_to_xlsx:
+            title: "Entity Template Export to XLSX"
+            type: export_template
+            steps:
+                export_template:
+                    title:     export_template
+                    class:     Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_importexport.reader.template_fixture
+                        processor: oro_importexport.processor.export_template_delegate
+                        writer:    oro_importexport.writer.xlsx
+                    parameters: ~

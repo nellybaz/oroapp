@@ -1,0 +1,25 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'dashboards-grid' %}
+
+{% set pageTitle = 'oro.dashboard.management_title'|trans %}
+
+{% block navButtons %}
+    {% if is_granted('oro_dashboard_create') %}
+        {{ UI.addButton({
+            'path' : path('oro_dashboard_create'),
+            'entity_label': 'oro.dashboard.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    {{ parent() }}
+
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'orodashboard/js/app/components/dashboard-navigation-component',
+        options: {
+            gridName: gridName
+        }
+    }) }}></div>
+{% endblock %}

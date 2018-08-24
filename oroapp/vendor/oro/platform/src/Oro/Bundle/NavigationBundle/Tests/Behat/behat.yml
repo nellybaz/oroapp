@@ -1,0 +1,63 @@
+oro_behat_extension:
+  elements:
+    MainMenu:
+      selector: 'div#main-menu'
+      class: Oro\Bundle\NavigationBundle\Tests\Behat\Element\MainMenu
+
+    MainMenuDropdown:
+      selector: '.dropdown-menu'
+
+    PinBarLink:
+      selector: '#pinbar div.list-bar .pin-holder a'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    AddToFavoritesButton:
+      selector: 'button.favorite-button'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    History Content:
+      selector: '#history-content'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Most Viewed Content:
+      selector: '#mostviewed-content'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Favorites Content:
+      selector: '#favorite-content'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    QuickMenuContentItem:
+      selector: 'ul li'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    MenuTree:
+      selector: 'div.jstree-wrapper'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+
+    Menu Form:
+      selector: 'form[name="menu_update"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Title: 'menu_update[titles][values][default]'
+          URI: 'menu_update[uri]'
+          Icon: 'menu_update[icon]'
+          Description: 'menu_update[descriptions][values][default]'
+
+  pages:
+    Shortcut Actionslist:
+      class: Oro\Bundle\NavigationBundle\Tests\Behat\Page\ShortcutActionslist
+      route: 'oro_shortcut_actionslist'
+
+  suites:
+    OroNavigationBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+        - OroDataGridBundle::GridContext
+        - OroNavigationBundle::FeatureContext
+        - OroFormBundle::FormContext
+        - OroConfigBundle::FeatureContext
+      paths:
+        - '@OroNavigationBundle/Tests/Behat/Features'

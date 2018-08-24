@@ -1,0 +1,34 @@
+{% block oro_config_form_field_type_widget %}
+    {% set valueContainerId = form.value.vars.id ~ '_container' %}
+    {% set valueContainerClass = form.value.vars.attr.class|default('oro-clearfix controls control-subgroup') %}
+    {% if form.value.vars.errors|length > 0 %}
+        {% set valueContainerClass = valueContainerClass ~ ' validation-error' %}
+    {% endif %}
+
+    <div id="{{ valueContainerId }}" class="{{ valueContainerClass }}">
+        {{ form_widget(form.value) }}
+        {{ form_errors(form.value) }}
+    </div>
+
+    {% if form.use_parent_scope_value is defined %}
+        <div class="horizontal parent-scope-checkbox">
+            <div class="oro-clearfix">
+                {{ form_row(form.use_parent_scope_value, { 'attr': {'data-role': 'changeUseDefault'} }) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block oro_config_form_field_type_row %}
+    {% if form.vars.value_field_only %}
+        {{ form_row(form.value, {label: form.vars.label}) }}
+    {% else %}
+        {% set label_attr = label_attr|merge({'for': form.value.vars.id}) %}
+        {{ form_row(form, {'label_attr': label_attr}) }}
+    {% endif %}
+{% endblock %}
+
+{% block oro_config_parent_scope_checkbox_type_row %}
+    {{ form_widget(form) }}
+    {{ form_label(form) }}
+{% endblock %}

@@ -1,0 +1,2 @@
+0
+a:1:{s:29:"product-price-attributes-grid";a:5:{s:12:"acl_resource";s:43:"oro_pricing_price_attribute_price_list_view";s:7:"options";a:1:{s:14:"toolbarOptions";a:2:{s:4:"hide";b:1;s:10:"pagination";a:1:{s:7:"onePage";b:1;}}}s:6:"source";a:1:{s:4:"type";s:5:"array";}s:7:"columns";a:1:{s:4:"unit";a:1:{s:5:"label";s:37:"oro.pricing.priceAttribute.unit.label";}}s:7:"sorters";a:1:{s:7:"columns";a:1:{s:4:"unit";a:1:{s:9:"data_name";s:4:"unit";}}}}}

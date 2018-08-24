@@ -1,0 +1,59 @@
+namespace Test;
+
+class Entity implements \Oro\Bundle\EntityExtendBundle\Entity\ExtendEntityInterface
+{
+    protected $rel_2;
+    protected $rel1;
+
+    public function setRel2($value)
+    {
+        $this->rel_2 = $value; return $this;
+    }
+
+    public function setRel1($value)
+    {
+        if ((!$value instanceof \Traversable && !is_array($value) && !$value instanceof \ArrayAccess) ||
+            !$this->rel1 instanceof \Doctrine\Common\Collections\Collection) {
+            $this->rel1 = $value;
+            return $this;
+        }
+        foreach ($this->rel1 as $item) {
+            $this->removeRel1($item);
+        }
+        foreach ($value as $item) {
+            $this->addRel1($item);
+        }
+        return $this;
+    }
+
+    public function removeRel1($value)
+    {
+        if ($this->rel1 && $this->rel1->contains($value)) {
+            $this->rel1->removeElement($value);
+            $value->setTarget1(null);
+        }
+    }
+
+    public function getRel2()
+    {
+        return $this->rel_2;
+    }
+
+    public function getRel1()
+    {
+        return $this->rel1;
+    }
+
+    public function addRel1($value)
+    {
+        if (!$this->rel1->contains($value)) {
+            $this->rel1->add($value);
+            $value->setTarget1($this);
+        }
+    }
+
+    public function __construct()
+    {
+        $this->rel1 = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+}

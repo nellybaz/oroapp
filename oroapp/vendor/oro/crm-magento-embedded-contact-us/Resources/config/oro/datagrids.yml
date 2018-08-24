@@ -1,0 +1,3 @@
+datagrids:
+    orcrm-contact-requests-grid-extended:
+        extends: orcrm-contact-requests-grid

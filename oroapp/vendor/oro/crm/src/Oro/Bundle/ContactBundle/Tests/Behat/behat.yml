@@ -1,0 +1,45 @@
+oro_behat_extension:
+  elements:
+    Send Email Form:
+      selector: "form[name='oro_email_email']"
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+    Share With Form:
+      selector: 'form.oropro_share_form'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Share with:
+            type: 'css'
+            locator: 'input[name="oropro_share_form[entities]"]'
+            element: Select2Share
+    Select Share With Grid:
+      selector: 'div[data-page-component-name="share-with-users-datagrid"]'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+    Shared Grid:
+      selector: 'div[data-page-component-name="shared-datagrid"]'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+    Select2Share:
+      selector: '.select2-offscreen[data-bound-component="oro/select2-share-component"]'
+      class: Oro\Bundle\FormBundle\Tests\Behat\Element\Select2Share
+    Contact Accounts Grid:
+      selector: 'div[data-page-component-name="contact-accounts-grid"]'
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+  suites:
+    OroContactBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\FixturesContext
+        - OroQueryDesignerBundle::QueryDesignerContext
+        - OroFormBundle::FormContext
+        - OroDataGridBundle::GridContext
+        - OroSecurityBundle::ACLContext
+        - OroAddressBundle::AddressContext
+        - OroImportExportBundle::ImportExportContext:
+            - '@oro_entity.entity_alias_resolver'
+            - '@oro_importexport.processor.registry'
+        - OroEmailBundle::EmailContext
+        - OroContactBundle::FeatureContext
+        - OroActivityListBundle::ActivityContext
+        - OroUIBundle::ContextSelectorContext
+      paths:
+        - '@OroContactBundle/Tests/Behat/Features'

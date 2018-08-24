@@ -1,0 +1,29 @@
+parameters:
+    oro_flat_rate_shipping.admin_view.method_template: 'OroFlatRateShippingBundle::method/flatRateMethodWithOptions.html.twig'
+
+services:
+    oro_flat_rate_shipping.event_listener.shipping_method_config_data:
+        parent: oro_shipping.admin_view.method_template.listener
+        arguments:
+            - '%oro_flat_rate_shipping.admin_view.method_template%'
+            - '@oro_flat_rate_shipping.method.provider'
+        tags:
+            - { name: kernel.event_listener, event: oro_shipping_method.config_data, method: onGetConfigData }
+
+    oro_flat_rate_shipping.entity_listener.integration:
+        parent: oro_shipping.remove_integration_listener
+        arguments:
+            - '%oro_flat_rate_shipping.integration.channel.type%'
+            - '@oro_flat_rate_shipping.method.identifier_generator.method'
+            - '@oro_shipping.method.event.dispatcher.method_removal'
+        tags:
+            - { name: kernel.event_listener, event: oro_integration.channel_delete, method: onRemove }
+
+    oro_flat_rate_shipping.disable_integration_listener:
+         parent: oro_shipping.disable_integration_listener
+         arguments:
+             - '%oro_flat_rate_shipping.integration.channel.type%'
+             - '@oro_flat_rate_shipping.method.identifier_generator.method'
+             - '@oro_shipping.method_disable_handler.decorator'
+         tags:
+             - { name: kernel.event_listener, event: oro_integration.channel_disable, method: onIntegrationDisable }

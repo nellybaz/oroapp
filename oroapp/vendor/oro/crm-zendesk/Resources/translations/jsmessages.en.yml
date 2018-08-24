@@ -1,0 +1,5 @@
+oro:
+    zendesk:
+        reverse_sync:
+                success_message:  Publishing to Zendesk was scheduled
+                fail_message:     Could not schedule publishing to Zendesk

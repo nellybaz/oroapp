@@ -1,0 +1,314 @@
+system_configuration:
+    groups:
+        email_configuration:
+            icon:  fa-envelope
+            title: oro.email.system_configuration.email_configuration
+            page_reload: true
+            handler: '@oro_email.form.handler.email_configuration::process'
+            configurator: '@oro_email.form.configurator.email_configuration::configure'
+
+        user_email_configuration:
+            icon:  fa-envelope
+            title: oro.email.system_configuration.email_configuration
+
+        email_settings:
+            title: oro.email.system_configuration.email_settings
+            priority: 130
+
+        email_autocomplete_configuration:
+            title: oro.email.system_configuration.email_autocomplete_configuration.label
+            priority: 120
+
+        signature_configuration:
+            title: oro.email.system_configuration.signature_configuration.label
+            priority: 100
+
+        email_threads:
+            title: oro.email.system_configuration.email_threads.label
+            priority: 90
+
+        reply_configuration:
+            title: oro.email.system_configuration.reply_configuration.label
+            priority: 80
+
+        attachment_configuration:
+            title: oro.email.system_configuration.attachment_configuration.label
+            priority: 70
+
+        smtp_settings:
+            title: oro.email.system_configuration.smtp_settings.label
+            priority: 65
+
+        template_configuration:
+            title: oro.email.system_configuration.template_configuration.label
+            priority: 60
+
+        mailboxes:
+            title: oro.email.system_configuration.mailbox_configuration.label
+            priority: -10
+
+        user_mailbox:
+            title: oro.user.imap_configuration.label
+            priority: 95
+
+        user_bar_settings:
+            title: oro.user.user_bar_settings.title
+            priority: 100
+
+    fields:
+        oro_email.feature_enabled:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 110
+            options:
+                label: oro.email.system_configuration.feature_enabled.label
+
+        oro_email.minimum_input_length:
+            data_type: integer
+            type: number
+            search_type: text
+            options:
+                label: oro.email.system_configuration.email_autocomplete_configuration.minimum_input_length.label
+                precision: 0
+                constraints:
+                    - NotBlank: ~
+
+        oro_email.signature:
+            data_type: string
+            type: oro_rich_text
+            search_type: text
+            options:
+                label: oro.email.system_configuration.signature_configuration.signature.label
+                required: false
+
+        oro_email.append_signature:
+            data_type: boolean
+            type: choice
+            search_type: choice
+            options:
+                label: oro.email.system_configuration.signature_configuration.append_signature.label
+                choices:
+                    1: oro.email.system_configuration.signature_configuration.append_signature.choices.auto.label
+                    0: oro.email.system_configuration.signature_configuration.append_signature.choices.manual.label
+
+        oro_email.default_button_reply:
+            data_type: integer
+            type: choice
+            search_type: choice
+            options:
+                label: oro.email.system_configuration.reply_configuration.default_button.label
+                choices:
+                    1: oro.email.reply
+                    2: oro.email.reply_all
+                required: false
+
+        oro_email.mailbox_grid:
+            type: oro_email_mailbox_grid
+            ui_only: true
+            options:
+                label: false
+                required: false
+                resettable: false
+
+        oro_email.smtp_settings_host:
+            data_type: string
+            type: text
+            search_type: text
+            options:
+                attr: {data-class: smtp_settings}
+                label: oro.email.system_configuration.smtp_settings.host.label
+                constraints:
+                    - Length:
+                        min: 3
+                        max: 255
+                required: true
+
+        oro_email.smtp_settings_port:
+            data_type: number
+            type: number
+            search_type: text
+            options:
+                attr: {data-class: smtp_settings}
+                label: oro.email.system_configuration.smtp_settings.port.label
+                constraints:
+                    - Range:
+                        min: 0
+                        max: 65535
+                required: true
+
+        oro_email.smtp_settings_encryption:
+            data_type: string
+            type: choice
+            search_type: choice
+            options:
+                attr: {data-class: smtp_settings}
+                label: oro.email.system_configuration.smtp_settings.encryption.label
+                choices:
+                    ~: oro.email.system_configuration.smtp_settings.encryption.none.label
+                    ssl: oro.email.system_configuration.smtp_settings.encryption.ssl.label
+                    tls: oro.email.system_configuration.smtp_settings.encryption.tls.label
+                constraints:
+                    - Choice:
+                        choices: [~, ssl, tls]
+                required: true
+
+        oro_email.smtp_settings_username:
+            data_type: string
+            type: text
+            search_type: text
+            options:
+                attr: {data-class: smtp_settings}
+                label: oro.email.system_configuration.smtp_settings.username.label
+                required: false
+
+        oro_email.smtp_settings_password:
+            data_type: string
+            type: password
+            options:
+                attr: {data-class: smtp_settings}
+                label: oro.email.system_configuration.smtp_settings.password.label
+                required: false
+
+        oro_email.show_recent_emails_in_user_bar:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 100
+            options:
+                label: oro.email.system_configuration.show_recent_emails_in_user_bar.label
+                required: false
+
+        oro_email.attachment_sync_enable:
+            data_type: boolean
+            type: oro_config_checkbox
+            priority: 50
+            options:
+                label: oro.email.system_configuration.attachment_sync.enable.label
+                tooltip: oro.email.form.tooltip.attachment_sync.enable
+                required: false
+
+        oro_email.attachment_sync_max_size:
+            data_type: number
+            type: number
+            search_type: text
+            priority: 50
+            options:
+                label: oro.email.system_configuration.attachment_sync.max_size.label
+                tooltip: oro.email.form.tooltip.attachment_sync.max_size
+                required: true
+
+        oro_email.attachment_preview_limit:
+            data_type: number
+            type: number
+            search_type: text
+            priority: 40
+            options:
+                label: oro.email.system_configuration.attachment_sync.preview_limit.label
+                tooltip: oro.email.form.tooltip.attachment_sync.preview_limit
+                required: true
+
+        oro_email.user_mailbox:
+            type: oro_user_emailsettings
+            ui_only: true
+            priority: 10
+            options:
+                label: false
+                required: false
+                resettable: false
+
+        oro_email.sanitize_html:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.email.system_configuration.sanitize_html.label
+                tooltip: oro.email.system_configuration.sanitize_html.tooltip
+                required: false
+
+        oro_email.threads_grouping:
+            data_type: boolean
+            type: choice
+            search_type: choice
+            options:
+                label: oro.email.system_configuration.email_threads.use_threads.label
+                choices:
+                    - oro.email.system_configuration.email_threads.use_threads.choices.non_threaded.label
+                    - oro.email.system_configuration.email_threads.use_threads.choices.threaded.label
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    user_bar_settings:
+                                        children:
+                                            - oro_email.show_recent_emails_in_user_bar
+                            email_configuration:
+                                children:
+                                    email_settings:
+                                        children:
+                                            - oro_email.feature_enabled
+                                    email_autocomplete_configuration:
+                                        children:
+                                            - oro_email.minimum_input_length
+                                    signature_configuration:
+                                        children:
+                                            - oro_email.signature
+                                            - oro_email.append_signature
+                                    reply_configuration:
+                                        children:
+                                            - oro_email.default_button_reply
+                                    attachment_configuration:
+                                        children:
+                                            - oro_email.attachment_sync_enable
+                                            - oro_email.attachment_sync_max_size
+                                            - oro_email.attachment_preview_limit
+                                    smtp_settings:
+                                        children:
+                                            - oro_email.smtp_settings_host
+                                            - oro_email.smtp_settings_port
+                                            - oro_email.smtp_settings_encryption
+                                            - oro_email.smtp_settings_username
+                                            - oro_email.smtp_settings_password
+                                    template_configuration:
+                                        children:
+                                            - oro_email.sanitize_html
+                                    mailboxes:
+                                        children:
+                                            - oro_email.mailbox_grid
+                                    email_threads:
+                                        children:
+                                            - oro_email.threads_grouping
+
+        user_configuration:
+            platform:
+                children:
+                    general_setup:
+                        children:
+                            look_and_feel:
+                                children:
+                                    user_bar_settings:
+                                        children:
+                                            - oro_email.show_recent_emails_in_user_bar
+                            user_email_configuration:
+                                children:
+                                    signature_configuration:
+                                        children:
+                                            - oro_email.signature
+                                            - oro_email.append_signature
+                                    reply_configuration:
+                                        children:
+                                            - oro_email.default_button_reply
+                                    user_mailbox:
+                                        children:
+                                            - oro_email.user_mailbox
+                                    email_threads:
+                                        children:
+                                            - oro_email.threads_grouping
+    api_tree:
+        signature_configuration:
+            oro_email.signature: ~
+            oro_email.append_signature: ~
+        reply_configuration:
+            oro_email.default_button_reply: ~

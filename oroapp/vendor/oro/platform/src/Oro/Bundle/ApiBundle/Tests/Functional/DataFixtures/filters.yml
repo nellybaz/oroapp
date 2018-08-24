@@ -1,0 +1,36 @@
+Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDepartment:
+    TestDepartment1:
+        name: TestDepartment1
+        organization: '@organization'
+        owner: '@business_unit'
+    TestDepartment2:
+        name: TestDepartment2
+        organization: '@organization'
+        owner: '@TestBusinessUnit1'
+    TestDepartment{3..21}:
+        name: TestDepartment<current()>
+        organization: '@organization'
+        owner: '@business_unit'
+Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEmployee:
+    TestEmployee1:
+        name: TestEmployee1
+        department: '@TestDepartment1'
+        organization: '@organization'
+        owner: '@business_unit'
+        position: developer
+    TestEmployee2:
+        name: TestEmployee2
+        department: '@TestDepartment2'
+        organization: '@organization'
+        owner: '@TestBusinessUnit1'
+        position: developer
+    TestEmployee3:
+        name: TestEmployee, with comma in name
+        organization: '@organization'
+        owner: '@TestBusinessUnit1'
+        position: developer
+Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+    TestBusinessUnit1:
+        name: TestBusinessUnit1
+        organization: '@organization'
+        email: TestBusinessUnit1@local.com

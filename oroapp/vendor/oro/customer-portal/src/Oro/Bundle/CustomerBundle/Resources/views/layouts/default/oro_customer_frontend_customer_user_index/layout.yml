@@ -1,0 +1,24 @@
+layout:
+    imports:
+        -
+            id: oro_customer_user_grid
+            root: page_content
+            namespace: customer_users
+
+    actions:
+        - '@setOption':
+            id: page_title
+            optionName: defaultValue
+            optionValue: 'oro.customer.frontend.customer_user.entity_plural_label'
+
+        - '@appendOption':
+            id: customer_users_datagrid
+            optionName: grid_render_parameters.themeOptions
+            optionValue:
+                cellActionsHideCount: 3
+
+        - '@appendOption':
+            id: customer_users_datagrid
+            optionName: grid_render_parameters.toolbarOptions.itemsCounter
+            optionValue:
+                transTemplate: 'oro_frontend.datagrid.pagination.totalRecords.users'

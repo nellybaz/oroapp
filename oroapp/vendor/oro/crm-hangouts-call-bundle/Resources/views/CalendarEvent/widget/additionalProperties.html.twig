@@ -1,0 +1,18 @@
+<% if (attendees && attendees.length && connection && connection.userId === {{ app.user.id }} && obj.use_hangout) { %>
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <% var hangoutCallOptions = {
+        calendarEvent: obj,
+        ownerUserId: {{ app.user.id|json_encode|raw }},
+        declinedStatus: {{ constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_DECLINED')|json_encode|raw }},
+        hangoutOptions: {
+            widget_size: 70
+        }
+    }; %>
+    {% set hangoutButton %}
+        <div data-action-name="hangout-call"
+             data-page-component-module="orohangoutscall/js/app/components/calendar-event-start-hangout-component"
+             data-page-component-options="<%- JSON.stringify(hangoutCallOptions) %>" class="action"></div>
+        </div>
+    {% endset %}
+    {{ UI.renderAttribute('oro.hangoutscall.label'|trans, hangoutButton) }}
+<% } %>

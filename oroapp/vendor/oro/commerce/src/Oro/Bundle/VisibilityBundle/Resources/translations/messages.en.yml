@@ -1,0 +1,104 @@
+oro.visibility:
+    event.saved.message: Product visibility has been saved
+    to_all:
+        label: Visibility to All
+
+    customercategoryvisibility:
+        entity_label: Visibility to Customers
+        entity_plural_label: Customer Category Visibilities
+        id.label: ID
+        category.label: Category
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            customer_group: Customer Group
+            category: Visibility to All
+            parent_category: Parent Category
+            hidden: Hidden
+            visible: Visible
+
+    customergroupcategoryvisibility:
+        entity_label: Visibility to Customer Groups
+        entity_plural_label: Customer Group Category Visibilities
+        id.label: ID
+        category.label: Category
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            category: Visibility to All
+            parent_category: Parent Category
+            hidden: Hidden
+            visible: Visible
+
+    categoryvisibility:
+        entity_label: Visibility to All
+        entity_plural_label: Category Visibilities
+        id.label: ID
+        category.label: Category
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            parent_category: Parent Category
+            config: Config
+            visible: Visible
+            hidden: Hidden
+
+    customerproductvisibility:
+        entity_label: Visibility to Customers
+        entity_plural_label: Customer Product Visibilities
+        id.label: ID
+        product.label: Product
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            customer_group: Customer Group
+            current_product: Current Product
+            category: Category
+            hidden: Hidden
+            visible: Visible
+
+    customergroupproductvisibility:
+        entity_label: Visibility to Customer Groups
+        entity_plural_label: Customer Group Product Visibilities
+        id.label: ID
+        product.label: Product
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            current_product: Current Product
+            category: Category
+            hidden: Hidden
+            visible: Visible
+
+    productvisibility:
+        entity_label: Visibility to All
+        entity_plural_label: Product Visibilities
+        id.label: ID
+        product.label: Product
+        visibility.label: Visibility
+        scope.label: Scope
+        choice:
+            category: Category
+            config: Config
+            visible: Visible
+            hidden: Hidden
+
+    catalog:
+        visibility:
+            label: Default Visibility to Customers
+            form_label: Visibility
+            catalog_configuration_label: Categories
+            visible.label: Visible
+            hidden.label: Hidden
+    product:
+        visibility:
+            label: Manage Visibility
+            visible.label: Visible
+            hidden.label: Hidden
+
+    system_configuration:
+        groups:
+            visibility:
+                title: 'Visibility'
+                product.title: 'Product Visibility to Customers'
+                category.title: 'Category Visibility to Customers'

@@ -1,0 +1,26 @@
+<ul>
+{% for val in value %}
+    {% set items = config_manager.getProvider(val.scope).getPropertyConfig().getItems(is_entity ? 'entity' : 'type') %}
+    {% set translatable = config_manager.getProvider(val.scope).getPropertyConfig().getTranslatableValues(is_entity ? 'entity' : 'field') %}
+
+    {% if (is_entity and val.fieldName() == null) or (is_entity == false and val.fieldName() == field_name) %}
+        {% for key, data in val.diff %}
+            {% if items[key]['form']['options']['label'] is defined %}
+                {% set label = items[key]['form']['options']['label'] %}
+            {% elseif items[key]['options']['label'] is defined %}
+                {% set label = items[key]['options']['label'] %}
+            {% else %}
+                {% set label = key|capitalize|replace('_',' ') %}
+            {% endif %}
+
+            {% if ('.entity_'~key not in data[1]|trans) %}
+            <li>
+                {% set old = key in translatable ? data[0]|default('N/A')|trans : data[0] %}
+                {% set new = key in translatable ? data[1]|trans : data[1] %}
+                <b>{{ label|trans }}</b>: <s>{{ old }}</s> {{ new }}
+            </li>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+{% endfor %}
+</ul>

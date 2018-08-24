@@ -1,0 +1,95 @@
+navigation:
+    menu_config:
+        items:
+            order_list:
+                label:           'oro.order.entity_plural_label'
+                route:           'oro_order_index'
+                position:        400
+                extras:
+                    routes:      ['oro_order_index', 'oro_order_view', 'oro_order_update', 'oro_order_create']
+                    description: 'oro.order.menu.order_list.description'
+
+            shortcut_order_list:
+                label:           'oro.order.entity_plural_label'
+                route:           'oro_order_index'
+                extras:
+                    description: 'oro.order.menu.shortcut_order_list.description'
+
+            shortcut_new_order:
+                label:           'oro.order.menu.shortcut_new_order.label'
+                route:           'oro_order_create'
+                extras:
+                    description:    'oro.order.menu.shortcut_new_order.description'
+                    is_custom_action: true
+
+            best_selling_list:
+                label:           'oro.order.menu.best_selling_list.label'
+                route:           'oro_report_view_grid'
+                route_parameters:
+                    gridName:    'best-selling-products'
+                extras:
+                    description: 'oro.order.menu.best_selling_list.description'
+
+            static_reports_tab:
+                label: 'oro.order.menu.static_reports_tab.label'
+                uri: '#'
+                position: 5
+
+            oro_order_frontend_index:
+                label: 'oro.order.order_history.label'
+                route: 'oro_order_frontend_index'
+                position: 60
+                acl_resource_id: 'oro_order_frontend_view'
+
+            oro_order_frontend_view:
+                label: 'oro.ui.view'
+                extras:
+                    routes: ['oro_order_frontend_view']
+
+            oro_order_products_frontend_previously_purchased:
+                label: 'oro.order.menu.product.previously_purchased.label'
+                route: 'oro_order_products_frontend_previously_purchased'
+                position: 70
+                acl_resource_id: 'oro_order_frontend_view'
+
+        tree:
+            application_menu:
+                children:
+                    sales_tab:
+                        children:
+                            order_list: ~
+                    reports_tab:
+                        children:
+                            static_reports_tab:
+                                children:
+                                    best_selling_list: ~
+
+            shortcuts:
+                children:
+                    shortcut_order_list: ~
+                    shortcut_new_order:   ~
+
+            frontend_menu:
+                children:
+                    oro_customer_menu_customer_user_index:
+                        children:
+                            oro_order_frontend_index:
+                                children:
+                                    oro_order_frontend_view: ~
+                            oro_order_products_frontend_previously_purchased: ~
+            oro_customer_menu:
+                children:
+                    oro_order_frontend_index:
+                          children:
+                              oro_order_frontend_view: ~
+                    oro_order_products_frontend_previously_purchased: ~
+
+    titles:
+        oro_order_index: ~
+        oro_order_view:   'oro.order.navigation.view'
+        oro_order_update: 'oro.order.navigation.view - oro.ui.edit'
+        oro_order_create: 'oro.ui.create_entity'
+
+        oro_order_frontend_index:  'oro.order.order_history.label'
+        oro_order_frontend_view:   'oro.order.navigation.view'
+        oro_order_products_frontend_previously_purchased: 'oro.order.menu.product.previously_purchased.label'

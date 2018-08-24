@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:12:{s:2:"id";b:1;s:8:"entityId";b:1;s:11:"entityClass";b:1;s:17:"relatedCampaignId";b:1;s:20:"relatedCampaignClass";b:1;s:7:"details";b:1;s:10:"actionDate";b:1;s:5:"owner";b:1;s:8:"campaign";b:1;s:4:"type";b:1;s:15:"serialized_data";b:1;s:13:"emailCampaign";b:0;}}

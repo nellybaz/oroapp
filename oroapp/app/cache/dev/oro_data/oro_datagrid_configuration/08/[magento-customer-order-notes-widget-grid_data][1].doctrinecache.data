@@ -1,0 +1,2 @@
+0
+a:1:{s:40:"magento-customer-order-notes-widget-grid";a:2:{s:7:"extends";s:39:"magento-account-order-notes-widget-grid";s:7:"filters";a:1:{s:7:"columns";a:2:{s:8:"noteDate";a:3:{s:5:"label";s:17:"oro.ui.created_at";s:4:"type";s:8:"datetime";s:9:"data_name";s:12:"on.createdAt";}s:15:"noteUpdatedDate";a:3:{s:5:"label";s:17:"oro.ui.updated_at";s:4:"type";s:8:"datetime";s:9:"data_name";s:12:"on.updatedAt";}}}}}

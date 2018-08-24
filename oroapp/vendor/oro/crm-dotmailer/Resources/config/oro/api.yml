@@ -1,0 +1,31 @@
+api:
+    entities:
+        Extend\Entity\EV_Dm_Ab_Cnt_Exp_Type:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/address_book.md'
+
+        Extend\Entity\EV_Dm_Ab_Visibility:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/address_book.md'
+
+        Extend\Entity\EV_Dm_Cmp_Reply_Action:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/campaign.md'
+
+        Extend\Entity\EV_Dm_Cmp_Status:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/campaign.md'
+
+        Extend\Entity\EV_Dm_Cnt_Email_Type:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/contact.md'
+
+        Extend\Entity\EV_Dm_Cnt_Opt_In_Type:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/contact.md'
+
+        Extend\Entity\EV_Dm_Cnt_Status:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/contact.md'
+
+        Extend\Entity\EV_Dm_Import_Status:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/contact.md'
+
+        Extend\Entity\EV_Dm_Df_Type:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/data_field.md'
+
+        Extend\Entity\EV_Dm_Df_Visibility:
+            documentation_resource: '@OroDotmailerBundle/Resources/doc/api/data_field.md'

@@ -1,0 +1,11 @@
+@select2IconBtnWidth: 30px;
+@borderWidth: 1px;
+
+.product-container {
+  position: relative;
+
+  .input-append,
+  .input-prepend {
+    width: calc(~ "100%" - @select2IconBtnWidth + @borderWidth);
+  }
+}

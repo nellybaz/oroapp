@@ -1,0 +1,203 @@
+parameters:
+    oro_rfp.entity.request.class: Oro\Bundle\RFPBundle\Entity\Request
+    oro_rfp.entity.request_product.class: Oro\Bundle\RFPBundle\Entity\RequestProduct
+    oro_rfp.entity.request_product_item.class: Oro\Bundle\RFPBundle\Entity\RequestProductItem
+    oro_rfp.entity.request.additional_note.class: Oro\Bundle\RFPBundle\Entity\RequestAdditionalNote
+
+services:
+    oro_rfp.mailer.processor:
+        class: 'Oro\Bundle\RFPBundle\Mailer\Processor'
+        public: false
+        arguments:
+            - "@doctrine"
+            - "@oro_config.manager"
+            - "@oro_email.email_renderer"
+            - "@oro_email.email_holder_helper"
+            - "@oro_email.direct_mailer"
+
+    oro_rfp.mailer.request_representatives_notifier:
+        class: 'Oro\Bundle\RFPBundle\Mailer\RequestRepresentativesNotifier'
+        arguments:
+            - "@oro_rfp.mailer.processor"
+            - "@oro_config.manager"
+
+    oro_rfp.processor.quick_add:
+        class: 'Oro\Bundle\RFPBundle\ComponentProcessor\DataStorageComponentProcessor'
+        parent: oro_product.component_processor.data_storage_aware.processor
+        arguments:
+            - '@oro_rfp.form.type.extension.frontend_request_data_storage'
+            - '@oro_featuretoggle.checker.feature_checker'
+        calls:
+            - [setName, ['oro_rfp_quick_add_processor']]
+            - [setRedirectRouteName, ['oro_rfp_frontend_request_create']]
+            - [setAcl, ['oro_rfp_frontend_request_create']]
+            - [setScope, ['rfq']]
+        tags:
+            - { name: oro_product.quick_add_processor }
+
+    oro_rfp.event_listener.product_db_query_restriction:
+        class: '%oro_product.event_listener.scoped_product_db_query_restriction.common_class%'
+        parent: oro_product.event_listener.abstract_product_db_query_restriction
+        calls:
+            - [setScope, ['rfp']]
+            - [setFrontendSystemConfigurationPath, ['oro_rfp.frontend_product_visibility']]
+            - [setBackendSystemConfigurationPath, ['oro_rfp.backend_product_visibility']]
+        tags:
+            - { name: kernel.event_listener, event: oro_product.product_db_query.restriction, method: onDBQuery }
+
+    oro_rfp.event_listener.product_search_query_restriction:
+        class: '%oro_product.event_listener.scoped_product_search_query_restriction.common_class%'
+        parent: oro_product.event_listener.abstract_product_search_query_restriction
+        calls:
+            - [setScope, ['rfp']]
+            - [setRequestStack, ['@request_stack']]
+            - [setFrontendSystemConfigurationPath, ['oro_rfp.frontend_product_visibility']]
+        tags:
+            - { name: kernel.event_listener, event: oro_product.product_search_query.restriction, method: onSearchQuery }
+
+    oro_rfp.service.request_to_quote_data_storage:
+        class: 'Oro\Bundle\RFPBundle\Storage\RequestToQuoteDataStorage'
+        arguments:
+            - "@oro_product.storage.product_data_storage"
+
+    oro_rfp.service.request_update_handler:
+        class: 'Oro\Bundle\RFPBundle\Form\Handler\RequestUpdateHandler'
+        parent: oro_form.model.update_handler
+        calls:
+            - [setRepresentativesNotifier, ['@oro_rfp.mailer.request_representatives_notifier']]
+
+    oro_rfp.storage.offers_data_storage:
+        class: 'Oro\Bundle\RFPBundle\Storage\OffersDataStorage'
+        parent: oro_product.storage.session_data_storage
+
+    oro_rfp.storage.offers_form_storage:
+        class: 'Oro\Bundle\RFPBundle\Storage\OffersFormStorage'
+        public: false
+
+    oro_rfp.layout.data_provider.request_form:
+        class: 'Oro\Bundle\RFPBundle\Layout\DataProvider\RFPFormProvider'
+        arguments:
+            - '@form.factory'
+            - '@router'
+        tags:
+            - { name: layout.data_provider, alias: oro_rfp_request_form }
+
+    oro_rfp.layout.data_provider.rfp_product_prices:
+        class: 'Oro\Bundle\RFPBundle\Layout\DataProvider\RfpProductPricesProvider'
+        arguments:
+            - '@oro_pricing.layout.data_provider.frontend_product_prices'
+        tags:
+            - { name: layout.data_provider, alias: oro_rfp_product_prices }
+
+    oro_rfp.request.manager:
+        class: 'Oro\Bundle\RFPBundle\Model\RequestManager'
+        arguments:
+            - '@oro_security.token_accessor'
+            - '@oro_entity.doctrine_helper'
+            - '@oro_customer.manager.guest_customer_user'
+            - '@oro_website.manager'
+
+    oro_rfp.event_listener.customer_view:
+        class: 'Oro\Bundle\RFPBundle\EventListener\CustomerViewListener'
+        public: true
+        arguments:
+            - '@translator'
+            - '@oro_entity.doctrine_helper'
+            - '@request_stack'
+        tags:
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.customer-view, method: onCustomerView }
+            - { name: kernel.event_listener, event: oro_ui.scroll_data.before.customer-user-view, method: onCustomerUserView }
+            - { name: oro_featuretogle.feature, feature: 'rfp' }
+
+    oro_rfp.layout.decider.rfp_action_decider:
+        class: 'Oro\Bundle\RFPBundle\Layout\Decider\RFPActionDecider'
+        arguments:
+            - '@event_dispatcher'
+            - '@request_stack'
+        tags:
+            - { name: layout.data_provider, alias: oro_rfp_action_decider }
+
+    oro_rfp.provider.quote_currency_checker:
+       class: Oro\Bundle\RFPBundle\Provider\CurrencyCheckerProvider
+       public: false
+       arguments:
+           - '@doctrine'
+       tags:
+           - { name: oro_multi_currency.currency_checker_provider }
+
+    oro_rfp.provider.product_availability:
+       class: Oro\Bundle\RFPBundle\Provider\ProductAvailabilityProvider
+       public: false
+
+    oro_rfp.acl.voter.frontend_request:
+        class: 'Oro\Bundle\RFPBundle\Acl\Voter\FrontendRequestVoter'
+        public: false
+        arguments:
+            - '@oro_frontend.provider.current_application'
+            - '@oro_workflow.manager'
+        calls:
+            - [setDoctrineHelper, ['@oro_entity.doctrine_helper']]
+            - [setClassName, ['%oro_rfp.entity.request.class%']]
+        tags:
+            - { name: security.voter }
+
+    oro_rfp.datagrid.listener.column:
+        class: 'Oro\Bundle\RFPBundle\EventListener\RFPDatagridColumnListener'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.rfp-requests-grid, method: onBuildBefore }
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.before.frontend-requests-grid, method: onBuildBefore }
+
+    oro_rfp.event_listener.navigation:
+        class: 'Oro\Bundle\RFPBundle\EventListener\NavigationListener'
+        arguments:
+            - "@security.authorization_checker"
+            - "@oro_featuretoggle.checker.feature_checker"
+        tags:
+            - { name: kernel.event_listener, event: oro_menu.configure.oro_customer_menu, method: onNavigationConfigure }
+
+    oro_rfp.voter.guest_rfp:
+        parent: oro_customer.voter.anonymous_customer_user
+        calls:
+            - [ setFeatureName, ['guest_rfp'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_rfp.voter.customer_user_rfp:
+        parent: oro_customer.voter.customer_user
+        calls:
+            - [ setFeatureName, ['guest_rfp'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_rfp.voter.guest_quick_order_form:
+        parent: oro_product.voter.guest_quick_order_form
+        calls:
+            - [ setFeatureName, ['guest_rfp'] ]
+        tags:
+            - { name: oro_featuretogle.voter }
+
+    oro_rfp.listener.rfp:
+        class: 'Oro\Bundle\RFPBundle\EventListener\RFPListener'
+        arguments:
+            - '@oro_user.provider.default_user'
+            - '@oro_security.token_accessor'
+            - '@oro_customer.manager.guest_customer_user'
+        tags:
+            - { name: doctrine.orm.entity_listener, entity: '%oro_rfp.entity.request.class%', event: prePersist }
+
+    oro_rfp.event_listener.system_config:
+        parent: oro_user.event_listener.default_user_system_config
+        calls:
+            - [setAlias, ['oro_rfp']]
+            - [setConfigKey, ['default_guest_rfp_owner']]
+        tags:
+            - { name: kernel.event_listener, event: oro_config.settings_form_preset, method: onFormPreSetData }
+            - { name: kernel.event_listener, event: oro_config.settings_before_save.oro_rfp.default_guest_rfp_owner, method: onSettingsSaveBefore }
+
+    oro_rfp.twig.request_products:
+        class: 'Oro\Bundle\RFPBundle\Twig\RequestProductsExtension'
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }

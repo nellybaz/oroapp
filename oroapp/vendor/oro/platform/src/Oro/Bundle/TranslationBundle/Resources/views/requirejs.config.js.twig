@@ -1,0 +1,30 @@
+require({
+    shim: {
+        'oro/translations': {
+            deps: ['orotranslation/js/translator'],
+            init: function(__) {
+                return __;
+            }
+        }
+    },
+    map: {
+        '*': {
+            'orotranslation/js/translator': 'oro/translations'
+        },
+        'oro/translations': {
+            'orotranslation/js/translator': 'orotranslation/js/translator'
+        }
+    },
+    paths: {
+        {% if app.debug and oro_translation_debug_js_translations() %}
+            'oro/translations': '{{ path('oro_translation_jstranslation')[0:-3]|raw }}'
+        {% else %}
+            'oro/translations': '{{ asset(asset_path('oro_translation_jstranslation'), 'translations')|raw }}'
+        {% endif %}
+    },
+    config: {
+        'orotranslation/js/translator': {
+            'debugTranslator': {{ oro_translation_debug_translator()|json_encode|raw }}
+        }
+    }
+});

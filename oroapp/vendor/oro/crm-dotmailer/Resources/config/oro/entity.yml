@@ -1,0 +1,68 @@
+oro_entity:
+    entity_aliases:
+        Oro\Bundle\DotmailerBundle\Entity\Activity:
+            alias:        dotmaileractivity
+            plural_alias: dotmaileractivities
+        Oro\Bundle\DotmailerBundle\Entity\AddressBook:
+            alias:        dotmaileraddressbook
+            plural_alias: dotmaileraddressbooks
+        Oro\Bundle\DotmailerBundle\Entity\AddressBookContact:
+            alias:        dotmaileraddressbookcontact
+            plural_alias: dotmaileraddressbookcontacts
+        Oro\Bundle\DotmailerBundle\Entity\AddressBookContactsExport:
+            alias:        dotmaileraddressbookcontactsexport
+            plural_alias: dotmaileraddressbookcontactsexport
+        Oro\Bundle\DotmailerBundle\Entity\Campaign:
+            alias:        dotmailercampaign
+            plural_alias: dotmailercampaigns
+        Oro\Bundle\DotmailerBundle\Entity\CampaignSummary:
+            alias:        dotmailercampaignsummary
+            plural_alias: dotmailercampaignsummary
+        Oro\Bundle\DotmailerBundle\Entity\Contact:
+            alias:        dotmailercontact
+            plural_alias: dotmailercontacts
+        Oro\Bundle\DotmailerBundle\Entity\DataField:
+            alias:        dotmailerdatafield
+            plural_alias: dotmailerdatafields
+        Oro\Bundle\DotmailerBundle\Entity\DataFieldMapping:
+            alias:        dotmailerdatafieldmapping
+            plural_alias: dotmailerdatafieldmappings
+        Oro\Bundle\DotmailerBundle\Entity\DataFieldMappingConfig:
+            alias:        dotmailerdatafieldmappingconfig
+            plural_alias: dotmailerdatafieldmappingconfigs
+        Oro\Bundle\DotmailerBundle\Entity\ChangedFieldLog:
+            alias:        dotmailerchangedfieldlog
+            plural_alias: dotmailerchangedfieldlogs
+        Oro\Bundle\DotmailerBundle\Entity\OAuth:
+            alias:        dotmaileroauth
+            plural_alias: dotmaileroauth
+        Extend\Entity\EV_Dm_Cnt_Status:
+            alias:        dotmailercontactstatus
+            plural_alias: dotmailercontactstatuses
+        Extend\Entity\EV_Dm_Cnt_Email_Type:
+            alias:        dotmailercontactemailtype
+            plural_alias: dotmailercontactemailtypes
+        Extend\Entity\EV_Dm_Cnt_Opt_In_Type:
+            alias:        dotmailercontactoptintype
+            plural_alias: dotmailercontactoptintypes
+        Extend\Entity\EV_Dm_Cmp_Status:
+            alias:        dotmailercampaignstatus
+            plural_alias: dotmailercampaignstatuses
+        Extend\Entity\EV_Dm_Cmp_Reply_Action:
+            alias:        dotmailercampaignreplyaction
+            plural_alias: dotmailercampaignreplyactions
+        Extend\Entity\EV_Dm_Ab_Cnt_Exp_Type:
+            alias:        dotmaileraddressbookexporttype
+            plural_alias: dotmaileraddressbookexporttypes
+        Extend\Entity\EV_Dm_Ab_Visibility:
+            alias:        dotmaileraddressbookvisibility
+            plural_alias: dotmaileraddressbookvisibilities
+        Extend\Entity\EV_Dm_Import_Status:
+            alias:        dotmailerimportstatus
+            plural_alias: dotmailerimportstatuses
+        Extend\Entity\EV_Dm_Df_Type:
+            alias:        dotmailerdatafieldtype
+            plural_alias: dotmailerdatafieldtypes
+        Extend\Entity\EV_Dm_Df_Visibility:
+            alias:        dotmailerdatafieldvisibility
+            plural_alias: dotmailerdatafieldvisibilities

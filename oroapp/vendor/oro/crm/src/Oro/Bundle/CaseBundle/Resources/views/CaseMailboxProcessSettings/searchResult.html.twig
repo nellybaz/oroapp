@@ -1,0 +1,13 @@
+{#
+    Available variables:
+    * entity       - entity Oro\Bundle\CaseBundle\Entity\CaseMailboxProcessSettings or null
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% set recordUrl = path('oro_email_mailbox_update', {'id': entity.mailbox.id}) %}
+{% set title = entity.mailbox.label %}
+
+{% set entityType = 'oro.case.casemailboxprocesssettings.entity_label'|trans %}

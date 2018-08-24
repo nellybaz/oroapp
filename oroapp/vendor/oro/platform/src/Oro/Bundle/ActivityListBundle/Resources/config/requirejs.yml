@@ -1,0 +1,4 @@
+config:
+    paths:
+        'oroactivitylist/js/app/components/activity-list-component': 'bundles/oroactivitylist/js/app/components/activity-list-component.js'
+        'oroactivitylist/js/app/views/activity-condition-view': 'bundles/oroactivitylist/js/app/views/activity-condition-view.js'

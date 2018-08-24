@@ -1,0 +1,2 @@
+0
+a:4:{s:2:"id";a:3:{s:1:"i";i:989;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:10:"visibility";a:3:{s:1:"i";i:990;s:1:"h";b:0;s:1:"t";s:6:"string";}s:8:"category";a:3:{s:1:"i";i:991;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:5:"scope";a:3:{s:1:"i";i:992;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

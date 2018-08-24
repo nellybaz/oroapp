@@ -1,0 +1,38 @@
+parameters:
+    oro_translation.form.type.translatable_entity.class:     Oro\Bundle\TranslationBundle\Form\Type\TranslatableEntityType
+    oro_translation.form.extension.translatable_choice.class: Oro\Bundle\TranslationBundle\Form\Extension\TranslatableChoiceTypeExtension
+
+services:
+    oro_translation.form.type.translatable_entity:
+        class: %oro_translation.form.type.translatable_entity.class%
+        arguments: ["@doctrine"]
+        tags:
+            - { name: form.type, alias: translatable_entity }
+
+    oro_translation.form.type.jqueryselect2_translatable_entity:
+        parent: genemu.form.jquery.type.select2
+        arguments: ["translatable_entity"]
+        tags:
+            - { name: form.type, alias: genemu_jqueryselect2_translatable_entity }
+
+    oro_translation.form.extension.translatable_choice:
+        class: %oro_translation.form.extension.translatable_choice.class%
+        tags:
+            - { name: form.type_extension, alias: choice }
+
+    oro_translation.form.type.add_language:
+        class: 'Oro\Bundle\TranslationBundle\Form\Type\AddLanguageType'
+        arguments:
+            - '@oro_translation.repository.language'
+            - '@oro_locale.settings'
+            - '@oro_translation.statistic_provider'
+            - '@translator'
+        tags:
+            - { name: form.type, alias: oro_translation_add_language }
+
+    oro_translationr.form.type.filter.language:
+        class: 'Oro\Bundle\TranslationBundle\Form\Type\Filter\LanguageFilterType'
+        arguments: 
+            - '@oro_locale.formatter.language_code'
+        tags:
+            - { name: form.type, alias: oro_translation_filter_language }

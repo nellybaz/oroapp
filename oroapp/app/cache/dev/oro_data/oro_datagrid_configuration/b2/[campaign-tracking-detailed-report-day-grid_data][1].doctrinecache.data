@@ -1,0 +1,2 @@
+0
+a:1:{s:42:"campaign-tracking-detailed-report-day-grid";a:2:{s:7:"extends";s:48:"campaign-tracking-detailed-report-day-grid-basic";s:6:"source";a:1:{s:5:"query";a:2:{s:6:"select";a:3:{i:0;s:6:"e.name";i:1;s:26:"COUNT(e.id) as visitsCount";i:2;s:27:"DATE(e.loggedAt) as logTime";}s:4:"from";a:1:{i:0;a:2:{s:5:"table";s:35:"%oro_tracking.tracking_event.class%";s:5:"alias";s:1:"e";}}}}}}

@@ -1,0 +1,18 @@
+oro_behat_extension:
+  elements:
+    Payment Method Config Type Field:
+      class: Oro\Bundle\PaymentBundle\Tests\Behat\Element\PaymentMethodConfigType
+      selector:
+        type: 'xpath'
+        locator: '//div[@id[starts-with(.,"uniform-oro_payment_methods_configs_rule_method")]]'
+
+    Payment Rule Form:
+      selector: "form[id^='oro_payment_methods_configs_rule-uid']"
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Method:
+            type: 'xpath'
+            locator: '//div[@id[starts-with(.,"uniform-oro_payment_methods_configs_rule_method")]]'
+            element: Payment Method Config Type Field
+          Destination1PostalCodes: 'oro_payment_methods_configs_rule[destinations][0][postalCodes]'

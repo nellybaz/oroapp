@@ -1,0 +1,27 @@
+{% extends 'OroNavigationBundle:Menu:menu.html.twig' %}
+
+{% macro get_options(attributes, data) %}
+    {%- set options = {} %}
+    {%- for attribute in attributes %}
+        {%- if data[attribute] is defined %}
+            {%- set options = options|merge({(attribute): data[attribute]}) %}
+        {%- endif %}
+    {%- endfor %}
+    {{- options|json_encode -}}
+{% endmacro %}
+
+{% block list %}
+    {% set favorites = [] %}
+    {% if item.hasChildren and options.depth is not sameas(0) and item.displayChildren %}
+        {% for favoritesItem in item.children %}
+            {% if favoritesItem.extras.isAllowed %}
+                {% set favorites = favorites|merge([{'id': favoritesItem.extras.id, 'title': favoritesItem.label, 'title_rendered': oro_title_render(favoritesItem.label),  'url': favoritesItem.uri, 'type': favoritesItem.extras.type}]) %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    {% import _self as navigation %}
+    {% set frontendOptions = ['el', 'tabTitle', 'tabIcon'] %}
+    <div data-data="{{ favorites|json_encode }}" data-options="{{- navigation.get_options(frontendOptions, options) -}}"></div>
+    <ul class="extra-list"></ul>
+    <div class="dot-menu-empty-message">{{ 'oro.navigation.messages.no_items'|trans }}</div>
+{% endblock %}

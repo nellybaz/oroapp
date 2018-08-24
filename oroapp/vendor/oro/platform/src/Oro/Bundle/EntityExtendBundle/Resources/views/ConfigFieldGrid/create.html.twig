@@ -1,0 +1,55 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with 'OroFormBundle:Form:fields.html.twig' %}
+
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A')|trans }}) %}
+
+{% if not formAction is defined %}
+    {% set formAction = path('oro_entityextend_field_create', {id: entity_id}) %}
+{% endif %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('oro_entityconfig_view', {'id':entity_id})) }}
+    {{ UI.saveActionButton({
+        'label': 'Continue'|trans,
+        'route': 'oro_entityextend_field_update',
+        'params': {'id': '$id'}
+    }) }}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if not breadcrumbs is defined %}
+        {% set breadcrumbs = {
+            'entity':      'entity',
+            'indexPath':   path('oro_entityconfig_index'),
+            'indexLabel': 'oro.entity_extend.config_grid.entities'|trans,
+            'entityTitle': 'oro.entity_extend.config_grid.new_field'|trans,
+            'additional': [
+                {
+                    'indexPath'  : path('oro_entityconfig_view', {id: entity_id}),
+                    'indexLabel' : entity_config.get('label')|default('N/A')|trans
+                },
+            ]
+        } %}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% set id = 'configfield-create' %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': form_data_blocks(form),
+        'hiddenData': form_rest(form)
+    } %}
+
+    {% set options = {
+        'typeId' : form.type.vars.id,
+        'fieldId' : form.fieldName.vars.id
+    } %}
+
+    <div data-page-component-module="oroentityextend/js/extend-field-form-component"
+         data-page-component-options="{{ options|json_encode }}">
+        {{ parent() }}
+    </div>
+{% endblock content_data %}

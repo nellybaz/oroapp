@@ -1,0 +1,74 @@
+// @theme: default
+
+.primary-menu {
+    &__item {
+        position: relative;
+
+        &--current,
+        &.active {
+            &:before {
+                top: 10px;
+                left: 0;
+
+                width: 7px;
+                height: 7px;
+
+                border-radius: 50%;
+                background: get-color('primary', 'base');
+
+                @include after();
+            }
+        }
+    }
+
+    &__badge {
+        i {
+            vertical-align: middle;
+        }
+    }
+
+    @include fullscreen-mode {
+        .primary-menu__item {
+            border-top: 0;
+            border-bottom: 1px solid get-color('additional', 'light');
+        }
+
+        .primary-menu__link {
+            padding: $primary-menu-link-inner-offset-fullscreen;
+
+            text-transform: $primary-menu-link-text-transform-fullscreen;
+        }
+    }
+}
+
+@include breakpoint('tablet') {
+    .primary-menu {
+        &__item {
+            padding: $primary-menu-item-inner-offset-tablet;
+
+            border-top: 1px solid get-color('additional', 'light');
+
+            &--current,
+            &.active {
+                &:before {
+                    content: none;
+                }
+
+                .primary-menu__link {
+                    color: inherit;
+                }
+            }
+        }
+
+        &__link {
+            display: block;
+            padding: $primary-menu-link-inner-offset-tablet;
+        }
+
+        .fa-minus,
+        .fa-plus {
+            right: 13px;
+            top: 15px;
+        }
+    }
+}

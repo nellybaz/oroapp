@@ -1,0 +1,28 @@
+{% block oro_reminder_collection_widget %}
+    {% set class = 'reminders-collection' %}
+    {% set attr = attr|merge({'class' : attr.class is defined ? attr.class ~ class : class}) %}
+    {{ block('oro_collection_widget') }}
+    {% set id = id ~ '_collection' %}
+{% endblock %}
+
+{% block oro_reminder_widget %}
+    <div {{ block('widget_container_attributes') }}>
+        <div class="float-holder">
+            <div>
+                <div class="method inline-field{% if form.method.vars.errors|length > 0 %} validation-error{% endif %}">
+                    {{ form_widget(form.method) }}
+                </div>
+                <div class="number inline-field{% if form.interval.number.vars.errors|length > 0 %} validation-error{% endif %}">
+                    {{ form_widget(form.interval.number) }}
+                </div>
+                <div class="unit inline-field{% if form.interval.unit.vars.errors|length > 0 %} validation-error{% endif %}">
+                    {{ form_widget(form.interval.unit) }}
+                </div>
+            </div>
+        {{ form_errors(form.method) }}
+        {{ form_errors(form.interval.number) }}
+        {{ form_errors(form.interval.unit) }}
+        {{ form_errors(form) }}
+        </div>
+    </div>
+{% endblock %}

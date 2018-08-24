@@ -1,0 +1,15 @@
+Extend\Entity\EX_OroCatalogBundle_Category:
+    type: mappedSuperclass
+    fields:
+        availability_date:
+            column: availability_date
+            type: datetime
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

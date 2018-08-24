@@ -1,0 +1,76 @@
+method: getTax
+reference: simple_order
+configuration:
+    use_as_base_by_default: destination
+    destination: shipping_address
+    start_calculation_on: item
+    start_calculation_with: row_total
+    product_prices_include_tax: false
+databaseBefore:
+    'Oro\Bundle\OrderBundle\Entity\OrderAddress':
+        ca_billing_address:
+            country: { class: 'Oro\Bundle\AddressBundle\Entity\Country', query: { iso2Code: 'CA' } }
+            region: { class: 'Oro\Bundle\AddressBundle\Entity\Region', query: { combinedCode: 'CA-ON' } }
+    'Oro\Bundle\OrderBundle\Entity\Order':
+        simple_order:
+            poNumber: simple_order
+            customer: { class: 'Oro\Bundle\CustomerBundle\Entity\Customer', query: { name: 'customer.orphan' } }
+            currency: USD
+            billingAddress: '@ca_billing_address'
+            shippingAddress: '@ca_billing_address'
+    'Oro\Bundle\CurrencyBundle\Entity\Price':
+        usd_price_15.99:
+            value: 15.99
+            currency: USD
+    'Oro\Bundle\OrderBundle\Entity\OrderLineItem':
+        order_line_item_1:
+            productSku: order_line_item_1
+            order: '@simple_order'
+            quantity: 5
+            price: '@usd_price_15.99'
+            product: { class: 'Oro\Bundle\ProductBundle\Entity\Product', query: { sku: 'product-1' } }
+    'Oro\Bundle\TaxBundle\Entity\TaxJurisdiction':
+        canada_ontario_jurisdiction:
+            code: canada_on_jurisdiction_code
+            country: { class: 'Oro\Bundle\AddressBundle\Entity\Country', query: { iso2Code: 'CA' } }
+            region: { class: 'Oro\Bundle\AddressBundle\Entity\Region', query: { combinedCode: 'CA-ON' } }
+        canada_nova_scotia_jurisdiction:
+            code: canada_ns_jurisdiction_code
+            country: { class: 'Oro\Bundle\AddressBundle\Entity\Country', query: { iso2Code: 'CA' } }
+            region: { class: 'Oro\Bundle\AddressBundle\Entity\Region', query: { combinedCode: 'CA-NS' } }
+    'Oro\Bundle\TaxBundle\Entity\TaxRule':
+        tax_rule.TAX1:
+            tax: { class: 'Oro\Bundle\TaxBundle\Entity\Tax', query: { code: 'TAX1' } }
+            taxJurisdiction: '@canada_ontario_jurisdiction'
+            productTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\ProductTaxCode', query: { code: 'TAX1' } }
+            customerTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode', query: { code: 'TAX1' } }
+        tax_rule.TAX2:
+            tax: { class: 'Oro\Bundle\TaxBundle\Entity\Tax', query: { code: 'TAX2' } }
+            taxJurisdiction: '@canada_nova_scotia_jurisdiction'
+            productTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\ProductTaxCode', query: { code: 'TAX2' } }
+            customerTaxCode: { class: 'Oro\Bundle\TaxBundle\Entity\CustomerTaxCode', query: { code: 'TAX1' } }
+expectedResult:
+    total:
+        includingTax: '87.95'  # 79.95 + 8
+        excludingTax: '79.95'
+        taxAmount: '8'         # (79.95 * 0.1)
+        adjustment: '-0.005'   # 8 - (79.95 * 0.1)
+        currency: 'USD'
+    items:
+        -
+            unit:
+                includingTax: '17.59' # 15.99 + 1.6
+                excludingTax: '15.99'
+                taxAmount: '1.6'      # 15.99 * 0.1
+                adjustment: '-0.001'
+                currency: 'USD'
+            row:
+                includingTax: '87.95' # 79.95 + 8
+                excludingTax: '79.95' # 15.99 * 5
+                taxAmount: '8'        # 79.95 * 0.1
+                adjustment: '-0.005'
+                currency: 'USD'
+            taxes:
+                - { tax: 'TAX1', rate: '0.1', taxableAmount: '79.95', taxAmount: '8', currency: 'USD' }
+    taxes:
+        - { tax: 'TAX1', rate: '0.1', taxableAmount: '79.95', taxAmount: '8', currency: 'USD' }

@@ -1,0 +1,80 @@
+body {
+    margin: 0;
+    font-family: Helvetica, Arial, sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    color: #444;
+}
+h3 {
+    line-height: 14px;
+    font-size: 14px;
+    margin: 0 0 10px;
+}
+.app-proxy {
+    border-width: 0;
+    width: 1px;
+    height: 1px;
+    top: -1px;
+    position: absolute;
+}
+.app-page {
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    position: absolute;
+}
+.app-page > form {
+    background-color: #fff;
+    width: 460px;
+    padding: 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.control-group {
+    margin: 0 0 7px;
+}
+.control-group:last-child {
+    margin-bottom: 0;
+}
+.control-group .control-label {
+    padding-top: 7px;
+    color: #777;
+}
+.controls input[type="text"],
+.controls textarea {
+    display: inline-block;
+    margin-bottom: 0;
+    vertical-align: middle;
+    font-family: inherit;
+    font-size: 14px;
+    line-height: 20px;
+    color: #333;
+    width: 100%;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    height: 30px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 4px 6px;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075);
+}
+.controls textarea {
+    height: 250px;
+    resize: vertical;
+}
+.controls input[type="text"]:focus,
+.controls textarea:focus {
+    border-color: rgba(82,168,236,0.8);
+    outline: 0;
+    outline: thin dotted \9;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+    -moz-box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(82,168,236,0.6);
+}

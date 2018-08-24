@@ -1,0 +1,15 @@
+Extend\Entity\EX_OroCalendarBundle_CalendarEvent:
+    type: mappedSuperclass
+    fields:
+        use_hangout:
+            column: use_hangout
+            type: boolean
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

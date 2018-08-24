@@ -1,0 +1,2 @@
+0
+a:1:{i:0;a:1:{s:7:"request";a:4:{i:0;s:35:"Oro\Bundle\RFPBundle\Entity\Request";i:1;a:1:{i:0;s:35:"Oro\Bundle\RFPBundle\Entity\Request";}i:2;b:0;i:3;a:3:{i:0;s:19:"update_relationship";i:1;s:16:"add_relationship";i:2;s:19:"delete_relationship";}}}}

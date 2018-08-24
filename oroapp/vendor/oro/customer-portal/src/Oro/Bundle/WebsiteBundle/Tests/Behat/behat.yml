@@ -1,0 +1,17 @@
+oro_behat_extension:
+  suites:
+    OroWebsiteBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroConfigBundle::FeatureContext
+        - OroFormBundle::FormContext
+      paths:
+        - '@OroWebsiteBundle/Tests/Behat/Features'
+  elements:
+    Routing Settings Form:
+      selector: 'form[id^="routing"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          URL: 'routing[oro_website___url][value]'
+          Secure URL: 'routing[oro_website___secure_url][value]'

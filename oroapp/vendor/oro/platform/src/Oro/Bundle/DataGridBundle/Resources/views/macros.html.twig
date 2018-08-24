@@ -1,0 +1,73 @@
+{#
+    Renders datagrid widget
+
+    parameters:
+        name: datagrid name
+        params: additional parameters for url
+        renderParams: parameters for grid UI
+#}
+{% macro renderGrid(name, params = {}, renderParams = {}) %}
+    {% set datagrid = oro_datagrid_build(name, params) %}
+    {% if datagrid %}
+        {% if app.request.get('_widgetContainer') == 'dialog' %}
+            {% set renderParams = {'enableViews': false}|merge(renderParams) %}
+        {% endif %}
+        {% if params._grid_view._disabled is defined and params._grid_view._disabled %}
+            {% set renderParams = renderParams|merge({'enableViews': false}) %}
+        {% endif %}
+        {% set metaData = oro_datagrid_metadata(datagrid, params) %}
+        {% if renderParams.routerEnabled is defined %}
+            {% set metadataOptions = metaData.options is defined ? metaData.options : {} %}
+            {% set metadataOptions = metadataOptions|merge({'routerEnabled': renderParams.routerEnabled}) %}
+            {% set metaData = metaData|merge({'options': metadataOptions}) %}
+        {% endif %}
+        {% if renderParams.enableFullScreenLayout is defined
+                and renderParams.enableFullScreenLayout
+                and oro_config_value('oro_data_grid.full_screen_layout_enabled') %}
+            {% set metaData = metaData|merge({enableFullScreenLayout: true}) %}
+        {% endif %}
+        {% if renderParams.enableFloatingHeaderPlugin is defined %}
+            {% set metaData = metaData|merge({enableFloatingHeaderPlugin: renderParams.enableFloatingHeaderPlugin}) %}
+        {% else %}
+            {% set metaData = metaData|merge({enableFloatingHeaderPlugin: isMobileVersion()}) %}
+        {% endif %}
+        {% set data     = oro_datagrid_data(datagrid) %}
+        {% set gridId   = oro_datagrid_generate_element_id(datagrid) %}
+        {% set enableFilters = renderParams.enableFilters is defined ? renderParams.enableFilters : true %}
+        {% if isMobileVersion() and renderParams.enableToggleFilters is not defined %}
+            {% set enableToggleFilters = false %}
+        {% elseif renderParams.enableToggleFilters is defined %}
+            {% set enableToggleFilters = renderParams.enableToggleFilters %}
+        {% else %}
+            {% set enableToggleFilters = true %}
+        {% endif %}
+        {% set options  = {
+            el: '#' ~ gridId,
+            gridName: oro_datagrid_build_fullname(datagrid.name, datagrid.scope),
+            builders: metaData.requireJSModules|merge(renderParams.requireJSModules|default([])),
+            metadata: metaData,
+            data: data,
+            enableFilters: enableFilters,
+            enableToggleFilters: enableToggleFilters,
+            filterContainerSelector: renderParams.filterContainerSelector is defined ? renderParams.filterContainerSelector : null,
+            filtersStateElement: renderParams.filtersStateElement is defined ? renderParams.filtersStateElement : null,
+            enableViews: renderParams.enableViews is defined ? renderParams.enableViews : enableFilters,
+            showViewsInNavbar: renderParams.showViewsInNavbar is defined ? renderParams.showViewsInNavbar : false,
+            showViewsInCustomElement: renderParams.showViewsInCustomElement is defined ? renderParams.showViewsInCustomElement : false,
+            inputName: oro_datagrid_build_inputname(datagrid.name),
+            themeOptions: renderParams.themeOptions|default({}),
+            toolbarOptions: renderParams.toolbarOptions|default({}),
+            gridViewsOptions: renderParams.gridViewsOptions|default({}),
+            gridBuildersOptions: renderParams.gridBuildersOptions|default({}),
+        } %}
+        <div id="{{ gridId }}"
+             data-page-component-module="{{ renderParams.datagridComponent|default("orodatagrid/js/app/components/datagrid-component") }}"
+             data-page-component-name="{{ options.gridName }}"
+             data-page-component-options="{{ options|json_encode }}"
+             {% if renderParams.cssClass is defined %} class="{{ renderParams.cssClass }}" {% endif %}>
+             {% if renderParams.viewLoading|default(false) %}
+                 {% include "OroUIBundle::view_loading.html.twig" %}
+             {% endif %}
+        </div>
+    {% endif %}
+{% endmacro %}

@@ -1,0 +1,8 @@
+"Sorry, page was not loaded correctly": "Sorry, page was not loaded correctly"
+"Your local changes will be lost. Are you sure you want to refresh the page?": "Your local changes will be lost. Are you sure you want to refresh the page?"
+"Content of pinned page is outdated": "Content of pinned page is outdated"
+oro:
+    navigation:
+        menuupdate:
+            reload_link.label: "reload"
+            moved_success_message: "The menu has been updated. Please {{ reload_link }} the page to see the changes applied."

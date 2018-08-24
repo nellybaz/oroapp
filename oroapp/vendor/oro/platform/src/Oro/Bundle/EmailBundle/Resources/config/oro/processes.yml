@@ -1,0 +1,32 @@
+processes:
+    definitions:
+        sync_email_flag_after_changed:
+            label:   Sync Email Flag After Changed
+            enabled: true
+            order:   50
+            entity:  Oro\Bundle\EmailBundle\Entity\EmailUser
+            preconditions:
+                '@and':
+                    - '@not_empty': [$origin]
+                    - '@equal': [$origin.active, true]
+            actions_configuration:
+                - '@tree':
+                    actions:
+                        - '@call_method':
+                            object: $.data
+                            method: incrementUnsyncedFlagCount
+                        - '@assign_constant_value':
+                            attribute: '$.topic'
+                            value: 'Oro\Bundle\EmailBundle\Async\Topics::SYNC_EMAIL_SEEN_FLAG'
+                        - '@call_service_method':
+                            service: 'oro_message_queue.message_producer'
+                            method: 'send'
+                            method_parameters:
+                                - '$.topic'
+                                - { id: $id, seen: $seen }
+
+    triggers:
+        sync_email_flag_after_changed:
+            -
+                event: update
+                field: seen

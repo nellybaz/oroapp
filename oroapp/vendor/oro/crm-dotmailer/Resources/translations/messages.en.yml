@@ -1,0 +1,458 @@
+oro:
+    dotmailer:
+        channel_type.label: dotmailer
+
+        integration:
+            select.placeholder: Choose dotmailer integration
+            label: Integration
+            check_connection.label: Check Connection
+            connection_successful.label: Connection successful!
+            choose_connection.label: Connection
+            connection.label: Email Studio
+            connect.label: Connect
+            disconnect.label: Disconnect
+            messsage:
+                unable_to_connect: Unable to connect to dotmailer
+                incorrect_callback_url: Incorrect callback URL
+                enter_client_id_client_key: Please enter Client ID and Client Key for your <a href="%update_url%">integration</a>
+
+        integration_transport:
+            label: dotmailer
+            username:
+                label: Username
+            password:
+                label: Password
+            client_id:
+                label: Client ID
+            client_key:
+                label: Client Secret Key
+            custom_domain:
+                label: Custom OAuth domain
+
+        addressbook:
+            select.placeholder:                   Select Address Book
+            entity_label:                         dotmailer Address Book
+            entity_plural_label:                  dotmailer Address Books
+            campaigns.label:                      Campaign
+            channel.label:                        Channel
+            contact_count.label:                  Contacts count
+            contacts.label:                       Contacts
+            id.label:                             Id
+            marketing_list.label:                 Marketing List
+            name.label:                           Name
+            origin_id.label:                      Origin Id
+            owner.label:                          Owner
+            visibility.label:                     Visibility
+            visibility.tooltip:                   If you make an address book public, you can avoid "mass unsubscribing", by enabling your contacts to choose which of your campaigns and communications they wish to unsubscribe from. On your preference centre page they will see all public address books, noting which they belong to, so take care when naming public address books.
+            status.label:                         Status
+            address_book_contacts.label:          Address Book Contacts
+            address_book_contacts_exports.label:  Address Book Contacts Export
+            last_imported_at.label:               Last Imported At
+            last_exported_at.label:               Last Exported At
+            sync_status.label:                    Sync Status
+            create_entities.label:                Create New Entities
+            create_entities.tooltip:              Create new records if no match by email is found
+            sync_datafields:                      Refresh Data Fields
+            sync_datafields_success:              Data Fields will be updated with the next synchronization
+            sync_datafields_failed:               Could not schedule data fields update
+
+            sync: Marketing list synchronization has been scheduled. {{ job_view_link }}
+
+            message:
+                saved: Address Book saved
+                failed: Could not create Address Book
+
+        activity:
+            entity_label:                 dotmailer Activity
+            entity_plural_label:          dotmailer Activities
+            campaign.label:               Campaign
+            channel.label:                Channel
+            contact.label:                Contact
+            date_first_opened.label:      First Opened Date
+            date_last_opened.label:       Last Opened Date
+            date_sent.label:              Sent Date
+            email.label:                  Email
+            first_open_ip.label:          First Open Ip
+            hard_bounced.label:           Hard bounced
+            id.label:                     Id
+            num_clicks.label:             Clicks Number
+            num_estimated_forwards.label: Estimated Forwards Number
+            num_forwards.label:           Forwards Number
+            num_opens.label:              Opens Number
+            num_page_views.label:         Page Views Number
+            num_replies.label:            Replies Number
+            owner.label:                  Owner
+            soft_bounced.label:           Soft Bounced
+            unsubscribed.label:           Unsubscribed
+
+        contact:
+            entity_label:                 dotmailer Contact
+            entity_plural_label:          dotmailer Contacts
+            activities.label:             Activities
+            address_books.label:          Address Books
+            channel.label:                Channel
+            email.label:                  Email
+            email_type.label:             Email Type
+            first_name.label:             First Name
+            full_name.label:              Full Name
+            gender.label:                 Gender
+            id.label:                     Id
+            last_name.label:              Last Name
+            data_fields.label:              Data Fields
+            merge_var_values.label:       Merge Variable Values
+            opt_in_type.label:            Opt In Type
+            origin_id.label:              Origin Id
+            owner.label:                  Owner
+            postcode.label:               Postal Code
+            status.label:                 Status
+            address_book_contacts.label:  Address Book Contacts
+            last_subscribed_date.label:   Last Subscribed Date
+            unsubscribed_date.label:      Unsubscribed Date
+
+        campaign:
+            entity_label:             dotmailer Campaign
+            entity_plural_label:      dotmailer Campaigns
+            activities.label:         Activities
+            address_books.label:      Address Books
+            channel.label:            Channel
+            from_address.label:       From Address
+            from_name.label:          From Name
+            html_content.label:       Html Content
+            id.label:                 Id
+            is_split_test.label:      Is Split Test
+            name.label:               Name
+            origin_id.label:          Origin Id
+            owner.label:              Owner
+            plain_text_content.label: Plain Text Content
+            reply_action.label:       Reply Action
+            reply_to_address.label:   Reply To Address
+            status.label:             Status
+            subject.label:            Subject
+            campaign_summary.label:   Campaign Summary
+            email_campaign.label:     Email Campaign
+            deleted.label:            Is Deleted
+            new_marketing_campaign:   'Campaign was added automatically for "campaign_name" dotmailer campaign'
+
+        campaignsummary:
+            entity_label:                       Campaign summary
+            entity_plural_label:                Campaigns summary
+            campaign.label:                     Campaign
+            channel.label:                      Integration
+            date_sent.label:                    Date sent
+            id.label:                           Id
+            num_sent.label:                     Sent number
+            num_clicks.label:                   Clicks number
+            num_delivered.label:                Delivered number
+            num_estimated_forwards.label:       Estimated forwards number
+            num_forwards.label:                 Forwards number
+            num_hard_bounces.label:             Hard Bounces number
+            num_isp_complaints.label:           Isp Complaints number
+            num_mail_blocks.label:              Mail Blocks number
+            num_opens.label:                    Opens number
+            num_page_views.label:               Page Views number
+            num_recipients_clicked.label:       Recipients Clicked number
+            num_replies.label:                  Replies number
+            num_soft_bounces.label:             Soft bounces number
+            num_text_clicks.label:              Text Clicks number
+            num_text_delivered.label:           Text Delivered number
+            num_text_estimated_forwards.label:  Text Estimated forwards number
+            num_text_forwards.label:            Text Forwards number
+            num_text_hard_bounces.label:        Text Hard Bounces number
+            num_text_isp_complaints.label:      Text Isp Complaints number
+            num_text_mail_blocks.label:         Text Mail Blocks number
+            num_text_opens.label:               Text Opens number
+            num_text_page_views.label:          Text Page Views number
+            num_text_replies.label:             Text Replies number
+            num_text_sent.label:                Text Sent number
+            num_text_soft_bounces.label:        Text Soft bounces number
+            num_text_unsubscribes.label:        Text Unsubscribed number
+            num_total_clicks.label:             Total Clicks number
+            num_total_delivered.label:          Total Delivered number
+            num_total_estimated_forwards.label: Total Estimated Forwards number
+            num_total_hard_bounces.label:       Total Hard Bounces number
+            num_total_isp_complaints.label:     Total ISP Complaints number
+            num_total_mail_blocks.label:        Total Mail Blocks number
+            num_total_opens.label:              Total Opens number
+            num_total_page_views.label:         Total Page Views number
+            num_total_replies.label:            Total Replies number
+            num_total_sent.label:               Total Sent number
+            num_total_soft_bounces.label:       Total Soft Bounces number
+            num_total_unique_opens.label:       Total Unique Opens number
+            num_total_unsubscribes.label:       Total Unsubscribes number
+            num_unique_opens.label:             Unique Opens number
+            num_unique_text_opens.label:        Unique Text Opens number
+            num_unsubscribes.label:             Unsubscribes number
+            owner.label:                        Owner
+            percentage_clicks_to_opens.label:   Clicks to Opens percentage
+            percentage_delivered.label:         Delivered percentage
+            percentage_hard_bounces.label:      Percentage Hard Bounces
+            percentage_opens.label:             Percentage Opens
+            percentage_replies.label:           Percentage Replies
+            percentage_soft_bounces.label:      Percentage Soft Bounces
+            percentage_unique_opens.label:      Percentage Unique Opens
+            percentage_unsubscribes.label:      Percentage Unsubscribes
+            percentage_users_clicked.label:     Percentage User Clicked
+
+        addressbookcontact:
+            entity_label:                      Address Book Contact
+            entity_plural_label:               Address Book Contacts
+            address_book.label:                Address Book
+            contact.label:                     Contact
+            id.label:                          Id
+            status.label:                      Status
+            unsubscribed_date.label:           Unsubscribed Date
+            channel.label:                     Integration
+            marketing_list_item_class.label:   Marketing List Item Class Name
+            marketing_list_item_id.label:      Marketing List Item Id
+            scheduled_for_export.label:        Scheduled for Export
+            export_id.label:                   dotmailer Export Id
+            export_operation_type.label:       Export Operation Type
+            entity_updated.label:              Related Entity Updated Flag
+            scheduled_for_fields_update.label: Scheduled for Entities Field Updates
+            new_entity.label:                  Is New Entity
+
+        addressbookcontactsexport:
+            entity_label:                     Address Book Contact Export
+            entity_plural_label:              Address Book Contact Exports
+            address_book.label:               Address Book
+            created_at.label:                 Created At
+            id.label:                         Id
+            import_id.label:                  Import Id
+            status.label:                     Status
+            updated_at.label:                 Updated At
+            channel.label:                    Integration
+            faults_processed.label:           Faults Processed
+
+        datafield:
+            select.placeholder:               Select Data Field
+            entity_label:                     dotmailer Data Field
+            entity_plural_label:              Data Fields
+            channel.label:                    Channel
+            id.label:                         Id
+            name.label:                       Name
+            owner.label:                      Owner
+            visibility.label:                 Visibility
+            visibility.tooltip:               Make the field public if you want to allow your contacts to view and amend the data you hold on them in this field.
+            type.label:                       Type
+            type.tooltip:                     Select the correct data type so your information renders correctly.
+            default_value.label:              Default Value
+            default_value.tooltip:            When sending a campaign that uses template personalisation, a default value ensures that a value is always displayed even if a data field is blank.
+            notes.label:                      Notes
+            synced.label:                     Is Synchronized
+            synchronize:                      Synchronize
+            syncronize_scheduled:             Data fields scheduled to synchronize with dotmailer
+
+        datafieldmapping:
+            entity_label:                     dotmailer Data Field Mapping
+            entity_plural_label:              Data Field Mappings
+            channel.label:                    Channel
+            mapping.label:                    Mapping
+            configs.label:                    Mapping Configuration
+            id.label:                         Id
+            entity.label:                     Entity
+            sync_priority.label:              Sync Priority
+            sync_priority.tooltip:            If two or more entities are linked to 1 dotmailer contact, sync priority will be used to identify master record
+            owner.label:                      Owner
+
+        datafieldmappingconfig:
+            entity_label:                     Data Field Mapping Config
+            entity_plural_label:              Data Field Mapping Configs
+            mapping.label:                    Data Field Mapping
+            id.label:                         Id
+            entity_fields.label:              Fields
+            entityField.placeholder:          Select Field
+            is_two_way_sync.label:            Two Way Sync
+            is_two_way_sync.tooltip:          Perform data synchronization from dotmailer. Can be applied to the single main entity fields only
+            data_field.label:                 Data Field
+            update_mapping:                   Update mapping
+            delete_mapping:                   Delete mapping
+            delete_mapping_confirmation:      Are you sure you want to delete this mapping?
+            validation:
+                incompatible_types_numeric:    Mapping for field "%datafield%" must be of numeric type
+                incompatible_types_boolean:    Mapping for field "%datafield%" must be of boolean type
+                incompatible_types_date:       Mapping for field "%datafield%" must be of datetime type
+                incompatible_types_string:     Mapping for field "%datafield%" must be convertable to string
+                multiple:                      Several entity fields can be mapped only to the Data Field of type string
+
+        changedfieldlog:
+            entity_label:                     Entity Change Mapped Fields Log
+            entity_plural_label:              Entity Change Mapped Fields Logs
+            channel_id.label:                 Channel id
+            id.label:                         Id
+            parent_entity.label:              Parent Entity
+            related_field_path.label:         Related Field Path
+            related_id.label:                 Related Entity Id
+
+        connector:
+            campaign:
+                label:  Campaign Connector
+                job:    Import campaigns from dotmailer
+            address_book:
+                label:  Address book Connector
+                job:    Import Address books from dotmailer
+            unsubscribed_contact:
+                label:  Contacts unsubscribed from Address book Connector
+                job:    Contacts unsubscribed from Address book
+            unsubscribed_from_account_contacts:
+                label: Contacts unsubscribed from Account Connector
+                job: Import Contacts unsubscribed from Account
+            contact:
+                label:  Contact Connector
+                job:    Import new Contacts from dotmailer
+            activity_contact:
+                label: Contact Activities Connector
+                job: Import contact activities from dotmailer
+            campaign_summary:
+                label: Campaign Summary Connector
+                job: Import campaigns summary from dotmailer
+            contact_export:
+                label: Export Contact Connector
+                job: Export Contacts to dotmailer
+            data_field:
+                label:  Data Field Connector
+                job:    Import Data Fields from dotmailer
+            campaign_click:
+                label: Campaign Clicks Connector
+                job:   Import campaign clicks from dotmailer
+            campaign_open:
+                label: Campaign Open Connector
+                job:   Import campaign opens from dotmailer
+
+        import_not_exported_contact:
+            job: Import Export faults from dotmailer
+
+        emailcampaign:
+            transport.dotmailer: dotmailer
+            integration:
+                label: dotmailer Integration
+            statistics.label: dotmailer Statistics
+            positive.label: Positive
+            negative.label: Negative
+            emailsSent.label: Emails Sent
+            emailsSent.tooltip: Emails Sent
+            hardBounces.label: Hard Bounces
+            hardBounces.tooltip: Permanently undeliverable email addresses
+            hardBouncesPercentage.label: "Hard Bounces, %"
+            hardBouncesPercentage.tooltip: Percent of email addresses in campaign that hard bounced.
+            softBounces.label: Soft Bounces
+            softBounces.tooltip: Soft bounces - temporarily undeliverable email addresses
+            softBouncesPercentage.label: "Soft Bounces, %"
+            softBouncesPercentage.tooltip: Percent of email addresses in campaign that soft bounced.
+            unsubscribes.label: Unsubscribes
+            unsubscribes.tooltip: Number of email addresses in campaign that unsubscribed.
+            unsubscribesPercentage.label: "Unsubscribes, %"
+            unsubscribesPercentage.tooltip: Percent of email addresses in campaign that unsubscribed.
+            forwards.label: Forwards
+            forwards.tooltip: Number of times email was forwarded to a friend.
+            opens.label: Opens
+            opens.tooltip: Number of times the campaign was opened.
+            unique_opens.label: Unique Opens
+            unique_opens.tooltip: Number of times the campaign was opened by unique user.
+            clicks.label: Clicks
+            clicks.tooltip: Number of times a link in the campaign was clicked.
+            totalDelivered.label: "Delivered"
+            totalDelivered.tooltip: Total delivered.
+            percentageDelivered.label: "Delivered, %"
+            percentageDelivered.tooltip: Total delivered percentage.
+            percentageUniqueOpens.label: "Unique opens, %"
+            percentageUniqueOpens.tooltip: Unique total opens percentage.
+            estimatedForwards.label: "Estimated forwards"
+            estimatedForwards.tooltip: Estimated forwards - details of contacts that have viewed your campaign, and who appear to have forwarded it to others.
+            views_and_forwards.label: Views and forwards
+            views_and_forwards.tooltip: Views &amp; forwards - the total number of times your campaign has been viewed. These could be the same recipient opening the campaign multiple times or by friends and colleagues to which it was forwarded.
+            nonOpeners.label: Non openers
+            nonOpeners.tooltip: Non openers - Contacts that didn&#39;t open your email.
+            engagement.label: Engagement
+            interaction.label: Interaction
+            user_clicks.label: Recipient clicks
+            user_clicks.tooltip: Unique user click through.
+            user_clicks_percentage.label: "Recipient clicks, %"
+            user_clicks_percentage.tooltip: "Unique user click through, %"
+            click_to_open.label: "Click to open rate"
+            click_to_open.tooltip: "Click to open rate - a key metric showing the number of click-throughs generated by your campaign as a percentage of the total number of recipients who opened it. Filter contacts that clicked by link to determine the most successful links, and for follow-up."
+            page_views.label: "Page views"
+            page_views.tooltip: "Page views - once you have installed the page tracking script on your website, this feature tracks recipients&#39; activity on your website after they have clicked through from your campaign."
+            total_replies.label: "Total replies"
+            total_replies.tooltip: "Replies - view the replies received as a result of your campaign is stored in the reports section (note that these are also forwarded to an address of your choice if you have this configured)."
+            replies_percentage.label: "Replies, %"
+            replies_percentage.tooltip: "Replies, %"
+            isp_complaints.label: "ISP Complaints"
+            isp_complaints.tooltip: "Number of contacts who've submitted spam complaints via their internet service provider."
+
+        connection:
+            name: dotmailer Connection
+            sync_message: Marketing List scheduled for sync with dotmailer AddressBook "%address_book%"
+            message:
+                update:                     Updated dotmailer connection settings
+                connect:                    Connected to dotmailer
+                disconnect:                 Marketing List disconnected from dotmailer
+                syncronize_scheduled:       Marketing List scheduled to synchronize with dotmailer
+                syncronize_schedule_failed: Marketing List synchronization with dotmailer schedule failed
+            dialog:
+                button:
+                    update: Update
+                    connect: Connect
+                    cancel: Cancel
+                title:
+                    connect: Connect to dotmailer
+                    update: dotmailer Connection Settings
+            button:
+                group_name:         dotmailer
+                connect:            Connect to dotmailer
+                manage_connection:  Connection Settings
+                synchronize:        Synchronize
+                disconnect:         Disconnect
+            confirmation:
+                disconnect:         Are you sure you want to unlink this Marketing List from dotmailer
+
+        syncstatus:
+            Finished: Up to date
+            RejectedByWatchdog: Sync Rejected
+            InvalidFileFormat: Not Synced
+            Failed: Sync failed
+            ExceedsAllowedContactLimit: dotmailer Contacts Limit Exceeds
+            NotAvailableInThisVersion: Not Synced
+            NotFinished: In Progress
+            list_is_connected.label: 'This list is linked to "%address_book%" dotmailer address book. Last synchronization date: %synced%. Synchronization status: %status%.'
+
+        acl:
+            action:
+                general:
+                    label: Access dotmailer statistics
+                    description: See statistics collected from dotmailer for a campaign
+
+        form:
+            username:
+                tooltip: API User.
+            password:
+                tooltip: API User Password.
+            client_id:
+                tooltip: To register to use OAuth you will need to be on an dotmailer Enterprise licence and to contact your dotmailer account manager.
+            custom_domain:
+                tooltip: https://r1-app.dotmailer.com/ is used by default
+
+        handler:
+            unable_to_create_field: Failed to create field in dotmailer.
+            default_value_not_match: Default value doesn't match the field's type.
+
+        controller:
+            datafield.saved.message: Data Field Saved
+            datafield_mapping.saved.message: Data Field Mapping Saved
+
+        configuration:
+            dotmailer_settings: Dotmailer Settings
+            dotmailer_synchronization: Synchronization settings
+            datafields_sync_interval: Data Fields Sync Interval
+            datafields_sync_interval.tooltip: This interval will be used to update data fields from dotmailer
+            force_sync_for_virtual_fields:
+                label: Enable daily force synchronization of mapped data fields
+                tooltip: Once a day, trigger data fields check. All contacts from entity's marketing lists will be automatically checked for updated fields and scheduled for sync with dotmailer if needed.
+                choices:
+                    none: None
+                    virtual_only: For mappings with virtual fields only
+                    always: For all mappings
+
+        block:
+            general: General
+            additional: Additional
+            mapping: Mapping Configuration

@@ -1,0 +1,196 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% form_theme form with ['OroFormBundle:Form:fields.html.twig'] %}
+{% set formAction = app.request.uri %}
+{% set entityId = entity.id %}
+{% set reloadLink -%}
+    <a href="#" onclick="window.location.reload(false);return false;">
+        {{- 'oro.navigation.menuupdate.reload_link.label'|trans -}}
+    </a>
+{%- endset %}
+{% if entity.key %}
+    {% set breadcrumbs = breadcrumbs|merge({'entityTitle': entity.isDivider ? 'oro.navigation.menuupdate.divider'|trans : entity.title|trans()}) %}
+{% else %}
+    {% set breadcrumbs = breadcrumbs|merge({'entityTitle': 'oro.ui.create_entity'|trans({'%entityName%': 'oro.navigation.menuupdate.entity_label'|trans})}) %}
+{% endif %}
+
+{% block navButtons %}
+    {% if entity.isDivider == false %}
+        {% set html = UI.saveAndStayButton({
+            'route': routePrefix ~ 'update',
+            'params': {menuName: entity.menu, key: '$key', context: context}
+        }) %}
+
+        {% set html = html ~ UI.saveAndNewButton({
+            'route': routePrefix ~ 'create',
+            'params': {menuName: entity.menu, parentKey: entity.key, context: context}
+        }) %}
+
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+
+    {% if not entity.isCustom or entity.id is not null %}
+        {% if entity.key %}
+            {% if entity.isCustom and entity.id is not null %}
+                {#Delete button #}
+                {{ UI.deleteButton({
+                    'label': 'oro.navigation.menuupdate.delete'|trans(),
+                    'successMessage': deletedMessage|default('oro.navigation.menuupdate.deleted_message')|trans({'%reload_link%': reloadLink}),
+                    'dataUrl': path(routePrefix ~ 'ajax_delete', {context: context, menuName: menuName, key: app.request.get('key')}),
+                    'dataRedirect': path(routePrefix ~ 'view', {menuName: entity.menu, context: context}),
+                    'aCss': 'no-hash remove-button',
+                    'id': 'btn-remove-attribute',
+                    'entity_label': 'oro.navigation.menuupdate.entity_label'|trans,
+                }) }}
+            {% else %}
+                {% if entity.active %}
+                    {# Hide button #}
+                    <div class="pull-right btn-group icons-holder">
+                        {{ UI.ajaxButton({
+                            'aCss':  'no-hash',
+                            'iCss':  'fa-eye-slash',
+                            'label': 'oro.navigation.menuupdate.hide'|trans,
+                            'title': 'oro.navigation.menuupdate.hide'|trans,
+                            'dataId': entity.id,
+                            'dataMethod': 'PUT',
+                            'dataUrl': path(routePrefix ~ 'ajax_hide', {context: context, menuName: menuName, key: app.request.get('key')}),
+                            'dataRedirect': app.request.uri,
+                            'successMessage': hiddenMessage|default('oro.navigation.menuupdate.hide_success_message')|trans({'%reload_link%': reloadLink})
+                        }) }}
+                    </div>
+                {% else %}
+                    {# Show button #}
+                    <div class="pull-right btn-group icons-holder">
+                        {{ UI.ajaxButton({
+                            'aCss':  'no-hash',
+                            'iCss':  'fa-eye',
+                            'label': 'oro.navigation.menuupdate.show'|trans,
+                            'title': 'oro.navigation.menuupdate.show'|trans,
+                            'dataId': entity.id,
+                            'dataMethod': 'PUT',
+                            'dataUrl': path(routePrefix ~ 'ajax_show', {context: context, menuName: menuName, key: app.request.get('key')}),
+                            'dataRedirect': app.request.uri,
+                            'successMessage': showedMessage|default('oro.navigation.menuupdate.show_success_message')|trans({'%reload_link%': reloadLink})
+                        }) }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        {% endif %}
+        {% if entity.isDivider == false %}
+            {# Create Menu Item button #}
+            {% set html = UI.button({
+                'path' : path(routePrefix ~ 'create', {menuName: entity.menu, parentKey: entity.key, context: context}),
+                'aCss': 'btn-primary',
+                'label': 'oro.ui.create_entity'|trans({'%entityName%': 'oro.navigation.menuupdate.entity_label'|trans}),
+                'title': 'oro.ui.create_entity'|trans({'%entityName%': 'oro.navigation.menuupdate.entity_label'|trans})
+            }) %}
+            {# Create Divider button #}
+            {% set html = html ~ UI.ajaxButton({
+                'aCss': 'btn-primary no-hash menu-divider-create-button',
+                'label': 'oro.ui.create_entity'|trans({'%entityName%': 'oro.navigation.menuupdate.divider'|trans}),
+                'title': 'oro.ui.create_entity'|trans({'%entityName%': 'oro.navigation.menuupdate.divider'|trans}),
+                'dataMethod': 'POST',
+                'dataUrl': path(routePrefix ~ 'ajax_create', {context: context, menuName: menuName, parentKey: app.request.get('key'), 'isDivider': true}),
+                'dataRedirect': app.request.uri,
+                'successMessage': dividerCreatedMessage|default('oro.navigation.menuupdate.divider_created')|trans({'%reload_link%': reloadLink})
+            }) %}
+
+            {% set parameters = {
+                'html': html,
+                'groupKey': 'createButtons',
+                'options': {
+                    'moreButtonAttrs': {
+                        'class': 'btn-primary'
+                    }
+                }
+            } %}
+
+            {{ UI.pinnedDropdownButton(parameters) }}
+
+            {{ UI.buttonSeparator() }}
+        {% endif %}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block content_data %}
+    {% set id = 'menu-update-edit' %}
+
+    {% set dataBlocks = [] %}
+    {% if entity.isDivider == false %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'General Information'|trans,
+            'class': 'active',
+            'subblocks': [
+                {
+                    'title': '',
+                    'data': [
+                        form_row(form.titles),
+                        form.uri is defined ? form_row(form.uri) : null,
+                        form.aclResourceId is defined ? form_row(form.aclResourceId) : null,
+                        form_row(form.icon),
+                        form_row(form.descriptions)
+                    ]
+                }
+            ]
+        }]) %}
+    {% endif %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Additional'|trans,
+            'subblocks': [{
+                'title': '',
+                'useSpan': false,
+                'data' : additionalData
+            }]
+        }] ) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {% set twoColumnContent = parent() %}
+
+    {% set treeOptions = {
+        'view' : 'oronavigation/js/app/views/tree-manage-view',
+        'data' : tree,
+        'nodeId': entity.key,
+        'menu' : entity.menu,
+        'context' : context,
+        'updateAllowed' : true,
+        'onRootSelectRoute' : routePrefix ~ 'view',
+        'onSelectRoute' : routePrefix ~ 'update',
+        'onMoveRoute' : routePrefix ~ 'ajax_move',
+        'successMessage': movedMessage|default('oro.navigation.menuupdate.moved_success_message')
+    } %}
+
+    {% embed "OroUIBundle::content_sidebar.html.twig" %}
+        {% block sidebar %}
+            {{ UI.renderJsTree(
+                {
+                    'label': 'oro.navigation.menu.menu_list_default.label'|trans,
+                    'treeOptions': treeOptions
+                },
+                {
+                    'move': {
+                        'view': 'oroui/js/app/views/jstree/move-action-view',
+                        'routeName': routePrefix ~ 'move',
+                        'routeParams': {menuName: menuName, context: context}
+                    }
+                }
+            ) }}
+        {% endblock sidebar %}
+
+        {% block content %}
+            {% autoescape %}
+                {{ twoColumnContent|raw}}
+            {% endautoescape %}
+        {% endblock content %}
+    {% endembed %}
+{% endblock content_data %}

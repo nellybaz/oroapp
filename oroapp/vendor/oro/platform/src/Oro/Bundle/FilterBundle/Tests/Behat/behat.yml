@@ -1,0 +1,24 @@
+oro_behat_extension:
+  elements:
+    FiltersConditionBuilder:
+      selector: ".condition-builder .condition-container"
+    FilterConditionDropdown:
+      selector:
+        type: xpath
+        locator: "(//a[contains(@class, 'dropdown-toggle')] | //div/div/button)[last()]"
+    RemoveCondition:
+        selector: ".condition .close"
+    LastConditionItem:
+        selector:
+            type: 'xpath'
+            locator: "//div[contains(@class, 'condition-container')]//a[contains(., 'Choose')][last()]"
+  suites:
+    OroFilterBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroFormBundle::FormContext
+        - OroDataGridBundle::GridContext
+        - OroSecurityBundle::ACLContext
+        - OroFilterBundle::FilterContext
+      paths:
+        - '@OroFilterBundle/Tests/Behat/Features'

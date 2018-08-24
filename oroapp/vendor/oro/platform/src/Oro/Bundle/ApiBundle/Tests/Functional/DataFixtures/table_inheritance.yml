@@ -1,0 +1,11 @@
+Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDepartment:
+    test_department:
+        name: TestDepartment
+        organization: '@organization'
+        owner: '@business_unit'
+Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEmployee:
+    test_employee:
+        name: TestEmployee
+        department: '@test_department'
+        organization: '@organization'
+        owner: '@business_unit'

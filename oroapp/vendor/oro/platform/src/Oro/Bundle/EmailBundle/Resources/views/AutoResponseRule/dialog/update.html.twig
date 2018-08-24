@@ -1,0 +1,70 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroQueryDesignerBundle::macros.html.twig' as QD %}
+
+{% if saved %}
+    {% set widgetResponse = {
+        widget: {
+            triggerSuccess: true,
+            trigger: [{
+                name: 'auto_response_rule:save',
+                args: [form.vars.value.id],
+            }],
+            remove: true
+        }
+    } %}
+
+    {{ widgetResponse|json_encode|raw }}
+{% else %}
+    <div class="widget-content">
+        {% set pageComponent = {
+            'view': 'oroemail/js/app/views/email-template-editor-view',
+            'layout': 'separate'
+        } %}
+        <div class="form-container" {{ UI.renderPageComponentAttributes(pageComponent) }}>
+            {{ form_start(
+                form,
+                {
+                    attr: {
+                        id: form.vars.id,
+                    },
+                    action: path(
+                        app.request.attributes.get('_route'),
+                        app.request.attributes.get('_route_params')
+                    )
+                }
+            ) }}
+                <fieldset class="form form-horizontal">
+                    <div>
+                        {{ form_row(form.active) }}
+                        {{ form_row(form.name) }}
+                        <div class="control-group">
+                            <label class="required control-label">
+                                {{ 'oro.email.autoresponserule.conditions.label'|trans }}
+                            </label>
+                            <div class="controls">
+                                {{ QD.query_designer_condition_builder({
+                                    'id': 'oro_email_autoresponserule-condition-builder',
+                                    'fieldConditionModule': 'oroemail/js/app/views/email-field-condition-view',
+                                    'fieldConditionOptions': {
+                                        'entityData': emailEntityData
+                                    },
+                                    'metadata': metadata
+                                }) }}
+                            </div>
+                        </div>
+                        {{ form_rest(form) }}
+                    </div>
+                    <div class="widget-actions form-actions" style="display: none;">
+                        <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                        {% set label = form.vars.data.id ? 'Update' : 'Add' %}
+                        <button class="btn btn-primary" type="submit">{{ label|trans }}</button>
+                    </div>
+                </fieldset>
+            {{ form_end(form) }}
+            {{ oro_form_js_validation(form) }}
+            <div{{ UI.renderPageComponentAttributes({
+                'module': 'oroemail/js/app/components/auto-response-rule-component'
+            }) }}></div>
+        </div>
+    </div>
+{% endif %}

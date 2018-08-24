@@ -1,0 +1,196 @@
+operations:
+    oro_rfp_create_quote:
+        label: oro.rfp.btn.create_quote
+        applications: [default]
+        routes:
+            - oro_rfp_request_view
+        acl_resource: oro_sale_quote_create
+        order: 20
+        button_options:
+            icon: fa-file-text
+            class: icons-holder-text no-hash btn
+
+        actions:
+            - '@call_service_method':
+                service: oro_rfp.service.request_to_quote_data_storage
+                method: saveToStorage
+                method_parameters: [$.data]
+            - '@redirect':
+                parameters:
+                    route: oro_sale_quote_create
+                    route_parameters: {'storage': true}
+
+    oro_rfp_frontend_request_a_quote:
+        label: oro.rfp.btn.add_to_rfp
+        applications: [commerce]
+        routes:
+            - oro_product_frontend_quick_add
+            - oro_product_frontend_quick_add_copy_paste
+            - oro_product_frontend_quick_add_import
+        acl_resource: [CREATE, entity:commerce@Oro\Bundle\RFPBundle\Entity\Request]
+        order: 10
+        button_options:
+            icon: fa-tag
+            template: OroActionBundle:Operation:ajax-button.html.twig
+            data:
+                component_name: oro_rfp_quick_add_processor
+            page_component_module: oroproduct/js/app/components/quick-add-form-button-component
+            page_component_options:
+                component_name: '[name$="[component]"]'
+                component_additional: '[name$="[additional]"]'
+                submitWithErrors: $.submitWithErrors
+        preactions:
+            - '@call_service_method':
+                service: oro_rfp.processor.quick_add
+                method: isAllowed
+                attribute: $.isAllowed
+            - '@call_service_method':
+                service: oro_rfp.layout.decider.rfp_action_decider
+                method: shouldFormSubmitWithErrors
+                attribute: $.submitWithErrors
+                method_parameters: [$.data.collection]
+        preconditions:
+            '@equal': [true, $.isAllowed]
+
+    oro_rfp_base_edit:
+        label: ' '
+        applications: [default]
+        attributes:
+            request:
+                label: ' '
+                type: entity
+                options:
+                    class: Oro\Bundle\RFPBundle\Entity\Request
+        form_options:
+            attribute_fields:
+                request:
+                    form_type: oro_rfp_request
+            attribute_default_values:
+                request:
+                    $.data
+
+#    oro_rfp_edit:
+#        extends: oro_rfp_base_edit
+#        label: oro.rfp.btn.edit
+#        routes:
+#            - oro_rfp_request_view
+#        datagrids:
+#            - rfp-requests-grid
+#        order: 70
+#        button_options:
+#            icon: fa-pencil-square-o
+#        acl_resource: oro_rfp_request_update
+#        frontend_options:
+#            template: OroRFPBundle:Action:rfpEditForm.html.twig
+#            show_dialog: false
+#        actions:
+#            - @flash_message:
+#                message: oro.rfp.action.request.updated.message
+#                type: 'success'
+#            - @redirect:
+#                route: 'oro_rfp_request_view'
+#                route_parameters:
+#                    id: $.data.id
+
+    oro_rfp_frontend_request_create:
+        label: oro.frontend.rfp.request.create.label
+        enabled: true
+        applications: [commerce]
+        routes:
+            - oro_rfp_frontend_request_index
+        acl_resource: [CREATE, entity:commerce@Oro\Bundle\RFPBundle\Entity\Request]
+        button_options:
+            class: btn--info
+            icon: fa-plus fa--small
+        order: 10
+        actions:
+            - '@redirect':
+                parameters:
+                    route: oro_rfp_frontend_request_create
+
+    oro_rfp_frontend_request_edit:
+        label: oro.frontend.rfp.action.request.edit
+        applications: [commerce]
+        routes:
+            - oro_rfp_frontend_request_view
+        acl_resource: [EDIT, $.data]
+        order: 10
+        button_options:
+            icon: fa-pencil
+        actions:
+            - '@redirect':
+                parameters:
+                    route: oro_rfp_frontend_request_update
+                    route_parameters:
+                        id: $id
+
+    DELETE:
+        exclude_entities:
+            - Oro\Bundle\RFPBundle\Entity\Request
+        exclude_datagrids:
+            - rfp-requests-grid
+
+action_groups:
+    oro_rfp_create_request_additional_note:
+        parameters:
+            request:
+                type: Oro\Bundle\RFPBundle\Entity\Request
+            note_type:
+                type: string
+            notes:
+                type: string
+        actions:
+            - '@create_datetime':
+                attribute: $.current_date
+            - '@assign_active_user':
+                attribute: $.current_user
+            - '@create_entity':
+                class: Oro\Bundle\RFPBundle\Entity\RequestAdditionalNote
+                attribute: $.request_additional_note
+                flush: true
+                data:
+                    request: $.request
+                    type: $.note_type
+                    text: $.notes
+                    author: $.current_user.fullName
+                    createdAt: $.current_date
+                    updatedAt: $.current_date
+                    userId: $.current_user.id
+            - '@call_method':
+                object: $.request
+                method: addRequestAdditionalNote
+                method_parameters: [$.request_additional_note]
+
+    oro_rfp_duplicate:
+        parameters:
+            request:
+                type: Oro\Bundle\RFPBundle\Entity\Request
+            flush:
+                type: bool
+                default: true
+        actions:
+            - '@create_datetime':
+                attribute: $.currentDatetime
+            - '@duplicate':
+                target: $.request
+                attribute: $.requestCopy
+                settings:
+                    - [[setNull], [propertyName, [id]]]
+                    - [[keep], [propertyName, [website]]]
+                    - [[keep], [propertyName, [customerUser]]]
+                    - [[keep], [propertyName, [customer]]]
+                    - [[keep], [propertyName, [organization]]]
+                    - [[keep], [propertyName, [owner]]]
+                    - [[keep], [propertyName, [internal_status]]]
+                    - [[keep], [propertyName, [customer_status]]]
+                    - [[keep], [propertyName, [assignedUsers]]]
+                    - [[keep], [propertyName, [assignedCustomerUsers]]]
+                    - [[keep], [property, ["%oro_rfp.entity.request_product.class%", product]]]
+                    - [[keep], [property, ["%oro_rfp.entity.request_product_item.class%", productUnit]]]
+                    - [[collection], [propertyType, ['Doctrine\Common\Collections\Collection']]]
+            - '@assign_value': [$.requestCopy.createdAt, $.currentDatetime]
+            - '@assign_value': [$.requestCopy.updatedAt, $.currentDatetime]
+            - '@flush_entity':
+                conditions:
+                    '@equal': [true, $.flush]
+                parameters: [$.requestCopy]

@@ -1,0 +1,16 @@
+Oro\Bundle\TaskBundle\Entity\Task:
+    constraints:
+        - Oro\Bundle\TaskBundle\Validator\Constraints\DueDateRequired: ~
+    properties:
+        subject:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        dueDate:
+            - DateTime: ~
+        status:
+            - NotBlank: ~
+        taskPriority:
+            - NotBlank: ~
+        reminders:
+            - Valid: ~

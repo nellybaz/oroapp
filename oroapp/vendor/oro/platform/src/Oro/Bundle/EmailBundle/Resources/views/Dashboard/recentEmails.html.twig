@@ -1,0 +1,53 @@
+{% extends 'OroDashboardBundle:Dashboard:tabbedWidget.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set unreadMailCount %}
+    <div class="email-mail-count-circle" {{ UI.renderPageComponentAttributes({
+        module: 'oroui/js/app/components/view-component',
+        options: {
+            view: 'oroemail/js/app/views/unread-emails-counter-view',
+            count: unreadMailCount,
+            autoRender: true
+        }
+    }) }}></div>
+{% endset %}
+
+{% block content %}
+    {% set tabs = [{
+        'url': path(
+            'oro_email_dashboard_recent_emails',
+            {'widget': widgetName, 'activeTab': 'inbox', 'contentType': 'tab'}
+        ),
+        'name': 'inbox',
+        'label': 'oro.dashboard.recent_emails.inbox'|trans
+    },
+    {
+        'url': path(
+            'oro_email_dashboard_recent_emails',
+            {'widget': widgetName, 'activeTab': 'sent', 'contentType': 'tab'}
+        ),
+        'name': 'sent',
+        'label': 'oro.dashboard.recent_emails.sent'|trans
+    },
+    {
+        'url': path(
+            'oro_email_dashboard_recent_emails',
+            {'widget': widgetName, 'activeTab': 'new', 'contentType': 'tab'}
+        ),
+        'name': 'unread',
+        'label': 'oro.dashboard.recent_emails.unread'|trans,
+        'afterHtml': unreadMailCount
+    }] %}
+
+    {{ parent() }}
+{% endblock %}
+
+{% block actions %}
+    {% set actions = [{
+        'url': path('oro_email_user_emails', {'id': loggedUserId}),
+        'type': 'link',
+        'label': 'oro.dashboard.recent_emails.view_all'|trans
+    }] %}
+
+    {{ parent() }}
+{% endblock %}

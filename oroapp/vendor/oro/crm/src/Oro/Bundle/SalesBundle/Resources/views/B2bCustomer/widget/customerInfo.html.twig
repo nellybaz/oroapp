@@ -1,0 +1,72 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroAddressBundle::macros.html.twig' as address %}
+
+{% set activeTab = app.request.get('_activeTab')|default(null) %}
+{% set uniqueSuffix = '_customer_' ~ customer.id ~ '_channel_' ~ channel.id %}
+{% set customer_general_info %}
+    <div class="row-fluid">
+        <br>
+        <div class="responsive-block">
+            {{ UI.renderHtmlProperty(
+                'oro.sales.b2bcustomer.name.label'|trans,
+                UI.entityViewLink(customer, customer.name, 'oro_sales_b2bcustomer_view')
+            ) }}
+            {{ UI.renderHtmlProperty(
+                'oro.sales.lead.contact.label'|trans,
+                UI.entityViewLink(customer.contact, customer.contact|oro_format_name, 'oro_contact_view')
+            ) }}
+        </div>
+        <div class="responsive-block">
+            {{ UI.renderHtmlProperty('oro.sales.b2bcustomer.shipping_address.label'|trans, address.renderAddress(customer.shippingAddress)) }}
+            {{ UI.renderHtmlProperty('oro.sales.b2bcustomer.billing_address.label'|trans, address.renderAddress(customer.billingAddress)) }}
+        </div>
+    </div>
+{% endset %}
+{% set tabs = [
+    {
+        'alias': 'oro_sales_b2bcustomer_general_info' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sales.sections.general'|trans,
+        'content': customer_general_info,
+        'url': null
+    }
+] %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_sales_b2bcustomer_leads' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sales.b2bcustomer.leads.label'|trans,
+        'url': path('oro_sales_b2bcustomer_widget_leads', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_sales_b2bcustomer_opportunities' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sales.b2bcustomer.opportunities.label'|trans,
+        'url': path('oro_sales_b2bcustomer_widget_opportunities', {'id': customer.id})
+    }
+]) %}
+
+{% set tabPanelOptions = {
+    useDropdown: isMobileVersion()
+} %}
+{% if activeTab %}
+    {% set tabPanelOptions = tabPanelOptions|merge({
+        activeTabAlias: 'oro_sales_b2bcustomer_' ~ activeTab ~ uniqueSuffix
+    }) %}
+{% endif %}
+
+<div class="widget-content row-fluid">
+    <div class="account-customer-title">{{ customer|oro_format_name|escape }}
+        <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
+            <b>{{ 'oro.sales.b2bcustomer.lifetime.label'|trans}}:
+                {{ oro_channel_account_lifetime(customer.account, channel)|oro_format_currency }}</b>
+        </div>
+    </div>
+    <div class="customer-without-border-tabs">
+        {{ tabPanel(tabs, tabPanelOptions) }}
+    </div>
+</div>

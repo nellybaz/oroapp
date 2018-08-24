@@ -1,0 +1,37 @@
+oro_entity:
+    resource:     "@OroEntityBundle/Controller"
+    type:         annotation
+    prefix:       /
+
+oro_entity_api:
+    resource:     "@OroEntityBundle/Resources/config/oro/routing_api.yml"
+    type:         rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+oro_entity_dictionary_api:
+    resource: "@OroEntityBundle/Controller/Api/Rest/DictionaryController.php"
+    type:         rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+    options:
+        group: dictionary_entity
+        priority: -10
+
+oro_entity_data_api:
+    resource: "@OroEntityBundle/Controller/Api/Rest/EntityDataController.php"
+    type:         rest
+    prefix:       api/rest/{version}
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest

@@ -1,0 +1,43 @@
+{% extends '!OroContactUsBundle:ContactRequest:update.html.twig' %}
+
+{% block content_data %}
+    {% set id = 'contact-request-form' %}
+
+    {% set dataBlocks = [{
+        'title': 'oro.contactus.block.general'|trans,
+        'class': 'active',
+        'subblocks': [
+            {
+                'title': 'oro.contactus.block.request_information'|trans,
+                'data': [
+                    form_row(form.firstName),
+                    form_row(form.lastName),
+                    form_row(form.organizationName),
+                    form_row(form.preferredContactMethod),
+                    form_row(form.phone),
+                    form_row(form.emailAddress),
+                    form_row(form.contactReason),
+                    form_row(form.comment)
+                ]
+            }
+        ]
+    }] %}
+
+    {% set additionalData = [] %}
+    {% for child in form.children if child.vars.extra_field is defined and child.vars.extra_field %}
+        {% set additionalData = additionalData|merge([form_row(child)]) %}
+    {% endfor %}
+    {% if additionalData is not empty %}
+        {% set dataBlocks = dataBlocks|merge([{
+        'title':     'oro.contactus.block.additional'|trans,
+        'subblocks': [{ 'title': '', 'useSpan': false, 'data' : additionalData }]
+        }] ) %}
+    {% endif %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ render_block('OroUIBundle:actions:update.html.twig', 'content_data') }}
+{% endblock content_data %}

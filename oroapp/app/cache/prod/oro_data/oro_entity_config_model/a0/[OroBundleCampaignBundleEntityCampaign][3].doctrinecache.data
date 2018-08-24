@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:19:{s:2:"id";b:1;s:4:"name";b:1;s:4:"code";b:1;s:12:"combinedName";b:1;s:9:"startDate";b:1;s:7:"endDate";b:1;s:11:"description";b:1;s:6:"budget";b:1;s:12:"reportPeriod";b:1;s:17:"reportRefreshDate";b:1;s:9:"createdAt";b:1;s:9:"updatedAt";b:1;s:5:"owner";b:1;s:12:"organization";b:1;s:15:"serialized_data";b:1;s:8:"owner_id";b:0;s:9:"tag_field";b:0;s:13:"trackingEvent";b:0;s:12:"tags_virtual";b:0;}}

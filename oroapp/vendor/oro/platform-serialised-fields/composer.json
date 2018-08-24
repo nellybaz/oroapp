@@ -1,0 +1,38 @@
+{
+    "name": "oro/platform-serialised-fields",
+    "description": "Oro Platform Serialized Fields",
+    "homepage": "https://github.com/oroinc/OroEntitySerializedFieldsBundle",
+    "license": "OSL-3.0",
+    "keywords": ["Oro", "Platform", "fields", "entity"],
+    "authors": [
+        {
+            "name": "Oro, Inc",
+            "homepage": "http://www.orocrm.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"Oro\\Bundle\\EntitySerializedFieldsBundle\\": ""},
+        "exclude-from-classmap": ["/Tests/"]
+    },
+    "require": {
+        "php": "7.1.*",
+        "oro/platform": "2.6.*"
+    },
+    "repositories": {
+        "oro": {
+            "type": "composer",
+            "url": "https://packagist.orocrm.com"
+        },
+        "asset-packagist": {
+            "type": "composer",
+            "url": "https://asset-packagist.orocrm.com"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.6.x-dev"
+        }
+    }
+}

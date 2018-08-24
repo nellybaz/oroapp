@@ -1,0 +1,27 @@
+workflows:
+    task_flow:
+        transitions:
+            start_progress:
+                step_to: in_progress
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-play'
+                transition_definition: start_progress_definition
+            stop_progress:
+                step_to: open
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-stop'
+                transition_definition: stop_progress_definition
+            close:
+                step_to: closed
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-check'
+                transition_definition: closed_definition
+            reopen:
+                step_to: open
+                #is_unavailable_hidden: true
+                frontend_options:
+                    icon: 'fa-pencil-square-o'
+                transition_definition: reopen_definition

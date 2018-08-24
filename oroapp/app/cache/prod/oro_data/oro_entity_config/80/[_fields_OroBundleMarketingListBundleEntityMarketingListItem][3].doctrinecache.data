@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:775;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:8:"entityId";a:3:{s:1:"i";i:776;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:14:"contactedTimes";a:3:{s:1:"i";i:777;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:15:"lastContactedAt";a:3:{s:1:"i";i:778;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"createdAt";a:3:{s:1:"i";i:779;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:13:"marketingList";a:3:{s:1:"i";i:780;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,15 @@
+oro_rfp_request:
+    resource:     "@OroRFPBundle/Controller/RequestController.php"
+    type:         annotation
+    prefix:       /rfp/request
+
+oro_rfp_frontend:
+    resource: "@OroRFPBundle/Controller/Frontend/RequestController.php"
+    type: annotation
+    prefix: /customer/rfp
+    options:
+        frontend: true
+oro_rfp_request_order:
+    resource:     "@OroRFPBundle/Controller/OrderController.php"
+    type:         annotation
+    prefix:       /rfp/order

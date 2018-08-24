@@ -1,0 +1,46 @@
+<div class="customer-info well-small">
+    <div class="visual">
+        {% if recordUrl is defined -%}
+        <a href="{{ recordUrl }}" {% if recordUrlCssClass is defined %}class="{{ recordUrlCssClass }}"{% endif %}>
+        {%- endif -%}
+            <img src="{{ showImage|default(false) and image ? filtered_image_url(image, 'avatar_med') : asset('bundles/oroui/img/info-' ~ iconType|default('user') ~ '.png') }}" alt="{{ title }}" />
+        {%- if recordUrl is defined -%}
+        </a>
+        {%- endif %}
+    </div>
+    <div class="clearfix">
+        <div class="{% if showImage|default(false) %}customer-content{% else %}customer-simple{% endif %} pull-left">
+            <div class="clearfix">
+                <div class="pull-left">
+                    <h1 class="user-name">
+                        {% if recordUrl is defined %}<a href="{{ recordUrl }}" {% if recordUrlCssClass is defined %}class="{{ recordUrlCssClass }}"{% endif %}>{% endif %}
+                            {{ title }}
+                            {% if recordUrl is defined %}</a>{% endif %}
+                    </h1>
+                </div>
+                {% block additional_info %}
+                {% endblock %}
+            </div>
+            {%- set searchItemEntityInfo -%}
+                {% placeholder search_item_entity_info with {entity: entity} %}
+            {%- endset -%}
+            {% if (entityInfo is defined and entityInfo|length) or searchItemEntityInfo is not null %}
+                <div class="clearfix">
+                    <ul class="inline">
+                        {% if searchItemEntityInfo is not null %}
+                            {{ searchItemEntityInfo }}
+                        {% endif %}
+                        {% if entityInfo is defined and entityInfo|length %}
+                            {% for info in entityInfo %}
+                                <li>{{ info.title }}: {{ info.value }}</li>
+                            {% endfor %}
+                        {% endif %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+        <div class="pull-right">
+            <div class="sub-title">{{ entityType }}</div>
+        </div>
+    </div>
+</div>

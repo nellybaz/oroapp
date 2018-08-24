@@ -1,0 +1,68 @@
+parameters:
+    oro_rule.entity.rule.class: Oro\Bundle\RuleBundle\Entity\Rule
+
+services:
+    oro_rule.expression_language:
+        class: 'Oro\Component\ExpressionLanguage\ExpressionLanguage'
+        public: false
+
+    oro_rule.basic_expression_language_validator:
+        class: 'Oro\Component\ExpressionLanguage\BasicExpressionLanguageValidator'
+        arguments:
+            - '@oro_rule.expression_language'
+
+    oro_rule.validator_constraints.expression_language_syntax_validator:
+        class: 'Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntaxValidator'
+        arguments:
+            - '@oro_rule.basic_expression_language_validator'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_rule.validator_constraints.expression_language_syntax_validator }
+
+    oro_rule.expression_language.function_count:
+        class: Oro\Bundle\RuleBundle\ExpressionLanguage\CountExpressionLanguageFunction
+        tags:
+            - { name: oro_rule.expression_language.function }
+
+    oro_rule.rule_filtration.service:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\BasicRuleFiltrationService'
+        public: false
+
+    oro_rule.rule_filtration.enabled_decorator:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorator'
+        public: false
+        decorates: oro_rule.rule_filtration.service
+        decoration_priority: 0
+        arguments:
+            - '@oro_rule.rule_filtration.enabled_decorator.inner'
+
+    oro_rule.rule_filtration.stop_processing_decorator:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\StopProcessingRuleFiltrationServiceDecorator'
+        public: false
+        decorates: oro_rule.rule_filtration.service
+        decoration_priority: 500
+        arguments:
+            - '@oro_rule.rule_filtration.stop_processing_decorator.inner'
+
+    oro_rule.rule_filtration.expression_language_decorator:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\ExpressionLanguageRuleFiltrationServiceDecorator'
+        public: false
+        decorates: oro_rule.rule_filtration.service
+        decoration_priority: 250
+        arguments:
+            - '@oro_rule.expression_language'
+            - '@oro_rule.rule_filtration.expression_language_decorator.inner'
+            - '@logger'
+
+    oro_rule.enabled_rule_filtration.service:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\BasicRuleFiltrationService'
+        public: false
+
+    oro_rule.enabled_rule_filtration.enabled_decorator:
+        class: 'Oro\Bundle\RuleBundle\RuleFiltration\EnabledRuleFiltrationServiceDecorator'
+        public: false
+        decorates: oro_rule.enabled_rule_filtration.service
+        arguments:
+            - '@oro_rule.enabled_rule_filtration.enabled_decorator.inner'
+
+    oro_rule.action.visibility_provider:
+        class: 'Oro\Bundle\RuleBundle\Datagrid\RuleActionsVisibilityProvider'

@@ -1,0 +1,12 @@
+data:
+  -
+    type: 'testapidepartments'
+    id: 'auto'
+    attributes:
+      title: 'TestDepartment'
+    relationships:
+      staff:
+        data:
+          -
+            type: 'testapiemployees'
+            id: 'auto'

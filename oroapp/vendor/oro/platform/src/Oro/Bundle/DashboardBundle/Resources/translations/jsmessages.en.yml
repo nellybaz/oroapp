@@ -1,0 +1,15 @@
+oro:
+  dashboard:
+    widget_configuration_label: Configuration
+    widget_configuration_success: Widget has been successfully configured
+    drop_placeholder_label: Drag your widget here.
+    add_dashboard_widgets:
+      title: Dashboard Widgets
+      adding: Adding...
+    widget:
+      collapse: Collapse
+      expand: Expand
+      move: Move
+      remove: Delete
+      configure: Configure
+      delete_confirmation: Are you sure you want to remove this widget?

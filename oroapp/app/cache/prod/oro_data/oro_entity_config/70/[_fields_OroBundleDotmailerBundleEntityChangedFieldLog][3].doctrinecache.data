@@ -1,0 +1,2 @@
+0
+a:5:{s:2:"id";a:3:{s:1:"i";i:2470;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:9:"channelId";a:3:{s:1:"i";i:2471;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:12:"parentEntity";a:3:{s:1:"i";i:2472;s:1:"h";b:0;s:1:"t";s:6:"string";}s:16:"relatedFieldPath";a:3:{s:1:"i";i:2473;s:1:"h";b:0;s:1:"t";s:4:"text";}s:9:"relatedId";a:3:{s:1:"i";i:2474;s:1:"h";b:0;s:1:"t";s:7:"integer";}}

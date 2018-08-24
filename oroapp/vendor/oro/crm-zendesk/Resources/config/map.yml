@@ -1,0 +1,35 @@
+parameters:
+    oro_zendesk.map:
+        status:
+            -
+              case:   open
+              ticket: new
+            -
+              case:   open
+              ticket: open
+            -
+              case:   in_progress
+              ticket: pending
+            -
+              case:   open
+              ticket: hold
+            -
+              case:   resolved
+              ticket: solved
+            -
+              case:   closed
+              ticket: closed
+
+        priority:
+            -
+              case:   low
+              ticket: low
+            -
+              case:   normal
+              ticket: normal
+            -
+              case:   high
+              ticket: high
+            -
+              case:   high
+              ticket: urgent

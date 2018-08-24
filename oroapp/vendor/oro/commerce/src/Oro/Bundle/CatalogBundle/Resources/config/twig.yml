@@ -1,0 +1,9 @@
+services:
+    # Twig extensions
+    oro_catalog.twig.category_extension:
+        class: 'Oro\Bundle\CatalogBundle\Twig\CategoryExtension'
+        public: false
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: twig.extension }

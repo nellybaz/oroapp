@@ -1,0 +1,61 @@
+oro_frontend:
+    form:
+        inlineEditing:
+            action.save: Save
+            action.cancel: Cancel
+    unexpected_error: "An unexpected error has occurred. Please contact the system administrator."
+    item_deleted: "Item has been deleted."
+    widget_form_component:
+        save_flash_success: Saved successfully
+    column_manager:
+        title: "Manage Grid"
+
+    datagrid:
+        pagination:
+            totalRecords:
+                totalRecordsShort: "{{ totalRecords }} items"
+                products: "{{ totalRecords }} Total Products"
+                companyAddresses: "{{ totalRecords }} Total Company Addresses"
+                addresses: "{{ totalRecords }} Total Addresses"
+                users: "{{ totalRecords }} Total Users"
+                roles: "{{ totalRecords }} Total Roles"
+                rfq: "{{ totalRecords }} Total Requests For Quote"
+                orders: "{{ totalRecords }} Total Orders"
+                quotes: "{{ totalRecords }} Total Quotes"
+        manage_grid: 'Manage grid'
+        requires:
+            data: 'Data attribute "data-server-render" must be defined'
+            options: 'Options for datagrid-component must be defined'
+
+
+    filter_manager:
+        checkAll: 'Select All'
+        unCheckAll: 'Deselect All'
+        label: "Manage Filters"
+        placeholder: "Search Filters"
+        title: 'Filters Manager'
+        button_label: 'Manage Filters'
+
+    filters:
+        apply: 'Apply'
+        apply_all: 'Apply Filters'
+
+    datagrid_views:
+        all: "All "
+        add: "Add"
+        save: "Save"
+        cancel: "Cancel"
+        save_as_new: "Save As New"
+        set_as_default: "Set as Default"
+        placeholder: "Enter new list name"
+
+    fullscreen_popup:
+        actions:
+            labels:
+                close: 'Close'
+
+    rows_collapse:
+        trigger:
+            label:
+                normal: "Show Less Items"
+                truncated: "And {{ hiddenRows }} more items"

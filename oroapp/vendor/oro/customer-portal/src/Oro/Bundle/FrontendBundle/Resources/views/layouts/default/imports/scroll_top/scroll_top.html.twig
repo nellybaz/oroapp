@@ -1,0 +1,20 @@
+{% block __scroll_top__scroll_top_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        'data-page-component-module': 'oroui/js/app/components/view-component',
+        'data-page-component-options': {
+            'view': 'orofrontend/default/js/app/views/scroll-top-view',
+            'viewport': {
+                'minScreenType': 'desktop'
+            }
+        },
+        'data-scroll-top': '',
+        '~class': ' scroll-top scroll-top--' ~ scroll_top_position
+    }) %}
+    {% if enabled is defined and enabled == true %}
+        <div {{ block('block_attributes') }}>
+            <button type="button" class="btn btn--plain">
+                <i class="fa-arrow-circle-up fa--no-offset fa--xxxl"></i>
+            </button>
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,2 @@
+0
+a:5:{s:2:"id";a:3:{s:1:"i";i:1351;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:5:"phone";a:3:{s:1:"i";i:1352;s:1:"h";b:0;s:1:"t";s:6:"string";}s:7:"primary";a:3:{s:1:"i";i:1353;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:5:"owner";a:3:{s:1:"i";i:1354;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:15:"serialized_data";a:3:{s:1:"i";i:2999;s:1:"h";b:1;s:1:"t";s:5:"array";}}

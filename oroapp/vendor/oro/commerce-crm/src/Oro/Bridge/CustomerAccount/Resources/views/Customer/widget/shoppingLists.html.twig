@@ -1,0 +1,10 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="widget-content">
+    {% set scope = 'account-customer-%customer%'|replace({'%customer%': customer.id}) %}
+
+    {{ dataGrid.renderGrid(
+        oro_datagrid_build_fullname('shopping-list-by-account-grid', scope),
+        {customer_id: customer.id})
+    }}
+</div>

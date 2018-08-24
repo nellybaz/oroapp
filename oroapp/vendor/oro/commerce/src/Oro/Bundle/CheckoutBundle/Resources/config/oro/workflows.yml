@@ -1,0 +1,3 @@
+imports:
+    - { resource: 'workflows/b2b_flow_checkout.yml' }
+    - { resource: 'workflows/b2b_flow_checkout_single_page.yml' }

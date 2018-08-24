@@ -1,0 +1,36 @@
+{% block _middle_bar_widget %}
+    <div class="page-area-container">
+        {{ parent_block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block _middle_bar_search_widget %}
+    {% set attr = attr|merge({
+        class: attr.class|default('') ~ " search-widget-wrap"
+    }) %}
+
+    {% set dom_relocation_options =  {
+        responsive: [
+            {
+                viewport: {
+                    maxScreenType: 'tablet',
+                },
+                moveTo: "[data-header-row-search-container]"
+            }
+        ]
+    }|json_encode %}
+    <div {{ block('block_attributes') }}>
+        <form  id="oro_website_search_search"
+               action="{{ url('oro_website_search_results') }}"
+               method="GET"
+               novalidate="novalidate"
+               class="search-widget"
+               data-dom-relocation-options="{{ dom_relocation_options }}"
+        >
+            <input class="search-widget__input input input--full" type="text" placeholder="{{ 'oro.website_search.search_field_placeholder'|trans({}, translation_domain) }}" value="" name="search"/>
+            <button name="oro_website_search_search_button" class="search-widget__submit" type="submit">
+                <i class="fa-search"></i>
+            </button>
+        </form>
+    </div>
+{% endblock %}

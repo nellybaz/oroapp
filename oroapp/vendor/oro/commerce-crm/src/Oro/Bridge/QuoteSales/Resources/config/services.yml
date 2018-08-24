@@ -1,0 +1,25 @@
+services:
+    oro_quote_sales.opportunity_quotes.listener:
+        class: Oro\Bridge\QuoteSales\EventListener\OpportunityQuotesListener
+        arguments:
+            - '@oro_quote_sales.opportunity_quotes.provider'
+            - '@translator'
+            - '@oro_sales.provider.opportunity.display_settings_config'
+        tags:
+            - { name: kernel.event_listener, event: entity_view.render.before, method: addRelatedQuotes }
+
+    oro_quote_sales.opportunity_quotes.provider:
+        class: Oro\Bridge\QuoteSales\Provider\OpportunityQuotesProvider
+        arguments:
+            - '@doctrine'
+            - '@oro_security.acl_helper'
+
+    oro_quote_sales.opportunity_to_quote_data_storage:
+        class: 'Oro\Bridge\QuoteSales\Storage\OpportunityToQuoteDataStorage'
+        arguments:
+            - '@oro_product.storage.product_data_storage'
+
+    oro_quote_sales.opportunity_to_route_data_storage:
+        class: 'Oro\Bridge\QuoteSales\Storage\OpportunityToRouteDataStorage'
+        arguments:
+            - '@oro_sale.storage.return_route_storage'

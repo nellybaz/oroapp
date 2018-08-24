@@ -1,0 +1,47 @@
+.request-form-lineitem-unit {
+    display: table-cell;
+    padding-bottom: 8px;
+
+    &:not(:first-child) {
+        padding-left: 5px;
+    }
+
+    &__input {
+        max-width: 90px;
+
+        text-align: right;
+
+        border-radius: 3px 0 0 3px;
+    }
+
+    &--size {
+        &-s {
+            width: 50px;
+        }
+
+        &-m {
+            width: 90px;
+        }
+    }
+
+    &--remove {
+        @extend .request-form-lineitem-unit;
+        text-align: right;
+    }
+
+    &--prices {
+        white-space: nowrap;
+    }
+}
+
+@include breakpoint('mobile') {
+    .request-form-lineitem-unit {
+        &__label {
+            display: none;
+        }
+
+        &__input {
+            width: calc(100% - 27px);
+        }
+    }
+}

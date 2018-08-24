@@ -1,0 +1,34 @@
+datagrids:
+
+    oro-cron-schedules-grid:
+        acl_resource: oro_cron_schedule_view
+        options:
+            entityHint: schedules
+        source:
+            type: orm
+            query_builder: "@oro_cron.repository.schedule->getEnabledSchedulesQb"
+        columns:
+            command:
+                label: oro.cron.schedule.command.label
+                type: twig
+                template: OroCronBundle:Schedule:Datagrid/command.html.twig
+                frontend_type: html
+            definition:
+                label: oro.cron.schedule.definition.label
+                type: twig
+                template: OroCronBundle:Schedule:Datagrid/definition.html.twig
+                frontend_type: html
+        sorters:
+            columns:
+                command:
+                    data_name: s.command
+                definition:
+                    data_name: s.definition
+        filters:
+            columns:
+                command:
+                    type: command_with_args
+                    data_name: s.command, s.arguments
+                definition:
+                    type: string
+                    data_name: s.definition

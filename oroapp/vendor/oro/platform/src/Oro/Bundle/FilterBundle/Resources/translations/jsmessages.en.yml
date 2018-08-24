@@ -1,0 +1,77 @@
+"Close": "Close"
+"Update": "Update"
+"Now": "Now"
+"Selected Rows": "Selected Rows"
+"Choose values": "Choose values"
+"All": "All"
+"Input Label": "Input Label"
+"more than": "later than"
+"less than": "earlier than"
+"before": "before"
+"after": "after"
+"from": "from"
+"to": "to"
+"and": "and"
+oro:
+    filter:
+        reset.label: Clear All Filters
+        wrapper:
+            reset:
+                hint: Reset
+                tooltip: Reset this filter
+        date:
+            variable:
+                title: Available variables
+                tooltip_title: Date expressions
+                tooltip: >
+                    You can also use them to create expressions.<br/>
+                    For example:<br/>
+                    "today - 2" will be evaluated as the day before yesterday.
+            days:
+                title: Days
+            months:
+                title: Months
+            tab:
+                calendar: Calendar
+                variables: Variables
+                days: Days
+                months: Months
+            info: >
+                In addition to exact dates, the filter supports entry of days and months.
+                Delete the year from the date in order to filter records that fall into
+                this date of any year (e.g. customers that have birthdays on November 15th);
+                delete the year and the day to filter records by entire months
+                (e.g. all orders placed between January and March). Both long and short month
+                names are supported.
+            placeholder:
+                value: Choose a date
+                dayofweek: Choose a day
+                week: Type a week
+                day: Type a day
+                month: Type a month
+                quarter: Type a quarter
+                dayofyear: Type a day of year
+                year: Type a year
+            part:
+                week.tooltip: Number of the week (1 - 53)
+                day.tooltip: Number of the day in month (1 - 31)
+                quarter.tooltip: Number of the quarter of year (1 - 4)
+                dayofyear.tooltip: Number of the day in year (1 - 366)
+                year.tooltip: Gregorian year, starting from 1 AD
+        embedded:
+            choice:
+                field_to_value: field value
+            date:
+                field_to_value: field
+            select:
+                field_to_value: field value is
+        choice-tree:
+            all: All
+            selected: Selected
+        warning:
+            min_length: Please enter at least {{ min_length }} characters
+            max_length: Please enter at most {{ max_length }} characters
+        datagrid-toolbar:
+            filters: Filters
+            filters_count: Filters ({{ count }})
+            save_filters: Save Filters

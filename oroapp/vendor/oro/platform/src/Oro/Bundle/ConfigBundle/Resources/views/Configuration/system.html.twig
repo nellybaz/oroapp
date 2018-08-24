@@ -1,0 +1,10 @@
+{% extends 'OroConfigBundle::configPage.html.twig' %}
+
+{% set pageTitle = 'oro.config.menu.system_configuration.label'|trans %}
+{% set formAction    = path(
+        'oro_config_configuration_system',
+        {activeGroup: activeGroup, activeSubGroup: activeSubGroup}
+    )
+%}
+{% set routeName = 'oro_config_configuration_system' %}
+{% set routeParameters = {} %}

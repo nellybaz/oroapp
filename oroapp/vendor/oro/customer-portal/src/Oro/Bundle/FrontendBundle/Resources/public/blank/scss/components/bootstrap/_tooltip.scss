@@ -1,0 +1,31 @@
+// @theme: blank;
+
+.tooltip {
+    &.top {
+        @extend .tooltip.tooltip-top;
+    }
+
+    &.bottom {
+        @extend .tooltip.tooltip-bottom;
+    }
+
+    &.right {
+        @extend .tooltip.tooltip-right;
+    }
+
+    &.left {
+        @extend .tooltip.tooltip-left;
+    }
+}
+
+.tooltip-inner {
+    &:not(.not-expand) {
+        text-align: $tooltip-text-align;
+    }
+}
+
+.tooltip-container {
+    position: relative;
+
+    display: inline-block;
+}

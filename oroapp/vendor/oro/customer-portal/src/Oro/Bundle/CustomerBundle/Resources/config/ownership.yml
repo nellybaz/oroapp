@@ -1,0 +1,78 @@
+parameters:
+    oro_customer.entity.owners:
+        business_unit: '%oro_customer.entity.customer.class%'
+        user: '%oro_customer.entity.customer_user.class%'
+
+services:
+    oro_customer.owner.frontend_ownership_metadata_provider:
+        class: 'Oro\Bundle\CustomerBundle\Owner\Metadata\FrontendOwnershipMetadataProvider'
+        public: false
+        arguments:
+            - '%oro_customer.entity.owners%'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_security.token_accessor'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider.cache'
+        tags:
+            - { name: oro_security.owner.metadata_provider, alias: frontend_ownership }
+
+    oro_customer.owner.frontend_ownership_metadata_provider.cache:
+        parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'oro_acl_entity_ownership_frontend' ] ]
+
+    oro_customer.owner.decision_maker:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\EntityOwnershipDecisionMaker'
+        arguments:
+            - '@oro_security.ownership_tree_provider.chain'
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.token_accessor'
+            - '@doctrine'
+        calls:
+            - [setPropertyAccessor, ['@property_accessor']]
+        tags:
+           - { name: oro_security.owner.ownership_decision_maker, priority: 10 }
+
+    oro_customer.owner.anonymous_decision_maker:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\AnonymousOwnershipDecisionMaker'
+        arguments:
+            - '@oro_security.ownership_tree_provider.chain'
+            - '@oro_security.acl.object_id_accessor'
+            - '@oro_security.owner.entity_owner_accessor'
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_security.token_accessor'
+        tags:
+           - { name: oro_security.owner.ownership_decision_maker, priority: 20 }
+
+    oro_customer.owner.tree_provider:
+        public: false
+        class: 'Oro\Bundle\CustomerBundle\Owner\FrontendOwnerTreeProvider'
+        arguments:
+            - '@doctrine'
+            - '@oro_customer.owner.database_checker'
+            - '@oro_customer.owner.frontend_ownership_tree_provider.cache'
+            - '@oro_customer.owner.frontend_ownership_metadata_provider'
+            - '@security.token_storage'
+        tags:
+            - { name: oro_security.ownership.tree_provider }
+
+    oro_customer.owner.database_checker:
+        public: false
+        class: 'Oro\Bundle\EntityBundle\Tools\DatabaseChecker'
+        arguments:
+            - '@doctrine'
+            - ['oro_customer_user']
+            - '%installed%'
+        tags:
+            - { name: oro_entity.database_checker }
+
+    oro_customer.owner.frontend_ownership_tree_provider.cache:
+        parent: oro.cache.abstract
+        public: true
+        calls:
+            - [ setNamespace, [ 'oro_acl_owner_tree_frontend' ] ]

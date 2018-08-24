@@ -1,0 +1,69 @@
+security:
+    providers:
+        chain_provider:
+            chain:
+                providers:                  [in_memory, oro_user]
+        oro_user:
+            id:                             oro_user.security.provider
+        in_memory:
+            memory:
+                users:                      []
+
+    encoders:
+        Oro\Bundle\UserBundle\Entity\User: sha512
+
+    firewalls:
+        login:
+            pattern:                        ^/user/(login|reset-request|send-email|check-email)$
+            provider:                       chain_provider
+            anonymous:                      true
+            context:                        main
+
+        reset_password:
+            pattern:                        ^/user/reset/*
+            provider:                       chain_provider
+            anonymous:                      true
+
+        main:
+            pattern:                        ^/
+            provider:                       chain_provider
+            organization-form-login:
+                csrf_provider:              form.csrf_provider
+                check_path:                 oro_user_security_check
+                login_path:                 oro_user_security_login
+                default_target_path:        oro_default
+            logout:
+                path:                       oro_user_security_logout
+            organization-remember-me:
+                key:                        %secret%
+                name:                       BAPRM
+                lifetime:                   1209600   # stay logged for two weeks
+                httponly:                   true
+            anonymous:                      false
+            guard:
+                authenticators:
+                    - oro_user.impersonation_authenticator
+
+oro_user:
+    privileges:
+        entity:
+            label: 'oro.user.privileges.entity.label'
+            view_type: 'grid'
+            types:
+                - 'entity'
+            field_type: 'oro_acl_access_level_selector'
+            fix_values: false
+            default_value: 5
+            show_default: true
+        action:
+            label: 'oro.user.privileges.action.label'
+            view_type: 'list'
+            types:
+                - 'action'
+            field_type: 'oro_acl_access_level_selector'
+            fix_values: false
+            default_value: 1
+            show_default: false
+
+escape_wsse_authentication:
+    authentication_listener_class: Oro\Bundle\UserBundle\Security\Http\Firewall\Listener

@@ -1,0 +1,5 @@
+{% if url is not empty %}
+    <a href="{{ url }}">
+        {{ label|default('oro.grid.open_link'|trans) }}
+    </a>
+{% endif %}

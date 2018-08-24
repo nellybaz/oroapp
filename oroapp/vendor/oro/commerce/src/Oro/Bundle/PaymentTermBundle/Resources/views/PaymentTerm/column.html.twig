@@ -1,0 +1,7 @@
+{% set customerGroupPaymentTermLabel = record.getValue('customer_group_payment_term') %}
+
+{% if customerGroupPaymentTermLabel is defined and customerGroupPaymentTermLabel and not value %}
+    {{ 'oro.paymentterm.customer.customer_group_defined'|trans({'{{ payment_term }}': customerGroupPaymentTermLabel }) }}
+{% elseif value %}
+    {{ value }}
+{% endif %}

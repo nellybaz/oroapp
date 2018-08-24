@@ -1,0 +1,17 @@
+{{ namespace }}\{{ className }}:
+    type:                   entity
+    table:                  oro_email_address
+    uniqueConstraints:
+        oro_email_address_uq:
+            columns:        [ email ]
+    lifecycleCallbacks:
+        prePersist:         [ beforeSave ]
+        preUpdate:          [ beforeUpdate ]
+    manyToOne:
+{% for owner in owners %}
+        {{ owner.fieldName }}:
+            targetEntity:   {{ owner.targetEntity }}
+            joinColumn:
+                name:                   {{ owner.columnName }}
+                referencedColumnName:   id
+{% endfor %}

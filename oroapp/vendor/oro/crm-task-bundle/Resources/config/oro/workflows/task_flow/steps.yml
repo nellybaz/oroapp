@@ -1,0 +1,17 @@
+workflows:
+    task_flow:
+        steps:
+            open:
+                order: 10
+                allowed_transitions:
+                    - start_progress
+                    - close
+            in_progress:
+                order: 20
+                allowed_transitions:
+                    - stop_progress
+                    - close
+            closed:
+                order: 30
+                allowed_transitions:
+                    - reopen

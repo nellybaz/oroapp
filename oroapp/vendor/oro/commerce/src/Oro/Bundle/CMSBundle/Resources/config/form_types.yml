@@ -1,0 +1,37 @@
+services:
+    oro_cms.form.type.page:
+        class: 'Oro\Bundle\CMSBundle\Form\Type\PageType'
+        arguments:
+            - '@router'
+        tags:
+            - { name: form.type, alias: oro_cms_page }
+
+    oro_cms.form.type.page_select:
+        class: Oro\Bundle\CMSBundle\Form\Type\PageSelectType
+        tags:
+            - { name: form.type, alias: oro_cms_page_select }
+
+    oro_cms.form.type.loginpage:
+        class: 'Oro\Bundle\CMSBundle\Form\Type\LoginPageType'
+        tags:
+            - { name: form.type, alias: oro_cms_login_page }
+
+    oro_cms.form.type.cms_page_content_variant:
+        class: Oro\Bundle\CMSBundle\Form\Type\CmsPageVariantType
+        tags:
+            - { name: form.type, alias: oro_cms_page_variant }
+
+    oro_cms.form.type.text_content_variant:
+        class: 'Oro\Bundle\CMSBundle\Form\Type\TextContentVariantType'
+        tags:
+            - { name: form.type}
+
+    oro_cms.form.type.text_content_variant_collection:
+        class: 'Oro\Bundle\CMSBundle\Form\Type\TextContentVariantCollectionType'
+        tags:
+            - { name: form.type}
+
+    oro_cms.form.type.content_block:
+        class: 'Oro\Bundle\CMSBundle\Form\Type\ContentBlockType'
+        tags:
+            - { name: form.type }

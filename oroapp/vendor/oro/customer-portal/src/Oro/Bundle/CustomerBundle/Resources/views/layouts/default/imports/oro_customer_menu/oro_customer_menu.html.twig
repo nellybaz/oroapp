@@ -1,0 +1,11 @@
+{% block __oro_customer_menu__container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' primary-menu-container primary-menu-container__hidden-on-tablet'
+    }) %}
+    <div {{ block('block_attributes') }}>
+        <h3 class="primary-menu-title">{{ 'oro.customer.frontend.menu.customer_user_profile.label'|trans }}</h3>
+        <div class="primary-menu-container__hidden-on-tablet" data-customer-menu-container>
+            {{ block_widget(block) }}
+        </div>
+    </div>
+{% endblock %}

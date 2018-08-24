@@ -1,0 +1,7 @@
+Extend\Entity\EV_Rfp_Internal_Status:
+    type: entity
+    table: oro_enum_rfp_internal_status
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

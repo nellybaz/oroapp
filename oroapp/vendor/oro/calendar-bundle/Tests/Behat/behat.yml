@@ -1,0 +1,56 @@
+oro_behat_extension:
+  pages:
+    Default Calendar View:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Page\DefaultCalendarView
+      route: oro_calendar_view_default
+
+  elements:
+    Calendar:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\Calendar
+      selector: "div[id^='calendar']"
+    Calendar Event:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\CalendarEvent
+      selector: '.fc-event'
+    Calendar Event Info:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\CalendarEventInfo
+      selector: '.ui-dialog'
+    Event Form:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventForm
+      selector: 'form[name="oro_calendar_event_form"]'
+    EndsRecurrence:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventRecurrence\End
+      selector: 'div[data-name="recurrence-ends"]'
+    DailyRecurrence:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventRecurrence\Daily
+      selector: 'div[data-name="recurrence-daily"]'
+    WeeklyRecurrence:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventRecurrence\Weekly
+      selector: 'div[data-name="recurrence-weekly"]'
+    MonthlyRecurrence:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventRecurrence\Monthly
+      selector: 'div[data-name="recurrence-monthly"]'
+    YearlyRecurrence:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\EventRecurrence\Yearly
+      selector: 'div[data-name="recurrence-yearly"]'
+    Empty slot:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//tr[@data-time="10:30:00"]'
+        type: xpath
+    Select Expected Close Date:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//input[@placeholder="Choose a date"]'
+        type: xpath
+    Today:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//button[@class="ui-datepicker-current ui-state-default ui-priority-secondary ui-corner-all"]'
+        type: xpath
+    My Calendar Choose Color Menu:
+      class: Oro\Bundle\CalendarBundle\Tests\Behat\Element\MyCalendarChooseColorMenu
+      selector: 'li[data-calendar-alias="user"] a.context-menu-button'
+    Calendar Activity Item:
+      selector:
+        locator: '//div[@class="accordion-heading clearfix"]'
+        type: xpath

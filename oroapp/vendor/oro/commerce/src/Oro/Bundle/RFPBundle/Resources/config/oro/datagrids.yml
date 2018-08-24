@@ -1,0 +1,443 @@
+datagrids:
+    base-rfq-grid:
+        acl_resource: oro_rfp_request_view
+        extended_entity_name: %oro_rfp.entity.request.class%
+        options:
+            entityHint:        requests
+            entity_pagination: true
+        source:
+            type:         orm
+            query:
+                select:
+                    - request.id
+                    - request.poNumber
+                    - request.shipUntil
+                    - request.createdAt
+                    - request.updatedAt
+                from:
+                    - { table: %oro_rfp.entity.request.class%, alias: request }
+            hints:
+                - { name: HINT_CUSTOM_OUTPUT_WALKER, value: %oro_translation.translation_walker.class%}
+        columns:
+            id:
+                label:         oro.rfp.request.id.label
+            poNumber:
+                label:         oro.rfp.request.po_number.label
+            shipUntil:
+                label:         oro.rfp.request.ship_until.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            view_link:
+                type:   url
+                route:  oro_rfp_request_view
+                params: [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: request.id
+                poNumber:
+                    data_name: request.poNumber
+                shipUntil:
+                    data_name: request.shipUntil
+                createdAt:
+                    data_name: request.createdAt
+                updatedAt:
+                    data_name: request.updatedAt
+            default:
+                updatedAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye
+                acl_resource:  oro_rfp_request_view
+                rowAction:     true
+
+    customer-view-rfq-grid:
+        extends: base-rfq-grid
+        source:
+            query:
+                select:
+                    - CONCAT(requestCustomerUser.firstName, ' ', requestCustomerUser.lastName) as customerUserName
+                where:
+                    and:
+                        - requestCustomerUser.customer = :customer_id
+                join:
+                    left:
+                        - { join: request.customerUser, alias: requestCustomerUser }
+            bind_parameters:
+                - customer_id
+        columns:
+            customerUserName:
+                label:         oro.rfp.request.customer_user.label
+                order:         1
+        sorters:
+            columns:
+                customerUserName:
+                    data_name: customerUserName
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: request.id
+                customerUserName:
+                    type:      string
+                    data_name: customerUserName
+                poNumber:
+                    type:      string
+                    data_name: request.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: request.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: request.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: request.updatedAt
+
+    customer-user-view-rfq-grid:
+        extends: base-rfq-grid
+        source:
+            query:
+                where:
+                    and:
+                        - request.customerUser = :customer_user_id
+            bind_parameters:
+                - customer_user_id
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: request.id
+                poNumber:
+                    type:      string
+                    data_name: request.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: request.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: request.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: request.updatedAt
+
+    rfp-requests-grid:
+        extends: base-rfq-grid
+        source:
+            type:         orm
+            query:
+                select:
+                    - requestCustomer.name as customerName
+                    - CONCAT(requestCustomerUser.firstName, ' ', requestCustomerUser.lastName) as customerUserName
+                    - request.firstName
+                    - request.lastName
+                    - request.email
+                    - request.phone
+                    - request.company
+                    - request.role
+                    - internalStatus.name as internalStatusName
+                    - internalStatus.id as internalStatusId
+                    - customerStatus.name as customerStatusName
+                    - customerStatus.id as customerStatusId
+                join:
+                    left:
+                        - { join: request.customer, alias: requestCustomer }
+                        - { join: request.customerUser, alias: requestCustomerUser }
+                        - { join: request.internal_status, alias: internalStatus }
+                        - { join: request.customer_status, alias: customerStatus }
+            hints:
+                - { name: HINT_CUSTOM_OUTPUT_WALKER, value: %oro_translation.translation_walker.class%}
+        columns:
+            firstName:
+                label:         oro.rfp.request.first_name.label
+                order:         1
+                renderable:    false
+            lastName:
+                label:         oro.rfp.request.last_name.label
+                order:         2
+                renderable:    false
+            email:
+                label:         oro.rfp.request.email.label
+                order:         3
+                renderable:    false
+            phone:
+                label:         oro.rfp.request.phone.label
+                order:         4
+                renderable:    false
+            company:
+                label:         oro.rfp.request.company.label
+                order:         5
+                renderable:    false
+            role:
+                label:         oro.rfp.request.role.label
+                order:         6
+                renderable:    false
+            customerUserName:
+                label:         oro.rfp.request.customer_user.label
+                order:         7
+            customerName:
+                label:         oro.rfp.request.customer.label
+                order:         8
+            internalStatusName:
+                label:         oro.rfp.request.internal_status.label
+                order:         9
+            customerStatusName:
+                label:         oro.rfp.request.customer_status.label
+                order:         10
+                renderable:    false
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+                renderable:    false
+        sorters:
+            columns:
+                firstName:
+                    data_name: request.firstName
+                lastName:
+                    data_name: request.lastName
+                email:
+                    data_name: request.email
+                phone:
+                    data_name: request.phone
+                company:
+                    data_name: request.company
+                role:
+                    data_name: request.role
+                customerUserName:
+                    data_name: customerUserName
+                customerName:
+                    data_name: customerName
+                internalStatusName:
+                    data_name: internalStatusName
+                customerStatusName:
+                    data_name: customerStatusName
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: request.id
+                firstName:
+                    type:      string
+                    data_name: request.firstName
+                lastName:
+                    type:      string
+                    data_name: request.lastName
+                email:
+                    type:      string
+                    data_name: request.email
+                phone:
+                    type:      string
+                    data_name: request.phone
+                company:
+                    type:      string
+                    data_name: request.company
+                role:
+                    type:      string
+                    data_name: request.role
+                customerUserName:
+                    type:      string
+                    data_name: customerUserName
+                customerName:
+                    type:      string
+                    data_name: customerName
+                internalStatusName:
+                    type:      enum
+                    data_name: internalStatusId
+                    enum_code: rfp_internal_status
+                customerStatusName:
+                    type:      enum
+                    data_name: customerStatusId
+                    enum_code: rfp_customer_status
+                poNumber:
+                    type:      string
+                    data_name: request.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: request.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: request.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: request.updatedAt
+
+    frontend-requests-grid:
+        acl_resource: oro_rfp_frontend_request_view
+        extended_entity_name: %oro_rfp.entity.request.class%
+        options:
+            frontend: true
+            entityHint:        requests
+            entity_pagination: true
+        source:
+            type: orm
+            query:
+                select:
+                    - request.id
+                    - request.createdAt
+                    - request.poNumber
+                    - request.shipUntil
+                    - CONCAT(requestCustomerUser.firstName, ' ', requestCustomerUser.lastName) as customerUserName
+                    - customerStatus.name as customerStatusName
+                    - customerStatus.id as customerStatusId
+                from:
+                    - { table: %oro_rfp.entity.request.class%, alias: request }
+                join:
+                    left:
+                        - { join: request.customerUser, alias: requestCustomerUser }
+                        - { join: request.customer_status, alias: customerStatus }
+                where:
+                    and:
+                        - IDENTITY(request.internal_status) IS NULL OR IDENTITY(request.internal_status) <> :internalStatus
+            bind_parameters:
+                -
+                    name: internalStatus
+                    default: deleted
+
+        columns:
+            id:
+                label:         oro.frontend.rfp.request.id.label
+            customerStatusName:
+                label:         oro.frontend.rfp.request.customer_status.label
+            poNumber:
+                label:         oro.frontend.rfp.request.po_number.label
+            shipUntil:
+                label:         oro.frontend.rfp.request.ship_until.label
+                frontend_type: date
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            customerUserName:
+                label:         oro.frontend.rfp.request.customer_user.label
+        properties:
+            id: ~
+            view_link:
+                type:  url
+                route: oro_rfp_frontend_request_view
+                params: [ id ]
+            update_link:
+                type:   url
+                route:  oro_rfp_frontend_request_update
+                params: [ id ]
+        sorters:
+            columns:
+                customerStatusName:
+                    data_name: customerStatusName
+                customerUserName:
+                    data_name: customerUserName
+                poNumber:
+                    data_name: request.poNumber
+                shipUntil:
+                    data_name: request.shipUntil
+                createdAt:
+                    data_name: request.createdAt
+            disable_default_sorting: true
+        filters:
+            columns:
+                customerStatusName:
+                    type:      enum
+                    data_name: customerStatusId
+                    enum_code: rfp_customer_status
+                customerUserName:
+                    type:      string
+                    data_name: customerUserName
+                poNumber:
+                    type:      string
+                    data_name: request.poNumber
+                shipUntil:
+                    type:      date
+                    data_name: request.shipUntil
+                createdAt:
+                    type:      datetime
+                    data_name: request.createdAt
+        actions:
+            view:
+                type:           navigate
+                label:          oro.grid.action.view
+                link:           view_link
+                icon:           eye
+                rowAction:      true
+                acl_resource:   oro_rfp_frontend_request_view
+            update:
+                type:           navigate
+                label:          oro.grid.action.update
+                link:           update_link
+                icon:           pencil-square-o
+                rowAction:      true
+                acl_resource:   oro_rfp_frontend_request_update
+
+    rfp-request-additional-notes-grid:
+        acl_resource: oro_rfp_request_view
+        extended_entity_name: %oro_rfp.entity.request.additional_note.class%
+        options:
+            entityHint: additional notes
+        source:
+            type: orm
+            query:
+                select:
+                    - additionalNote.type
+                    - additionalNote.author
+                    - additionalNote.text
+                    - additionalNote.createdAt
+                from:
+                    - { table: %oro_rfp.entity.request.additional_note.class%, alias: additionalNote }
+                where:
+                    and:
+                        - IDENTITY(additionalNote.request) = :request
+            bind_parameters:
+                - request
+        columns:
+            type:
+                label:         oro.rfp.requestadditionalnote.type.label
+                type:          twig
+                frontend_type: html
+                template:      OroRFPBundle:RequestAdditionalNote:Datagrid/type.html.twig
+            author:
+                label:         oro.rfp.requestadditionalnote.author.label
+            text:
+                label:         oro.rfp.requestadditionalnote.text.label
+                type:          twig
+                frontend_type: html
+                template:      OroRFPBundle:RequestAdditionalNote:Datagrid/text.html.twig
+            createdAt:
+                label:         oro.rfp.requestadditionalnote.created_at.label
+                frontend_type: datetime
+        sorters:
+            columns:
+                type:
+                    data_name: additionalNote.type
+                author:
+                    data_name: additionalNote.author
+                text:
+                    data_name: additionalNote.text
+                createdAt:
+                    data_name: additionalNote.createdAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                type:
+                    type:      choice
+                    data_name: additionalNote.type
+                    options:
+                        field_options:
+                            choices:
+                                customer_note:  oro.rfp.requestadditionalnote.type.customer_note.label
+                                seller_note:  oro.rfp.requestadditionalnote.type.seller_note.label
+                author:
+                    type:      string
+                    data_name: additionalNote.author
+                text:
+                    type:      string
+                    data_name: additionalNote.text
+                createdAt:
+                    type:      datetime
+                    data_name: additionalNote.createdAt

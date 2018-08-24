@@ -1,0 +1,19 @@
+layout:
+    imports:
+        -
+            id: oro_checkout_grid
+            root: page_content
+            namespace: checkouts
+
+    actions:
+        - '@setBlockTheme':
+            themes: 'layout.html.twig'
+
+        - '@add':
+            id: checkouts_title
+            parentId: page_content
+            blockType: text
+            siblingId: ~
+            prepend: true
+            options:
+                text: 'oro.checkout.open_order.plural_label'

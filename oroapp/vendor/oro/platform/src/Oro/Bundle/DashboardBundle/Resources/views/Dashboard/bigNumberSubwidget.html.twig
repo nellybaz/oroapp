@@ -1,0 +1,20 @@
+<span class="title">{{ item.label|trans }}</span>
+<h3 class="value">{{ item.value.value|raw }}</h3>
+{% if item.value.deviation is defined and item.value.previousRange is defined %}
+<div class="deviation">
+    <span class="deviation {% if item.value.isPositive is defined %}{% if item.value.isPositive %}positive{% else %}negative{% endif %}{% endif %}">
+        {% if item.value.deviation is empty %}
+            {{ 'oro.dashboard.widget.big_number.no_changes'|trans }}
+        {% else %}
+            {{ item.value.deviation|raw }}
+        {% endif %}
+    </span>
+</div>
+<div class="deviation">
+    <span class="deviation">
+        {{ 'oro.dashboard.widget.big_number.compare_to.label'|trans }}:
+    </span>
+    {% set range = oro_filter_date_range_view(item.value.previousRange) %}
+    <span class="date-range" title="{{ range }}">{{ range }}</span>
+</div>
+{% endif %}

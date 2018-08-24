@@ -1,0 +1,185 @@
+empty:
+    config: []
+    expected: []
+
+null_fields:
+    config:
+        fields: ~
+    expected: []
+
+empty_fields:
+    config:
+        fields: []
+    expected: []
+
+default_exclusion_policy:
+    config:
+        exclusion_policy: none
+    expected: []
+
+full:
+    config:
+        exclusion_policy: all
+        fields:
+            field1:
+                exclude: true
+                property_path: path1
+                data_type: string
+                allow_array: true
+                allow_range: true
+                description: description1
+                extra1: true
+            field2:
+                exclude: true
+            field3:
+                exclude: false
+            field4:
+                property_path: path1
+            field5:
+                property_path: ~
+            field6:
+                property_path: ""
+            field7:
+                data_type: integer
+            field8:
+                data_type: ~
+            field9:
+                data_type: ""
+            field10:
+                allow_array: true
+            field11:
+                allow_array: false
+            field15:
+                description: description1
+            field16:
+                description: ~
+            field17:
+                description: ""
+            field18:
+                extra1: ~
+            field19:
+                allow_range: true
+            field20:
+                allow_range: false
+        extra1: true
+        extra2: ~
+    expected:
+        exclusion_policy: all
+        fields:
+            field1:
+                exclude: true
+                property_path: path1
+                data_type: string
+                allow_array: true
+                allow_range: true
+                description: description1
+                extra1: true
+            field2:
+                exclude: true
+            field3: ~
+            field4:
+                property_path: path1
+            field5: ~
+            field6: ~
+            field7:
+                data_type: integer
+            field8: ~
+            field9: ~
+            field10:
+                allow_array: true
+            field11: ~
+            field15:
+                description: description1
+            field16: ~
+            field17: ~
+            field18: ~
+            field19:
+                allow_range: true
+            field20: ~
+        extra1: true
+
+null_field_type:
+    config:
+        fields:
+            field1:
+                type: ~
+    expected:
+        fields:
+            field1: ~
+
+empty_field_type:
+    config:
+        fields:
+            field1:
+                type: ""
+    expected:
+        fields:
+            field1: ~
+
+field_type:
+    config:
+        fields:
+            field1:
+                type: integer
+    expected:
+        fields:
+            field1:
+                type: integer
+
+null_field_options:
+    config:
+        fields:
+            field1:
+                options: ~
+    expected:
+        fields:
+            field1: ~
+
+empty_field_options:
+    config:
+        fields:
+            field1:
+                options: []
+    expected:
+        fields:
+            field1: ~
+
+field_options:
+    config:
+        fields:
+            field1:
+                options:
+                    option1: value1
+    expected:
+        fields:
+            field1:
+                options:
+                    option1: value1
+
+null_field_operators:
+    config:
+        fields:
+            field1:
+                operators: ~
+    expected:
+        fields:
+            field1: ~
+
+empty_field_operators:
+    config:
+        fields:
+            field1:
+                operators: []
+    expected:
+        fields:
+            field1: ~
+
+field_operators:
+    config:
+        fields:
+            field1:
+                operators: ['=', '!=']
+    expected:
+        fields:
+            field1:
+                operators: ['=', '!=']

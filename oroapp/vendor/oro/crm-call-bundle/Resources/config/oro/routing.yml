@@ -1,0 +1,25 @@
+oro_call_bundle:
+    resource: "@OroCallBundle/Controller"
+    type:     annotation
+    prefix:   /call
+
+oro_call_api:
+    resource: "@OroCallBundle/Controller/Api/Rest/CallController.php"
+    type:     rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+    defaults:
+        version:  latest
+
+# deprecated API route
+oro_api_post_call_deprecated:
+    path:            /api/rest/{version}/call.{_format}
+    methods:         [POST]
+    defaults:
+        _controller: Oro\Bundle\CallBundle\Controller\Api\Rest\CallController::postAction
+        _format:     json
+        version:     latest
+    requirements:
+        _format:     json|html
+        version:     latest|v1

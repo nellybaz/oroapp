@@ -1,0 +1,2 @@
+0
+a:1:{s:47:"activity-contact-last-contacted-date-data-mixin";a:2:{s:6:"source";a:1:{s:5:"query";a:1:{s:6:"select";a:1:{i:0;s:57:"__root_entity__.ac_last_contact_date as lastContactedDate";}}}s:7:"columns";a:1:{s:17:"lastContactedDate";a:2:{s:5:"label";s:47:"oro.activity_contact.ac_last_contact_date.label";s:13:"frontend_type";s:8:"datetime";}}}}

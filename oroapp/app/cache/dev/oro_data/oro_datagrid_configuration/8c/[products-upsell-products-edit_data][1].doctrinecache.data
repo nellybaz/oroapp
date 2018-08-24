@@ -1,0 +1,2 @@
+0
+a:1:{s:29:"products-upsell-products-edit";a:2:{s:7:"extends";s:27:"products-related-items-edit";s:7:"options";a:1:{s:12:"rowSelection";a:3:{s:9:"dataField";s:2:"id";s:10:"columnName";s:9:"isRelated";s:9:"selectors";a:2:{s:8:"included";s:20:"#productAppendUpsell";s:8:"excluded";s:20:"#productRemoveUpsell";}}}}}

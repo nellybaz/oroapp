@@ -1,0 +1,271 @@
+oro:
+    checkout:
+        entity_label: Checkout
+        entity_plural_label: Checkouts
+        id.label: Id
+        owner.label: Owner
+        customer.label: Customer
+        customer_user.label: Customer User
+        organization.label: Organization
+        customer_notes.label: Customer Notes
+        customer_notes.frontend.label: Notes
+        po_number.label: PO Number
+        ship_until.label: Do Not Ship Later Than
+        billing_address.label: Billing Address
+        shipping_address.label: Shipping Address
+        save_billing_address.label: Save address to my address book
+        save_shipping_address.label: Save address to my address book
+        ship_to_billing_address.label: Ship to billing address
+        quoted_shipping_amount.label: Quoted shipping amount
+        preferred_shipping_method.label: Preferred shipping method
+        source.label: Source
+        currency.label: Currency
+        website.label: Website
+        shipping_estimate_amount.label: Shipping Estimate Ammount
+        shipping_estimate_currency.label: Shipping Estimate Currency
+        shipping_method.label: Shipping Method
+        shipping_method_type.label: Shipping Method Type
+        payment_method.label: Payment Method
+        order.label: Order
+        created_at.label: Started At
+        updated_at.label: Last Updated
+        shipping_cost.label: Shipping
+        ordered_by.label: Ordered By
+        checkout_type.label: Checkout Type
+        line_items.label: Line Items
+        subtotals.label: Subtotals
+        line_items_count.label: Items
+        started_from.label: Started From
+        order_history.label: Order History
+        open_order:
+            label: Checkout
+            plural_label: Open Orders
+        deleted.label: Deleted
+        completed.label: Completed
+        completed_data.label: Completed Data
+
+        checkoutlineitem:
+            entity_label: 'Checkout Line Item'
+            entity_plural_label: 'Checkout Line Items'
+            id.label: 'ID'
+            product.label: 'Product'
+            product_sku.label: 'Product SKU'
+            parent_product.label: 'Parent Product'
+            product_unit.empty: 'Choose Unit...'
+            product_unit.label: 'Product Unit'
+            product_unit_code.label: 'Product Unit Code'
+            comment.label: 'Notes'
+            quantity.label: 'Quantity'
+            price.label: 'Price'
+            value.label: 'Price Value'
+            currency.label: 'Price Currency'
+            price_fixed.label: 'Contain Fixed Price'
+            ship_by.label: 'Ship By'
+            free_form_product.label: 'Product (free-form)'
+            from_external_source.label: 'Created from External Source'
+            price_type.label: 'Price Type'
+
+        checkoutsubtotal:
+            entity_label: 'Checkout Subtotal'
+            entity_plural_label: 'Checkout Subtotals'
+            id.label: 'ID'
+            checkout.label: 'Checkout'
+            subtotal.label: 'Subtotal'
+            valid.label: 'Is valid'
+
+        basecheckout:
+            entity_label: Base Checkout
+            entity_plural_label: Base Checkouts
+            id.label: Id
+            owner.label: Owner
+            customer.label: Customer
+            customer_user.label: Customer User
+            organization.label: Organization
+            customer_notes.label: Customer Notes
+            customer_notes.frontend.label: Notes
+            po_number.label: PO Number
+            ship_until.label: Do Not Ship Later Than
+            quoted_shipping_amount.label: Quoted shipping amount
+            preferred_shipping_method.label: Preferred shipping method
+            source.label: Source
+            currency.label: Currency
+            website.label: Website
+            shipping_estimate_amount.label: Shipping Estimate Ammount
+            shipping_estimate_currency.label: Shipping Estimate Currency
+            payment_method.label: Payment Method
+            created_at.label: Started At
+            updated_at.label: Last Updated
+            shipping_cost.label: Shipping
+            ordered_by.label: Ordered By
+            checkout_type.label: Checkout Type
+
+        checkoutsource:
+            entity_label: Checkout Source
+            entity_plural_label: Checkout Sources
+            id.label: Id
+            deleted.label: Deleted
+
+        billing_information: Billing Information
+        shipping_information: Shipping Information
+        shipping_method: Shipping Method
+        payment: Payment
+
+        order_review:
+            label: Order Review
+            shipping_date: Do not ship later than
+            shipping_date_placeholder: ""
+            note: Notes
+            note_placeholder: ""
+            po_number_placeholder: ""
+            po_number: PO Number
+
+        order_summary:
+            label: Order Summary
+            items: Items
+            subtotal: Subtotal
+            edit_order: Edit Order
+            item: Item
+            sku: SKU
+            quantity: Quantity
+            quantity_short: Qty
+            price: Price
+            total_qty: Total QTY
+
+        title:
+            step.label: '%step_label%'
+
+        workflow:
+            order_options.label: Order options
+            unavailable_transition.message: 'This action is not available, reason:'
+
+            success:
+                thank_you.label: 'Thank You For Your Purchase!'
+                order_number.label: 'Your order number is'
+                click_to_review.label: 'click here to review'
+                receive_email.label: 'You will receive a confirmation email with your order details.'
+                done.label: 'Done'
+
+            b2b_flow_checkout:
+                label: Checkout
+
+                attribute:
+                    remove_source.label: Remove Source Entity
+
+                step:
+                    enter_billing_address.label: Billing Information
+                    enter_shipping_address.label: Shipping Information
+                    enter_shipping_method.label: Shipping Method
+                    enter_payment.label: Payment
+                    order_review.label: Order Review
+
+                transition:
+                    continue_to_shipping_address.label: Continue
+                    continue_to_shipping_method.label: Continue
+                    continue_to_payment.label: Continue
+                    continue_to_order_review.label: Continue
+                    back_to_billing_address.label: Edit Billing Information
+                    back_to_shipping_address.label: Edit Shipping Information
+                    back_to_shipping_method.label: Edit Shipping Method
+                    back_to_payment.label: Edit Payment
+                    transitions.back_to_payment.label: Edit Payment
+                    place_order:
+                        label: Submit Order
+                        condition.extendable.message: There was an error while processing the order
+                    back.label: Back
+
+                form:
+                    save_address.label: Save address
+                    ship_to_this_address.label: Ship to this address
+                    use_billing_address.label: Use billing address
+                    required.label: Required Field
+
+                    placeholder:
+                        address:
+                            label: ""
+                            organization: ""
+                            street: ""
+                            street2: ""
+                            city: ""
+                            zip: ""
+                            phone: ""
+                        name:
+                            prefix: ""
+                            first_name: ""
+                            middle_name: ""
+                            last_name: ""
+                            sufix: ""
+                        visitor:
+                            email: ""
+        form:
+            address.manual: New address
+            address.group_label:
+                customer: Global Address Book
+                customer_user: My address book
+            address.select.billing.label: SELECT BILLING ADDRESS
+            address.enter.billing.label: ENTER BILLING ADDRESS
+            address.select.shipping.label: SELECT SHIPPING ADDRESS
+            address.enter.shipping.label: ENTER SHIPPING ADDRESS
+
+        grid:
+            total.label: Total
+            subtotal.label: Subtotal
+            checkout_link.label: Check Out
+            delete.label: Delete
+
+        workflow.condition:
+            order_line_item_has_count_allow_rfp.message: No products can be added to this order. Please create an RFQ to request price.
+            order_line_item_has_count_not_allow_rfp.message: No products can be added to this order.
+            shipping_method_is_not_available.message: |-
+                The selected shipping method is not available.
+                Please return to the shipping method selection step and select a different one.
+            payment_has_not_been_processed.message: |-
+                Payment has not been processed. If you have already submitted this order and believe it is a mistake,
+                please contact us for assistance. Otherwise, please click on "Submit" to proceed with the order submission.
+            payment_method_is_not_applicable.message: |
+                The selected payment method is not available.
+                Please return to the payment method selection step and select a different one.
+            content_of_order_was_changed.message: |-
+                There was a change to the contents of your order.
+                Please review the order information before proceeding to the next step.
+
+        order.line_items.line_item_has_no_price_allow_rfp.message: Some products have not been added to this order. Please create an RFQ to request price.
+        order.line_items.line_item_has_no_price_not_allow_rfp.message: Some products have not been added to this order.
+
+        system_configuration:
+            fields:
+                frontend_open_orders_separate_page.title: 'Show open orders on a separate page'
+                guest_checkout:
+                    title: 'Enable Guest Checkout'
+                    tooltip: 'Enable Guest Checkout'
+                default_guest_checkout_owner:
+                    title: 'Default guest checkout owner'
+                    tooltip: 'Allows guests to create order'
+            groups:
+                open_orders.title: 'Open Orders'
+                checkout.title: 'Checkout'
+                guest_checkout.title: 'Guest Checkout'
+                guest_checkout_owner.title: 'Guest Checkout Owner Settings'
+
+        privilege:
+            category.checkout.label: 'Checkout'
+
+        method_type:
+            sidebar:
+                label: '<div>%translatedMethodType%: <div><strong>%price%</strong></div></div>'
+
+        frontend:
+            order:
+                view.label: 'View Order'
+            checkout:
+                cannot_create_order_no_payment_methods_available: 'Cannot create order because no payment methods available'
+                cannot_create_reorder_no_line_items: 'The re-order cannot be processed as all the products are currently unavailable.'
+                some_changes_in_line_items: 'Please note that the current order differs from the original one due to the absence or insufficient quantity in stock of the following products: %skus%.'
+            start_from_order: 'Re-Order'
+
+        errors:
+            payment:
+                  error_single_method: 'We were unable to process your payment. Please verify your payment information and try again.'
+                  error_multiple_methods: 'We were unable to process your payment. Please verify your payment information and try again, or try another payment method.'
+
+        subtotals:
+            checkout_subtotal.label: Subtotal

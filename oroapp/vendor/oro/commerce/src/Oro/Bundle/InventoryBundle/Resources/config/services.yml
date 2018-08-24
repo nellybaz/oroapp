@@ -1,0 +1,143 @@
+parameters:
+    oro_inventory.entity.inventory_level.class: Oro\Bundle\InventoryBundle\Entity\InventoryLevel
+
+services:
+    oro_inventory.service.fallback_fields_form_view:
+        abstract: true
+        arguments:
+            - "@request_stack"
+            - "@doctrine"
+            - "@translator"
+
+    oro_inventory.listener.update_entity_config_relations:
+        class: 'Oro\Bundle\InventoryBundle\CacheWarmer\UpdateEntityConfigRelationsWarmer'
+        arguments:
+            - '@oro_inventory.entity_config_relations_migration'
+        tags:
+            - { name: oro_entity_extend.warmer, priority: -500 }
+
+    oro_inventory.entity_config_relations_migration:
+        class: 'Oro\Bundle\InventoryBundle\CacheWarmer\EntityConfigRelationsMigration'
+        arguments:
+            - '@doctrine'
+            - '@logger'
+            - '%installed%'
+
+    oro_inventory.validator.quantity_to_order_validator:
+        class: Oro\Bundle\InventoryBundle\Validator\QuantityToOrderValidatorService
+        arguments:
+            - '@oro_entity.fallback.resolver.entity_fallback_resolver'
+            - '@translator'
+
+    oro_inventory.validator.low_inventory_checkout_line_item_validator:
+        class: Oro\Bundle\InventoryBundle\Validator\LowInventoryCheckoutLineItemValidator
+        arguments:
+            - '@oro_inventory.inventory.low_inventory_provider'
+            - '@translator'
+
+    oro_inventory.validator.upcoming_label_checkout_line_item_validator:
+        class: Oro\Bundle\InventoryBundle\Validator\UpcomingLabelCheckoutLineItemValidator
+        arguments:
+            - '@oro_inventory.provider.product_upcoming_provider'
+            - '@translator'
+            - '@oro_locale.formatter.date_time'
+
+    oro_inventory.validator.product_row_quantity_validator:
+        class: 'Oro\Bundle\InventoryBundle\Validator\Constraints\ProductRowQuantityValidator'
+        arguments:
+            - "@oro_inventory.validator.quantity_to_order_validator"
+            - "@oro_entity.doctrine_helper"
+            - "@translator"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_warehouse_product_row_validator }
+
+    oro_inventory.validator.product_quantity_to_order_limit_validator:
+        class: 'Oro\Bundle\InventoryBundle\Validator\Constraints\ProductQuantityToOrderLimitValidator'
+        arguments:
+            - "@oro_inventory.validator.quantity_to_order_validator"
+        tags:
+            - { name: validator.constraint_validator, alias: oro_inventory_product_quantity_to_order_limit_validator }
+
+    oro_inventory.validator.checkout_ship_until_validator:
+        class: Oro\Bundle\InventoryBundle\Validator\Constraints\CheckoutShipUntilValidator
+        arguments:
+            - '@oro_inventory.provider.product_upcoming_provider'
+            - '@oro_checkout.data_provider.manager.checkout_line_items'
+        tags:
+            - { name: validator.constraint_validator, alias: oro_inventory_checkout_ship_until_validator }
+
+    oro_inventory.manager.inventory_quantity_manager:
+        class: 'Oro\Bundle\InventoryBundle\Inventory\InventoryQuantityManager'
+        arguments:
+            - "@oro_entity.fallback.resolver.entity_fallback_resolver"
+
+    oro_inventory.handler.inventory_decrement_status_handler:
+        class: 'Oro\Bundle\InventoryBundle\Inventory\InventoryStatusHandler'
+        arguments:
+            - '@oro_entity.fallback.resolver.entity_fallback_resolver'
+            - '@oro_entity.doctrine_helper'
+
+    oro_inventory.manager.inventory_manager:
+        class: 'Oro\Bundle\InventoryBundle\Inventory\InventoryManager'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    oro_inventory.provider.inventory_quantity:
+        class: 'Oro\Bundle\InventoryBundle\Provider\InventoryQuantityProvider'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_inventory.manager.inventory_quantity_manager'
+
+    oro_inventory.product_manage_inventory.widget_provider.actions:
+        parent: oro_ui.widget_provider.action_button.abstract
+        arguments:
+            - oro_product_manage_inventory_button
+            - oro_product_manage_inventory_link
+        tags:
+            - { name: oro_ui.view_action_provider, group: activity, priority: -100 }
+
+    oro_inventory.inventory.low_inventory_provider:
+        class: Oro\Bundle\InventoryBundle\Inventory\LowInventoryProvider
+        arguments:
+            - "@oro_entity.fallback.resolver.entity_fallback_resolver"
+            - '@oro_entity.doctrine_helper'
+
+    oro_inventory.provider.product_upcoming_provider:
+        class: Oro\Bundle\InventoryBundle\Provider\ProductUpcomingProvider
+        arguments:
+             - '@oro_entity.fallback.resolver.entity_fallback_resolver'
+             - '@oro_entity.doctrine_helper'
+
+    oro_inventory.twig.low_inventory_extension:
+        class: Oro\Bundle\InventoryBundle\Twig\LowInventoryExtension
+        public: false
+        arguments:
+            - '@oro_inventory.inventory.low_inventory_provider'
+        tags:
+            - { name: twig.extension }
+
+    oro_inventory.twig.product_upcoming:
+        class: Oro\Bundle\InventoryBundle\Twig\ProductUpcomingExtension
+        public: false
+        arguments:
+            - "@oro_inventory.provider.product_upcoming_provider"
+        tags:
+            - { name: twig.extension }
+
+    oro_inventory.event_listener.frontend_product_datagrid_low_inventory:
+        class: Oro\Bundle\InventoryBundle\EventListener\Frontend\ProductDatagridLowInventoryListener
+        arguments:
+            - "@oro_inventory.inventory.low_inventory_provider"
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.frontend-product-search-grid, method: onPreBuild }
+            - { name: kernel.event_listener, event: oro_datagrid.search_datasource.result.after.frontend-product-search-grid, method: onResultAfter }
+
+    oro_inventory.event_listener.frontend_product_datagrid_upcoming_label:
+        class: Oro\Bundle\InventoryBundle\EventListener\Frontend\ProductDatagridUpcomingLabelListener
+        arguments:
+            - "@oro_inventory.provider.product_upcoming_provider"
+            - '@oro_entity.doctrine_helper'
+        tags:
+            - { name: kernel.event_listener, event: oro_datagrid.datagrid.build.pre.frontend-product-search-grid, method: onPreBuild }
+            - { name: kernel.event_listener, event: oro_datagrid.search_datasource.result.after.frontend-product-search-grid, method: onResultAfter }

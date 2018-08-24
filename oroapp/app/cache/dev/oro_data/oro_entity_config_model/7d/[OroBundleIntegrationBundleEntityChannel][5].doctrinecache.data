@@ -1,0 +1,2 @@
+0
+a:2:{i:0;b:1;i:1;a:14:{s:9:"transport";b:1;s:16:"defaultUserOwner";b:1;s:24:"defaultBusinessUnitOwner";b:1;s:12:"organization";b:1;s:8:"statuses";b:1;s:2:"id";b:1;s:4:"name";b:1;s:4:"type";b:1;s:10:"connectors";b:1;s:23:"synchronizationSettings";b:1;s:15:"mappingSettings";b:1;s:7:"enabled";b:1;s:17:"previouslyEnabled";b:1;s:8:"editMode";b:1;}}

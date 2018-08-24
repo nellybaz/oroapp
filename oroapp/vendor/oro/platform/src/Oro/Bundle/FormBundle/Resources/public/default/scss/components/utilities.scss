@@ -1,0 +1,13 @@
+// @theme: default;
+
+label.required em {
+    margin-left: 2px;
+
+    color: get-color('ui', 'error-dark');
+}
+
+.form__col {
+    margin: 0 0 $offset-x;
+
+    @include clearfix();
+}

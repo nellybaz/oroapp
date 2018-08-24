@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:407;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:6:"queued";a:3:{s:1:"i";i:408;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:14:"transitionName";a:3:{s:1:"i";i:409;s:1:"h";b:0;s:1:"t";s:6:"string";}s:9:"createdAt";a:3:{s:1:"i";i:410;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"updatedAt";a:3:{s:1:"i";i:411;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:4:"cron";a:3:{s:1:"i";i:412;s:1:"h";b:0;s:1:"t";s:6:"string";}s:6:"filter";a:3:{s:1:"i";i:413;s:1:"h";b:0;s:1:"t";s:4:"text";}s:18:"workflowDefinition";a:3:{s:1:"i";i:414;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

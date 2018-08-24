@@ -1,0 +1,5 @@
+# common test case
+request:
+    label: Role_2_%str%
+response:
+    return: true

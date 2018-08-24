@@ -1,0 +1,60 @@
+// @theme: blank;
+
+.input {
+    @include base-ui-element($use-base-style-for-input,
+                             $input-padding,
+                             $input-font-size,
+                             $input-font-family,
+                             $input-line-height,
+                             $input-border,
+                             $input-border-radius,
+                             $input-background-color,
+                             $input-color
+                            );
+
+    margin: 0;
+
+    &::-ms-clear {
+        display: none;
+    }
+
+    @include element-state('hover') {
+        border-color: $input-border-color-hover-state;
+    }
+
+    @include element-state('focus') {
+        border-color: $input-border-color-focus-state;
+    }
+
+    @include element-state('error') {
+        border-color: $input-border-color-error-state;
+    }
+
+    @include element-state('disabled') {
+        background: get-color('additional', 'base');
+
+        @include base-disabled-style();
+
+        @include element-state('hover') {
+            border-color: get-color('additional', 'light');
+            box-shadow: none;
+        }
+    }
+
+    &[type="date"] {
+        min-height: $input-date-height;
+
+        &::-webkit-inner-spin-button {
+            display: none;
+        }
+    }
+
+    &[type="number"] {
+        // fix FireFox platform styles
+        box-shadow: $input-number-box-shadow;
+    }
+
+    &--short {
+        width: $input-width-short;
+    }
+}

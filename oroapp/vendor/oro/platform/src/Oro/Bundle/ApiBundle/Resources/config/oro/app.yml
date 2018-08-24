@@ -1,0 +1,430 @@
+# we should add application/vnd.api+json content type as "json" type to be able to receive JSON.API data from the Request
+fos_rest:
+    view:
+        mime_types: {'json': ['application/json', 'application/x-json', 'application/vnd.api+json']}
+
+nelmio_api_doc:
+    name: 'REST API'
+    motd:
+        template: OroApiBundle::ApiDoc/motd.html.twig
+    default_sections_opened: false
+    request_listener:
+        enabled: false
+    cache:
+        enabled: true
+
+security:
+    firewalls:
+        api_wsse_secured:
+            pattern: ^/api/(?!(rest|doc)($|/.*))
+            stateless:  true
+            wsse:
+                lifetime: 3600
+                realm:    "Secured API"
+                profile:  "UsernameToken"
+            context: main
+
+oro_api:
+    api_doc_views: ['default', 'rest_json_api', 'rest_plain', 'frontend_rest_json_api']
+    documentation_path: https://www.oroinc.com/doc/orocrm/current/book/data-api
+
+    config_extensions:
+        - oro_api.config_extension.filters
+        - oro_api.config_extension.sorters
+        - oro_api.config_extension.actions
+        - oro_api.config_extension.subresources
+
+    # the default value for "class" is "Oro\Bundle\ApiBundle\Filter\ComparisonFilter"
+    # the default value for "supported_operators" is ['=', '!=']
+    filters:
+        string: ~
+        boolean: ~
+        integer:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        smallint:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        bigint:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        unsignedInteger:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        decimal:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        float:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        date:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        time:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        datetime:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        guid: ~
+        text:
+            # by default, only EXISTS (IS NOT NULL) and NOT EXISTS (IS NULL) operators
+            # are enabled for text fields,
+            # to enable other operators for a particular field the "operators" option should be
+            # specified for this field in api.yml configuration file, in "filters" section
+            supported_operators: ['*']
+        percent:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        money:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        money_value:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        currency: ~
+        duration:
+            supported_operators: ['=', '!=', '<', '<=', '>', '>=']
+        composite_identifier:
+            factory: ['@oro_api.filter_factory.composite_identifier', 'createFilter']
+        association:
+            factory: ['@oro_api.filter_factory.extended_association', 'createFilter']
+        primaryField:
+            class: Oro\Bundle\ApiBundle\Filter\PrimaryFieldFilter
+
+    form_types:
+        - form.type.form
+        - form.type.collection
+        - form.type.choice
+        - form.type.integer
+        - form.type.number
+        - form.type.money
+        - form.type.date
+        - form.type.time
+        - form.type.duration
+        - form.type.datetime
+        - form.type.timezone
+        - form.type.birthday
+        - form.type.text
+        - form.type.textarea
+        - form.type.email
+        - form.type.url
+        - form.type.password
+        - form.type.repeated
+        - form.type.entity
+
+    form_type_extensions:
+        - form.type_extension.form.http_foundation
+        - form.type_extension.form.validator
+        - form.type_extension.repeated.validator
+        - form.type_extension.form.data_collector
+        - oro_security.form.extension.aclprotected_fields_type
+        - oro_form.extension.constraint_as_option
+
+    form_type_guessers:
+        - form.type_guesser.validator
+
+    form_type_guesses:
+        boolean:
+            form_type: oro_api_boolean
+        integer:
+            form_type: integer
+        smallint:
+            form_type: integer
+        bigint:
+            form_type: oro_api_number
+            options:
+                scale: 0
+        decimal:
+            form_type: oro_api_number
+        float:
+            form_type: number
+        date:
+            form_type: date
+            options:
+                model_timezone: UTC
+                view_timezone: UTC
+                widget: single_text
+                format: "yyyy-MM-dd" # HTML5
+        time:
+            form_type: time
+            options:
+                model_timezone: UTC
+                view_timezone: UTC
+                with_seconds: true
+                widget: single_text
+        datetime:
+            form_type: datetime
+            options:
+                model_timezone: UTC
+                view_timezone: UTC
+                with_seconds: true
+                widget: single_text
+                format: "yyyy-MM-dd'T'HH:mm:ssZZZZZ" # HTML5
+        datetimetz:
+            form_type: datetime
+            options:
+                model_timezone: UTC
+                view_timezone: UTC
+                with_seconds: true
+                widget: single_text
+                format: "yyyy-MM-dd'T'HH:mm:ssZZZZZ" # HTML5
+        text:
+            form_type: textarea
+        percent:
+            form_type: number
+        money:
+            form_type: oro_api_number
+            options:
+                scale: 4
+        money_value:
+            form_type: oro_api_number
+            options:
+                scale: 4
+        duration:
+            form_type: oro_duration
+
+    actions:
+        get_list:
+            processor_service_id: oro_api.get_list.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                build_query:
+                    priority: -40
+                load_data:
+                    priority: -50
+                data_security_check:
+                    priority: -55
+                normalize_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        get:
+            processor_service_id: oro_api.get.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                build_query:
+                    priority: -40
+                load_data:
+                    priority: -50
+                data_security_check:
+                    priority: -55
+                normalize_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        delete:
+            processor_service_id: oro_api.delete.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                delete_data:
+                    priority: -50
+                finalize:
+                    priority: -60
+                normalize_result:
+                    priority: -70
+        delete_list:
+            processor_service_id: oro_api.delete_list.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                build_query:
+                    priority: -40
+                load_data:
+                    priority: -50
+                data_security_check:
+                    priority: -55
+                delete_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        create:
+            processor_service_id: oro_api.create.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                transform_data:
+                    priority: -50
+                save_data:
+                    priority: -60
+                normalize_data:
+                    priority: -70
+                finalize:
+                    priority: -80
+                normalize_result:
+                    priority: -90
+        update:
+            processor_service_id: oro_api.update.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                transform_data:
+                    priority: -50
+                save_data:
+                    priority: -60
+                normalize_data:
+                    priority: -70
+                finalize:
+                    priority: -80
+                normalize_result:
+                    priority: -90
+        get_subresource:
+            processor_service_id: oro_api.get_subresource.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                build_query:
+                    priority: -40
+                load_data:
+                    priority: -50
+                data_security_check:
+                    priority: -55
+                normalize_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        get_relationship:
+            processor_service_id: oro_api.get_relationship.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                build_query:
+                    priority: -40
+                load_data:
+                    priority: -50
+                data_security_check:
+                    priority: -55
+                normalize_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        delete_relationship:
+            processor_service_id: oro_api.delete_relationship.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                transform_data:
+                    priority: -50
+                save_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        add_relationship:
+            processor_service_id: oro_api.add_relationship.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                transform_data:
+                    priority: -50
+                save_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80
+        update_relationship:
+            processor_service_id: oro_api.update_relationship.processor
+            processing_groups:
+                initialize:
+                    priority: -10
+                resource_check:
+                    priority: -15
+                normalize_input:
+                    priority: -20
+                security_check:
+                    priority: -30
+                load_data:
+                    priority: -40
+                data_security_check:
+                    priority: -45
+                transform_data:
+                    priority: -50
+                save_data:
+                    priority: -60
+                finalize:
+                    priority: -70
+                normalize_result:
+                    priority: -80

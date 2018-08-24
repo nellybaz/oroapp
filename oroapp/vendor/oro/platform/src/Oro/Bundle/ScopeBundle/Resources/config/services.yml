@@ -1,0 +1,60 @@
+parameters:
+    oro_scope.entity.scope.class: Oro\Bundle\ScopeBundle\Entity\Scope
+services:
+    oro_scope.entity_storage:
+        class: Oro\Bundle\ScopeBundle\Manager\ScopeEntityStorage
+        public: false
+        arguments:
+            - '@doctrine'
+
+    oro_scope.context_request_helper:
+        class: 'Oro\Bundle\ScopeBundle\Helper\ContextRequestHelper'
+
+    oro_scope.scope_manager:
+        class: Oro\Bundle\ScopeBundle\Manager\ScopeManager
+        arguments:
+            - '@oro_scope.entity_storage'
+            - '@oro_entity.entity_field_provider.link'
+
+    oro_scope.scope_repository.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_scope_repository' ] ]
+
+    oro_scope.repository.country:
+        class: Oro\Bundle\ScopeBundle\Entity\Repository\ScopeRepository
+        parent: oro_entity.abstract_repository
+        arguments:
+            - '%oro_scope.entity.scope.class%'
+        calls:
+            - [ setScopeRepositoryCache, [ '@oro_scope.scope_repository.cache' ] ]
+
+    oro_scope.migration.extension.scope:
+        class: 'Oro\Bundle\ScopeBundle\Migration\Extension\ScopeExtension'
+        tags:
+            - { name: oro_migration.extension, extension_name: scope }
+
+    oro_scope.event_listener.doctrine_event_listener:
+        class: Oro\Bundle\ScopeBundle\EventListener\DoctrineEventListener
+        arguments:
+            - '@oro_scope.entity_storage'
+        calls:
+            - [ setScopeRepositoryCache, [ '@oro_scope.scope_repository.cache' ] ]
+        tags:
+            - { name: doctrine.event_listener, event: preFlush }
+            - { name: doctrine.event_listener, event: postFlush }
+            - { name: doctrine.event_listener, event: onClear }
+
+    oro_scope.context_normalizer:
+        class: Oro\Bundle\ScopeBundle\Manager\ContextNormalizer
+        arguments:
+            - '@oro_scope.scope_manager'
+            - '@doctrine'
+
+    oro_scope.twig.extension.scope:
+        class: Oro\Bundle\ScopeBundle\Twig\ScopeExtension
+        public: false
+        arguments:
+            - '@property_accessor'
+        tags:
+            - { name: twig.extension }

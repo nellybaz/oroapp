@@ -1,0 +1,42 @@
+<?php
+
+namespace Oro\Bundle\CommerceMenuBundle\Menu\Condition;
+
+use Symfony\Component\ExpressionLanguage\ExpressionFunction;
+use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
+
+use Oro\Bundle\SecurityBundle\Authentication\TokenAccessorInterface;
+
+class LoggedInExpressionLanguageProvider implements ExpressionFunctionProviderInterface
+{
+    /** @var TokenAccessorInterface */
+    private $tokenAccessor;
+
+    /**
+     * @param TokenAccessorInterface $tokenAccessor
+     */
+    public function __construct(TokenAccessorInterface $tokenAccessor)
+    {
+        $this->tokenAccessor = $tokenAccessor;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFunctions()
+    {
+        return [
+            new ExpressionFunction('is_logged_in', function () {
+                return 'is_logged_in()';
+            }, [$this, 'isLoggedIn'])
+        ];
+    }
+
+    /**
+     * @return bool
+     */
+    public function isLoggedIn()
+    {
+        return $this->tokenAccessor->hasUser();
+    }
+}

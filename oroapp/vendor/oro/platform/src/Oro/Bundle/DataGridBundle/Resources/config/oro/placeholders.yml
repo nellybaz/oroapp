@@ -1,0 +1,11 @@
+placeholders:
+    placeholders:
+        scripts_before:
+            items:
+                template_datagrid_toolbar:
+                    order: 20
+
+    items:
+        template_datagrid_toolbar:
+            applicable: "@oro_layout.helper->isTemplateRequest()"
+            template: OroDataGridBundle:js:toolbar.html.twig

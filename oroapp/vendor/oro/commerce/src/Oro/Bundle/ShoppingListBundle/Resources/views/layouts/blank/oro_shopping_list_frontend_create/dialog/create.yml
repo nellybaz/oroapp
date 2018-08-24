@@ -1,0 +1,4 @@
+layout:
+    actions: []
+    imports:
+        - 'oro_shopping_list_create'

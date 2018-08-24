@@ -1,0 +1,46 @@
+security:
+    providers:
+        commerce_customer_user:
+            id: oro_customer.security.provider
+
+    encoders:
+        Oro\Bundle\CustomerBundle\Entity\CustomerUser: sha512
+
+    firewalls:
+        frontend_api_wsse_secured:
+            pattern:   ^/api/(?!(rest|doc)($|/.*))
+            provider:  commerce_customer_user
+            context:   customer_identity
+            stateless: true
+            wsse:
+                lifetime: 3600
+                realm:    'Secured Frontend API'
+                profile:  'UsernameToken'
+            anonymous_customer_user: true
+        frontend:
+            pattern:                        ^/
+            provider:                       commerce_customer_user
+            context:                        customer_identity
+            organization-form-login:
+                csrf_provider:              form.csrf_provider
+                check_path:                 oro_customer_customer_user_security_check
+                login_path:                 oro_customer_customer_user_security_login
+                default_target_path:        oro_frontend_root
+            logout:
+                path:                       oro_customer_customer_user_security_logout
+                invalidate_session:         false
+            organization-remember-me:
+                key:                        %secret%
+                name:                       OROCOMMERCE
+                lifetime:                   2592000   # stay logged for 30 days
+                httponly:                   true
+            anonymous_customer_user:        true
+
+doctrine:
+    orm:
+        resolve_target_entities:
+            Oro\Bundle\CustomerBundle\Entity\CustomerUserIdentity: Oro\Bundle\CustomerBundle\Entity\CustomerUser
+        filters:
+            soft_deleteable:
+                class:      Oro\Bundle\CustomerBundle\Doctrine\SoftDeleteableFilter
+                enabled:    false

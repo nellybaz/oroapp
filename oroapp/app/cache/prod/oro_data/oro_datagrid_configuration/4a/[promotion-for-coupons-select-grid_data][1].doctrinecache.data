@@ -1,0 +1,2 @@
+0
+a:1:{s:33:"promotion-for-coupons-select-grid";a:2:{s:7:"extends";s:21:"promotion-select-grid";s:6:"source";a:1:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:27:"promotion.useCoupons = true";}}}}}}

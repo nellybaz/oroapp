@@ -1,0 +1,17 @@
+{% extends 'OroNavigationBundle:menuUpdate:index.html.twig' %}
+
+{% set fullname = app.user|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%username%": fullname}}) %}
+{% set breadcrumbs = {
+    'indexPath': path('oro_user_index'),
+    'indexLabel': 'oro.user.entity_plural_label'|trans,
+    'additional': [
+        {
+            'indexPath': path('oro_user_profile_view'),
+            'indexLabel': fullname
+        }
+    ],
+    'entityTitle': 'oro.navigation.menuupdate.roots_plural_label'|trans
+} %}
+{% set gridName = 'menu-by-scope-grid' %}
+{% set params = {'viewLinkRoute': 'oro_navigation_user_menu_view'} %}

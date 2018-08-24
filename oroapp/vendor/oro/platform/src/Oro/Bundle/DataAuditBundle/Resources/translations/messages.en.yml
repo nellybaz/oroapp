@@ -1,0 +1,104 @@
+oro:
+    dataaudit:
+        module_label:           "Data audit"
+        change_history:         "Change History"
+        change_history.title:   "%item% change history"
+
+        action:
+            create: "Create"
+            update: "Update"
+            remove: "Remove"
+
+        auditfield:
+            entity_label:         Audit Field
+            entity_plural_label:  Audit Fields
+            data_type.label:      Data Type
+            field.label:          Field
+            id.label:             Id
+            new_array.label:      New Array
+            new_boolean.label:    New Boolean
+            new_date.label:       New Date
+            new_datetime.label:   New DateTime
+            new_datetimetz.label: New DateTime with timezone
+            new_float.label:      New Float
+            new_integer.label:    New Integer
+            new_object.label:     New Object
+            new_text.label:       New Text
+            new_time.label:       New Time
+            old_array.label:      Old Array
+            old_boolean.label:    Old Boolean
+            old_date.label:       Old Date
+            old_datetime.label:   Old DateTime
+            old_datetimetz.label: Old DateTime with timezone
+            old_float.label:      Old Float
+            old_integer.label:    Old Integer
+            old_object.label:     Old Object
+            old_text.label:       Old Text
+            old_time.label:       Old Time
+            visible.label:        Visible
+
+        menu:
+            audit_list.label:       "Data Audit"
+            audit_list.description: "Data Audit"
+
+        datagrid:
+            author: Author
+            logged_at: Logged at
+            old_values: Old values
+            new_values: New values
+            action: Action
+            version: Version
+            entity_type: Entity type
+            entity_name: Entity name
+            entity_id: Entity id
+            data: Data
+            organization: Organization
+            author_impersonation: " (impersonated from %ipAddress%)"
+
+        entity_config:
+            entity:
+                items:
+                    auditable: Auditable
+            field:
+                items:
+                    auditable: Auditable
+
+        condition_builder:
+            criteria:
+                data_audit: Data audit
+
+        abstractaudit:
+            entity_label: Audit
+            entity_plural_label: Audits
+            action.label: Audit action
+            id.label: Id
+            logged_at.label: Logged at
+            object_class.label: Audit class
+            object_id.label: Id
+            object_name.label: Audit
+            owner_description.label: Audit owner description
+            transaction_id.label: Audit transaction id
+            version.label: Audit version
+            fields.label: Audit fields
+            impersonation.label: Audit impersonation
+            organization.label: Audit organization
+            user.label: Audit user
+            additional_fields.label: Additional fields
+
+        audit:
+            entity_label: Audit
+            entity_plural_label: Audits
+            action.label: Audit action
+            id.label: Id
+            logged_at.label: Logged at
+            object_class.label: Audit class
+            object_id.label: Id
+            object_name.label: Audit
+            owner_description.label: Audit owner description
+            transaction_id.label: Audit transaction id
+            version.label: Audit version
+            fields.label: Audit fields
+            impersonation.label: Audit impersonation
+            organization.label: Audit organization
+            user.label: Audit user
+            additional_fields.label: Additional fields

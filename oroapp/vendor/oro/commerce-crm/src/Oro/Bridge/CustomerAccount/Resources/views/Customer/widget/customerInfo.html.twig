@@ -1,0 +1,114 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set activeTab = app.request.get('_activeTab')|default(null) %}
+{% set uniqueSuffix = '_customer_' ~ customer.id %}
+{% set customer_general_info %}
+    <div class="row-fluid">
+        <br>
+        <div class="responsive-block">
+            {{ UI.renderHtmlProperty(
+                'oro.customer.customer.name.label'|trans,
+                UI.entityViewLink(customer, customer.name, 'oro_customer_customer_view')
+            ) }}
+
+            {% if customer.group %}
+                {{ UI.renderHtmlProperty(
+                    'oro.customer.customer.group.label'|trans,
+                    UI.entityViewLink(customer.group, customer.group ? customer.group.name : null, 'oro_customer_customer_group_view')
+                ) }}
+            {% endif %}
+        </div>
+        <div class="responsive-block">
+            {% if customer.parent %}
+                {{ UI.renderHtmlProperty(
+                    'oro.customer.customer.parent.label'|trans,
+                    UI.entityViewLink(customer.parent, customer.parent ? customer.parent.name : null, 'oro_customer_customer_view')
+                ) }}
+            {% endif %}
+        </div>
+    </div>
+{% endset %}
+{% set tabs = [
+    {
+        'alias': 'oro_account_customer_general_info' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sales.sections.general'|trans,
+        'content': customer_general_info,
+        'url': null
+    }
+] %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_users' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.customer.customeruser.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_customer_user_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_shopping_carts' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.shoppinglist.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_shopping_lists_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_rfqs' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.rfp.request.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_rfq_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_quotes' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sale.quote.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_quotes_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_orders' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.order.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_orders_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabs = tabs|merge([
+    {
+        'alias': 'oro_account_customer_opportunity' ~ uniqueSuffix,
+        'widgetType': 'block',
+        'label': 'oro.sales.opportunity.entity_plural_label'|trans,
+        'url': path('oro_account_customer_widget_opportunities_info', {'id': customer.id})
+    }
+]) %}
+
+{% set tabPanelOptions = {
+    useDropdown: isMobileVersion()
+} %}
+{% if activeTab %}
+    {% set tabPanelOptions = tabPanelOptions|merge({
+        activeTabAlias: 'oro_account_customer_' ~ activeTab ~ uniqueSuffix
+    }) %}
+{% endif %}
+
+<div class="widget-content row-fluid">
+    <div class="account-customer-title">{{ customer|oro_format_name|escape }}
+        <div class="pull-right label label-info orocrm-channel-lifetime-value-label">
+            <b>{{ 'oro.customer.customer.lifetime.label'|trans}}:
+                {{ oro_channel_account_lifetime(account, channel)|oro_format_currency }}</b>
+        </div>
+    </div>
+    <div class="customer-without-border-tabs">
+        {{ tabPanel(tabs, tabPanelOptions) }}
+    </div>
+</div>

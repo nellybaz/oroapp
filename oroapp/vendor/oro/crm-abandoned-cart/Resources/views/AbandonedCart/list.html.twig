@@ -1,0 +1,14 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set gridName = 'oro-abandonedcart-list-grid' %}
+{% set pageTitle = 'oro.abandonedcart.abandonedcartcampaign.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% if isDesktopVersion() and is_granted('oro_abandoned_cart_list_create') %}
+        {{ UI.addButton({
+            'path':          path('oro_abandoned_cart_list_create'),
+            'entity_label': 'oro.abandonedcart.abandonedcartcampaign.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

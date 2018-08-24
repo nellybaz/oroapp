@@ -1,0 +1,18 @@
+{% extends 'OroDashboardBundle:Dashboard:widget.html.twig' %}
+
+{% set widgetType = 'quick-launchpad' %}
+
+{% block content %}
+    <ul class="quick-launchpad-toolbar">
+        {% for item in items %}
+            <li{% if (item.class is defined) %} class="{{ item.class }}"{% endif %}>
+                <span class="title-box">{{ item.label|trans }}</span>
+                <span class="list-content">
+                    <i class="fa-{{ item.icon }}"></i>
+                </span>
+                <a href="{{ path(item.route, item.route_parameters) }}"></a>
+            </li>
+        {% endfor %}
+    </ul>
+    {{ parent() }}
+{% endblock %}

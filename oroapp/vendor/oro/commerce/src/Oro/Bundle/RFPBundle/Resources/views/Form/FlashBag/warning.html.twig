@@ -1,0 +1,6 @@
+<div>{{ message }}</div>
+<ul class="warning-list">
+{% for product in products %}
+    <li class="warning-list__item">{{ product.name }} (Item # <span class="warning-list__id-value">{{ product.sku }}</span>)</li>
+{% endfor %}
+</ul>

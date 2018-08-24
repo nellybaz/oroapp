@@ -1,0 +1,40 @@
+// @theme: default
+
+.box-toolbar {
+    display: flex;
+    margin: 0 0 $offset-y 0;
+
+    &--offset-none {
+        margin: 0;
+    }
+
+    &__content {
+        padding: 0 $offset-x-m 0 0;
+
+        // 0px value for fix bug in IE11
+        flex: 1 0 0px;
+    }
+
+    &__actions {
+        display: flex;
+        flex: 0 0 auto;
+    }
+}
+
+@include breakpoint('tablet') {
+    .box-toolbar {
+        flex-direction: column;
+
+        &__actions {
+            flex-wrap: wrap;
+        }
+    }
+}
+
+@include breakpoint('print') {
+    .box-toolbar {
+        &__actions {
+            display: none !important;
+        }
+    }
+}

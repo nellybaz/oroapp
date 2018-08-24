@@ -1,0 +1,2 @@
+
+a:10:{s:8:"strategy";s:6:"nested";s:16:"activate_locking";b:0;s:15:"locking_timeout";i:3;s:6:"parent";s:14:"parentCategory";s:4:"left";s:4:"left";s:5:"level";s:5:"level";s:5:"right";s:5:"right";s:20:"rootIdentifierMethod";N;s:4:"root";s:4:"root";s:14:"useObjectClass";s:40:"Oro\Bundle\CatalogBundle\Entity\Category";}

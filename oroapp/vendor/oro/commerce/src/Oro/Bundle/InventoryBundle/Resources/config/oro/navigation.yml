@@ -1,0 +1,26 @@
+navigation:
+    menu_config:
+        items:
+            inventory_tab:
+                label:    'oro.inventory.menu.inventory_tab.label'
+                uri:      '#'
+                position: 400
+                extras:
+                    icon: fa-building-o
+
+            inventory_level_list:
+                label:      'oro.inventory.menu.inventory_list.label'
+                route:      'oro_inventory_level_index'
+                position:   50
+                extras:
+                    routes: ['/^oro_inventory_level/']
+
+        tree:
+            application_menu:
+                children:
+                    inventory_tab:
+                        children:
+                            inventory_level_list: ~
+
+    titles:
+        oro_inventory_level_index: ~

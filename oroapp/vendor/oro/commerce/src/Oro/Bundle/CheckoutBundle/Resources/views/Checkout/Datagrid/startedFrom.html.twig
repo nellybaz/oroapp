@@ -1,0 +1,23 @@
+{% set data = record.getValue('startedFrom') %}
+
+{% if data.entity is defined %}
+    {% if is_granted('VIEW', data.entity) %}
+        {% if data.type == 'shopping_list' %}
+            <a href="{{ path('oro_shopping_list_frontend_view', {id: data.id}) }}">{{ data.label }}</a>
+        {% elseif data.type == 'quote' %}
+            <a href="{{ path('oro_sale_quote_frontend_view', {id: data.id}) }}">{{ data.label }}</a>
+        {% elseif data.type == 'order' %}
+            <a href="{{ path('oro_order_frontend_view', {id: data.id}) }}">
+                {{ 'oro.frontend.order.identifier.label'|trans({
+                    '%identifier%': data.entity.identifier|default('N/A'|trans)
+                }) }}
+            </a>
+        {% else %}
+            {{ data.label }}
+        {% endif %}
+    {% else %}
+        {{ data.label }}
+    {% endif %}
+{% elseif data is not null %}
+    {{ data }}
+{% endif %}

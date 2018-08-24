@@ -1,0 +1,51 @@
+{% macro renderView(entity) %}
+    {% set tagCloudElId = 'tags-' ~ random() %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <div {{ UI.renderPageComponentAttributes({
+        module: 'oroform/js/app/components/inline-editable-view-component',
+        options: {
+            frontend_type: 'tags',
+            value: oro_tag_get_list(entity),
+            fieldName: 'tags',
+            metadata: {
+                inline_editing: {
+                    enable: is_granted('oro_tag_assign_unassign'),
+                    save_api_accessor: {
+                        route: 'oro_api_post_taggable',
+                        http_method: 'POST',
+                        default_route_parameters: {
+                            entity: oro_class_name(entity, true),
+                            entityId: entity.id
+                        }
+                    },
+                    autocomplete_api_accessor: {
+                        class: 'oroui/js/tools/search-api-accessor',
+                        search_handler_name: 'tags',
+                        label_field_name: 'name'
+                    },
+                    editor: {
+                        view_options: {
+                            permissions: {
+                                oro_tag_create: is_granted('oro_tag_create')
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }) }}></div>
+{% endmacro %}
+
+{#
+    Render sort actions list
+#}
+{% macro tagSortActions() %}
+    <ul class="tag-sort-actions inline">
+        <li>
+            <a href="javascript:void(0);" class="no-hash active">{{ 'oro.tag.menu.all_tags'|trans }}</a>
+        </li>
+        <li>
+            <a href="javascript:void(0);" data-type="owner" class="no-hash">{{ 'oro.tag.menu.my_tags'|trans }}</a>
+        </li>
+    </ul>
+{% endmacro %}

@@ -1,0 +1,113 @@
+navigation:
+    menu_config:
+        items:
+            static_reports_tab:
+                label: 'oro.reportcrm.menu.static_reports_tab.label'
+                uri: '#'
+                position: 5
+
+            accounts_report_tab:
+                label: 'oro.reportcrm.menu.accounts_report_tab.label'
+                uri: '#'
+                position: 10
+                extras:
+                    skipBreadcrumbs: true
+
+            leads_report_tab:
+                label: 'oro.reportcrm.menu.leads_report_tab.label'
+                uri: '#'
+                position: 20
+                extras:
+                    skipBreadcrumbs: true
+
+            opportunities_report_tab:
+                label: 'oro.reportcrm.menu.opportunities_report_tab.label'
+                uri: '#'
+                position: 30
+                extras:
+                    skipBreadcrumbs: true
+
+            accounts_life_time_value:
+                label: 'oro.reportcrm.menu.accounts_life_time_value.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'accounts'
+                    reportName:      'life_time_value'
+                extras:
+                    description: 'oro.reportcrm.menu.accounts_life_time_value.description'
+                    skipBreadcrumbs: true
+
+            accounts_by_opportunities:
+                label: 'oro.reportcrm.menu.accounts_by_opportunities.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'accounts'
+                    reportName:      'by_opportunities'
+                extras:
+                    description: 'oro.reportcrm.menu.accounts_by_opportunities.description'
+                    skipBreadcrumbs: true
+
+            leads_by_date:
+                label: 'oro.reportcrm.menu.leads_by_date.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'leads'
+                    reportName:      'by_date'
+                extras:
+                    description: 'oro.reportcrm.menu.leads_by_date.description'
+                    skipBreadcrumbs: true
+
+            opportunities_by_status:
+                label: 'oro.reportcrm.menu.opportunities_by_status.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'opportunities'
+                    reportName:      'by_status'
+                extras:
+                    description: 'oro.reportcrm.menu.opportunities_by_status.description'
+                    skipBreadcrumbs: true
+
+            won_by_period:
+                label: 'oro.reportcrm.menu.won_by_period.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'opportunities'
+                    reportName:      'won_by_period'
+                extras:
+                    description: 'oro.reportcrm.menu.won_by_period.description'
+                    skipBreadcrumbs: true
+
+            total_forecast:
+                label: 'oro.reportcrm.menu.total_forecast.label'
+                route: 'oro_reportcrm_index'
+                route_parameters:
+                    reportGroupName: 'opportunities'
+                    reportName:      'total_forecast'
+                extras:
+                    description: 'oro.reportcrm.menu.total_forecast.description'
+                    skipBreadcrumbs: true
+
+        tree:
+            application_menu:
+                children:
+                    reports_tab:
+                        children:
+                            static_reports_tab:
+                                children:
+                                    accounts_report_tab:
+                                        children:
+                                            accounts_life_time_value: ~
+                                            accounts_by_opportunities: ~
+
+                                    leads_report_tab:
+                                        children:
+                                            leads_by_date: ~
+
+                                    opportunities_report_tab:
+                                        children:
+                                            opportunities_by_status: ~
+                                            won_by_period: ~
+                                            total_forecast: ~
+
+    titles:
+        oro_reportcrm_index: '%reportName% - %reportGroup%'

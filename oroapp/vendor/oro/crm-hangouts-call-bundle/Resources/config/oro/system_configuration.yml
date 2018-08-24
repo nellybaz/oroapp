@@ -1,0 +1,46 @@
+system_configuration:
+    groups:
+        google_hangouts_settings:
+            title: oro.hangoutscall.system_configuration.groups.google_hangouts_settings.title
+
+    fields:
+        oro_hangouts_call.enable_google_hangouts_for_email:
+            data_type: boolean
+            type: oro_config_checkbox
+            options:
+                label: oro.hangoutscall.system_configuration.fields.enable_google_hangouts_for_email.label
+                required: false
+                resettable: true
+            priority: 40
+        oro_hangouts_call.enable_google_hangouts_for_phone:
+              data_type: boolean
+              type: oro_config_checkbox
+              options:
+                  label: oro.hangoutscall.system_configuration.fields.enable_google_hangouts_for_phone.label
+                  required: false
+                  resettable: true
+              priority: 40
+
+    tree:
+        system_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            google_settings:
+                                children:
+                                    google_hangouts_settings:
+                                        children:
+                                            - oro_hangouts_call.enable_google_hangouts_for_email
+                                            - oro_hangouts_call.enable_google_hangouts_for_phone
+        organization_configuration:
+            platform:
+                children:
+                    integrations:
+                        children:
+                            google_settings:
+                                children:
+                                    google_hangouts_settings:
+                                        children:
+                                            - oro_hangouts_call.enable_google_hangouts_for_email
+                                            - oro_hangouts_call.enable_google_hangouts_for_phone

@@ -1,0 +1,403 @@
+Add another email: Add another email
+Additional: Additional
+"Opportunity Information": "Opportunity Information"
+"New contact": "New contact"
+"Information": "Information"
+"Contact Details": "Contact Details"
+
+"%groups% and %roles%": "%groups% and %roles%"
+
+oro.user.form.choose_user: Choose a user...
+oro.user.form.choose_gender: Choose a gender...
+oro.user.gender.male: Male
+oro.user.gender.female: Female
+
+Username: Username
+Password: Password
+"Remember me on this computer": Remember me on this computer
+"Forgot your password?": Forgot your password?
+"Log in": Log in
+Login: Login
+Logout: Logout
+Login page: Login page
+"Forgot Password": "Forgot Password"
+"Password Reset": "Password Reset"
+"Reset password": "Reset password"
+"Generate key was successful. New key:": "Generate key was successful. New key&#58;"
+"Generate key": "Generate key"
+"Access Settings": "Access Settings"
+"Organization": "Organization"
+"Business Unit": "Business Unit"
+"User": "User"
+"None": "None"
+"There is no active user with username or email address \"%username%\".": "There is no active user with username or email address \"%username%\"."
+"Username or Email": "Username or Email"
+"Return to Login": "Return to Login"
+"Request": "Request"
+
+User account is locked.: User account is locked
+User account is disabled.: User account is disabled
+User account has expired.: User account has expired
+
+change_password:
+    flash:
+        success: The password has been changed
+resetting:
+    flash:
+        success: The password has been successfully reset
+
+oro:
+    user:
+        form:
+            access_settings.label: Business Units
+            signature.label: Email Signature
+            choose_role: Choose a role...
+            business_units.label: Organization Business Units
+        menu:
+            system_tab.label: System
+            user_list.description: List of system users
+            user_roles.description: List of system roles
+            user_groupes.description: List of system groups
+            users_management.label: User Management
+            user_create.label: Create User
+            shortcut_new_user.label: Create new User
+            shortcut_new_user.description: Create new user instance
+            shortcut_list_users.label: Show Users list
+            shortcut_list_users.description: List of all system users
+            shortcut_new_role.label: Create new Role
+            shortcut_new_role.description: Create new role instance
+            shortcut_new_group.label: Create new Group
+            shortcut_new_group.description: Create new group instance
+            oro_user_profile_view.label: My User
+            oro_user_profile_configuration.label: My Configuration
+        controller:
+            group.message.saved: "Group saved"
+            role.message.saved: "Role saved"
+            user.message.saved: "User saved"
+            status.message.saved: "Status saved"
+            invite.fail.message: An invitation email sending was failed
+        user_configuration:
+            label: Configuration
+            use_default: Use System
+            grid.action.config: Configuration
+        #
+        # Oro/Bundle/UserBundle/Entity/User
+        #
+        entity_description:                 People or third party systems with a specific set of credentials (login and password) that can be used to access the application.
+        entity_label:                       User
+        entity_plural_label:                Users
+        configure.label:                    Configure
+        api_keys.label:                     API keys
+        api.label:                          API key
+        birthday:
+            label:                          Birthday
+            description:                    The date of the user's birth.
+        business_units:
+            label:                          Business Units
+            description:                    The business units that the user has access to.
+        organizations:
+            label:                          Organizations
+            description:                    The organizations that the user has access to.
+        confirmation_token:
+            label:                          Confirmation token
+            description:                    The one-time token generated for the password reset procedure.
+        current_status.label:               Current status
+        phone:
+            label:                          Phone
+            description:                    The user's primary phone number.
+        email_origins.label:                Email Origins
+        emails.label:                       Emails
+        auth_status:
+            label:                          Status
+            description:                    Defines the actuality of the user's current password, whether the user can use it to log into the system, is in the process of the password change, or (for EE) their password needs to be reset because the user has too many failed login attempts.
+        first_name:
+            label:                          First name
+            description:                    The first name of the user.
+        id.label:                           Id
+        avatar:
+            label:                          Avatar
+            description:                    The user's photo or other picture associated with the user.
+        imap_configuration.label:           Email synchronization settings
+        imap_configuration.update:          Update settings
+        last_login:
+            label:                          Last logged in
+            description:                    The date and time when the user last logged into the system.
+        last_name:
+            label:                          Last name
+            description:                    The last name of the user.
+        login_count:
+            label:                          Login count
+            description:                    How many time the user logged into the system.
+        password_expires_at:
+            label:                          Password expires at
+            description:                    The date and time when the user's password expires.
+        failed_login_count:
+            label:                          Failed login count
+            description:                    How many times the user tried to log into the system using incorrect credentials.
+        middle_name:
+            label:                          Middle name
+            description:                    The middle name of the user.
+        name_prefix:
+            label:                          Name prefix
+            description:                    The name prefix that is used in front of the user's name and provides additional information about the user.
+        name_suffix:
+            label:                          Name suffix
+            description:                    The name suffix that is used after the user's name and provides additional information about the user.
+        owner.label:                        Owner
+        password:
+            label:                          Password
+            description:                    The password that the user uses to log into the system. The password must conform to the system security policy.
+            change_dialog.title:            Change password
+            reset_dialog.title:             Reset password
+            reset_password.label:           Reset password
+            change_password.label:          Change password
+            new_password.label:             New password
+            enter_new_password.label:       New password
+            enter_new_password_again.label: Repeat password
+            password_generate.label:        Generate Password
+            reset:
+                label: Reset
+                ttl_already_requested.message: The password for this user has already been requested within the last 24 hours
+                popup.message: User {{ user }} will receive reset password by email.
+                popup.question: Are you sure you want to proceed?
+            reset_password:
+                flash:
+                    success: Reset password email has been sent to user
+            force_reset:
+                popup.message: User {{ user }} will receive reset password by email and will be disabled from login.
+                popup.question: Are you sure you want to proceed?
+                popup.button: Reset
+                success.message: Password reset request has been sent to %email%.
+                failure.message: Password reset request to %email% has failed.
+                mass_action.success: Password reset completed successfully. %count% emails sent.
+                mass_action.failure: Mass reset action has failed.
+        password_re.label:           Re-enter password
+        password_requested_at:
+            label:                   Password requested at
+            description:             The date and time when the user's password change was requested.
+        password_changed_at:
+            label:                   Password changed at
+            description:             The date and time when the user's password was last changed.
+        new_password.label:          New password
+        new_password_re.label:       Repeat new password
+        salt.label:                  Salt
+        statuses.label:              Statuses
+        username:
+            label:                   Username
+            description:             The login name that the user uses to log into the system.
+        organization.label:          Organization
+        business_unit.label:         Business Unit
+        google_id:
+            label:                   Google ID
+            description:             The user's google ID used for the 'login using Google' functionality.
+        ldap_distinguished_names:
+            label:                   LDAP Distinguished Names
+            description:             The value of the Distinguished Name (DN) LDAP field. This field is not empty for the user only if their record has been imported from the LDAP server.
+        groups:
+            label:                   Groups
+            description:             The groups that the user belongs to.
+        roles:
+            label:                   Roles
+            description:             The roles assigned to the user.
+        datagrid:
+            views:
+                active: Active Users
+                cannot_login: Cannot login
+                disabled: Disabled Users
+
+    #
+    # Oro/Bundle/UserBundle/Entity/Email
+    #
+        email:
+            entity_label:            User Email Address
+            entity_plural_label:     User Email Addresses
+            entity_description:      Represent user emails
+            id.label:                Id
+            user.label:              User
+            description:             The user's primary email address.
+            label:                   Primary Email
+            email.description:       The email address.
+            email.label:             Email
+
+        impersonation:
+            entity_label: Impersonation
+            entity_plural_label: Impersonations
+            id.label: Id
+            expire_at.label: Expire At
+            login_at.label: Login At
+            token.label: Token
+            user.label: User
+            notify.label: Notify
+            notification_error: Error while sending impersonation notification
+            ip_address.label: IP Address
+
+        # extended field added in migrations
+        title:
+            label:                 Title
+            description:           The custom field configured for the user. May refer to the user's job title or appellation of distinction.
+        #
+        # Oro/Bundle/UserBundle/Entity/Group
+        #
+        group:
+            entity_label:        Group
+            entity_plural_label: Groups
+            entity_description:  A set of users consolidated by one or more parameters. Instead of specifying each user one by one, you can specify a user group in filters and notification rules.
+            id:
+                label:           Id
+                description:     The unique identifier of a user group record
+            name:
+                label:           Name
+                description:     The name used to refer to a user group on the interface.
+            roles:
+                label:           Roles
+                description:     The roles assigned to the user group. Currently is not supported and will be removed.
+            owner.label: Owner
+            organization.label:  Organization
+            has_group.label:     Has group
+        #
+        # Oro/Bundle/UserBundle/Entity/Role
+        #
+        role:
+            entity_label:        Role
+            entity_plural_label: Roles
+            entity_description:  A user role defines permissions for users to perform certain activity.
+            id:
+                label:           Id
+                description:     The unique identifier of a user role record.
+            role:
+                label:           Role
+                description:     The name used to refer to the role on the interface.
+            label:
+                label:           Label
+                description:     The name of the role in the system, on the program level.
+            users:
+                label:           Users
+                description:     Users the role is assigned to.
+            has_role.label:      Has role
+            extend_description:
+                label:           Description
+                description:     Short description of the user role record.
+            actions:
+                edit:            Edit
+
+        invite:
+            label: Send an Email Invitation
+        privileges:
+            entity.label: Entity
+            field.label:  Fields
+            action.label: Capabilities
+        privilege:
+            category:
+                account_management.label: Account Management
+                address.label: Address
+                application.label: Application
+                calendar.label: Calendar
+                entity.label: Entity
+
+        # password tooltip for different rules
+        password_complexity:
+            unrestricted: ''
+            min_length: The password must be at least {{ length }} characters long
+            lower_case: The password must include a lower case letter
+            upper_case: The password must include an upper case letter
+            numbers:    The password must include a number
+            special_chars:  The password must include a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_upper_case: The password must be at least {{ length }} characters long and include an upper case letter
+            min_length_numbers: The password must be at least {{ length }} characters long and include a number
+            min_length_special_chars: The password must be at least {{ length }} characters long and include a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_upper_case_numbers: The password must be at least {{ length }} characters long and include an upper case letter and a number
+            min_length_upper_case_special_chars: The password must be at least {{ length }} characters long and include an upper case letter and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_numbers_special_chars: The password must be at least {{ length }} characters long and include a number and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_upper_case_numbers_special_chars: The password must be at least {{ length }} characters long and include an upper case letter, a number, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            upper_case_numbers: The password must include an upper case letter and a number
+            upper_case_special_chars: The password must include an upper case letter and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            numbers_special_chars: The password must include a number and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            upper_case_numbers_special_chars: The password must include an upper case letter, a number and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_lower_case: The password must be at least {{ length }} characters long and include a lower case letter
+            min_length_lower_case_upper_case: The password must be at least {{ length }} characters long and include a lower case letter, and an upper case letter
+            min_length_lower_case_numbers: The password must be at least {{ length }} characters long and include a lower case letter, and a number
+            min_length_lower_case_special_chars: The password must be at least {{ length }} characters long and include a lower case letter, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_lower_case_upper_case_numbers: The password must be at least {{ length }} characters long and include a lower case letter, an upper case letter, and a number
+            min_length_lower_case_upper_case_special_chars: The password must be at least {{ length }} characters long and include a lower case letter, an upper case letter, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_lower_case_numbers_special_chars: The password must be at least {{ length }} characters long and include a lower case letter, a number, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            min_length_lower_case_upper_case_numbers_special_chars: The password must be at least {{ length }} characters long and include a lower case letter, an upper case letter, a number, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            lower_case_upper_case: The password must include a lower case letter and an upper case letter
+            lower_case_numbers:    The password must include a lower case letter and a number
+            lower_case_special_chars:  The password must include a lower case letter and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            lower_case_upper_case_numbers: The password must include a lower case letter, an upper case letter, and a number
+            lower_case_upper_case_special_chars: The password must include a lower case letter, an upper case letter, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            lower_case_numbers_special_chars: The password must include a lower case letter, a number, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+            lower_case_upper_case_numbers_special_chars: The password must include a lower case letter, an upper case letter, a number, and a special character (!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space)
+
+        enabled:
+            enabled:      Enabled
+            disabled:     Disabled
+            label:        Enabled
+            description:  Defines whether the user is enabled to use the application.
+        action:
+            enable:
+                label: Enable user
+                success: 'User %username% enabled.'
+            disable:
+                label: Disable user
+                success: 'User %username% disabled.'
+            password_management:
+                label: Manage passwords
+                description: Reset or change passwords of other users
+            update_profile:
+                label: Update User Profile
+                description: Allows the user to update their own profile regardless of Edit permissions for User entity.
+            update_configuration:
+                label: Access personal configuration
+                description: Enables access to personal application configurations, such as language, locale, email settings, etc. regardless of Configure permissions for User entity.
+        permission:
+            update_configuration:
+                label: Configure
+            manage_api_key:
+                label: Manage API Key
+
+        security:
+            password_changed.message: Your password was updated by an administrator. New password was sent to you by email.
+            password_reseted.message: Your password was successfully reset. You may log in now.
+        user_bar_settings:
+            title: User bar
+        image.tooltip: The avatar must be in BMP, JPEG or PNG formats, and the file must be less than %file_size% in size
+        invite.tooltip: When this option is selected, an invitation email will be sent.
+        api.tooltip_text: >
+            An API key could be used for authentication in third party software.
+            Please keep your regular password in secret.
+
+        dashboard:
+            role: Role
+            owner: Owner
+            owners: Owners
+            all_owners: All owners
+            business_unit: Business Unit
+            current_user: Current User
+
+        system_configuration:
+            groups:
+                user_settings.title: User Settings
+                password_complexity_rules.title: Password restrictions
+            fields:
+                password_min_length.label: Minimal password length
+                password_numbers.label: Require a number
+                password_lower_case.label: Require a lower case letter
+                password_upper_case.label: Require an upper case letter
+                password_special_chars:
+                    label: Require a special character
+                    tooltip: >
+                        Special chars: !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~ and space
+                send_password_in_invitation_email.label: 'Send plain text password in invitation emails'
+        mass_actions:
+            enable_users:
+                success_message: '%count% user(s) were enabled'
+                error_message: '%count% user(s) were enabled'
+                label:               Enable
+            disable_users:
+                success_message: '%count% user(s) were disabled'
+                error_message: '%count% user(s) were disabled'
+                label:               Disable
+
+    scope:
+        user.label: User

@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:486;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"name";a:3:{s:1:"i";i:487;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"owner";a:3:{s:1:"i";i:488;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:6:"events";a:3:{s:1:"i";i:489;s:1:"h";b:0;s:1:"t";s:8:"ref-many";}s:12:"organization";a:3:{s:1:"i";i:490;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:15:"serialized_data";a:3:{s:1:"i";i:2976;s:1:"h";b:1;s:1:"t";s:5:"array";}}

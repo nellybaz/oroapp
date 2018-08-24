@@ -1,0 +1,161 @@
+oro_behat_extension:
+  elements:
+    BackendOrder:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\BackendOrder
+      selector: 'div.layout-content'
+
+    CollectionTableRow:
+      selector: 'tbody tr'
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\CollectionTableRow
+
+    Order Billing Address Select:
+      selector: '[name="oro_order_type[billingAddress][customerAddress]"]'
+
+    Order Shipping Address Select:
+      selector: '[name="oro_order_type[shippingAddress][customerAddress]"]'
+
+    BackendOrderLineItem:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\BackendOrderLineItem
+      selector: 'tr'
+
+    BackendOrderLineItemsTable:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Table
+      selector: 'table.order-line-items-table'
+
+    BackendOrderLineItems:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\BackendOrderLineItems
+      selector: 'table.order-line-items-table'
+
+    BackendOrderSubtotals:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\BackendOrderSubtotals
+      selector:
+          type: xpath
+          locator: '//div[@data-totals-container]'
+
+    Order:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\Order
+      selector: '.page-content'
+
+    OrderLineItemProductSku:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector: 'div:contains("Item #:") > span'
+
+    OrderTitle:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector: 'h1.page-title .page-title__text'
+
+    Order Payment Transaction Grid:
+      selector: "div[id^='grid-order-payment-transactions-grid'] div.grid-container"
+      class: Oro\Bundle\DataGridBundle\Tests\Behat\Element\Grid
+
+    Calculate Shipping Button:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector: 'span[id="possible_shipping_methods_btn"]'
+
+    Order Flat Rate:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//label[contains(text(),"Flat Rate")]'
+        type: xpath
+
+    Order DPD Classic:
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+      selector:
+        locator: '//td[contains(text(),"DPD Classic")]/../td/label[contains(text(),"DPD")]'
+        type: xpath
+
+    Order Form:
+      selector: '[id^="oro_order_type"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Billing Address:
+            locator: '//h4[text()="Billing Address"]/..//div[contains(@id,"s2id_oro_order_type-uid")]/input'
+            type: xpath
+          Shipping Address:
+            locator: '//h4[text()="Shipping Address"]/..//div[contains(@id,"s2id_oro_order_type-uid")]/input'
+            type: xpath
+          Product:
+            locator: '//div[contains(@id,"s2id_oro_order_type_lineItems_0_product-uid")]/input'
+            type: xpath
+          Quantity:
+            locator: '//input[@name="oro_order_type[lineItems][0][quantity]"]'
+            type: xpath
+          Price:
+            locator: '//input[@name="oro_order_type[lineItems][0][price][value]"]'
+            type: xpath
+          Product2:
+            locator: '//div[contains(@id,"s2id_oro_order_type_lineItems_1_product-uid")]/input'
+            type: xpath
+          Quantity2:
+            locator: '//input[@name="oro_order_type[lineItems][1][quantity]"]'
+            type: xpath
+          Price2:
+            locator: '//input[@name="oro_order_type[lineItems][1][price][value]"]'
+            type: xpath
+          PO Number:
+            locator: '//input[contains(@id,"oro_order_type_poNumber-uid")]'
+            type: xpath
+    Purchase History Settings Form:
+      selector: 'form[name="purchase_history"]'
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Enable Purchase History: 'purchase_history[oro_order___enable_purchase_history][value]'
+          Enable Purchase History Use Default: 'purchase_history[oro_order___enable_purchase_history][use_parent_scope_value]'
+          Purchased Within: 'purchase_history[oro_order___order_previously_purchased_period][value]'
+          Purchased Within Use Default: 'purchase_history[oro_order___order_previously_purchased_period][use_parent_scope_value]'
+
+    Discounts:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Element\CollectionTable
+      selector: 'div.oro-discount-collection > table'
+
+    Overridden Shipping Cost Amount:
+      selector:
+        locator: '//input[contains(@id,"oro_order_type_overriddenShippingCostAmount_value-uid")]'
+        type: xpath
+
+    Order Discount Form:
+      selector:
+        locator: '//div[@class="discount-popup"]/ancestor::form'
+        type: xpath
+      class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+      options:
+        mapping:
+          Type:
+            locator: '[data-role=type]'
+            type: 'css'
+
+    DiscountValue:
+      selector: 'input[name="oro_action_operation[orderDiscount][value]"]'
+
+    DiscountDescription:
+      selector: 'input[name="oro_action_operation[orderDiscount][description]"]'
+
+  pages:
+    OrderFrontendView:
+      class: Oro\Bundle\OrderBundle\Tests\Behat\Page\OrderFrontendViewPage
+      route: oro_order_frontend_view
+
+  suites:
+    OroOrderBundle:
+      contexts:
+        - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+        - OroApplicationBundle::CommerceMainContext
+        - Oro\Bundle\FormBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\ConfigBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\UserBundle\Tests\Behat\Context\FeatureContext
+        - Oro\Bundle\OrderBundle\Tests\Behat\Context\FeatureContext
+        - OroDataGridBundle::GridContext
+        - OroFormBundle::FormContext
+        - OroCustomerBundle::CustomerUserContext
+        - OroCheckoutBundle::FeatureContext
+        - OroConfigBundle::FeatureContext
+        - OroActionBundle::OroActionContext
+        - OroOrderBundle::OrderContext
+        - OroReportBundle::FeatureContext
+        - OroNavigationBundle::FeatureContext
+        - OroShoppingListBundle::ShoppingListContext
+        - OroProductBundle::FeatureContext
+      paths:
+        - '@OroOrderBundle/Tests/Behat/Features'

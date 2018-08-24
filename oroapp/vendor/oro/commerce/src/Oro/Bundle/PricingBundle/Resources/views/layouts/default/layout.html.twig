@@ -1,0 +1,115 @@
+{% block currency_switcher_widget %}
+    {% if currencies|length > 1 %}
+    <div class="oro-toolbar"
+         data-page-component-module="oropricing/js/app/components/currency-switcher-component"
+         data-page-component-options="{{ {
+             'selectedCurrency': selected_currency,
+             'currencySwitcherRoute': 'oro_pricing_frontend_set_current_currency'
+         }|json_encode }}">
+        <div class="oro-toolbar__content" data-toggle="dropdown">
+            {{ oro_currency_symbol(selected_currency) }}
+            <span class="oro-toolbar__icon">
+                <i class="fa-angle-down"></i>
+            </span>
+        </div>
+
+        <div class="oro-toolbar__dropdown">
+            <ul class="oro-toolbar__list">
+                {% for currency in currencies %}
+                <li class="oro-toolbar__list-item">
+                    <a class="oro-toolbar__link" href="#" data-currency="{{ currency }}">
+                        <b class="oro-toolbar__currency">{{ oro_currency_symbol(currency) }}</b>{{ oro_currency_name(currency) }}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
+
+{% block price_totals_widget %}
+    {% set options = {
+        route: route,
+        events: events|default({}),
+        entityClassName: oro_url_class_name(entityClassName),
+        entityId: entityId,
+        skipMaskView: skipMaskView,
+        data: totals
+    }%}
+    {% if selectors is defined %}
+        {% set options = options|merge({selectors: selectors}) %}
+    {% endif %}
+    {% placeholder oro_pricing_totals_before %}
+
+    {% set pageComponent = pageComponent|default('oropricing/js/app/components/totals-component') %}
+    <div data-page-component-module="{{ pageComponent }}" data-page-component-options="{{ options|default({})|json_encode }}">
+        <div class="totals-container">
+            {% block data_totals_container %}
+                <div class="order-checkout-widget__container">
+                    <div class="totals-container">
+                        <table class="order-checkout-widget__table pull-right">
+                            <tbody data-totals-container></tbody>
+                        </table>
+                    </div>
+                </div>
+            {% endblock data_totals_container %}
+        </div>
+        {% placeholder oro_pricing_totals %}
+    </div>
+
+    {% placeholder oro_pricing_totals_after %}
+{% endblock %}
+
+{% block product_price_hint_content_js_widget %}
+    <table class="table">
+        <thead>
+        <tr>
+            <th class="text-uppercase">{{ 'oro.pricing.frontend.product.quantity.short_label'|trans }}</th>{# qty#}
+            <th>{{ 'oro.pricing.frontend.product.unit_price.long_label'|trans }}</th>{# Unit Price #}
+        </tr>
+        </thead>
+        <tbody>
+        <% var addNewLine = false %>
+        <% var modelPrices = _.sortBy(model.prices, 'quantity'); %>
+        <% _.each(model.product_units, function(key) { %>
+        <% var prices = _.filter(modelPrices, function(price){return price.unit === key}); %>
+        <% if (prices.length) { %>
+        <tr>
+            <td colspan="2" class="text-capitalize">
+                <%= addNewLine ? '<br/>' : '' %>
+                <b><%= _.__('oro.product.product_unit.' + key + '.label.full') %></b>
+            </td>
+        </tr>
+        <% addNewLine = true %>
+        <% _.each(prices, function(price) { %>
+        <tr class="<% if (!_.isEmpty(matchedPrice) && price.unit === matchedPrice.unit && parseFloat(price.price) === parseFloat(matchedPrice.price)) { %>matched-tier-price<% } %>">
+            <td><%= price.quantity %></td>
+            <td>
+                <% if (clickable) { %>
+                <a
+                        href="javascript: void(0);"
+                        data-price="<%= parseFloat(price.price) %>"
+                        data-unit="<%= price.unit %>"
+                ><%= formatter.formatCurrency(price.price, price.currency) %></a>
+                <% } else { %>
+                <%= formatter.formatCurrency(price.price, price.currency) %>
+                <% } %>
+            </td>
+        </tr>
+        <% }) %>
+        <% } %>
+        <% }) %>
+        </tbody>
+    </table>
+{% endblock %}
+
+{% block product_price_hint_js_widget %}
+    <span class="product-tier-prices"
+          data-toggle="popover"
+          data-placement="bottom"
+          data-close="false"
+          data-class="prices-hint-content">
+        <i class="popover-trigger"></i>
+    </span>
+{% endblock %}

@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:180;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:8:"fallback";a:3:{s:1:"i";i:181;s:1:"h";b:0;s:1:"t";s:6:"string";}s:6:"string";a:3:{s:1:"i";i:182;s:1:"h";b:0;s:1:"t";s:6:"string";}s:4:"text";a:3:{s:1:"i";i:183;s:1:"h";b:0;s:1:"t";s:4:"text";}s:12:"localization";a:3:{s:1:"i";i:184;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:15:"serialized_data";a:3:{s:1:"i";i:2966;s:1:"h";b:1;s:1:"t";s:5:"array";}}

@@ -1,0 +1,7 @@
+{% import 'OroHangoutsCallBundle::macros.html.twig' as HangoutsCall %}
+
+{{ HangoutsCall.renderStartButton({
+    hangoutOptions: {
+        invites: invites is defined ? invites : []
+    }
+}) }}

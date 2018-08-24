@@ -1,0 +1,15 @@
+security:
+    acl:
+        connection: default
+        cache:
+            id: security.acl.cache.doctrine
+            prefix: sf2_acl_
+
+    access_decision_manager:
+        strategy: unanimous
+        allow_if_all_abstain: true
+
+doctrine:
+    dbal:
+        types:
+            crypted_string: Oro\Bundle\SecurityBundle\DoctrineExtension\Dbal\Types\CryptedStringType

@@ -1,0 +1,146 @@
+api:
+    entity_aliases:
+        Extend\Entity\TestApiE1:
+            alias: testapientity1
+            plural_alias: testapientity1
+        Extend\Entity\TestApiE2:
+            alias: testapientity2
+            plural_alias: testapientity2
+        Extend\Entity\EV_Api_Enum1:
+            alias: testapienum1
+            plural_alias: testapienum1
+        Extend\Entity\EV_Api_Enum2:
+            alias: testapienum2
+            plural_alias: testapienum2
+
+    entities:
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDepartment:
+            fields:
+                title:
+                    exclude: false
+                    property_path: name
+            filters:
+                fields:
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEmployee:
+            filters:
+                fields:
+                    name: ~
+            sorters:
+                fields:
+                    position: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestDefaultAndNull: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestEntityForNestedObjects:
+            fields:
+                name:
+                    data_type: nestedObject
+                    form_options:
+                        data_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestNestedName
+                        by_reference: false
+                    fields:
+                        firstName: ~
+                        lastName: ~
+                firstName:
+                    exclude: true
+                lastName:
+                    exclude: true
+                links:
+                    data_type: array
+                    exclusion_policy: all
+                    fields:
+                        firstName:
+                            property_path: name
+                        lastName:
+                            property_path: key
+                relatedEntity:
+                    data_type: nestedAssociation
+                    fields:
+                        __class__:
+                            property_path: relatedClass
+                        id:
+                            property_path: relatedId
+                relatedClass:
+                    exclude: true
+                relatedId:
+                    exclude: true
+        Oro\Bundle\OrganizationBundle\Entity\BusinessUnit:
+            filters:
+                fields:
+                    name: ~
+                    email: ~
+            sorters:
+                fields:
+                    email: ~
+        Oro\Bundle\TestFrameworkBundle\Entity\TestProduct: ~
+        Oro\Bundle\TestFrameworkBundle\Entity\TestProductType: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestWithoutIdGenerator: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCompositeIdentifier:
+            fields:
+                renamedKey1:
+                    property_path: key1
+            filters:
+                fields:
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCustomIdentifier:
+            identifier_field_names: ['key']
+            fields:
+                databaseId:
+                    property_path: id
+            filters:
+                fields:
+                    key:
+                        allow_array: true
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestCustomCompositeIdentifier:
+            identifier_field_names: ['key1', 'key2']
+            fields:
+                databaseId:
+                    property_path: id
+            filters:
+                fields:
+                    name: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestAllDataTypes:
+            filters:
+                fields:
+                    fieldString: ~
+                    fieldText: ~
+                    fieldInt: ~
+                    fieldSmallInt: ~
+                    fieldBigInt: ~
+                    fieldBoolean: ~
+                    fieldDecimal: ~
+                    fieldFloat: ~
+                    fieldDateTime: ~
+                    fieldDate: ~
+                    fieldTime: ~
+                    fieldGuid: ~
+                    fieldPercent: ~
+                    fieldMoney: ~
+                    fieldDuration: ~
+                    fieldMoneyValue: ~
+                    fieldCurrency: ~
+            sorters:
+                fields:
+                    fieldString: ~
+                    fieldInt: ~
+                    fieldSmallInt: ~
+                    fieldBigInt: ~
+                    fieldBoolean: ~
+                    fieldDecimal: ~
+                    fieldFloat: ~
+                    fieldDateTime: ~
+                    fieldDate: ~
+                    fieldTime: ~
+                    fieldGuid: ~
+                    fieldPercent: ~
+                    fieldMoney: ~
+                    fieldDuration: ~
+                    fieldMoneyValue: ~
+                    fieldCurrency: ~
+        Extend\Entity\TestApiE1: ~
+        Extend\Entity\TestApiE2: ~
+        Oro\Bundle\ApiBundle\Tests\Functional\Environment\Entity\TestProduct:
+            subresources:
+                search:
+                    target_class: Oro\Bundle\ApiBundle\Tests\Functional\Environment\Model\TestEntityIdentifier
+                    target_type: collection

@@ -1,0 +1,7 @@
+Extend\Entity\EV_Mage_Subscr_Status:
+    type: entity
+    table: oro_enum_mage_subscr_status
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

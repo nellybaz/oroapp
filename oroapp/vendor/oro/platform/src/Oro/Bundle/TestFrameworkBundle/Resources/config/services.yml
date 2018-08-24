@@ -1,0 +1,155 @@
+parameters:
+    test.client.class:         Oro\Bundle\TestFrameworkBundle\Test\Client
+    search_item_entity_class:  Oro\Bundle\TestFrameworkBundle\Entity\Item
+    oro_test.entity.item.class: Oro\Bundle\TestFrameworkBundle\Entity\Item
+    oro_test.entity.item_value.class: Oro\Bundle\TestFrameworkBundle\Entity\ItemValue
+    oro_test.provider.exclusion_provider.class: Oro\Bundle\TestFrameworkBundle\Provider\EntityExclusionProvider
+    oro_test.test_activity_activity_list.provider.class: Oro\Bundle\TestFrameworkBundle\Provider\TestActivityActivityListProvider
+    test.session.listener.class: Oro\Bundle\TestFrameworkBundle\EventListener\TestSessionListener
+
+services:
+    oro_test.provider.exclusion_provider:
+        class: %oro_test.provider.exclusion_provider.class%
+
+    oro_test.entity_field_list_provider:
+        class: %oro_entity.entity_field_list_provider.class%
+        arguments:
+            - '@oro_test.entity_field_provider'
+            - '@oro_test.entity_provider'
+            - '@oro_entity_config.helper.entity_config'
+
+    oro_test.entity_field_provider:
+        parent: oro_entity.entity_field_provider
+        calls:
+            - [setExclusionProvider, ['@oro_test.provider.exclusion_provider']]
+
+    oro_test.entity_provider:
+        parent: oro_entity.entity_provider
+        calls:
+            - [setExclusionProvider, ['@oro_test.provider.exclusion_provider']]
+
+    oro_test.test_activity_activity_list.provider:
+        class: %oro_test.test_activity_activity_list.provider.class%
+        arguments:
+           - '@oro_entity.doctrine_helper'
+           - '@oro_activity.association_helper'
+        tags:
+           - {name: oro_activity_list.provider}
+
+    oro_test.entity_alias_provider:
+        class: Oro\Bundle\TestFrameworkBundle\Provider\EntityAliasProvider
+        public: false
+        tags:
+            - { name: oro_entity.alias_provider }
+
+    oro_test.event_listener.update_user_command:
+        class: Oro\Bundle\TestFrameworkBundle\EventListener\UpdateUserCommandEventListener
+        arguments:
+            - '@oro_user.manager'
+        tags:
+            - { name: kernel.event_listener, event: console.terminate, method: onConsoleTerminate }
+
+    oro_test.alice_reference_processor:
+        class: Oro\Bundle\TestFrameworkBundle\Test\DataFixtures\AliceReferenceProcessor
+        arguments:
+            - '@doctrine'
+
+    oro_test.alice_to_string_processor:
+        class: Oro\Bundle\TestFrameworkBundle\Test\DataFixtures\AliceToStringProcessor
+
+    oro_test.alice_fixture_loader:
+        class: Oro\Bundle\TestFrameworkBundle\Test\DataFixtures\AliceFixtureLoader
+        calls:
+            - [setFileLocator, ['@file_locator']]
+            - [addProcessor, ['@oro_test.alice_reference_processor']]
+            - [addProcessor, ['@oro_test.alice_to_string_processor']]
+
+    oro_config.cache:
+        parent: doctrine_cache.abstract.array
+        calls:
+            - [setNamespace, [ 'oro_config' ] ]
+
+    oro_embedded_form.csrf_token_cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_csrf_cache' ] ]
+
+    oro_security.wsse_nonce_cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_nonces_cache' ] ]
+
+    oro_test.transport_provider:
+        class: Oro\Bundle\TestFrameworkBundle\Provider\TestTransportProvider
+        tags:
+            - { name: oro_integration.transport, type: aType, channel_type: aType }
+
+    oro_test.entity_alias_resolver:
+        class: 'Oro\Bundle\EntityBundle\ORM\EntityAliasResolver'
+        arguments:
+            - '@oro_entity.entity_alias_loader'
+            - '@oro_entity.entity_alias_cache'
+            - true
+
+    oro_test.provider.container_tags_documentation_information:
+        class: Oro\Bundle\TestFrameworkBundle\Provider\ContainerTagsDocumentationInformationProvider
+        arguments:
+            - '%kernel.root_dir%/../'
+
+    oro_search.extension.mass_action.iterable_result_factory.alias:
+        alias: oro_search.extension.mass_action.iterable_result_factory
+
+    oro_datagrid.extension.mass_action.iterable_result_factory.alias:
+        alias: oro_datagrid.extension.mass_action.iterable_result_factory
+
+    # Consumer services
+    oro_test.async.change_config:
+        class: 'Oro\Bundle\TestFrameworkBundle\Async\ChangeConfigProcessor'
+        arguments:
+            - '@oro_config.manager'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_test.consumption.queue_consumer:
+        class: 'Oro\Component\MessageQueue\Consumption\QueueConsumer'
+        arguments:
+            - '@oro_message_queue.transport.dbal.connection'
+            - '@oro_message_queue.consumption.extensions'
+
+    oro_test.client.message_producer:
+        class: 'Oro\Component\MessageQueue\Client\MessageProducer'
+        arguments: ['@oro_test.client.driver']
+
+    oro_test.client.driver:
+        class: 'Oro\Component\MessageQueue\Client\DriverInterface'
+        factory: ['@oro_message_queue.client.driver_factory', 'create']
+        arguments:
+            - '@oro_message_queue.transport.dbal.connection'
+            - '@oro_test.client.config'
+
+    oro_test.client.route_message_processor:
+        class: 'Oro\Component\MessageQueue\Router\RouteRecipientListProcessor'
+        arguments:
+            - '@oro_test.client.router'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor', topicName: 'oro_message_queue.route_message' }
+
+    oro_test.client.router:
+        class: 'Oro\Component\MessageQueue\Client\Router'
+        public: false
+        arguments:
+            - '@oro_test.client.driver'
+            - '@oro_message_queue.client.meta.destination_meta_registry'
+            -
+              oro.test.change_config:
+                - ['oro_test.async.change_config', 'default']
+
+    oro_test.client.config:
+        class: 'Oro\Component\MessageQueue\Client\Config'
+        public: false
+        arguments:
+            - oro
+            - oro_test.client.route_message_processor
+            - default
+            - default
+            - default

@@ -1,0 +1,2 @@
+0
+a:1:{i:0;O:29:"Doctrine\ORM\Mapping\Embedded":2:{s:5:"class";s:38:"Oro\Bundle\CurrencyBundle\Entity\Price";s:12:"columnPrefix";s:6:"price_";}}

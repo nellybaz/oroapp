@@ -1,0 +1,55 @@
+api:
+    entity_aliases:
+        Test\Entity4:
+            alias: entity4
+            plural_alias: entity4_plural
+
+    entities:
+        Test\Entity1:
+            exclude: true
+        Test\Entity2: ~
+        Test\Entity3:
+            exclude: true
+        Test\Entity4:
+            fields:
+                field1: ~
+                field2:
+                    exclude: true
+                field3:
+                    order_by:
+                        name: ASC
+                field4:
+                    fields:
+                        field41:
+                            order_by:
+                                name: DESC
+                field5:
+                    fields:
+                        field51:
+                            fields:
+                                field511:
+                                    hints: [HINT_TRANSLATABLE]
+            filters:
+                fields:
+                    field1: ~
+                    field2:
+                        data_type: string
+                    field3:
+                        exclude: true
+            sorters:
+                fields:
+                    field1: ~
+                    field2:
+                        exclude: true
+        Test\Entity5:
+            fields:
+                field1: ~
+        Test\Entity6: ~
+        Test\Entity7:
+            documentation_resource: entity7_bar.md
+        Test\Entity10: ~
+        Test\Entity12:
+            exclude: true
+            fields:
+                field1:
+                    exclude: true

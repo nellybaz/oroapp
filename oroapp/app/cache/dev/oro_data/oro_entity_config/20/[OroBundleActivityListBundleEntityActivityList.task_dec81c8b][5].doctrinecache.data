@@ -1,0 +1,2 @@
+0
+a:2:{i:0;a:2:{s:6:"search";a:0:{}s:6:"extend";a:12:{s:5:"owner";s:6:"System";s:5:"state";s:6:"Active";s:9:"is_extend";b:1;s:10:"is_deleted";b:0;s:6:"origin";s:6:"System";s:13:"is_serialized";b:0;s:12:"relation_key";s:108:"manyToMany|Oro\Bundle\ActivityListBundle\Entity\ActivityList|Oro\Bundle\TaskBundle\Entity\Task|task_dec81c8b";s:13:"target_entity";s:33:"Oro\Bundle\TaskBundle\Entity\Task";s:12:"target_title";a:1:{i:0;s:2:"id";}s:15:"target_detailed";a:1:{i:0;s:2:"id";}s:11:"target_grid";a:1:{i:0;s:2:"id";}s:15:"without_default";b:1;}}i:1;s:10:"manyToMany";}

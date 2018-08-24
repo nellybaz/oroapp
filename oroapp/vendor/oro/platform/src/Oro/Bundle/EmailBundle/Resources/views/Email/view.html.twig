@@ -1,0 +1,90 @@
+{#
+    Available variables:
+    * entity       - email entity Oro\Bundle\EmailBundle\Entity\Email
+#}
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+{% set name = app.user|oro_format_name|default('N/A') %}
+{% oro_title_set({params : {"%subject%": entity.subject|oro_tag_filter, "%username%": name} }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_email_user_emails'),
+        'indexLabel':  'oro.email.entity_plural_label'|trans,
+        'entityTitle': entity.subject|oro_tag_filter,
+    } %}
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block breadcrumb %}
+    {% set breadcrumbs = [
+        {'label': 'oro.email.menu.user_emails'|trans }
+    ] %}
+    {% include 'OroNavigationBundle:Menu:breadcrumbs.html.twig' %}
+{% endblock breadcrumb %}
+
+{% block stats %}
+    <li>{{ 'oro.ui.created_at'|trans }}: {{ breadcrumbs.entity.created ? breadcrumbs.entity.created|oro_format_datetime : 'N/A' }}</li>
+{% endblock stats %}
+
+{% block navButtons %}{% endblock navButtons %}
+
+{% block content_data %}
+    {% set id = 'email-profile' %}
+    {% set attributes = [
+        UI.attibuteRow('oro.email.sent_at.label'|trans, entity.sentAt|oro_format_datetime),
+        UI.attibuteRow('oro.email.from_name.label'|trans, EA.email_address(entity.fromEmailAddress, entity.fromName)),
+        UI.attibuteRow('To'|trans, EA.recipient_email_addresses(entity.recipients('to')))
+    ] %}
+
+    {% if entity.recipients('cc')|length > 0 %}
+        {% set attributes = attributes | merge([
+            UI.attibuteRow('Cc'|trans, EA.recipient_email_addresses(entity.recipients('cc')))
+        ]) %}
+    {% endif %}
+    {% if entity.recipients('bcc')|length > 0 %}
+        {% set attributes = attributes | merge([
+            UI.attibuteRow('Bcc'|trans, EA.recipient_email_addresses(entity.recipients('bcc')))
+        ]) %}
+    {% endif %}
+    {% set attributes = attributes | merge([
+        UI.attibuteRow('oro.email.subject.label'|trans, entity.subject)
+    ]) %}
+
+    {% if noBodyFound %}
+        {% set notFoundMessage %}<strong>{{ 'oro.email.unable_to_load_body'|trans}}</strong>{% endset %}
+        {% set attributes = attributes | merge([UI.attibuteRow('', notFoundMessage)]) %}
+    {% else %}
+        {% if entity.emailBody.hasAttachments and attachments is defined %}
+            {% set attributes = attributes |
+                merge([UI.attibuteRow(
+                    'Attachments'|trans,
+                    EA.attachments(attachments, targetEntityData)
+                )]) %}
+        {% endif %}
+        {% if entity.emailBody.bodyContent is empty %}
+            {% set attributes = attributes | merge([UI.attibuteRow('', 'oro.email.empty_body'|trans)]) %}
+        {% else %}
+            {% set attributes = attributes | merge([EA.body(entity.emailBody)]) %}
+        {% endif %}
+    {% endif %}
+
+    {% set data = {
+        'dataBlocks': [
+            {
+                'title': 'General'|trans,
+                'class': 'active',
+                'subblocks': [
+                    {
+                        'title': null,
+                        'useSpan': false,
+                        'data': attributes
+                    }
+                ]
+            }
+        ]
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

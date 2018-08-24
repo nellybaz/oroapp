@@ -1,0 +1,35 @@
+search:
+    Oro\Bundle\CallBundle\Entity\Call:
+        alias: oro_call
+        label: oro.call.entity_plural_label
+        title_fields: [subject, phoneNumber]
+        route:
+            name: oro_call_update
+            parameters:
+                id: id
+        search_template: OroCallBundle:Call:searchResult.html.twig
+        fields:
+            -
+                name: subject
+                target_type: text
+                target_fields: [subject]
+            -
+                name: phoneNumber
+                target_type: text
+                target_fields: [phoneNumber]
+            -
+                name: notes
+                target_type: text
+                target_fields: [notes]
+            -
+                name: direction
+                relation_type: many-to-one
+                relation_fields:
+                    -
+                        name:                   name
+                        target_type:            text
+                        target_fields:          [directionName]
+                    -
+                        name:                   label
+                        target_type:            text
+                        target_fields:          [directionLabel]

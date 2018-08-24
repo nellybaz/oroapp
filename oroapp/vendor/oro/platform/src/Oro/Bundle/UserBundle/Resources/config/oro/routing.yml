@@ -1,0 +1,86 @@
+oro_user_google_login:
+    path: /login/check-google
+
+oro_user_bundle:
+    resource:     "@OroUserBundle/Controller"
+    type:         annotation
+    prefix:       /user
+
+oro_user_bundle_config:
+    resource:     "@OroUserBundle/Controller/ConfigurationController.php"
+    type:         annotation
+    prefix:       /config
+
+oro_user_api_user:
+    resource:     "@OroUserBundle/Controller/Api/Rest/UserController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+oro_user_api_role:
+    resource:     "@OroUserBundle/Controller/Api/Rest/RoleController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format: json
+    defaults:
+        version:  latest
+
+oro_user_api_group:
+    resource:     "@OroUserBundle/Controller/Api/Rest/GroupController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format: json
+    defaults:
+        version:  latest
+
+oro_user_api_user_permission:
+    resource:     "@OroUserBundle/Controller/Api/Rest/UserPermissionController.php"
+    type:         rest
+    prefix:       api/rest/{version}/
+    requirements:
+        version:  latest|v1
+        _format:  json
+    defaults:
+        version:  latest
+
+# deprecated API routes
+oro_api_post_role_deprecated:
+    path:            /api/rest/{version}/role.{_format}
+    methods:         [POST]
+    defaults:
+        _controller: Oro\Bundle\UserBundle\Controller\Api\Rest\RoleController::postAction
+        _format:     json
+        version:     latest
+    requirements:
+        _format:     json|html
+        version:     latest|v1
+
+oro_api_post_user_deprecated:
+    path:            /api/rest/{version}/user.{_format}
+    methods:         [POST]
+    defaults:
+        _controller: Oro\Bundle\UserBundle\Controller\Api\Rest\UserController::postAction
+        _format:     json
+        version:     latest
+    requirements:
+        _format:     json|html
+        version:     latest|v1
+
+oro_api_post_group_deprecated:
+    path:            /api/rest/{version}/group.{_format}
+    methods:         [POST]
+    defaults:
+        _controller: Oro\Bundle\UserBundle\Controller\Api\Rest\GroupController::postAction
+        _format:     json
+        version:     latest
+    requirements:
+        _format:     json|html
+        version:     latest|v1

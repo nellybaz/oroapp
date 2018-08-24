@@ -1,0 +1,298 @@
+Oro\Bundle\PricingBundle\Entity\PriceList:
+    group_sequence: [PriceList, NotCircularReference]
+    constraints:
+        - Oro\Bundle\PricingBundle\Validator\Constraints\PriceListProductPricesCurrency: ~
+        - Oro\Bundle\PricingBundle\Validator\Constraints\LexemeCircularReference:
+            fields:
+                - productAssignmentRule
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        currencies:
+            - NotBlank: ~
+            - Valid: ~
+            - Count:
+                min: 1
+                groups: [api]
+        schedules:
+            - Valid: ~
+        priceRules:
+            - Valid: ~
+        productAssignmentRule:
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\Expression:
+                withRelations: true
+                allowedFields:
+                    Oro\Bundle\PricingBundle\Entity\PriceList:
+                        - 'assignedProducts'
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                groups: [Default, NotCircularReference]
+
+Oro\Bundle\PricingBundle\Entity\PriceAttributePriceList:
+    constraints:
+        - Oro\Bundle\PricingBundle\Validator\Constraints\PriceListProductPricesCurrency: ~
+    properties:
+        name:
+            - NotBlank: ~
+            - Length:
+                max: 255
+        fieldName:
+            - Regex:
+                pattern: '/^[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*$/'
+                htmlPattern: '/^[a-zA-Z0-9_]*[a-zA-Z][a-zA-Z0-9_]*$/'
+                message: 'oro.pricing.validators.price_attribute_price_list.fieldName.message'
+            - NotBlank: ~
+            - Length:
+                max: 255
+        currencies:
+            - NotBlank: ~
+            - Valid: ~
+
+Oro\Bundle\PricingBundle\Entity\PriceListSchedule:
+    constraints:
+        - Oro\Bundle\CronBundle\Validator\Constraints\ScheduleIntervalsIntersection:
+            message: oro.pricing.validators.price_list.schedules_intersection.message
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\DatesChain:
+            chain:
+                activeAt: 'Activate At'
+                deactivateAt: 'Deactivate At'
+
+Oro\Bundle\PricingBundle\Entity\PriceRule:
+    group_sequence: [PriceRule, NotCircularReference]
+    constraints:
+        - Oro\Bundle\PricingBundle\Validator\Constraints\LexemeCircularReference:
+            fields:
+                - ruleCondition
+                - rule
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\NotBlankOneOf:
+            fields:
+                - { quantity: 'oro.pricing.pricerule.quantity.label', quantityExpression: 'oro.pricing.pricerule.quantity_expression.label' }
+                - { currency: 'oro.pricing.pricerule.currency.label', currencyExpression: 'oro.pricing.pricerule.currency_expression.label' }
+                - { productUnit: 'oro.pricing.pricerule.product_unit.label', productUnitExpression: 'oro.pricing.pricerule.product_unit_expression.label' }
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\BlankOneOf:
+            groups: [api]
+            fields:
+                - { quantity: 'oro.pricing.pricerule.quantity.label', quantityExpression: 'oro.pricing.pricerule.quantity_expression.label' }
+                - { currency: 'oro.pricing.pricerule.currency.label', currencyExpression: 'oro.pricing.pricerule.currency_expression.label' }
+                - { productUnit: 'oro.pricing.pricerule.product_unit.label', productUnitExpression: 'oro.pricing.pricerule.product_unit_expression.label' }
+        - Oro\Bundle\PricingBundle\Validator\Constraints\PriceRuleRelationExpressions: ~
+    properties:
+        currency:
+            - Currency: ~
+        currencyExpression:
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\Expression:
+                withRelations: true
+                fieldLabel: 'oro.pricing.pricerule.currency.label'
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                logicalExpressionsAllowed: false
+        productUnitExpression:
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                logicalExpressionsAllowed: false
+        quantity:
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\Decimal: ~
+            - Oro\Bundle\ValidationBundle\Validator\Constraints\GreaterThanZero: ~
+        quantityExpression:
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\Expression:
+                numericOnly: true
+                withRelations: true
+                fieldLabel: 'oro.pricing.pricerule.quantity.label'
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                logicalExpressionsAllowed: false
+        ruleCondition:
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\Expression:
+                fieldLabel: 'oro.pricing.pricerule.rule_condition.label'
+                withRelations: true
+                allowedFields:
+                    Oro\Bundle\PricingBundle\Entity\PriceList:
+                        - 'assignedProducts'
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                groups: [Default, NotCircularReference]
+        rule:
+            - NotBlank: ~
+            - Oro\Bundle\RuleBundle\Validator\Constraints\ExpressionLanguageSyntax:
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\Expression:
+                fieldLabel: 'oro.pricing.pricerule.calculate_as.label'
+                numericOnly: true
+                withRelations: true
+                groups: [Default, NotCircularReference]
+            - Oro\Bundle\ProductBundle\Validator\Constraints\LogicalExpression:
+                logicalExpressionsAllowed: false
+        priority:
+            - NotBlank: ~
+            - Type:
+                type: integer
+
+Oro\Bundle\PricingBundle\Entity\PriceListCurrency:
+    properties:
+        priceList:
+            - NotBlank: ~
+        currency:
+            - NotBlank: ~
+            - Currency: ~
+
+Oro\Bundle\PricingBundle\Entity\PriceListToWebsite:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [priceList, website]
+    properties:
+        sortOrder:
+            - NotBlank: ~
+        priceList:
+            - NotBlank: ~
+        website:
+            - NotBlank:
+                groups: [api]
+
+Oro\Bundle\PricingBundle\Entity\PriceListWebsiteFallback:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: website
+    properties:
+        fallback:
+            - NotBlank: ~
+        website:
+            - NotBlank: ~
+
+Oro\Bundle\PricingBundle\Entity\PriceListToCustomerGroup:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [priceList, website, customerGroup]
+    properties:
+        sortOrder:
+            - NotBlank: ~
+        priceList:
+            - NotBlank: ~
+        website:
+            - NotBlank:
+                groups: [api]
+        customerGroup:
+            - NotBlank:
+                groups: [api]
+
+Oro\Bundle\PricingBundle\Entity\PriceListCustomerGroupFallback:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [website, customerGroup]
+    properties:
+        fallback:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 1
+        website:
+            - NotBlank: ~
+        customerGroup:
+            - NotBlank: ~
+
+Oro\Bundle\PricingBundle\Entity\PriceListToCustomer:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [priceList, website, customer]
+    properties:
+        sortOrder:
+            - NotBlank: ~
+        priceList:
+            - NotBlank: ~
+        website:
+            - NotBlank:
+                groups: [api]
+        customer:
+            - NotBlank:
+                groups: [api]
+
+Oro\Bundle\PricingBundle\Entity\PriceListCustomerFallback:
+    constraints:
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: [website, customer]
+    properties:
+        fallback:
+            - NotBlank: ~
+            - Range:
+                min: 0
+                max: 1
+        website:
+            - NotBlank: ~
+        customer:
+            - NotBlank: ~
+
+Oro\Bundle\PricingBundle\Entity\ProductPrice:
+    constraints:
+        - Oro\Bundle\PricingBundle\Validator\Constraints\ProductPriceAllowedUnits:
+            groups: [Default, ProductPriceCollection]
+        - Oro\Bundle\PricingBundle\Validator\Constraints\ProductPriceCurrency:
+            groups: [Default, ProductPriceCollection]
+        - Oro\Bundle\PricingBundle\Validator\Constraints\UniqueEntity:
+            groups: [Default]
+            fields: [ product, priceList, quantity, unit, currency ]
+    properties:
+        product:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+        productSku:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+        priceList:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+        quantity:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+                message: 'oro.pricing.validators.product_price.quantity.blank'
+            - Range:
+                groups: [Default, ProductPriceCollection]
+                min: 0
+        price:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+            - Valid: ~
+        unit:
+            - NotBlank:
+                groups: [Default, ProductPriceCollection]
+                message: 'oro.product.productunit.invalid'
+        currency:
+            - NotBlank:
+                message: 'oro.pricing.validators.product_price.currency.blank'
+                groups: [Default, ProductPriceCollection]
+
+Oro\Bundle\PricingBundle\SystemConfig\PriceListConfig:
+    properties:
+        sortOrder:
+            - NotBlank: ~
+            - Type:
+                type: integer
+        priceList:
+            - NotBlank: ~
+
+Oro\Bundle\ProductBundle\Entity\Product:
+    properties:
+        unitPrecisions:
+            - Oro\Bundle\PricingBundle\Validator\Constraints\PriceForProductUnitExists: ~
+
+Oro\Bundle\PricingBundle\Entity\PriceAttributeProductPrice:
+    constraints:
+        - Oro\Bundle\PricingBundle\Validator\Constraints\ProductPriceAllowedUnits: ~
+        - Oro\Bundle\PricingBundle\Validator\Constraints\ProductPriceCurrency: ~
+        - Oro\Bundle\ValidationBundle\Validator\Constraints\UniqueEntity:
+            fields:  [ product, priceList, unit, currency, quantity ]
+    properties:
+        product:
+            - NotBlank: ~
+        productSku:
+            - NotBlank: ~
+        priceList:
+            - NotBlank: ~
+        price:
+            - NotBlank:
+                groups: [api]
+            - Valid: ~
+        unit:
+            - NotBlank:
+                message: 'oro.product.productunit.invalid'

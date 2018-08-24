@@ -1,0 +1,26 @@
+<% obj.attributesTemplate = function(attributes) {
+_.each(attributes, function(attribute, name) { %>
+<%= name %><% if (!_.isNull(attribute)) { %>="<%= attribute %>"<% } %>
+<% });
+} %>
+<div class="<%= wrapperClassName %> dropdown">
+    <a href="#" class="action btn
+            <%= className ? " " + className : "" %>
+            <%= !enabled ? " disabled" : "" %>
+            <%= launcherMode != '' ? 'mode-' +  launcherMode : "" %>
+            dropdown-toggle"
+        <%= attributesTemplate(attributes) %>
+        title="<%= title %>"
+        data-toggle="dropdown">
+        <% if (launcherMode == 'icon-text') { %>
+            <i class="fa-<%= icon %> hide-text"></i>
+            <%= label %>
+        <% } else if (launcherMode == 'icon-only') { %>
+            <i class="fa-<%= icon %> hide-text"></i>
+        <% } else if (launcherMode == 'text-only') { %>
+            <% if (iconClassName) { %><i class="<%= iconClassName %>"></i><% } %>
+            <%= label %>
+        <% } %>
+    </a>
+    <div class="dropdown-menu"></div>
+</div>

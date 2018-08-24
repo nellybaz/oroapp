@@ -1,0 +1,106 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+{% oro_title_set({params : {"%entityName%": entity_config.get('label')|default('N/A')|trans }}) %}
+
+{% if is_granted('oro_entityconfig_manage') %}
+    {% set audit_entity_class = entity.classname|replace('\\', '_') %}
+    {% set audit_title = entity_config.get('label')|default(entity_name)|trans %}
+    {% set audit_path = 'oro_entityconfig_audit' %}
+    {% set audit_show_change_history = true %}
+{% endif %}
+
+{% block navButtons %}
+    {% if is_granted('oro_entityconfig_manage') %}
+        {% if extend_config.is('is_extend') %}
+            {% include 'OroImportExportBundle:ImportExport:buttons_from_configuration.html.twig' with {
+                'alias': 'oro_field_config_model',
+                'options': {'entity_id': entity.id}
+            } %}
+        {% endif %}
+
+        {{ UI.editButton({'path': path('oro_entityconfig_update', { id: entity.id })}) }}
+        {{ entityConfig.displayLayoutActions(button_config) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_entityconfig_index'),
+        'indexLabel': 'oro.entity_config.entity.plural_label'|trans,
+        'entityTitle': entity_config.get('label')|default(entity_name)|trans,
+    }%}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block stats %}
+    <li>{{ 'oro.ui.created_at'|trans }}: {{ entity.created|oro_format_datetime }}</li>
+    <li>{{ 'oro.ui.updated_at'|trans }}: {{ entity.updated|oro_format_datetime }}</li>
+    {% if link %}
+    <li>
+        {{ UI.link({
+            'path': link,
+            'label': 'oro.entity_config.info.records_count.label'|trans({'%count%': entity_count|default(0)})
+        }) }}
+    </li>
+    {% else %}
+    <li>
+        <span>{{ 'oro.entity_config.info.records_count.label'|trans({'%count%': entity_count|default(0)}) }}</span>
+    </li>
+    {% endif %}
+{% endblock stats%}
+
+{% block content_data %}
+    {% if require_js|length %}
+        <script type="text/javascript">
+            require({{ require_js|json_encode|raw }})
+        </script>
+    {% endif %}
+
+    {% set entityInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_entityconfig_widget_info', {id: entity.id}),
+            'title': 'oro.entity_config.entity.information.label'|trans
+        }) }}
+    {% endset %}
+
+    {% set uniqueKeysWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_entityconfig_widget_unique_keys', {id: entity.id}),
+            'title': 'oro.entity_config.entity.unique.label'|trans
+        }) }}
+    {% endset %}
+
+    {% set entityFieldsWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_entityconfig_widget_entity_fields', {id: entity.id})
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = [
+        {
+            'title': 'oro.entity_config.block_titles.general.label'|trans,
+            'class': 'active',
+            'subblocks': [
+                {'data' : [entityInformationWidget]},
+                {'data' : [uniqueKeysWidget]}
+            ]
+        },
+        {
+            'title': 'oro.entity_config.block_titles.fields.label'|trans,
+            'subblocks': [
+                {'data' : [entityFieldsWidget]},
+            ]
+        },
+    ] %}
+
+    {% set id = 'entityConfigView' %}
+    {% set data = { 'dataBlocks': dataBlocks } %}
+    {{ parent() }}
+{% endblock content_data %}

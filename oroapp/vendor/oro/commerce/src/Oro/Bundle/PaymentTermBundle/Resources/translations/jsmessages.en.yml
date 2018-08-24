@@ -1,0 +1,8 @@
+oro:
+    paymentterm:
+        autocomplete:
+            customer: customer default
+            customer_group: customer group default
+        delete:
+            message:
+                placeholder: '{{ confirmationMessage }}'

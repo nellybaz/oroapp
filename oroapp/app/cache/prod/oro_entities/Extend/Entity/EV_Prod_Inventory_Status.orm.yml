@@ -1,0 +1,7 @@
+Extend\Entity\EV_Prod_Inventory_Status:
+    type: entity
+    table: oro_enum_prod_inventory_status
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

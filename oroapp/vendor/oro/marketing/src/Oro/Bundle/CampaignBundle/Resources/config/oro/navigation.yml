@@ -1,0 +1,48 @@
+navigation:
+    menu_config:
+        items:
+            marketing_tab:
+                label:    'oro.campaign.menu.marketing_tab.label'
+                uri:      '#'
+                position: 40
+                extras:
+                    icon: fa-sitemap
+            campaigns_list:
+                label:    'oro.campaign.entity_plural_label'
+                route:    'oro_campaign_index'
+                position: 10
+                extras:
+                    routes: ['oro_campaign_*']
+            email_campaigns_list:
+                label:    'oro.campaign.emailcampaign.entity_plural_label'
+                route:    'oro_email_campaign_index'
+                position: 20
+                extras:
+                    routes: ['oro_email_campaign_*']
+            websites_list:
+                label:    'oro.tracking.trackingwebsite.entity_plural_label'
+                route:    'oro_tracking_website_index'
+                position: 25
+                extras:
+                    routes: ['oro_tracking_*']
+        tree:
+            application_menu:
+                children:
+                    marketing_tab:
+                        children:
+                            campaigns_list: ~
+                            email_campaigns_list: ~
+                            websites_list: ~
+
+    titles:
+        oro_campaign_index:  ~
+        oro_campaign_view:   '%entity.name%'
+        oro_campaign_create: 'oro.ui.create_entity'
+        oro_campaign_update: '%entity.name% - Edit'
+
+        oro_tracking_website_index: ~
+
+        oro_email_campaign_index:  ~
+        oro_email_campaign_view:   '%entity.name%'
+        oro_email_campaign_create: 'oro.ui.create_entity'
+        oro_email_campaign_update: '%entity.name% - Edit'

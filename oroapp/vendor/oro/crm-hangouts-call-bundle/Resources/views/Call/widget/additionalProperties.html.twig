@@ -1,0 +1,8 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set hangoutButton %}
+    {% set hangoutOptions = {
+        widget_size: 70
+    } %}
+    {% include "OroHangoutsCallBundle:Call:updateActions.html.twig" %}
+{% endset %}
+{{ UI.renderAttribute('oro.hangoutscall.label'|trans, hangoutButton) }}

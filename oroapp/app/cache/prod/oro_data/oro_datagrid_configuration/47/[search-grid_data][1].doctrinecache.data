@@ -1,0 +1,2 @@
+0
+a:1:{s:11:"search-grid";a:5:{s:6:"source";a:1:{s:4:"type";s:6:"search";}s:7:"columns";a:1:{s:6:"entity";a:4:{s:5:"label";s:4:"Item";s:4:"type";s:13:"search-result";s:8:"template";N;s:13:"frontend_type";s:4:"html";}}s:10:"properties";N;s:7:"sorters";N;s:7:"filters";N;}}

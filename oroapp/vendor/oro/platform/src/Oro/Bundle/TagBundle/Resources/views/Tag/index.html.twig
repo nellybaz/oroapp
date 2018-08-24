@@ -1,0 +1,13 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'tag-grid' %}
+{% set pageTitle = 'oro.tag.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% if is_granted('oro_tag_create') %}
+        {{ UI.addButton({
+            'path': path('oro_tag_create'),
+            'entity_label': 'oro.tag.entity_label'|trans
+        }) }}
+    {% endif %}
+{% endblock %}

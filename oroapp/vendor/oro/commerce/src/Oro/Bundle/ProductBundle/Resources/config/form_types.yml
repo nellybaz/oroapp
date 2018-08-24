@@ -1,0 +1,259 @@
+services:
+    # Product form types
+    oro_product.form.type.product:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductType'
+        arguments:
+            - "@oro_product.provider.default_product_unit_provider.chain"
+            - "@router"
+        calls:
+            - [setDataClass, ['%oro_product.entity.product.class%']]
+        tags:
+            - { name: form.type, alias: oro_product }
+
+    oro_product.form.type.product_step_one:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductStepOneType'
+        public: true
+        tags:
+            - { name: form.type, alias: oro_product_step_one }
+
+    oro_product.form.type.product_row:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductRowType'
+        tags:
+            - { name: form.type, alias: oro_product_row }
+
+    oro_product.form.type.product_row_collection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductRowCollectionType'
+        tags:
+            - { name: form.type, alias: oro_product_row_collection }
+
+    oro_product.form.type.product_unit_selection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductUnitSelectionType'
+        arguments:
+            - "@oro_product.formatter.product_unit_label"
+            - "@translator"
+        calls:
+            - [setEntityClass, ['%oro_product.entity.product_unit.class%']]
+        tags:
+            - { name: form.type, alias: oro_product_unit_selection }
+
+    oro_product.form.type.product_primary_unit_selection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductUnitSelectType'
+        arguments:
+            - '@oro_product.formatter.product_unit_label'
+        calls:
+            - [setEntityClass, ['%oro_product.entity.product_unit.class%']]
+        tags:
+            - { name: form.type, alias: oro_product_unit_select }
+
+    oro_product.form.type.quantity_type:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\QuantityType'
+        arguments:
+            - "@oro_product.service.quantity_rounding"
+            - '%oro_product.entity.product.class%'
+        tags:
+            - { name: form.type, alias: oro_quantity }
+
+    oro_product.form.type.product_primary_unit_precision:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductPrimaryUnitPrecisionType'
+        public: true
+        calls:
+            - [setDataClass, ['%oro_product.entity.product_unit_precision.class%']]
+        tags:
+            - { name: form.type, alias: oro_product_primary_unit_precision }
+
+    oro_product.form.type.product_unit_precision:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductUnitPrecisionType'
+        calls:
+            - [setDataClass, ['%oro_product.entity.product_unit_precision.class%']]
+        tags:
+            - { name: form.type, alias: oro_product_unit_precision }
+
+    oro_product.form.type.product_unit_precision_collection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductUnitPrecisionCollectionType'
+        tags:
+            - { name: form.type, alias: oro_product_unit_precision_collection }
+
+    oro_product.form.type.product_select:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductSelectType'
+        arguments:
+            - "@translator"
+        tags:
+            - { name: form.type, alias: oro_product_select }
+
+    oro_product.form.type.product_autocomplete:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductAutocompleteType'
+        tags:
+            - { name: form.type, alias: oro_product_autocomplete }
+
+    oro_product.form.type.quick_add:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\QuickAddType'
+        arguments: ['@oro_product.helper.product_grouper.factory']
+        tags:
+            - { name: form.type, alias: 'oro_product_quick_add' }
+
+    oro_product.form.type.extension.product_data_storage.abstract:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\AbstractProductDataStorageExtension'
+        abstract: true
+        arguments:
+            - "@request_stack"
+            - "@oro_product.storage.product_data_storage"
+            - "@oro_entity.doctrine_helper"
+            - '%oro_product.entity.product.class%'
+        calls:
+            - [setLogger,  ["@logger"]]
+
+    oro_product.form.type.extension.integer:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\IntegerExtension'
+        tags:
+            - { name: form.type_extension, alias: integer }
+
+    oro_product.form.type.custom_variant_fields_collection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductCustomVariantFieldsCollectionType'
+        arguments:
+            - '@oro_product.provider.variant_field_provider'
+        tags:
+            - { name: form.type, alias: oro_product_custom_variant_fields_collection }
+
+    oro_product.type.variant_field:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductVariantFieldType'
+        tags:
+            - { name: form.type, alias: oro_product_variant_field }
+
+    oro_product.form.type.product_variant_links:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductVariantLinksType'
+        tags:
+            - { name: form.type, alias: oro_product_variant_links }
+
+    oro_product.form.type.product_status:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductStatusType'
+        arguments:
+            - "@oro_product.provider.product_status_provider"
+        tags:
+            - { name: form.type, alias: oro_product_status }
+
+    oro_product.form.type.product_type:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductTypeType'
+        arguments:
+            - '@oro_product.provider.product_type_provider'
+        tags:
+            - { name: form.type, alias: oro_product_type }
+
+    oro_product.form.type.product_inventory_status_select:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductInventoryStatusSelectType'
+        arguments:
+            - "@doctrine"
+        tags:
+            - { name: form.type, alias: oro_product_inventory_status_select }
+
+    oro_product.form.type.quick_add_copy_paste:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\QuickAddCopyPasteType'
+        tags:
+            - { name: form.type, alias: 'oro_product_quick_add_copy_paste' }
+
+    oro_product.form.type.quick_add_import_from_file:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\QuickAddImportFromFileType'
+        tags:
+            - { name: form.type, alias: 'oro_product_quick_add_import_from_file' }
+
+    oro_product.form.type.product_image_collection:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductImageCollectionType'
+        public: true
+        arguments:
+            - "@oro_layout.provider.image_type"
+        tags:
+            - { name: form.type, alias: 'oro_product_image_collection' }
+
+    oro_product.form.type.frontend_line_item:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\FrontendLineItemType'
+        arguments:
+            - '@oro_product.visibility.product_unit_fields_settings'
+        tags:
+            - { name: form.type, alias: oro_product_frontend_line_item }
+
+    oro_product.form.type.product_units:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\ProductUnitsType'
+        arguments:
+            - "@oro_product.provider.product_units_provider"
+        tags:
+            - { name: form.type, alias: oro_product_units }
+
+    oro_product.form.type.product_page_content_variant:
+        class: Oro\Bundle\ProductBundle\Form\Type\ProductPageVariantType
+        tags:
+            - { name: form.type, alias: oro_product_page_variant }
+
+    oro_product.form.type.product_collection_content_variant:
+        class: Oro\Bundle\ProductBundle\Form\Type\ProductCollectionVariantType
+        tags:
+            - { name: form.type, alias: oro_product_collection_variant }
+
+    oro_product.form.type.product_collection_segment_type:
+        class: Oro\Bundle\ProductBundle\Form\Type\ProductCollectionSegmentType
+        arguments:
+            - '@oro_product.service.product_collection_definition_converter'
+            - '@property_accessor'
+        tags:
+            - { name: form.type, alias: oro_product_collection_segment_type }
+
+    oro_product.product_variant.form.type.frontend_variant_field:
+        class: 'Oro\Bundle\ProductBundle\ProductVariant\Form\Type\FrontendVariantFiledType'
+        arguments:
+            - '@oro_product.provider.product_variant_availability_provider'
+            - '@oro_product.product_variant.registry.product_variant_type_handler_factory'
+            - '@oro_product.provider.variant_field_provider'
+            - '@property_accessor'
+            - '%oro_product.entity.product.class%'
+        tags:
+            - { name: form.type, alias: oro_product_product_variant_frontend_variant_field }
+
+    oro_product.form.type.extension.enum_value_for_product:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\EnumValueForProductExtension'
+        arguments:
+            - '@oro_entity.doctrine_helper'
+            - '@oro_entity_config.config_manager'
+        tags:
+            - { name: form.type_extension, extended_type: 'Oro\Bundle\EntityExtendBundle\Form\Type\EnumValueType' }
+
+    oro_product.form.type.extension.product_collection:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\ProductCollectionExtension'
+        arguments:
+            - '@translator'
+            - '%oro_web_catalog.type.content_variant_collection.class%'
+        tags:
+            - { name: form.type_extension, extended_type: '%oro_web_catalog.type.content_variant_collection.class%' }
+
+    oro_product.form.extension.attribute_config_extension:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\AttributeConfigExtension'
+        arguments:
+            - '@oro_entity_config.provider.attribute'
+            - '@translator'
+        tags:
+            - { name: form.type_extension, alias: oro_entity_config_type }
+
+    oro_product.form.type.brand:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\BrandType'
+        calls:
+            - [setDataClass, ['%oro_product.entity.brand.class%']]
+        tags:
+            - { name: form.type, alias: oro_product_brand }
+
+    oro_product.form.type.brand_status:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\BrandStatusType'
+        arguments:
+            - "@oro_product.provider.brand_status_provider"
+        tags:
+            - { name: form.type }
+
+    oro_product.form.type.brand_select:
+        class: 'Oro\Bundle\ProductBundle\Form\Type\BrandSelectType'
+        tags:
+            - { name: form.type, alias: oro_product_brand_select }
+
+    oro_product.form.type.extension.choices_primary_unit_selection:
+        class: 'Oro\Bundle\ProductBundle\Form\Extension\ChoicesProductPrimaryUnitSelectionOwnerTypeExtension'
+        arguments:
+            - 'unit'
+            - 'Oro\Bundle\ProductBundle\Form\Type\ProductPrimaryUnitPrecisionType'
+            - "@oro_product.visibility.product_unit_fields_settings"
+        tags:
+            - { name: form.type_extension, extended_type: 'Oro\Bundle\ProductBundle\Form\Type\ProductPrimaryUnitPrecisionType' }

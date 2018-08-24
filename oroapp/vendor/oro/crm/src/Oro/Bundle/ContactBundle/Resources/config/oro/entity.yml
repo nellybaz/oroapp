@@ -1,0 +1,49 @@
+oro_entity:
+    virtual_fields:
+        Oro\Bundle\ContactBundle\Entity\Contact:
+            primaryEmail:
+                query:
+                    select:
+                        expr:         emails.email
+                        return_type:  string
+                    join:
+                        left:
+                            - { join: entity.emails, alias: emails, conditionType: 'WITH', condition: 'emails.primary = true' }
+            primaryPhone:
+                query:
+                    select:
+                        expr:         phones.phone
+                        return_type:  string
+                    join:
+                        left:
+                            - { join: entity.phones, alias: phones, conditionType: 'WITH', condition: 'phones.primary = true' }
+            contactInformation:
+                query:
+                    select:
+                        expr:         emails.email
+                        return_type:  string
+                    join:
+                        left:
+                            - { join: entity.emails, alias: emails, conditionType: 'WITH', condition: 'emails.primary = true' }
+
+    virtual_relations:
+        Oro\Bundle\ContactBundle\Entity\Contact:
+            primaryAddr:
+                relation_type: oneToOne
+                related_entity_name: Oro\Bundle\ContactBundle\Entity\ContactAddress
+                label: oro.contact.primary_addr.label
+                query:
+                    join:
+                        left:
+                            - { join: entity.addresses, alias: addresses, conditionType: 'WITH', condition: 'addresses.primary = true' }
+
+    entity_aliases:
+        Oro\Bundle\ContactBundle\Entity\Group:
+            alias:        contactgroup
+            plural_alias: contactgroups
+        Oro\Bundle\ContactBundle\Entity\Method:
+            alias:        contactmethod
+            plural_alias: contactmethods
+        Oro\Bundle\ContactBundle\Entity\Source:
+            alias:        contactsource
+            plural_alias: contactsources

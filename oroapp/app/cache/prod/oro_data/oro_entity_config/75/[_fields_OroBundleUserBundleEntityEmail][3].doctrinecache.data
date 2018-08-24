@@ -1,0 +1,2 @@
+0
+a:3:{s:2:"id";a:3:{s:1:"i";i:98;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:5:"email";a:3:{s:1:"i";i:99;s:1:"h";b:0;s:1:"t";s:6:"string";}s:4:"user";a:3:{s:1:"i";i:100;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,35 @@
+api:
+    entities:
+        Oro\Bundle\AddressBundle\Entity\Address:
+            documentation_resource: '@OroAddressBundle/Resources/doc/api/address.md'
+        Oro\Bundle\AddressBundle\Entity\AddressType:
+            documentation_resource: '@OroAddressBundle/Resources/doc/api/address.md'
+        Oro\Bundle\AddressBundle\Entity\Region:
+            documentation_resource: '@OroAddressBundle/Resources/doc/api/region.md'
+        Oro\Bundle\AddressBundle\Entity\Country:
+            documentation_resource: '@OroAddressBundle/Resources/doc/api/country.md'
+
+    relations:
+        Oro\Bundle\AddressBundle\Entity\AbstractAddress:
+            fields:
+                owner:
+                    exclude: true
+        Oro\Bundle\AddressBundle\Entity\AbstractTypedAddress:
+            fields:
+                types:
+                    order_by:
+                        name: ASC
+        Oro\Bundle\AddressBundle\Entity\AbstractEmail:
+            exclusion_policy: all
+            fields:
+                email: ~
+                primary: ~
+            order_by:
+                primary: DESC
+        Oro\Bundle\AddressBundle\Entity\AbstractPhone:
+            exclusion_policy: all
+            fields:
+                phone: ~
+                primary: ~
+            order_by:
+                primary: DESC

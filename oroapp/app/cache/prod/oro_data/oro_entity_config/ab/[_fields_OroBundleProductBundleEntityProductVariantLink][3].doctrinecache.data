@@ -1,0 +1,2 @@
+0
+a:4:{s:2:"id";a:3:{s:1:"i";i:740;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:7:"visible";a:3:{s:1:"i";i:741;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:13:"parentProduct";a:3:{s:1:"i";i:742;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:7:"product";a:3:{s:1:"i";i:743;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

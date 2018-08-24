@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:734;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:9:"precision";a:3:{s:1:"i";i:735;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:14:"conversionRate";a:3:{s:1:"i";i:736;s:1:"h";b:0;s:1:"t";s:5:"float";}s:4:"sell";a:3:{s:1:"i";i:737;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:7:"product";a:3:{s:1:"i";i:738;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:4:"unit";a:3:{s:1:"i";i:739;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

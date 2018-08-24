@@ -1,0 +1,19 @@
+{% extends 'OroUIBundle:actions:index.html.twig' %}
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set gridName = 'contacts-grid' %}
+{% set pageTitle = 'oro.contact.entity_plural_label'|trans %}
+
+{% block navButtons %}
+    {% include 'OroImportExportBundle:ImportExport:buttons_from_configuration.html.twig' with {
+        'alias': 'oro_contact'
+    } %}
+
+    {% if is_granted('oro_contact_create') %}
+    <div class="btn-group">
+        {{ UI.addButton({
+            'path' : path('oro_contact_create'),
+            'entity_label': 'oro.contact.entity_label'|trans,
+        }) }}
+    </div>
+    {% endif %}
+{% endblock %}

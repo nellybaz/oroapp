@@ -1,0 +1,30 @@
+{% block _top_authorization_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' pull-left topbar-navigation__item'
+    }) %}
+
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block _top_sign_in_link_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' topbar-navigation__link',
+        'href': path(route_name)
+    }) %}
+    <a {{ block('block_attributes') }}>
+        <i class="fa-sign-in"></i> {{ text|trans }}
+    </a>
+{% endblock %}
+
+{% block _top_registration_link_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' topbar-navigation__link',
+        'href': path(route_name)
+    }) %}
+    <span class="topbar-navigation__separator">|</span>
+    <a {{ block('block_attributes') }}>
+        {{ text|trans }}
+    </a>
+{% endblock %}

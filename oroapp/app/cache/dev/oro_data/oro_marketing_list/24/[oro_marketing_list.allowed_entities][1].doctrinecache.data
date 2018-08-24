@@ -1,0 +1,2 @@
+0
+a:9:{i:0;s:39:"Oro\Bundle\AccountBundle\Entity\Account";i:1;s:39:"Oro\Bundle\ContactBundle\Entity\Contact";i:2;s:48:"Oro\Bundle\ContactUsBundle\Entity\ContactRequest";i:3;s:45:"Oro\Bundle\CustomerBundle\Entity\CustomerUser";i:4;s:35:"Oro\Bundle\OrderBundle\Entity\Order";i:5;s:34:"Oro\Bundle\SaleBundle\Entity\Quote";i:6;s:41:"Oro\Bundle\SalesBundle\Entity\B2bCustomer";i:7;s:34:"Oro\Bundle\SalesBundle\Entity\Lead";i:8;s:49:"Oro\Bundle\ShoppingListBundle\Entity\ShoppingList";}

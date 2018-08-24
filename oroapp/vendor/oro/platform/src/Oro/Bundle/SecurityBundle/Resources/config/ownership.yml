@@ -1,0 +1,81 @@
+parameters:
+    oro_security.entity.owners:
+        organization: '%oro_organization.organization.entity.class%'
+        business_unit: '%oro_organization.business_unit.entity.class%'
+        user: '%oro_user.entity.class%'
+
+    oro_security.owner.entity_owner_accessor.class:                       Oro\Bundle\SecurityBundle\Owner\EntityOwnerAccessor
+    oro_security.owner.metadata_provider.chain.class:                     Oro\Bundle\SecurityBundle\Owner\Metadata\ChainOwnershipMetadataProvider
+    oro_security.owner.ownership_metadata_provider.class:                 Oro\Bundle\SecurityBundle\Owner\Metadata\OwnershipMetadataProvider
+    oro_security.owner.ownership_metadata_provider.cache.warmer.class:    Oro\Bundle\SecurityBundle\Cache\OwnershipMetadataCacheWarmer
+    oro_security.owner.ownership_metadata_provider.cache.clearer.class:   Oro\Bundle\SecurityBundle\Cache\OwnershipMetadataCacheClearer
+    oro_security.owner.ownership_decision_maker.chain.class:              Oro\Bundle\SecurityBundle\Owner\ChainEntityOwnershipDecisionMaker
+
+services:
+    oro_security.owner.entity_owner_accessor:
+        class: %oro_security.owner.entity_owner_accessor.class%
+        arguments:
+            - '@oro_security.owner.metadata_provider.chain'
+
+    oro_security.owner.entity_owner_accessor.link:
+        tags:
+            - { name: oro_service_link, service: oro_security.owner.entity_owner_accessor }
+
+    oro_security.owner.metadata_provider.chain:
+        class: %oro_security.owner.metadata_provider.chain.class%
+        calls:
+            - [setDefaultProvider, ['@oro_security.owner.ownership_metadata_provider']]
+
+    oro_security.owner.ownership_metadata_provider:
+        class: %oro_security.owner.ownership_metadata_provider.class%
+        arguments:
+            - '%oro_security.entity.owners%'
+            - '@oro_entity_config.config_manager'
+            - '@oro_entity.orm.entity_class_resolver'
+            - '@oro_security.token_accessor'
+            - '@oro_security.owner.ownership_metadata_provider.cache'
+        tags:
+            - { name: oro_security.owner.metadata_provider, alias: default }
+
+    oro_security.owner.ownership_metadata_provider.link:
+        tags:
+            - { name: oro_service_link, service: oro_security.owner.ownership_metadata_provider }
+
+    oro_security.owner.ownership_metadata_provider.cache:
+        parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'oro_acl_entity_ownership' ] ]
+
+    oro_security.owner.ownership_config_listener:
+        class: Oro\Bundle\SecurityBundle\EventListener\OwnershipConfigListener
+        arguments:
+            - '@oro_security.owner.metadata_provider.chain'
+        tags:
+            - { name: kernel.event_listener, event: oro.entity_config.pre_flush, method: preFlush }
+
+    oro_security.owner.ownership_metadata_provider.cache.warmer:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache.warmer.class%
+        arguments:
+            - '@oro_security.owner.metadata_provider.chain'
+        tags:
+            - { name: kernel.cache_warmer }
+
+    oro_security.owner.ownership_metadata_provider.cache.clearer:
+        public: false
+        class: %oro_security.owner.ownership_metadata_provider.cache.clearer.class%
+        arguments:
+            - '@oro_security.owner.metadata_provider.chain'
+        tags:
+            - { name: kernel.cache_clearer }
+
+    oro_security.owner.ownership_decision_maker.chain:
+        class: %oro_security.owner.ownership_decision_maker.chain.class%
+
+    oro_security.owner.ownership_query_helper:
+        class: Oro\Bundle\SecurityBundle\Owner\OwnershipQueryHelper
+        public: false
+        arguments:
+            - '@oro_security.owner.metadata_provider.chain'
+            - '@oro_entity.orm.entity_class_resolver'

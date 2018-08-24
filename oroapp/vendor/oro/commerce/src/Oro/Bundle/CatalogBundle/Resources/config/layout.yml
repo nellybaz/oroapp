@@ -1,0 +1,84 @@
+services:
+    oro_catalog.layout.block_type.category:
+        parent: oro_layout.block_type.abstract_configurable_container
+        calls:
+            - [setOptionsConfig, [{category: {required: true}}]]
+            - [setName, ['category']]
+        tags:
+             - { name: layout.block_type, alias: category }
+
+    oro_catalog.layout.block_type.category_tree:
+        parent: oro_layout.block_type.abstract_configurable_container
+        calls:
+            - [setOptionsConfig, [{categories: {required: true}, max_size: {default: null}}]]
+            - [setName, ['category_list']]
+        tags:
+            - { name: layout.block_type, alias: category_list }
+
+    oro_catalog.layout.data_provider.category:
+        class: 'Oro\Bundle\CatalogBundle\Layout\DataProvider\CategoryProvider'
+        public: true
+        arguments:
+            - "@oro_catalog.handler.request_product"
+            - "@oro_catalog.repository.category"
+            - '@oro_catalog.provider.category_tree_provider'
+        calls:
+            - [setLocalizationHelper, ['@oro_locale.helper.localization']]
+            - [setCache, ['@oro_catalog.layout.data_provider.category.cache', 3600]]
+        tags:
+            - { name: layout.data_provider, alias: category }
+
+    oro_catalog.layout.data_provider.category.cache:
+        parent: oro.cache.abstract
+        public: false
+        calls:
+            - [ setNamespace, [ 'oro_catalog_category' ] ]
+
+    oro_catalog.layout.data_provider.category.cache_cleaner:
+        class: 'Oro\Component\Cache\Layout\DataProviderCacheCleaner'
+        public: false
+        arguments:
+            - '@oro_catalog.layout.data_provider.category.cache'
+
+    oro_catalog.layout.data_provider.category_breadcrumb:
+        class: 'Oro\Bundle\CatalogBundle\Layout\DataProvider\CategoryBreadcrumbProvider'
+        public: true
+        arguments:
+            - "@oro_catalog.layout.data_provider.category"
+            - '@oro_locale.helper.localization'
+            - '@router'
+            - '@request_stack'
+        tags:
+            - { name: layout.data_provider, alias: category_breadcrumbs }
+
+    oro_catalog.layout.data_provider.featured_categories:
+        class: 'Oro\Bundle\CatalogBundle\Layout\DataProvider\FeaturedCategoriesProvider'
+        public: true
+        arguments:
+            - "@oro_catalog.provider.category_tree_provider"
+            - "@security.token_storage"
+            - '@oro_locale.helper.localization'
+        calls:
+            - [setCache, ['@oro_catalog.layout.data_provider.category.cache', 3600]]
+        tags:
+            - { name: layout.data_provider, alias: featured_categories }
+
+    oro_catalog.layout.data_provider.featured_categories_products:
+        class: 'Oro\Bundle\CatalogBundle\Layout\DataProvider\CategoriesProductsProvider'
+        public: true
+        arguments:
+            - "@oro_catalog.repository.category"
+            - "@oro_catalog.website_search.repository.product"
+        calls:
+            - [setCache, ['@oro_catalog.layout.data_provider.category.cache', 3600]]
+        tags:
+            - { name: layout.data_provider, alias: categories_products }
+
+    oro_catalog.layout_context_configurator.product_categories:
+        class: Oro\Bundle\CatalogBundle\Layout\Extension\ProductCategoriesContextConfigurator
+        arguments:
+            - '@request_stack'
+            - '@doctrine'
+            - '@oro_catalog.layout.data_provider.category'
+        tags:
+            - { name: layout.context_configurator }

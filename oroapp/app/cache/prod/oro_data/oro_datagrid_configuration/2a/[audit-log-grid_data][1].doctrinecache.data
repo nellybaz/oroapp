@@ -1,0 +1,2 @@
+0
+a:1:{s:14:"audit-log-grid";a:3:{s:7:"extends";s:17:"entity-audit-grid";s:6:"source";a:1:{s:5:"query";a:1:{s:4:"join";a:1:{s:5:"inner";a:1:{s:5:"diffs";a:1:{s:9:"condition";s:56:"diff.className = :objectClass AND diff.fieldName IS NULL";}}}}}s:7:"columns";a:1:{s:5:"diffs";a:1:{s:7:"context";a:1:{s:9:"is_entity";b:1;}}}}}

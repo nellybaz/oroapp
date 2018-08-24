@@ -1,0 +1,2 @@
+0
+a:1:{s:18:"activity-call-grid";a:2:{s:7:"extends";s:22:"widget-base-calls-grid";s:7:"filters";a:1:{s:7:"columns";a:3:{s:7:"subject";a:2:{s:4:"type";s:6:"string";s:9:"data_name";s:12:"call.subject";}s:5:"phone";a:2:{s:4:"type";s:6:"string";s:9:"data_name";s:5:"phone";}s:8:"dateTime";a:2:{s:4:"type";s:8:"datetime";s:9:"data_name";s:17:"call.callDateTime";}}}}}

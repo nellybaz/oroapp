@@ -1,0 +1,75 @@
+services:
+    oro_paypal.provider.credit_form_provider:
+        class: 'Oro\Bundle\PayPalBundle\Layout\DataProvider\CreditCardFormProvider'
+        arguments:
+            - '@form.factory'
+            - '@router'
+        tags:
+            - { name: layout.data_provider, alias: oro_paypal_credit_card_form_provider }
+
+    oro_paypal.event_listener.callback.redirect:
+        class: 'Oro\Bundle\PayPalBundle\EventListener\Callback\RedirectListener'
+        lazy: true
+        arguments:
+            - '@session'
+            - '@oro_paypal.method.provider.express_checkout.composite'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.callback.error, method: onError, priority: 20 }
+
+    oro_paypal.event_listener.payflow_require_payment_redirect:
+        class: 'Oro\Bundle\PayPalBundle\EventListener\ZeroAmountAuthorizationRedirectListener'
+        arguments:
+            - '@oro_paypal.method.config.provider.payflow_gateway.credit_card'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.require_payment_redirect, method: onRequirePaymentRedirect }
+
+    oro_paypal.event_listener.paypal_payments_pro_require_payment_redirect:
+        class: 'Oro\Bundle\PayPalBundle\EventListener\ZeroAmountAuthorizationRedirectListener'
+        arguments:
+            - '@oro_paypal.method.config.provider.payments_pro.credit_card'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.require_payment_redirect, method: onRequirePaymentRedirect }
+
+    oro_paypal.event_listener.modify_line_item_option:
+        class: 'Oro\Bundle\PayPalBundle\EventListener\ExtractLineItemPaymentOptionsListener'
+        arguments:
+            - '@oro_currency.formatter.number'
+            - '@oro_pricing.rounding.price_rounding_service'
+        tags:
+            - { name: kernel.event_listener, event: oro_payment.event.extract_line_item_options, priority: -50, method: onExtractLineItemPaymentOptions }
+
+    oro_paypal.integation.payflow_gateway.channel:
+        class: 'Oro\Bundle\PayPalBundle\Integration\PayPalPayflowGatewayChannelType'
+        tags:
+            - { name: oro_integration.channel, type: paypal_payflow_gateway }
+
+    oro_paypal.integation.payments_pro.channel:
+        class: 'Oro\Bundle\PayPalBundle\Integration\PayPalPaymentsProChannelType'
+        tags:
+            - { name: oro_integration.channel, type: paypal_payments_pro }
+
+    oro_paypal.integration.payflow_gateway.transport:
+        class: 'Oro\Bundle\PayPalBundle\Integration\PayPalPayflowGatewayTransport'
+        tags:
+            - { name: oro_integration.transport, type: paypal_payflow_gateway, channel_type: paypal_payflow_gateway }
+
+    oro_paypal.integration.payments_pro.transport:
+        class: 'Oro\Bundle\PayPalBundle\Integration\PayPalPaymentsProTransport'
+        tags:
+            - { name: oro_integration.transport, type: paypal_payflow_pro, channel_type: paypal_payments_pro }
+
+    oro_paypal.credit_card.method_view_factory_basic:
+        class: 'Oro\Bundle\PayPalBundle\Method\View\Factory\BasicPayPalCreditCardPaymentMethodViewFactory'
+        arguments:
+            - '@form.factory'
+            - '@oro_payment.provider.payment_transaction'
+
+    oro_paypal.express_checkout.method_view_factory_basic:
+        class: 'Oro\Bundle\PayPalBundle\Method\View\Factory\BasicPayPalExpressCheckoutPaymentMethodViewFactory'
+        public: false
+
+    oro_paypal.settings.payment_action.provider:
+        class: Oro\Bundle\PayPalBundle\Settings\DataProvider\BasicPaymentActionsDataProvider
+
+    oro_paypal.settings.card_type.provider:
+        class: Oro\Bundle\PayPalBundle\Settings\DataProvider\BasicCardTypesDataProvider

@@ -1,0 +1,90 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% form_theme form with [
+    'OroFormBundle:Form:fields.html.twig',
+    'OroEntityBundle:Form:fields.html.twig'
+] %}
+
+{% oro_title_set({params : {
+    "%entityName%": entity_config.get('label')|default('N/A')|trans,
+    "%fieldName%": field.fieldName|default('N/A')|trans,
+}}) %}
+
+{% set audit_entity_class = field.entity.className|replace('\\', '_') %}
+{% set audit_title = field.fieldName|default('N/A')|trans ~ ' - ' ~ entity_config.get('label')|default('N/A')|trans %}
+{% set audit_path = 'oro_entityconfig_audit_field' %}
+{% set audit_entity_id = field.id %}
+{% set audit_show_change_history = true %}
+
+{% block navButtons %}
+    {% if is_granted('oro_entityconfig_manage') %}
+        {{ UI.cancelButton(path('oro_entityconfig_view', {id: field.entity.id})) }}
+        {% set html = UI.saveAndCloseButton({
+            'route': 'oro_entityconfig_view',
+            'params': {'id': '$entity.id'}
+        }) %}
+        {% if is_granted('oro_entityextend_field_create') %}
+            {% set html = html ~ UI.saveAndNewButton({
+                'route': 'oro_entityextend_field_create',
+                'params': {'id': '$entity.id'}
+            }) %}
+        {% endif %}
+        {% set html = html ~ UI.saveAndStayButton({
+            'route': 'oro_entityconfig_field_update',
+            'params': {'id': '$id'}
+        }) %}
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if not entityTitle is defined and not breadcrumbs is defined %}
+        {% set entityTitle = field.id ?
+            (field_config.get('label')|trans) | default(field.fieldName|capitalize) :
+            'oro.entity_config.info.new_field.label'|trans
+        %}
+
+        {% set breadcrumbs = {
+            'entity'      : 'entity',
+            'indexPath'   : path('oro_entityconfig_index'),
+            'indexLabel'  : 'oro.entity_config.entity.plural_label'|trans,
+            'entityTitle' : entityTitle,
+            'additional'  : [
+                {
+                    'indexPath'  : path('oro_entityconfig_view', {id: field.entity.id}),
+                    'indexLabel' : entity_config.get('label')|default('N/A')|trans,
+                },
+            ]
+        }%}
+    {% endif %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block content_data %}
+    {% if require_js is defined and require_js|length %}
+        <script type="text/javascript">
+            require({{ require_js|json_encode|raw }})
+        </script>
+    {% endif %}
+
+    {% set id = 'configfield-update' %}
+    {% set dataBlocks = form_data_blocks(form) %}
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+        'hiddenData': form_rest(form)
+    }%}
+
+    {% if non_extended_entities_classes is defined
+        and form.extend.relation is defined
+        and field.type != constant('Oro\\Bundle\\EntityExtendBundle\\Extend\\RelationType::ONE_TO_MANY')
+    %}
+        {% set options = {
+            'nonExtendedEntitiesClassNames': non_extended_entities_classes
+        } %}
+        <div data-page-component-module="oroentityextend/js/bidirectional-only-for-extended-component"
+             data-page-component-options="{{ options|json_encode }}">
+        </div>
+    {% endif %}
+    {{ parent() }}
+{% endblock content_data %}

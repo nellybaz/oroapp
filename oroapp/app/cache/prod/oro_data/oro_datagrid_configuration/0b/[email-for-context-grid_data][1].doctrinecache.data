@@ -1,0 +1,2 @@
+0
+a:1:{s:22:"email-for-context-grid";a:2:{s:7:"extends";s:10:"email-grid";s:7:"options";a:4:{s:10:"entityHint";s:6:"emails";s:17:"entity_pagination";b:1;s:14:"toolbarOptions";a:1:{s:8:"pageSize";a:1:{s:16:"default_per_page";i:10;}}s:13:"routerEnabled";b:0;}}}

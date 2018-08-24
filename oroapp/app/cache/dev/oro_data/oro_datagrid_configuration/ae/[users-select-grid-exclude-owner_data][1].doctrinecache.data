@@ -1,0 +1,2 @@
+0
+a:1:{s:31:"users-select-grid-exclude-owner";a:2:{s:7:"extends";s:17:"users-select-grid";s:6:"source";a:1:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:47:"u.id != @oro_security.token_accessor->getUserId";}}}}}}

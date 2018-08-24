@@ -1,0 +1,142 @@
+{% macro query_designer_condition_builder(params) %}
+    {% set params = {
+        column_chain_template_selector: '#column-chain-template',
+        field_choice_filter_preset: 'querydesigner',
+    }|merge(params) %}
+    {% set segment_selection_template_id = 'segment-template' %}
+    {% set segmentConditionOptions = {
+        filters: params.metadata.filters|default([]),
+        segmentChoice: {
+            select2: {
+                placeholder: 'oro.segment.condition_builder.choose_entity_segment'|trans,
+                formatSelectionTemplateSelector: '#' ~ segment_selection_template_id,
+                ajax: {
+                    url: 'oro_api_get_segment_items',
+                    quietMillis: 100
+                },
+                pageLimit: params.page_limit|default(10)
+            },
+            currentSegment: params.currentSegmentId|default(null)
+        }
+    }|merge_recursive(params.segmentConditionOptions|default({})) %}
+    {% set conditionBuilderOptions = {
+        fieldsRelatedCriteria: ['condition-item', 'condition-segment'],
+    }|merge_recursive(params.conditionBuilderOptions|default({})) %}
+    {% set conditionBuilderOptions = update_segment_condition_builder_options(conditionBuilderOptions) %}
+
+    {{ _self.query_designer_segment_template(segment_selection_template_id) }}
+    <div class="condition-builder left-panel-container"
+         data-page-component-module="oroquerydesigner/js/app/components/condition-builder-component"
+         data-page-component-options="{{ conditionBuilderOptions|json_encode }}"
+         data-page-component-name="{{ params.componentName|default('condition-builder') }}">
+        <div class="row-fluid">
+            <div class="left-area filter-criteria">
+                <div class="hint">{{ 'oro.query_designer.condition_builder.criteria.drag_hint'|trans }}</div>
+                <ul class="criteria-list">
+                    {% placeholder segment_criteria_list with {params: params} %}
+                    <li class="option" data-criteria="condition-segment"
+                        data-module="orosegment/js/app/views/segment-condition-view"
+                        data-options="{{ segmentConditionOptions|json_encode }}">
+                        {{ 'oro.segment.condition_builder.criteria.segment_condition'|trans }}
+                    </li>
+                    <li class="option" data-criteria="conditions-group">
+                        {{ 'oro.query_designer.condition_builder.criteria.conditions_group'|trans }}
+                    </li>
+                </ul>
+            </div>
+            <div class="right-area">
+                <div class="condition-container"></div>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro query_designer_segment_template(id) %}
+    <script type="text/html" id="{{ id }}">
+        {% trans %}Apply segment {% endtrans %}
+        <%= obj.text %>
+    </script>
+{% endmacro %}
+
+{#
+    Renders run button for static segment if allowed
+
+    @param Segment entity
+    @param bool    reloadRequired - is page reload required after run
+#}
+{% macro runButton(entity, reloadRequired = false) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% if entity.id and is_granted('EDIT', entity)
+        and entity.type.name == constant('Oro\\Bundle\\SegmentBundle\\Entity\\SegmentType::TYPE_STATIC')
+    %}
+        {{ UI.clientButton({
+            'dataUrl': path('oro_api_post_segment_run', { 'id': entity.id }) ,
+            'aCss':   'no-hash run-button btn',
+            'label' : 'oro.segment.action.refresh'|trans,
+            'iCss':   'fa-refresh',
+            'dataAttributes': {
+                'page-component-module': 'orosegment/js/app/components/refresh-button',
+                'page-component-options': {'reloadRequired': reloadRequired}|json_encode,
+            }
+        }) }}
+    {% endif %}
+{% endmacro %}
+
+{#
+    Renders save and refresh button
+
+    @param Segment entity
+
+    @deprecated Since 1.10, use macros saveActionButton in OroUIBUndle::macros.html.twig
+#}
+{% macro saveAndRefreshButton(entity) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+
+    {% if entity.id and is_granted('EDIT', entity)
+        and entity.type.name == constant('Oro\\Bundle\\SegmentBundle\\Entity\\SegmentType::TYPE_STATIC')
+    %}
+        {{ UI.buttonType({'type': 'button', 'class': 'btn-success main-group', 'label': 'Save and refresh', 'action': 'save_and_refresh'}) }}
+    {% endif %}
+{% endmacro %}
+
+{#
+    Render JS code for report/segment init
+
+    @param string   type     segment or report
+    @param FormView form
+    @param array    entities
+    @param array    metadata
+#}
+{% macro initJsWidgets(type, form, entities, metadata) %}
+    {% set widgetOptions = {
+        valueSource:                '[data-ftid=' ~ type ~ '_form_definition]',
+        entityChoice:               '[data-ftid=' ~ type ~ '_form_entity]',
+        entityChangeConfirmMessage: type|replace('_', '.') ~ '.change_entity_confirmation',
+        column: {
+            editor:        { namePattern: '^' ~ type ~ '_form\\[column\\]\\[([\\w\\W]*)\\]$' },
+            form:          '#' ~ type ~ '-column-form',
+            itemContainer: '#' ~ type ~ '-column-list .item-container',
+            itemTemplate:  '#' ~ type ~ '-column-row'
+        },
+        select2FieldChoiceTemplate: '#column-chain-template',
+        metadata:                   metadata,
+    } %}
+
+    {% if type == 'oro_report' %}
+        {% set widgetOptions = widgetOptions|merge({
+            'grouping': {
+                editor: {
+                    mapping: { name: 'oro_report_form[grouping][columnNames]' }
+                },
+                form:          '#oro_report-grouping-form',
+                itemContainer: '#oro_report-grouping-list .grouping-item-container',
+                itemTemplate:  '#oro_report-grouping-item-row'
+            }
+        }) %}
+    {% endif %}
+
+    {% set widgetOptions = update_segment_widget_options(widgetOptions, type) %}
+
+    <div data-page-component-module="orosegment/js/app/components/segment-component"
+         data-page-component-options="{{ widgetOptions|json_encode }}"></div>
+{% endmacro %}

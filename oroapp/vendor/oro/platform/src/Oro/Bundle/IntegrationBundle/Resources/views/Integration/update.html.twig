@@ -1,0 +1,140 @@
+{% extends 'OroUIBundle:actions:update.html.twig' %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% form_theme form with oro_integration_themes(form) %}
+
+{% set entity = form.vars.value %}
+{% set formAction = formAction is defined
+    ? formAction
+    : (entity.id ? path('oro_integration_update', { id: entity.id }) : path('oro_integration_create'))
+%}
+
+{% if entity.id %}
+    {% oro_title_set({params : {"%integration.name%": entity.name } }) %}
+{% endif %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+    <div class="pull-left">
+        {% if entity.enabled %}
+            <div class="badge badge-enabled status-enabled">
+                <i class="icon-status-enabled fa-circle"></i>{{ 'oro.integration.integration.enabled.active.label'|trans }}</div>
+        {% else %}
+            <div class="badge badge-disabled status-disabled">
+                <i class="icon-status-disabled fa-circle"></i>{{ 'oro.integration.integration.enabled.inactive.label'|trans }}</div>
+        {% endif %}
+    </div>
+{% endblock breadcrumbs %}
+
+{% block navButtons %}
+    {{ UI.cancelButton(path('oro_integration_index')) }}
+
+    {% if entity.id %}
+        {% if entity.enabled %}
+        <div class="btn-group" {{ UI.renderPageComponentAttributes({
+            view: 'orointegration/js/app/views/integration-sync-view',
+            options: {
+                integrationName: entity.name
+            }
+        }) }}>
+            {% set buttonsHtml %}
+                {% placeholder oro_integration_sync_button with {'entity': entity} %}
+                {% placeholder oro_integration_force_sync_button with {'entity': entity} %}
+            {% endset %}
+            {{ UI.pinnedDropdownButton({'html': buttonsHtml}) }}
+        </div>
+        {% endif %}
+    {% endif %}
+
+    {% if form.type.vars.choices is not empty %}
+        {% set html = UI.saveAndCloseButton({
+            'route': 'oro_integration_index',
+            'params': {'_enableContentProviders': 'mainMenu'}
+        }) %}
+        {% if is_granted('oro_integration_create') %}
+            {% set html = html ~ UI.saveAndNewButton({
+                'route': 'oro_integration_create'
+            }) %}
+        {% endif %}
+        {% if form.vars.value.id or is_granted('oro_integration_update') %}
+            {% set html = html ~ UI.saveAndStayButton({
+                'route': 'oro_integration_update',
+                'params': {'id': '$id', '_enableContentProviders': 'mainMenu'}
+            }) %}
+        {% endif %}
+        {{ UI.dropdownSaveButton({'html': html}) }}
+    {% endif %}
+
+{% endblock navButtons %}
+
+{% block pageHeader %}
+    {% if entity.id %}
+        {% set breadcrumbs = {
+            'entity':      entity,
+            'indexPath':   path('oro_integration_index'),
+            'indexLabel':  'oro.integration.integration.entity_plural_label'|trans,
+            'entityTitle': entity.name|default('N/A')
+        } %}
+        {{ parent() }}
+    {% else %}
+        {% set title = 'oro.ui.create_entity'|trans({'%entityName%': 'oro.integration.integration.entity_label'|trans}) %}
+        {% include 'OroUIBundle::page_title_block.html.twig' with { title: title }%}
+    {% endif %}
+{% endblock pageHeader %}
+
+{% block stats %}{% endblock %}
+
+{% block content_data %}
+    {% set id = 'channel-update' %}
+    {% set dataBlocks = [] %}
+
+    {% if (form.synchronizationSettings is defined and form.synchronizationSettings.count) %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Synchronization Settings'|trans,
+            'subblocks': [{
+                'title': '',
+                'data':  [form_widget(form.synchronizationSettings)]
+            }]
+        }]) %}
+    {% endif %}
+
+    {% if (form.mappingSettings is defined and form.mappingSettings.count) %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Mapping Settings'|trans,
+            'subblocks': [{
+                'title': '',
+                'data':  [form_widget(form.mappingSettings)]
+            }]
+        }]) %}
+    {% endif %}
+
+    {% if entity.id and isWidgetContext|default(false) is sameas(false) %}
+        {% set dataBlocks = dataBlocks|merge([{
+            'title': 'Statuses'|trans,
+                'subblocks': [{
+                    'title': '',
+                    'data':  [
+                        dataGrid.renderGrid('oro-integration-status-grid', {
+                            integrationId:   entity.id,
+                            integrationType: entity.type
+                        })
+                    ]
+                }]
+        }]) %}
+    {% endif %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'class': 'active',
+        'subblocks': [{
+            'title': 'Basic Information'|trans,
+            'data':  [form_widget(form)]
+        }]
+    }]|merge(dataBlocks) %}
+
+    {% set data = {
+        'formErrors': form_errors(form)? form_errors(form) : null,
+        'dataBlocks': dataBlocks,
+    } %}
+    {{ parent() }}
+{% endblock content_data %}

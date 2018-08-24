@@ -1,0 +1,69 @@
+{% extends bap.layout %}
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+{% oro_title_set({ params: { '%keyword%': searchString|default('oro.search.result.empty'|trans) } }) %}
+{% set gridName = 'search-grid' %}
+
+{% block content %}
+    <div class="container-fluid search-header clearfix">
+        <h2>
+            {% trans %}Search results{% endtrans %}
+        </h2>
+        <form method="get" action="{{ path('oro_search_results') }}" class="form-inline search-form">
+            <input type="hidden" name="from" value="" />
+            <div class="input-append">
+                <input type="text" id="search" class="span2 search" name="search" value="{{ searchString }}" />
+                <button type="submit" class="btn btn-search btn-primary">{{ 'Search'|trans }}</button>
+            </div>
+        </form>
+    </div>
+
+    {% if groupedResults is defined and '' in groupedResults|keys and groupedResults[''].count > 0 or groupedResults|length > 1 %}
+        <div class="oro-page collapsible-sidebar clearfix">
+            <div class="oro-page-sidebar search-entity-types-column dropdown">
+                <a href="javascript: void(0);" class="dropdown-toggle" data-toggle="dropdown">
+                    <i class="fa-filter"></i>
+                    {% if selectedResult %}
+                        {% if selectedResult.class %}{{ selectedResult.label }}{% else %}{{ 'oro.search.result.all'|trans }}{% endif %}
+                        ({{ selectedResult.count }}) <i class="fa-sort-desc"></i>
+                    {% endif %}
+                </a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                {% for alias, type in groupedResults %}
+                    {% set selected = alias == from %}
+                    {% if type.class %}
+                        {% set label = type.label %}
+                        {% set iconClass = type.icon %}
+                    {% else %}
+                        {% set label = 'oro.search.result.all'|trans %}
+                        {% set iconClass = 'fa-search' %}
+                    {% endif %}
+
+                    {% if iconClass is empty %}
+                        {% set iconClass = 'fa-file' %}
+                    {% endif %}
+
+                    <li{% if selected %} class="selected"{% endif %}>
+                        <a href="{{ path('oro_search_results', { from: alias, search: searchString }) }}">
+                            {% if selected %}<i class="fa-chevron-right pull-right"></i>{% endif %}
+                            <i class="{{ iconClass }}"></i>
+                            {{ label }} ({{ type.count }})
+                        </a>
+                    </li>
+                {% endfor %}
+                </ul>
+            </div>
+            <div class="oro-page-body search-results-column">
+                <div id="search-result-grid">
+                    {{ dataGrid.renderGrid(gridName, {from: from, search: searchString}, { cssClass: 'search-grid grid-without-header' }) }}
+                </div>
+            </div>
+        </div>
+    {% else %}
+    <div class="search-no-results">
+        {% trans %}No results were found to match your search.{% endtrans %}
+        <br />
+        {% trans %}Try modifying your search criteria or creating a new ...{% endtrans %}
+    </div>
+    {% endif %}
+{% endblock %}

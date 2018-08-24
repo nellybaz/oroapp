@@ -1,0 +1,35 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% if sidebarsGetURL is not defined %}
+    {% set sidebarsGetURL = path('oro_api_get_sidebars', {'position': 'SIDEBAR_' ~ placement|upper}) %}
+{% endif %}
+
+{% if sidebarPostURL is not defined %}
+    {% set sidebarPostURL = path('oro_api_post_sidebars') %}
+{% endif %}
+
+{% if widgetsGetURL is not defined %}
+    {% set widgetsGetURL = path('oro_api_get_sidebarwidgets', {'placement': placement}) %}
+{% endif %}
+
+{% if widgetPostURL is not defined %}
+    {% set widgetPostURL = path('oro_api_post_sidebarwidgets') %}
+{% endif %}
+
+{% if isDesktopVersion() and oro_config_value('oro_sidebar.sidebar_' ~ placement ~ '_active') == true %}
+    {% set pageComponent = {
+        sidebarData: render(sidebarsGetURL),
+        widgetsData: render(widgetsGetURL),
+        availableWidgets: oro_sidebar_get_available_widgets(placement),
+        urlRoot: sidebarPostURL,
+        url: widgetPostURL
+    } %}
+    {% if pageComponent.sidebarData is empty %}
+        {% set pageComponent = pageComponent|merge({
+            sidebarData: {position: 'SIDEBAR_' ~ placement|upper}|json_encode
+        }) %}
+    {% endif %}
+
+<div id="sidebar-{{ placement }}" class="sidebar sidebar-{{ placement }}"
+     data-page-component-options="{{ pageComponent|json_encode }}"></div>
+{% endif %}

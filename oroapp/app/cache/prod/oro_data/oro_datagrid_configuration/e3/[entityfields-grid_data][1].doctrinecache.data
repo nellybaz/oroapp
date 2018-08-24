@@ -1,0 +1,2 @@
+0
+a:1:{s:17:"entityfields-grid";a:3:{s:7:"extends";s:22:"base-entityfields-grid";s:12:"acl_resource";s:23:"oro_entityconfig_manage";s:10:"properties";a:1:{s:11:"update_link";a:3:{s:4:"type";s:3:"url";s:5:"route";s:29:"oro_entityconfig_field_update";s:6:"params";a:1:{i:0;s:2:"id";}}}}}

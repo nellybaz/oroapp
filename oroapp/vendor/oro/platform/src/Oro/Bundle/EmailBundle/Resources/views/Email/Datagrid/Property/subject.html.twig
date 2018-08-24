@@ -1,0 +1,18 @@
+{% import 'OroEmailBundle::macros.html.twig' as EA %}
+{% set emailBody = {textBody: record.getValue('body_content')} %}
+{% set isNew = record.getValue('is_new') %}
+{% set valueToShow = value ? value : 'oro.email.subject.no_subject.label'|trans %}
+
+<div class="nowrap-ellipsis">
+    <div>
+        {% if isNew %}
+            <strong class="email-subject">{{ valueToShow|oro_tag_filter }}</strong>
+        {% else %}
+            <span class="email-subject">{{ valueToShow|oro_tag_filter }}</span>
+        {% endif %}
+        {% if emailBody.textBody is defined %}
+            <div class="email-body">{{ EA.email_short_body(emailBody)|oro_tag_filter }}</div>
+        {% endif %}
+    </div>
+</div>
+<div class="td-expander"></div>

@@ -1,0 +1,29 @@
+oro_entity:
+    entity_aliases:
+        Oro\Bundle\MailChimpBundle\Entity\Campaign:
+            alias:        mailchimpcampaign
+            plural_alias: mailchimpcampaigns
+        Oro\Bundle\MailChimpBundle\Entity\ExtendedMergeVar:
+            alias:        mailchimpextendedmergevar
+            plural_alias: mailchimpextendedmergevars
+        Oro\Bundle\MailChimpBundle\Entity\Member:
+            alias:        mailchimpmember
+            plural_alias: mailchimpmembers
+        Oro\Bundle\MailChimpBundle\Entity\MemberActivity:
+            alias:        mailchimpmemberactivity
+            plural_alias: mailchimpmemberactivities
+        Oro\Bundle\MailChimpBundle\Entity\MemberExtendedMergeVar:
+            alias:        mailchimpmemberextendedmergevar
+            plural_alias: mailchimpmemberextendedmergevars
+        Oro\Bundle\MailChimpBundle\Entity\StaticSegment:
+            alias:        mailchimpstaticsegment
+            plural_alias: mailchimpstaticsegments
+        Oro\Bundle\MailChimpBundle\Entity\StaticSegmentMember:
+            alias:        mailchimpstaticsegmentmember
+            plural_alias: mailchimpstaticsegmentmembers
+        Oro\Bundle\MailChimpBundle\Entity\SubscribersList:
+            alias:        mailchimpsubscriberslist
+            plural_alias: mailchimpsubscriberslist
+        Oro\Bundle\MailChimpBundle\Entity\Template:
+            alias:        mailchimptemplate
+            plural_alias: mailchimptemplates

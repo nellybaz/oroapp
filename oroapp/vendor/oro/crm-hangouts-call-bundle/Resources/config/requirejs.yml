@@ -1,0 +1,8 @@
+config:
+    paths:
+        'orohangoutscall/js/app/components/invite-hangout-component': 'bundles/orohangoutscall/js/app/components/invite-hangout-component.js'
+        'orohangoutscall/js/app/components/calendar-event-start-hangout-component': 'bundles/orohangoutscall/js/app/components/calendar-event-start-hangout-component.js'
+        'orohangoutscall/js/app/components/log-call-component': 'bundles/orohangoutscall/js/app/components/log-call-component.js'
+build:
+    paths:
+        '//apis.google.com/js/platform.js': 'empty:'

@@ -1,0 +1,56 @@
+oro_behat_extension:
+    suites:
+        OroRFPBundle:
+            contexts:
+                - Oro\Bundle\TestFrameworkBundle\Tests\Behat\Context\OroMainContext
+                - OroDataGridBundle::GridContext
+                - OroFormBundle::FormContext
+                - OroWorkflowBundle::FeatureContext
+                - OroApplicationBundle::CommerceMainContext
+                - OroShoppingListBundle::ShoppingListContext
+                - OroRFPBundle::FeatureContext
+                - OroConfigBundle::FeatureContext
+                - OroNavigationBundle::FeatureContext
+                - OroUIBundle::TypeaheadContext
+            paths:
+                - '@OroRFPBundle/Tests/Behat/Features'
+
+    elements:
+        RFQ:
+            class: Oro\Bundle\RFPBundle\Tests\Behat\Element\RequestForQuote
+            selector: '.page-content'
+
+        RequestForQuote:
+            class: Oro\Bundle\RFPBundle\Tests\Behat\Element\RequestForQuote
+            selector: '.page-content'
+
+        RequestForQuoteTitle:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+            selector: 'span.page-title__text'
+
+        RequestForQuoteFlashMessage:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+            selector: '#flash-messages div.notification-flash__text'
+
+        RequestMoreInformationPopupForm:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+            selector: div.ui-dialog form
+
+        RequestNotesBlock:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+            selector: .page-content div.notes
+        TargetPriceField:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+            selector: 'input[name="oro_rfp_frontend_request[requestProducts][0][requestProductItems][0][price][value]"]'
+        LineItemDropdown:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Element
+            selector: '.line-item-form .dropdown-toggle'
+
+    pages:
+        RequestViewBackendPage:
+            class: Oro\Bundle\RFPBundle\Tests\Behat\Page\RequestViewPage
+            route: oro_rfp_request_view
+
+        RequestViewFrontendPage:
+            class: Oro\Bundle\RFPBundle\Tests\Behat\Page\RequestViewPage
+            route: oro_rfp_frontend_request_view

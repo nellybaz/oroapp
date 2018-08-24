@@ -1,0 +1,69 @@
+{% extends 'OroUIBundle:actions:view.html.twig' %}
+{% import 'OroChannelBundle::macros.html.twig' as channelMacro %}
+
+{% oro_title_set({params : {"%channel.name%": entity.name } }) %}
+
+{% block pageHeader %}
+    {% set breadcrumbs = {
+        'entity':      entity,
+        'indexPath':   path('oro_channel_index'),
+        'indexLabel':  'oro.channel.entity_plural_label'|trans,
+        'entityTitle': entity.name|default('N/A')
+    } %}
+
+    {{ parent() }}
+{% endblock pageHeader %}
+
+{% block navButtons %}
+    {% if is_granted('EDIT', entity) and oro_channel_type_metadata()[entity.channelType] is defined %}
+        {{ UI.editButton({
+            'path': path('oro_channel_update', {'id': entity.id}),
+            'entity_label': 'oro.channel.entity_label'|trans
+        }) }}
+    {% endif %}
+
+    {% if is_granted('DELETE', entity) %}
+        {{ UI.deleteButton({
+            'dataUrl': path('oro_api_delete_channel', {'id': entity.id}),
+            'dataRedirect': path('oro_channel_index'),
+            'aCss': 'no-hash remove-button',
+            'id': 'btn-remove-channel',
+            'dataId': entity.id,
+            'entity_label': 'oro.channel.entity_label'|trans,
+        }) }}
+    {% endif %}
+{% endblock %}
+
+{% block breadcrumbs %}
+    {{ parent() }}
+{% endblock breadcrumbs %}
+
+{% block content_data %}
+    {% set id = 'channel-view' %}
+    {% set channelInformationWidget %}
+        {{ oro_widget_render({
+            'widgetType': 'block',
+            'url': path('oro_channel_widget_info', {id: entity.id})
+        }) }}
+    {% endset %}
+
+    {% set dataBlocks = [{
+        'title': 'General'|trans,
+        'subblocks': [{
+            'title': '',
+            'data':  [ channelInformationWidget ]
+        }]
+    }, {
+        'title': 'Entities'|trans,
+        'subblocks': [{
+            'title': '',
+            'data':  [ channelMacro.inializeEntitiesViewComponent(entity) ]
+        }]
+    }] %}
+
+    {% set data = {
+        'dataBlocks': dataBlocks,
+    } %}
+
+    {{ parent() }}
+{% endblock %}

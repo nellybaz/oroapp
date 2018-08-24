@@ -1,0 +1,18 @@
+// @theme: default;
+
+$textarea-padding: 11px;
+$textarea-padding--m: 10px 9px;
+$textarea-padding--s: 8px 9px;
+
+// Hover
+$textarea-border-color-hover-state: get-color('ui', 'normal');
+$textarea-box-shadow-hover-state: inset 0 1px 1px transparentize(get-color('additional', 'ultra'), .75),
+0 0 8px transparentize(get-color('ui', 'focus'), .6);
+
+// Focus
+$textarea-border-color-focus-state: get-color('ui', 'normal');
+$textarea-box-shadow-focus-state: $textarea-box-shadow-hover-state;
+
+// Error
+$textarea-border-color-error-state: get-color('ui', 'error-dark');
+$textarea-box-shadow-error-state: 0 1px 7px 0 transparentize(get-color('ui', 'error-dark'), .6);

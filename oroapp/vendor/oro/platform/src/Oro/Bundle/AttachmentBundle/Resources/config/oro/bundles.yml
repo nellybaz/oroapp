@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\AttachmentBundle\OroAttachmentBundle, priority: -86 }

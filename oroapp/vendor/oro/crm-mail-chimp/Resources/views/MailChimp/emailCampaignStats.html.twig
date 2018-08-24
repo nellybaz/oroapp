@@ -1,0 +1,70 @@
+{% import 'OroMailChimpBundle::macros.html.twig' as ui %}
+{% import 'OroUIBundle::macros.html.twig' as platform %}
+
+<div class="row-fluid">
+    <h5 class="user-fieldset">
+        <span>{{ 'oro.mailchimp.emailcampaign.statistics.label'|trans }}</span>
+    </h5>
+
+    {{ platform.renderProperty('oro.mailchimp.campaign.entity_label'|trans, campaignStats.subject) }}
+    {{ platform.renderHtmlProperty(
+        'oro.mailchimp.emailcampaign.activity_update_state.label'|trans,
+        ('oro.mailchimp.emailcampaign.activity_update_state.' ~ campaignStats.activityUpdateState) | trans
+    ) }}
+</div>
+
+<div class="row-fluid row-fluid-divider form-horizontal">
+    <div class="responsive-cell">
+        <div class="responsive-block">
+            <strong>{{ 'oro.mailchimp.emailcampaign.positive.label'|trans }}</strong>
+
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.emailsSent.label',
+                campaignStats.emailsSent|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.emailsSent.tooltip'
+            ) }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.opens.label',
+                campaignStats.opens|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.opens.tooltip')
+            }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.clicks.label',
+                campaignStats.clicks|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.clicks.tooltip')
+            }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.forwards.label',
+                campaignStats.forwards|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.forwards.tooltip')
+            }}
+        </div>
+    </div>
+
+    <div class="responsive-cell">
+        <div class="responsive-block">
+            <strong>{{ 'oro.mailchimp.emailcampaign.negative.label'|trans }}</strong>
+
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.hardBounces.label',
+                campaignStats.hardBounces|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.hardBounces.tooltip')
+            }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.softBounces.label',
+                campaignStats.softBounces|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.softBounces.tooltip')
+            }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.unsubscribes.label',
+                campaignStats.unsubscribes|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.unsubscribes.tooltip')
+            }}
+            {{ ui.renderAttributeWithTooltip(
+                'oro.mailchimp.emailcampaign.abuseReports.label',
+                campaignStats.abuseReports|oro_format_decimal,
+                'oro.mailchimp.emailcampaign.abuseReports.tooltip')
+            }}
+        </div>
+    </div>
+</div>

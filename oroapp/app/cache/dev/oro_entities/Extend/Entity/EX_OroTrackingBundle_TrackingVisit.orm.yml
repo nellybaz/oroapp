@@ -1,0 +1,7 @@
+Extend\Entity\EX_OroTrackingBundle_TrackingVisit:
+    type: mappedSuperclass
+    fields:
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

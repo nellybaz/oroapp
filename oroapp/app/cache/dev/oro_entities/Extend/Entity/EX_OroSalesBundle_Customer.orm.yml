@@ -1,0 +1,3 @@
+Extend\Entity\EX_OroSalesBundle_Customer:
+    type: mappedSuperclass
+    fields: {  }

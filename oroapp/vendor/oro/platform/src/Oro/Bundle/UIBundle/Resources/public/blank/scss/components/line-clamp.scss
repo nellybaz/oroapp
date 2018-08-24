@@ -1,0 +1,30 @@
+// @theme: blank;
+
+.line-clamp {
+    overflow: hidden;
+
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+
+    &-polyfill {
+        position: relative;
+
+        display: inline-block;
+
+        overflow: hidden;
+
+        &::after {
+            bottom: 0;
+            right: 0;
+
+            width: 50%;
+            height: ceil($base-font-size * $base-line-height);
+
+            background: linear-gradient(to right, rgba(get-color('additional', 'ultra'), 0),
+                                                  rgba(get-color('additional', 'ultra'), 1) 50%);
+
+            @include after();
+        }
+    }
+}

@@ -1,0 +1,14 @@
+workflows:
+    first_workflow:
+        attributes:
+            first_attribute:
+                type: object
+                options:
+                    class: DateTime
+            second_attribute:
+                type: entity
+                property_path: first_attribute.test
+                entity_acl:
+                    delete: false
+                options:
+                    class: DateTime

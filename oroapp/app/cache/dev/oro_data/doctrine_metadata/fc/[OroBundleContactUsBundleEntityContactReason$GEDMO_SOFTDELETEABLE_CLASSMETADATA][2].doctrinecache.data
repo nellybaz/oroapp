@@ -1,0 +1,2 @@
+
+a:5:{s:14:"softDeleteable";b:1;s:9:"fieldName";s:9:"deletedAt";s:9:"timeAware";b:0;s:10:"hardDelete";b:1;s:14:"useObjectClass";s:47:"Oro\Bundle\ContactUsBundle\Entity\ContactReason";}

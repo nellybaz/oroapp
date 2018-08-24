@@ -1,0 +1,2 @@
+0
+a:1:{s:15:"user-cases-grid";a:3:{s:7:"extends";s:10:"cases-grid";s:6:"source";a:2:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:39:"(assignedTo.id = :id OR owner.id = :id)";}}}s:15:"bind_parameters";a:1:{i:0;s:2:"id";}}s:7:"options";a:1:{s:17:"entity_pagination";b:0;}}}

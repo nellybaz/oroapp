@@ -1,0 +1,5 @@
+{% if record.getValue('total') is not null %}
+    {{ record.getValue('total')|oro_format_currency({'currency': record.getValue('currency')}) }}
+{% else %}
+    N/A
+{% endif %}

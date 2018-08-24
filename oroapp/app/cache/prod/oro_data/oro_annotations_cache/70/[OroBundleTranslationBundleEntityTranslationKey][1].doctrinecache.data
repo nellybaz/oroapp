@@ -1,0 +1,2 @@
+0
+a:2:{i:0;O:27:"Doctrine\ORM\Mapping\Entity":2:{s:15:"repositoryClass";s:71:"Oro\Bundle\TranslationBundle\Entity\Repository\TranslationKeyRepository";s:8:"readOnly";b:0;}i:1;O:26:"Doctrine\ORM\Mapping\Table":5:{s:4:"name";s:19:"oro_translation_key";s:6:"schema";N;s:7:"indexes";N;s:17:"uniqueConstraints";a:1:{i:0;O:37:"Doctrine\ORM\Mapping\UniqueConstraint":3:{s:4:"name";s:15:"key_domain_uniq";s:7:"columns";a:2:{i:0;s:3:"key";i:1;s:6:"domain";}s:7:"options";N;}}s:7:"options";a:2:{s:7:"collate";s:8:"utf8_bin";s:7:"charset";s:4:"utf8";}}}

@@ -1,0 +1,52 @@
+placeholders:
+    placeholders:
+        requirejs_config_extend:
+            items:
+                oro_hangoutscall_requirejs_config:
+                    order: 110
+        email_actions:
+            items:
+                oro_hangoutscall_email_action_button:
+                    order: 10
+        phone_actions:
+            items:
+                oro_hangoutscall_phone_action_button:
+                    order: 10
+        calendar_event_widget_view_additional_properties:
+            items:
+                oro_hangoutscall_calendar_event_widget_view_additional_properties:
+                    order: 10
+        call_log_widget_additional_properties:
+            items:
+                oro_hangoutscall_call_log_widget_additional_properties:
+                    order: 10
+        view_navButtons_after:
+            items:
+                oro_hangoutscall_calendar_event_view_actions:
+                    order: 10
+        update_navButtons_after:
+            items:
+                oro_hangoutscall_call_log_update_actions:
+                    order: 10
+
+    items:
+        oro_hangoutscall_requirejs_config:
+            template: OroHangoutsCallBundle::requirejs.config.js.twig
+        oro_hangoutscall_email_action_button:
+            applicable: "@oro_hangouts_call.placeholder.filter->isEmailApplicable()"
+            template: OroHangoutsCallBundle:Call/action:inviteHangoutButton.html.twig
+        oro_hangoutscall_phone_action_button:
+            applicable: "@oro_hangouts_call.placeholder.filter->isPhoneApplicable()"
+            template: OroHangoutsCallBundle:Call/action:inviteHangoutButton.html.twig
+        oro_hangoutscall_calendar_event_widget_view_additional_properties:
+            applicable: "@oro_hangouts_call.placeholder.filter->isEmailApplicable()"
+            template: OroHangoutsCallBundle:CalendarEvent/widget:additionalProperties.html.twig
+        oro_hangoutscall_calendar_event_view_actions:
+            applicable: "@oro_hangouts_call.placeholder.calendar_event.filter->isApplicable($entity$)"
+            template: OroHangoutsCallBundle:CalendarEvent:viewActions.html.twig
+        oro_hangoutscall_call_log_widget_additional_properties:
+            applicable: "@oro_hangouts_call.placeholder.filter->isPhoneApplicable()"
+            template: OroHangoutsCallBundle:Call/widget:additionalProperties.html.twig
+        oro_hangoutscall_call_log_update_actions:
+            applicable: "@oro_hangouts_call.placeholder.call.filter->isApplicable($entity$)"
+            template: OroHangoutsCallBundle:Call:updateActions.html.twig

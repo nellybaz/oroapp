@@ -1,0 +1,12 @@
+Oro\Bundle\TestBundle2\Entity\Page:
+    alias: page_WEBSITE_ID
+    fields:
+        -
+            name: title_LOCALIZATION_ID
+            type: text
+        -
+            name: test_first_repeating_field
+            type: integer
+        -
+            name: test_second_repeating_field
+            type: text

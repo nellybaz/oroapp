@@ -1,0 +1,2 @@
+0
+a:7:{s:2:"id";a:3:{s:1:"i";i:2508;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:12:"entityFields";a:3:{s:1:"i";i:2509;s:1:"h";b:0;s:1:"t";s:4:"text";}s:12:"isTwoWaySync";a:3:{s:1:"i";i:2510;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:9:"createdAt";a:3:{s:1:"i";i:2511;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"updatedAt";a:3:{s:1:"i";i:2512;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"dataField";a:3:{s:1:"i";i:2513;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:7:"mapping";a:3:{s:1:"i";i:2514;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:1258;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"type";a:3:{s:1:"i";i:1259;s:1:"h";b:0;s:1:"t";s:6:"string";}s:6:"author";a:3:{s:1:"i";i:1260;s:1:"h";b:0;s:1:"t";s:6:"string";}s:6:"userId";a:3:{s:1:"i";i:1261;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"text";a:3:{s:1:"i";i:1262;s:1:"h";b:0;s:1:"t";s:4:"text";}s:9:"createdAt";a:3:{s:1:"i";i:1263;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"updatedAt";a:3:{s:1:"i";i:1264;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:7:"request";a:3:{s:1:"i";i:1265;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

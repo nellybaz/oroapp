@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:904;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:9:"lastVisit";a:3:{s:1:"i";i:905;s:1:"h";b:0;s:1:"t";s:8:"datetime";}s:9:"sessionId";a:3:{s:1:"i";i:906;s:1:"h";b:0;s:1:"t";s:6:"string";}s:12:"customerUser";a:3:{s:1:"i";i:907;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:13:"shoppingLists";a:3:{s:1:"i";i:2806;s:1:"h";b:0;s:1:"t";s:10:"manyToMany";}s:15:"serialized_data";a:3:{s:1:"i";i:2807;s:1:"h";b:1;s:1:"t";s:5:"array";}}

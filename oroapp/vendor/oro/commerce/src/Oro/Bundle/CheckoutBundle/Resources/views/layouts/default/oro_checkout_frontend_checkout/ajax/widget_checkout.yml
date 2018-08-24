@@ -1,0 +1,39 @@
+layout:
+    actions:
+        - '@setBlockTheme':
+            themes: '../templates/widget_checkout.html.twig'
+
+        - '@setOption':
+            id: checkout_order_summary_line_items_container
+            optionName: keepState
+            optionValue: true
+
+        - '@addTree':
+            items:
+                head:
+                    blockType: head
+                title:
+                    blockType: title
+                    options:
+                        value: '=data["title_provider"].getTitle(context["route_name"], params)'
+                        params:
+                            '%step_label%': '=data["translator"].getTrans(data["workflowStep"].getLabel(),[],"workflows")'
+                body:
+                    blockType: body
+                raw_notification:
+                    blockType: block
+            tree:
+                root:
+                    head:
+                        title: ~
+                    body:
+                        raw_notification: ~
+    imports:
+        -
+            id: oro_checkout_content
+            root: body
+        -
+            id: oro_checkout_sidebar
+            root: body
+
+    conditions: 'context["workflowStepName"]!="order_created"'

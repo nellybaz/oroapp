@@ -1,0 +1,141 @@
+{% block _main_menu_shopping_lists_wrapper_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        'data-page-component-module': 'oroshoppinglist/js/app/components/shoppinglist-widget-view-component',
+        '~data-page-component-options': {
+            view: 'oroui/js/app/views/layout-subtree-view',
+            blockId: id,
+            reloadEvents: ['shopping-list:refresh', 'frontend:shopping-list-item-quantity:update', 'frontend:item:delete'],
+        },
+        'data-dropdown-trigger': true,
+        '~class': " main-menu__item main-menu__item--nested"
+    }) %}
+
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block _header_row_shopping_toggle_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        'data-page-component-module': 'oroshoppinglist/js/app/components/shoppinglist-widget-view-component',
+        '~data-page-component-options': {
+            view: 'oroui/js/app/views/layout-subtree-view',
+            blockId: id,
+            reloadEvents: ['shopping-list:refresh', 'frontend:item:delete'],
+        },
+        '~class': " header-row__toggle header-row__wrapper",
+        'data-header-row-toggle': '',
+        'data-options': '{"attachToParent": "true"}'
+    }) %}
+    <div {{ block('block_attributes') }}>
+        <div class="header-row__dropdown"
+             data-page-component-module="oroshoppinglist/js/app/views/shoppinglist-widget-view">
+            {{ block_widget(block) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block _main_menu_shopping_lists_dropdown_widget %}
+    <div class="cart-widget__content">
+        <span class="cart-widget__icon">
+            <i class="fa-clipboard"></i>
+        </span>
+        <span class="cart-widget-counter">
+            <span class="cart-widget__text">
+                {% if not is_one_shopping_list_enabled() %}
+                    {{ 'oro.frontend.shoppinglist.view.entity.label'|transchoice(shoppingLists|length)|raw }}
+                {% else %}
+                    {{ 'oro.shoppinglist.default.label'|trans}}
+                {% endif %}
+            </span>
+            <i class="fa-angle-down"></i>
+        </span>
+    </div>
+    {{ block_widget(block) }}
+{% endblock %}
+
+{% block _main_menu_shopping_lists_dropdown_container_widget %}
+    {% set currentClass = 'checked' %}
+    {% set attr = layout_attr_defaults(attr, {
+        'data-page-component-module': 'oroshoppinglist/js/app/views/shoppinglist-widget-view',
+        'data-page-component-options': {
+            'currentClass': currentClass
+        },
+        'data-scroll': 'true',
+        '~class': " shopping-list-widget__container"
+    }) %}
+
+    <div {{ block('block_attributes') }}>
+        {% for shoppingList in shoppingLists -%}
+            {% do block|merge_context({
+            shoppingList: shoppingList,
+            shoppingListProducts: shoppingListProducts,
+            }) %}
+            {{ block('container_widget') }}
+        {%- endfor %}
+    </div>
+{% endblock %}
+
+{% block shopping_list_dropdown_item_widget %}
+    {% set currentClass = 'checked' %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " shopping-list-dropdown__item"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        <div class="shopping-list-dropdown__radio">
+            <label class="custom-radio {{ shoppingList.isCurrent ? currentClass }}"
+                   data-toggle="tooltip"
+                   title="Set as default"
+                   data-shopping-list-id="{{ shoppingList.id }}"
+                   data-role="shopping-list-current-label">
+                <input type="radio" name="{{ id }}-radio" data-role="set-default" {{ shoppingList.isCurrent ? 'checked' }}
+                       value="{{ shoppingList.id }}" data-label="{{ shoppingList.label }}"
+                       class="custom-radio__control">
+                <span class="custom-radio__text"></span>
+            </label>
+        </div>
+        <a class="shopping-list-dropdown__link" href="{{ is_one_shopping_list_enabled() ? path('oro_shopping_list_frontend_view') : path('oro_shopping_list_frontend_view', {id: shoppingList.id}) }}">
+            <span class="shopping-list-dropdown__title">
+                <span class="shopping-list-dropdown__name">
+                    <span class="shopping-list-dropdown__name-inner shopping-list-dropdown__name-inner--{{ shoppingList.id }}"
+                          title="{{ shoppingList.label }}"
+                          data-shopping-list-id="{{ shoppingList.id }}"
+                          data-role="shopping-list-title">{{ shoppingList.label }}</span>
+                </span>
+                <span class="shopping-list-dropdown__details">
+                    {{ 'oro.frontend.shoppinglist.view.items.label'|transchoice(shoppingList.lineItems|length) }}
+                    {% if shoppingList.lineItems|length > 0 %}
+                        | {{ shoppingList.subtotal.amount|oro_format_currency({'currency': shoppingList.subtotal.currency}) }}
+                    {% endif %}
+                </span>
+            </span>
+            <span class="shopping-list-dropdown__products">
+                {% for product in shoppingListProducts[shoppingList.id]|default([]) %}
+                    {% if loop.index == 3 %}
+                        <span class="shopping-list-dropdown__ellipsis">...</span>
+                    {% else %}
+                        <span class="shopping-list-dropdown__products__item">{{ product.name }}</span>
+                    {% endif %}
+                {% endfor %}
+            </span>
+            <span class="shopping-list-dropdown__info">{{ 'oro.frontend.shoppinglist.view.view_details.label'|trans }} <i class="fa-angle-right"></i></span>
+        </a>
+    </div>
+{% endblock %}
+
+{% block shopping_list_dropdown_create_widget %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    <div class="header-row__dropdown-footer">
+        {{ UI.clientLink({
+            'aCss': 'shopping-list-widget__create-btn',
+            'iCss': 'fa-plus-circle',
+            'label' : 'oro.frontend.shoppinglist.view.create_new_shopping_list.label'|trans,
+            'widget' : {
+                'type' : 'shopping-list-create',
+                'options': {
+                    'createOnly': true
+                }
+            }
+        }) }}
+    </div>
+{% endblock %}

@@ -1,0 +1,7 @@
+Extend\Entity\EV_Dm_Ab_Visibility:
+    type: entity
+    table: oro_enum_dm_ab_visibility
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

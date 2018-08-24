@@ -1,0 +1,25 @@
+OroEntityProxy\OroEmailBundle\EmailAddressProxy:
+    type:                   entity
+    table:                  oro_email_address
+    uniqueConstraints:
+        oro_email_address_uq:
+            columns:        [ email ]
+    lifecycleCallbacks:
+        prePersist:         [ beforeSave ]
+        preUpdate:          [ beforeUpdate ]
+    manyToOne:
+        owner1:
+            targetEntity:   Oro\Bundle\UserBundle\Entity\User
+            joinColumn:
+                name:                   owner_user_id
+                referencedColumnName:   id
+        owner2:
+            targetEntity:   Oro\Bundle\EmailBundle\Entity\Mailbox
+            joinColumn:
+                name:                   owner_mailbox_id
+                referencedColumnName:   id
+        owner3:
+            targetEntity:   Oro\Bundle\ContactBundle\Entity\Contact
+            joinColumn:
+                name:                   owner_contact_id
+                referencedColumnName:   id

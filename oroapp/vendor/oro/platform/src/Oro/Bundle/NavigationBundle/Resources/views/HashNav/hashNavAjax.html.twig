@@ -1,0 +1,3 @@
+{% spaceless %}
+    {{ oro_get_content(data|default({}))|json_encode|raw }}
+{% endspaceless %}

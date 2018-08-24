@@ -1,0 +1,81 @@
+{% extends 'OroActivityListBundle:ActivityList/js:activityItemTemplate.html.twig' %}
+{% import 'OroActivityBundle::macros.html.twig' as AC %}
+
+{% set entityClass = 'Oro\\Bundle\\TaskBundle\\Entity\\Task' %}
+{% set entityName = oro_entity_config_value(entityClass, 'label')|trans %}
+
+{% block activityDetails %}
+    {{ entityName }}
+    <% var template = (verb == 'create')
+        ? {{ 'oro.task.activity_item.created_by'|trans|json_encode|raw }}
+        : {{ 'oro.task.activity_item.changed_by'|trans|json_encode|raw }};
+    %>
+    <%= _.template(template, { interpolate: /\{\{(.+?)\}\}/g })({
+        user: owner_url ? '<a class="user" href="' + owner_url + '">' +  _.escape(owner) + '</a>' :  '<span class="user">' + _.escape(owner) + '</span>',
+        date: '<i class="date">' + createdAt + '</i>',
+        editor: editor_url ? '<a class="user" href="' + editor_url + '">' +  _.escape(editor) + '</a>' : _.escape(editor),
+        editor_date: '<i class="date">' + updatedAt + '</i>'
+    }) %>
+{% endblock %}
+
+{% block activityShortMessage %}
+    <% if (!_.isUndefined(data.statusId) && data.statusId) { %>
+        <div class="pull-right">
+            <% if (data.statusId === 'closed') { %>
+                <div class="badge badge-enabled status-enabled"><i class="icon-status-enabled fa-circle"></i>
+                    <%- data.statusName %></div>
+            <% } else if (data.statusId === 'in_progress') { %>
+                <div class="badge badge-tentatively status-tentatively"><i class="icon-status-enabled fa-circle"></i>
+                    <%- data.statusName %></div>
+            <% } else { %>
+                <div class="badge badge-disabled status-unknown"><i class="icon-status-disabled fa-circle"></i>
+                    <%- data.statusName %></div>
+            <% } %>
+        </div>
+    <% } %>
+    {{ parent() }}
+{% endblock %}
+
+{% block activityActions %}
+    {% set action %}
+        {# Add button for add context in the activity list item #}
+        <% if (editable) { %>
+            {{ AC.activity_context_link() }}
+        <% } %>
+    {% endset %}
+    {% set actions = [action] %}
+
+    {% set action %}
+        <a href="<%= routing.generate('oro_task_view', {'id': relatedActivityId}) %>"
+           title="{{ 'oro.task.view_task'|trans({'{{ entity }}': entityName}) }}"><i
+                class="fa-eye hide-text">{{ 'oro.task.view_task'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.task.view_task'|trans({'{{ entity }}': entityName}) }}
+        </a>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (editable) { %>
+        <a href="#" class="action item-edit-button"
+           title="{{ 'oro.task.update_task'|trans({'{{ entity }}': entityName}) }}"
+           data-action-extra-options="{{ {dialogOptions: {width: 1000}}|json_encode }}">
+            <i class="fa-pencil-square-o hide-text">{{ 'oro.task.update_task'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.task.update_task'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {% set action %}
+        <% if (removable) { %>
+        <a href="#" class="action item-remove-button"
+           title="{{ 'oro.task.delete_task'|trans({'{{ entity }}': entityName}) }}">
+            <i class="fa-trash-o hide-text">{{ 'oro.task.delete_task'|trans({'{{ entity }}': entityName}) }}</i>
+            {{ 'oro.task.delete_task'|trans({'{{ entity }}': entityName}) }}
+        </a>
+        <% } %>
+    {% endset %}
+    {% set actions = actions|merge([action]) %}
+
+    {{ parent() }}
+{% endblock %}

@@ -1,0 +1,72 @@
+connector:
+    name: oro_importexport
+    jobs:
+        zendesk_user_import:
+            title: "Sync users from Zendesk"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_zendesk.zendesk.user_connector
+                        processor: oro_zendesk.importexport.processor.import_user
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 25
+
+        zendesk_ticket_import:
+            title: "Sync tickets from Zendesk"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_zendesk.zendesk.ticket_connector
+                        processor: oro_zendesk.importexport.processor.import_ticket
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 25
+
+        zendesk_ticket_comment_import:
+            title: "Sync ticket comments from Zendesk"
+            type: import
+            steps:
+                import:
+                    title: import
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_zendesk.zendesk.ticket_comment_connector
+                        processor: oro_zendesk.importexport.processor.import_ticket_comment
+                        writer:    oro_integration.writer.persistent_batch_writer
+                    parameters:
+                        batch_size: 25
+
+        zendesk_ticket_export:
+            title: "Sync tickets to Zendesk"
+            type:  export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_integration.reader.entity.by_id
+                        processor: oro_zendesk.importexport.processor.export_ticket
+                        writer:    oro_zendesk.importexport.writer.export_ticket
+                    parameters:
+                        batch_size: 25
+
+        zendesk_ticket_comment_export:
+            title: "Sync ticket comments to Zendesk"
+            type:  export
+            steps:
+                export:
+                    title: export
+                    class: Oro\Bundle\BatchBundle\Step\ItemStep
+                    services:
+                        reader:    oro_integration.reader.entity.by_id
+                        processor: oro_zendesk.importexport.processor.export_ticket_comment
+                        writer:    oro_zendesk.importexport.writer.export_ticket_comment
+                    parameters:
+                        batch_size: 25

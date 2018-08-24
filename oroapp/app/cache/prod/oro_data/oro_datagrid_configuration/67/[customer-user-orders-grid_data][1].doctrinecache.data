@@ -1,0 +1,2 @@
+0
+a:1:{s:25:"customer-user-orders-grid";a:2:{s:7:"extends";s:17:"embed-orders-grid";s:6:"source";a:2:{s:5:"query";a:2:{s:4:"join";a:1:{s:4:"left";a:1:{i:0;a:2:{s:4:"join";s:19:"order1.customerUser";s:5:"alias";s:12:"customerUser";}}}s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:39:"order1.customerUser = :customer_user_id";}}}s:15:"bind_parameters";a:1:{i:0;s:16:"customer_user_id";}}}}

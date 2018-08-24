@@ -1,0 +1,33 @@
+{#
+    Render "Start a Hangout" button
+
+    Parameters - array:
+        [
+            'class'           - default class
+            'componentModule' - page-component module name that initializes StartButtonView (by default it is 'oroui/js/app/components/view-component')
+            'componentName'   - page-component name, alias for a component instance (by default is undefied)
+            'hangoutOptions'  - options for Start a Hangout button
+            'dataAttributes'  - additional data attributes
+        ]
+#}
+{% macro renderStartButton(parameters) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+    {% set pageComponent = {
+        module: parameters.componentModule is defined ? parameters.componentModule : 'oroui/js/app/components/view-component',
+        options: {
+            view: 'orohangoutscall/js/app/views/start-button-view',
+            autoRender: true,
+            hangoutOptions: parameters.hangoutOptions is defined ? parameters.hangoutOptions : {}
+        }
+    } %}
+    {% if parameters.componentName is defined %}
+        {% set pageComponent = pageComponent|merge({
+            name: parameters.componentName
+        }) %}
+    {% endif %}
+    <div class="start-hangout-button-placeholder{% if parameters.class is defined %} {{ parameters.class }}{% endif %}"
+            {% if parameters.dataAttributes is defined and parameters.dataAttributes|length %}
+                {{ UI.renderAttributes(parameters.dataAttributes) }}
+            {% endif %}
+            {{ UI.renderPageComponentAttributes(pageComponent) }}></div>
+{% endmacro %}

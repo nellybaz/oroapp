@@ -1,0 +1,32 @@
+system_configuration:
+    groups:
+        payment:
+            title: oro.payment.system_configuration.groups.payment.title
+        payment_general:
+            title: oro.payment.system_configuration.groups.general.title
+            icon: fa-cogs
+        merchant_location:
+            title: oro.payment.system_configuration.groups.merchant_location.title
+
+    fields:
+        oro_payment.merchant_country:
+            data_type: string
+            type: oro_locale_country
+            options:
+                label: oro.payment.system_configuration.fields.merchant_country.label
+                placeholder: oro.payment.system_configuration.fields.merchant_country.placeholder
+
+    tree:
+        system_configuration:
+            commerce:
+                children:
+                    payment:
+                        priority: 400
+                        children:
+                            payment_general:
+                                priority: 100
+                                children:
+                                    merchant_location:
+                                        priority: 100
+                                        children:
+                                            - oro_payment.merchant_country

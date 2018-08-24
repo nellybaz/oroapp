@@ -1,0 +1,10 @@
+{% import 'OroMessageQueueBundle::macros.html.twig' as UI %}
+
+{% set job = record.rootEntity %}
+{% set progress = job.jobProgress * 100 %}
+
+<div class="progress job-progress">
+    <div class="label {{ UI.getJobStatusClass(job) }}" style="width:{{ progress }}%;">
+        <span> {{ progress }}%</span>
+    </div>
+</div>

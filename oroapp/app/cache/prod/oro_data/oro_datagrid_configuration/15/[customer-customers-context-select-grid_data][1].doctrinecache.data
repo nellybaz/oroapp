@@ -1,0 +1,2 @@
+0
+a:1:{s:38:"customer-customers-context-select-grid";a:2:{s:7:"extends";s:30:"customer-customers-select-grid";s:14:"inline_editing";a:1:{s:6:"enable";b:0;}}}

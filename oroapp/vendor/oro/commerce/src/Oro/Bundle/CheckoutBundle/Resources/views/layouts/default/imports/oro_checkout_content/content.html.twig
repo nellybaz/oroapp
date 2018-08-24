@@ -1,0 +1,371 @@
+{% block __oro_checkout_content__checkout_content_widget %}
+    <div {{ block('block_attributes') }}
+            data-layout="separate"
+            data-role="checkout-content"
+            data-page-component-module="oroui/js/app/components/view-component"
+            data-page-component-options="{{ {
+                view: 'orocheckout/js/app/views/checkout-inner-content-view',
+            }|json_encode }}">
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_information_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_information_head_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout__head"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_information_title_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout__title"
+    }) %}
+    <h2 {{ block('block_attributes') }}>
+        <span class="checkout__title-icon">{{ stepOrder }}</span>
+        <span class="checkout__title-text">{{ workflowStep.label|trans({},'workflows') }}</span>
+        {{ block_widget(block) }}
+    </h2>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_information_body_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout__body"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_form_widget -%}
+    {% if form %}
+        {{ form_errors(form) }}
+        {{ form_start(form, {
+            'method': 'post',
+            'action': path('oro_checkout_frontend_checkout', {'id': checkout.id}),
+            'attr' : {
+                'class': 'checkout-form',
+                'data-nohash': 'true',
+                'id': form.vars.id
+            }})
+        }}
+        <div class="hidden">
+            {{ form_widget(form._token) }}
+        </div>
+        {{ block_widget(block) }}
+        </form>
+        {{ oro_form_js_validation(form) }}
+    {% else %}
+        <form method="post" class="checkout-form" action="">
+            {{ block_widget(block) }}
+        </form>
+    {% endif %}
+{%- endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary-container"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_header_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__header"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_title_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__title"
+    }) %}
+    <h2 {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </h2>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_title_text_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__title-text"
+    }) %}
+    <span {{ block('block_attributes') }}>
+        {{ 'oro.checkout.order_summary.label'|trans }}
+        {{ block_widget(block) }}
+    </span>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_subtitle_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__subtitle"
+    }) %}
+    <span {{ block('block_attributes') }}>{{ lineItemsWithTotals|length }} {{ 'oro.checkout.order_summary.items'|trans }}</span>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_edit_link_widget %}
+    {% set editLink = workflowItem.data.get('edit_order_link') %}
+    {% set attr = layout_attr_defaults(attr, {
+        'href': editLink,
+        '~class': " checkout-order-summary__edit-link"
+    }) %}
+    {% if editLink %}
+        <a {{ block('block_attributes') }}>
+            <i class="checkout-order-summary__edit-icon fa-pencil"></i>
+            <span class="checkout-order-summary__edit-text">{{ 'oro.checkout.order_summary.edit_order'|trans }}</span>
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_content_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__content"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_items_container_widget %}
+    {% set enableCollapse = lineItemsWithTotals|length > visibleLineItemsCount %}
+    {% if enableCollapse %}
+        {% set attr = layout_attr_defaults(attr, {
+            'data-page-component-module': 'oroui/js/app/components/jquery-widget-component',
+            'data-page-component-options': {
+                widgetModule: 'orofrontend/default/js/widgets/rows-collapse-widget',
+                storageKey: id,
+                keepState: keepState,
+                visibleRows: visibleLineItemsCount,
+                rowsCount: lineItemsWithTotals|length,
+                rowSelector: 'tbody'
+             }|json_encode,
+            '~class': " checkout-order-summary__collapse collapse-view expanded"
+        }) %}
+        <div {{ block('block_attributes') }}>
+            <div class="checkout-order-summary__collapse-container" data-collapse-container>
+                {{ block_widget(block) }}
+            </div>
+            <span class="checkout-order-summary__collapse-trigger" data-collapse-trigger></span>
+        </div>
+    {% else %}
+        {% set attr = layout_attr_defaults(attr, {
+            '~class': " checkout-order-summary__grid-wrapper"
+        }) %}
+        <div {{ block('block_attributes') }}>
+            <div class="checkout-order-summary__grid-container">
+                {{ block_widget(block) }}
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_items_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__grid"
+    }) %}
+    <table {{ block('block_attributes') }}>
+        <thead class="checkout-order-summary__grid-head">
+            <tr class="checkout-order-summary__grid-tr">
+                <th class="checkout-order-summary__grid-th checkout-order-summary__grid-th--info">
+                    {{ 'oro.checkout.order_summary.item'|trans }}
+                </th>
+                <th class="checkout-order-summary__grid-th hide-on-mobile-landscape">
+                    {{ 'oro.checkout.order_summary.sku'|trans }}
+                </th>
+                <th class="checkout-order-summary__grid-th checkout-order-summary__grid-th--qty">
+                    {{ 'oro.checkout.order_summary.quantity_short'|trans }}
+                </th>
+                <th class="checkout-order-summary__grid-th checkout-order-summary__grid-th--price">
+                    {{ 'oro.checkout.order_summary.price'|trans }}
+                </th>
+                <th class="checkout-order-summary__grid-th checkout-order-summary__grid-th--subtotal hide-on-mobile-landscape">
+                    {{ 'oro.checkout.order_summary.subtotal'|trans }}
+                </th>
+            </tr>
+        </thead>
+        {% for lineItem in lineItemsWithTotals %}
+            {% set mainProduct = null %}
+            {% set lineItemInfo = lineItemsWithTotals.getInfo() %}
+            {% set productSku = lineItem.productSku %}
+
+            {% if lineItem.product is not null %}
+                {% set mainProduct = lineItem.product %}
+                {% if lineItem.parentProduct is not null %}
+                    {% set mainProduct = lineItem.parentProduct %}
+                {% endif %}
+                {% set productSku = mainProduct.sku %}
+            {% endif %}
+
+            {% do block|merge_context({
+                lineItem: lineItem,
+                mainProduct: mainProduct,
+                lineItemInfo: lineItemInfo,
+                productSku: productSku,
+                parent: block.vars,
+                loop: loop
+            }) %}
+            {{ block('container_widget') }}
+        {% endfor %}
+    </table>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_row_widget %}
+    {% set errorPath = 'product.' ~ lineItem.productSku %}
+    {% set errorMessage = '' %}
+    {% set errorClass = '' %}
+    {% if parent.lineItemErrors is iterable and parent.lineItemErrors[errorPath] is defined and parent.lineItemErrors[errorPath] is iterable %}
+        {% set errorMessage = (parent.lineItemErrors[errorPath]|first).message %}
+        {% set errorClass = 'validation-error' %}
+    {% elseif parent.lineItemWarnings is iterable and parent.lineItemWarnings[errorPath] is defined and parent.lineItemWarnings[errorPath] is iterable %}
+        {% set errorMessage = (parent.lineItemWarnings[errorPath]|first).message %}
+        {% set errorClass = 'validation-warning' %}
+    {% endif %}
+    <tbody class="checkout-order-summary__grid-body {% if errorClass != '' %}checkout-order-summary__grid-body--{{ errorClass }}{% endif %} line_item">
+        <tr class="checkout-order-summary__grid-tr checkout-order-summary__grid-tr--info">{{ block('container_widget') }}</tr>
+        {% if errorMessage != '' %}
+            <tr class="checkout-order-summary__grid-tr checkout-order-summary__grid-tr--message">
+                <td colspan="5" class="checkout-order-summary__grid-td">
+                    <div class="{{ errorClass }}">{{ errorMessage }}</div>
+                </td>
+            </tr>
+        {% endif %}
+    </tbody>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_info_column_widget %}
+    <td class="checkout-order-summary__grid-td checkout-order-summary__grid-td--info" data-checkout-order-summary-line-item-info_{{ productSku|lower|oro_attribute_name_purify }}>
+        {% spaceless %}{{ block('container_widget') }}{% endspaceless %}
+    </td>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_name_widget %}
+    {% if mainProduct is not null %}
+        <a class="checkout-order-summary__lineitem-name" href="{{ path('oro_product_frontend_product_view', {'id':mainProduct.id}) }}" tabindex="-1">{{ mainProduct.names|localized_value|oro_tag_filter }}</a>
+    {% else %}
+        {{ lineItem.freeFormProduct|oro_tag_filter }}
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_sku_column_widget %}
+    <td class="checkout-order-summary__grid-td checkout-order-summary__grid-td--sku">
+        {% spaceless %}{{ block('container_widget') }}{% endspaceless %}
+    </td>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_sku_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__sku"
+    }) %}
+    <div {{ block('block_attributes') }}>{{ productSku|oro_tag_filter }}</div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_configurable_products_widget %}
+    {% if mainProduct is not null and parent.configurableProducts[lineItem.product.id] is defined %}
+        {% for product in parent.configurableProducts[lineItem.product.id] %}
+            <div>{{ product.label|trans }}:
+                {% if product.type == 'boolean' %}
+                    {{ product.value ? 'oro.product.variant_fields.yes.label'|trans : 'oro.product.variant_fields.no.label'|trans }}
+                {% else %}
+                    {{ product.value }}
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_quantity_column_widget %}
+    <td class="checkout-order-summary__grid-td checkout-order-summary__grid-td--qty">{% spaceless %}{{ block('container_widget') }}{% endspaceless %}</td>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_quantity_widget %}
+    {% set quantity = lineItem.quantity %}
+    {% if oro_is_unit_code_visible(lineItem.productUnit.code) %}
+        {{ quantity ? quantity|oro_format_short_product_unit_value(lineItem.productUnit) : 'N/A'|trans }}
+    {% else %}
+        {{ quantity }}
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_price_per_item_column_widget %}
+    <td class="checkout-order-summary__grid-td checkout-order-summary__grid-td--price"
+        data-checkout-order-summary-line-item-price_{{ productSku|lower|oro_attribute_name_purify }}
+    >{% spaceless %}{{ block('container_widget') }}{% endspaceless %}</td>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_price_per_item_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__lineitem-price"
+    }) %}
+    <div {{ block('block_attributes') }}>{{ lineItem.price is not null ? lineItem.price|oro_format_price : 'N/A'|trans }}</div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_price_total_column_widget %}
+    <td class="checkout-order-summary__grid-td checkout-order-summary__grid-td--subtotal">{% spaceless %}{{ block('container_widget') }}{% endspaceless %}</td>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_line_item_price_total_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__lineitem-total"
+    }) %}
+    <div {{ block('block_attributes') }}>{{ lineItemInfo.total|oro_format_price }}</div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_totals_container_widget %}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': ' checkout-order-summary__totals-container'
+    }) %}
+    <div {{ block('block_attributes') }}>{{ block_widget(block) }}</div>
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_order_summary_totals_widget -%}
+    {% set attr = layout_attr_defaults(attr, {
+        '~class': " checkout-order-summary__totals"
+    }) %}
+    <div {{ block('block_attributes') }}>
+        {{ block_widget(block) }}
+    </div>
+{%- endblock %}
+
+{% block __oro_checkout_content__checkout_button_continue_widget -%}
+    {% if transitionData is defined and transitionData %}
+        <fieldset class="grid__row grid__row--offset-y">
+            <div class="grid__column">
+                {{ block_widget(block) }}
+            </div>
+            <div class="grid__column">
+                <div data-role="checkout-require" class="checkout-form__req-text {% if transitionData.isAllowed == false %}hidden{% endif %}"><sup>*</sup>
+                    {{ 'oro.checkout.workflow.b2b_flow_checkout.form.required.label'|trans }}
+                </div>
+            </div>
+        </fieldset>
+    {% endif %}
+{% endblock %}
+
+{% block __oro_checkout_content__checkout_button_back_widget -%}
+    <div class="checkout-form__back">
+        {{ block_widget(block) }}
+    </div>
+{%- endblock %}

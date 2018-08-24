@@ -1,0 +1,2 @@
+0
+a:5:{s:8:"iso2Code";a:3:{s:1:"i";i:252;s:1:"h";b:0;s:1:"t";s:6:"string";}s:8:"iso3Code";a:3:{s:1:"i";i:253;s:1:"h";b:0;s:1:"t";s:6:"string";}s:4:"name";a:3:{s:1:"i";i:254;s:1:"h";b:0;s:1:"t";s:6:"string";}s:7:"regions";a:3:{s:1:"i";i:255;s:1:"h";b:0;s:1:"t";s:8:"ref-many";}s:15:"serialized_data";a:3:{s:1:"i";i:2970;s:1:"h";b:1;s:1:"t";s:5:"array";}}

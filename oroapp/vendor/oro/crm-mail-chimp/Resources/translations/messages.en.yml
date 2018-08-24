@@ -1,0 +1,362 @@
+oro:
+    mailchimp:
+        channel_type.label: MailChimp
+        acl:
+            action:
+                general: Connect to MailChimp
+        integration_transport:
+            label: MailChimp
+            api_key:
+                check.label: Check Connection
+                label: API Key
+            activity_update_interval:
+                label: 'Activity Update Interval'
+                choice:
+                    forever: Forever
+                    1week: 1 week
+                    2week: 2 weeks
+                    1month: 1 month
+                    2month: 2 months
+                    3month: 3 months
+
+        connector:
+            template:
+                label: Template Connector
+                job: Template Import
+            list:
+                label: List Connector
+                job: List Import
+            member:
+                label: Member Connector
+                job: Member Import
+            campaign:
+                label: Campaign Connector
+                job: Import campaigns from MailChimp
+            staticSegment:
+                label: Static Segment Connector
+                job: Import statics segments from MailChimp
+            member_activity:
+                label: Member Activity Connector
+                job: Import Member Activities from MailChimp
+            member_activity_abuse:
+                label: Member Abuse Activity Connector
+                job: Import Member Abuse Activities from MailChimp
+            member_activity_unsubscribe:
+                label: Member Unsubscribe Activity Connector
+                job: Import Member Unsubscribe Activities from MailChimp
+            member_activity_send:
+                label: Member Send Activity Connector
+                job: Import Member Send Activities from MailChimp
+
+        mailchimptransport:
+            entity_label: MailChimp Transport
+            entity_plural_label: MailChimp Transports
+            id.label: Id
+            api_key.label: API Key
+
+        mailchimptransportsettings:
+            entity_label: MailChimp Transport Settings
+            entity_plural_label: MailChimp Transports Settings
+            channel.label: Channel
+            id.label: Id
+            template.label: Template
+
+        template:
+            entity_label: MailChimp Template
+            entity_plural_label: MailChimp Templates
+            active.label: Active
+            category.label: Category
+            channel.label: Channel
+            created_at.label: Created At
+            id.label: Id
+            layout.label: Layout
+            name.label: Name
+            origin_id.label: Origin Id
+            preview_image.label: Preview Image
+            type.label: Type
+            updated_at.label: Update At
+            owner.label: Owner
+
+        campaign:
+            entity_label: MailChimp Campaign
+            entity_plural_label: MailChimp Campaigns
+            abuse_reports.label: Abuse Reports
+            archive_url.label: Archive URL
+            archive_url_long.label: Archive URL Long
+            channel.label: Channel
+            clicks.label: Clicks
+            content_type.label: Content Type
+            created_at.label: Created At
+            email_campaign.label: Email Campaign
+            emails_sent.label: Emails Sent
+            facebook_likes.label: Facebook Likes
+            forwards.label: Forwards
+            forwards_opens.label: Forwards Opens
+            hard_bounces.label: Hard Bounces
+            id.label: Id
+            last_open_date.label: Last Open Date
+            opens.label: Opens
+            origin_id.label: Origin Id
+            recipient_likes.label: Recipient Likes
+            send_time.label: Send Time
+            soft_bounces.label: Soft Bounces
+            status.label: Status
+            subscribers_list.label: Subscribers List
+            syntax_errors.label: Syntax Errors
+            template.label: Template
+            tests_remain.label: Tests Remain
+            tests_sent.label: Tests Sent
+            type.label: Type
+            unique_clicks.label: Unique Clicks
+            unique_likes.label: Unique Likes
+            unique_opens.label: Unique Opens
+            unsubscribes.label: Unsubscribes
+            updated_at.label: Updated At
+            users_who_clicked.label: Users Who Clicked
+            web_id.label: Web Id
+            owner.label: Owner
+            from_email.label: From Email
+            from_name.label: From Name
+            subject.label: Subject
+            title.label: Title
+            static_segment.label: Static Segment
+
+        subscriberslist:
+            entity_label: MailChimp Subscribers List
+            entity_plural_label: MailChimp Subscribers Lists
+            avg_sub_rate.label: Average Subscribe Rate
+            avg_usub_rate.label: Average Unsubscribe Rate
+            beamer_address.label: Beamer Address
+            campaign_count.label: Campaign Count
+            channel.label: Channel
+            cleaned_count.label: Cleaned Count
+            cleaned_count_since_send.label: Cleaned Count Since Send
+            click_rate.label: Click Rate
+            created_at.label: Created At
+            default_from_email.label: Default From Email
+            default_from_name.label: Default From Name
+            default_language.label: Default Language
+            default_subject.label: Default Subject
+            email_type_option.label: Email Type Option
+            group_count.label: Group Count
+            grouping_count.label: Grouping Count
+            id.label: Id
+            list_rating.label: List Rating
+            marketing_list.label: Marketing List
+            member_count.label: Active Members Count
+            member_count_since_send.label: Active Members Count Since Send
+            merge_var_count.label: Merge Vars Count
+            merge_var_config.label: Merge Vars Config
+            name.label: Name
+            open_rate.label: Open Rate
+            origin_id.label: Origin Id
+            subscribe_url_long.label: Subscribe URL Long
+            subscribe_url_short.label: Subscribe URL Short
+            target_sub_rate.label: Target Subscription Rate
+            unsubscribe_count.label: Unsubscribed Count
+            unsubscribe_count_since_send.label: Unsubscribed Count Since Send
+            updated_at.label: Updated At
+            use_awesome_bar.label: Use Awesome Bar
+            visibility.label: Visibility
+            web_id.label: Web Id
+            merge_vars_data.label: Merge Vars
+            owner.label: Owner
+            merge_var_schema.label: Merge Var Schema
+
+        member:
+            entity_label: MailChimp Member
+            entity_plural_label: MailChimp Members
+            cc.label: Country Code
+            channel.label: Channel
+            company.label: Company
+            confirmed_at.label: Confirmed At
+            confirmed_ip_address.label: Confirmed IP Address
+            created_at.label: Created At
+            dst_offset.label: DST Offset
+            email.label: Email
+            phone.label: Phone
+            euid.label: euid
+            first_name.label: First Name
+            gmt_offset.label: GMT Offset
+            id.label: Id
+            last_changed_at.label: Last Changed At
+            last_name.label: Last Name
+            latitude.label: Latitude
+            leid.label: leid
+            longitude.label: Longitude
+            member_rating.label: Member Rating
+            opted_in_at.label: Opted In At
+            opted_in_ip_address.label: Opted In IP Address
+            origin_id.label: Origin Id
+            region.label: Region
+            status.label: Status
+            timezone.label: Timezone
+            updated_at.label: Updated At
+            owner.label: Owner
+            merge_var_values.label: Merge Var Values
+            subscribers_list.label: Subscribers List
+            marketing_list_item.label: Marketing List Item
+            static_segments.label: Static Segments
+            segment_members.label: Static Segment Members
+
+        emailcampaign:
+            transport.mailchimp: MailChimp
+            integration.placeholder: Choose MailChimp integration
+            list.placeholder: Choose MailChimp list
+            integration.label: MailChimp Integration
+            template.placeholder: Choose MailChimp template
+            template.label: Template
+            statistics.label: Mailchimp Statistics
+            positive.label: Positive
+            negative.label: Negative
+            type.label: Type
+            status.label: Status
+            sendTime.label: Send Time
+            sendTime.tooltip: Number of email addresses campaign was sent to.
+            emailsSent.label: Emails Sent
+            emailsSent.tooltip: Emails Sent
+            hardBounces.label: Hard Bounces
+            hardBounces.tooltip: Number of email addresses in campaign that hard bounced.
+            softBounces.label: Soft Bounces
+            softBounces.tooltip: Number of email addresses in campaign that soft bounced.
+            unsubscribes.label: Unsubscribes
+            unsubscribes.tooltip: Number of email addresses in campaign that unsubscribed.
+            abuseReports.label: Abuse Reports
+            abuseReports.tooltip: Number of email addresses in campaign that reported campaign for abuse.
+            forwards.label: Forwards
+            forwards.tooltip: Number of times email was forwarded to a friend.
+            opens.label: Opens
+            opens.tooltip: Number of times the campaign was opened.
+            clicks.label: Clicks
+            clicks.tooltip: Number of times a link in the campaign was clicked.
+            activity_update_state:
+                label: Activities Update
+                enabled: Enabled
+                disabled: Disabled
+                expired: Expired
+            stop_receiving_activities.label: Disable Activities Update
+            start_receive_activities.label: Enable Activities Update
+
+
+        staticsegment:
+            entity_label: MailChimp Static Segment
+            entity_plural_label: MailChimp Static Segments
+            channel.label: Channel
+            created_at.label: Created At
+            id.label: Id
+            last_reset.label: Last Reset
+            last_synced.label: Last Synced
+            marketing_list.label: Marketing List
+            member_count.label: Member Count
+            members.label: Members
+            name.label: Name
+            origin_id.label: Origin Id
+            owner.label: Owner
+            remote_remove.label: Remove Removed
+            subscribers_list.label: SubscribersList
+            sync_status.label: Sync Status
+            updated_at.label: Updated At
+            segment_members.label: Members
+            extended_merge_vars.label: Extended Merge Vars
+
+        staticsegmentmember:
+            entity_label: MailChimp Static Segment Member
+            entity_plural_label: MailChimp Static Segment Members
+            id.label: Id
+            member.label: Member
+            state.label: State
+            static_segment.label: MailChimp Static Segment
+
+        memberextendedmergevar:
+            entity_label: Member Extended Merge Var
+            entity_plural_label: Member Extended Merge Var
+            id.label: Id
+            merge_var_values.label: Member Merge Var Values
+            state.label: State
+            member.label: Member
+            static_segment.label: Static Segment
+
+        extendedmergevar:
+            entity_label: Extended Merge Var
+            entity_plural_label: Extended Merge Var
+            field_type.label: Field Type
+            id.label: Id
+            label.label: Label
+            name.label: Name
+            required.label: Is Required
+            state.label: State
+            tag.label: Tag
+            static_segment.label: Static Segment
+
+        memberactivity:
+            entity_label: MailChimp Member Activity
+            entity_plural_label: MailChimp Member Activities
+            id.label: Id
+            action.label: Action
+            activity_time.label: Activity Time
+            campaign.label: MailChimp Campaign
+            channel.label: Integration channel
+            email.label: Email
+            ip.label: IP
+            member.label: Member
+            owner.label: Owner
+            url.label: URL
+
+        connection:
+            name: MailChimp Connection
+            segment_name: MailChimp Segment Name
+            sync_message: Marketing List scheduled for sync with MailChimp Segment "%segment_name%"
+            button:
+                connect: 'Connect to MailChimp'
+                manage_connection: 'Connection Settings'
+                group_name: 'MailChimp'
+                synchronize: 'Synchronize'
+                disconnect: 'Disconnect'
+            confirmation:
+                disconnect: 'Are you sure you want to unlink this Marketing List from MailChimp'
+            message:
+                update: 'MailChimp connection updated'
+                connect: 'Connected to MailChimp'
+                disconnect: 'Marketing List disconnected from MailChimp'
+                syncronize_scheduled: 'Marketing List scheduled to synchronize with MailChimp'
+            dialog:
+                button:
+                    update: Update
+                    connect: Connect
+                    cancel: Cancel
+                title:
+                    update: MailChimp Connection Settings
+                    connect: Connect to MailChimp
+
+        syncstatus:
+            synced: Up to date
+            not_synced: Not Synced
+            in_progress: In Progress
+            scheduled: Scheduled for Sync
+            scheduled_by_change: Scheduled for Sync
+            list_is_connected.lebel: 'This list is linked to "%segment%" segment of "%list%" Mailchimp List. Last synchronization date: %synced%. Synchronization status: %status%.'
+        form:
+            api_key:
+                tooltip: 'MailChimp API Key. <br/><a href="http://kb.mailchimp.com/accounts/management/about-api-keys" target="_blank" class="no-hash">About API Keys</a>'
+            activity_update_interval:
+                tooltip: How long email capaign activities should be received.
+
+        controller:
+            email_campaign.receive_activities:
+                enabled.message: 'Receiving of connected MailChimp campaign activities enabled'
+                disabled.message: 'Receiving of connected MailChimp campaign activities disabled'
+
+        configuration:
+            groups:
+                mailchimp_settings:  'MailChimp Settings'
+                mailchimp_synchronization: 'Synchronization settings'
+            fields:
+                static_segment_sync_mode:
+                    label: 'Static segment synchronization mode'
+                    tooltip: |
+                        Scheduled - synchronizations are scheduled only by cron.
+                        On update - synchronizations are scheduled both by cron and as soon as data in static segment changes.
+                        You have to have the process "Schedule MailChimp Static Segment synchronization" to be enabled to make this configuration be respected.
+                    choices:
+                        scheduled: 'Scheduled ({{ schedule_definition }})'
+                        on_update: 'On data update'

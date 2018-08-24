@@ -1,0 +1,2 @@
+bundles:
+    - { name: Oro\Bundle\CronBundle\OroCronBundle, priority: -80 }

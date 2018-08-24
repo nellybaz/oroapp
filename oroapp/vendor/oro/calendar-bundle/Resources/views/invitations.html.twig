@@ -1,0 +1,89 @@
+{# Build attendees list #}
+{% macro calendar_event_invitation(parentEvent) %}
+    <div class="row-fluid">
+        <div class="responsive-block">
+            <ul class="user-status-list list-group">
+                {% for attendee in parentEvent.attendees %}
+                    {{ _self.build_invitation_link(attendee) }}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endmacro %}
+
+{# build attendee #}
+{% macro build_invitation_link(attendee) %}
+    {% import 'OroUIBundle::macros.html.twig' as UI %}
+        {% set invitationStatus = attendee.statusCode %}
+        {% set invitationClass = _self.get_invitatition_status_class(invitationStatus) %}
+        <li class="list-group-item">
+            <i {% if invitationClass %}class="{{ invitationClass }}" title="{{ attendee.status.name }}"{% endif %}></i>
+            <span class="list-group-item-text">
+                {% set avatar = attendee.user ? attendee.user.avatar %}
+                <img src="{{ avatar ? filtered_image_url(avatar, 'avatar_xsmall') : asset('bundles/oroui/img/avatar-xsmall.png') }}" />
+                {% if (is_granted('oro_user_user_view') and attendee.user) %}
+                    {{ UI.link({
+                        'label' : attendee.user|oro_format_name|default('N/A'),
+                        'path'  : path('oro_user_view', {'id': attendee.user.id })
+                    }) }}
+                {% else %}
+                    {% set attendeeName = attendee.displayName %}
+                    {% if attendee.email %}
+                        {% set attendeeName = attendeeName ? attendeeName ~ ' (' ~ attendee.email ~ ')' : attendee.email %}
+                    {% endif %}
+                    {{ attendeeName }}
+                {% endif %}
+                {% set typeId = attendee.type ? attendee.type.id : null %}
+                {%- if typeId %}
+                - {{ _self.get_attendee_type(typeId) }}
+                {% endif -%}
+            </span>
+        </li>
+{% endmacro %}
+
+{% macro get_invitatition_badge_class(invitationStatus) %}
+    {%- if invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_TENTATIVE') -%}
+        tentatively
+    {%- elseif invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_ACCEPTED') -%}
+        enabled
+    {%- elseif invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_DECLINED') -%}
+        disabled
+    {%- endif -%}
+{% endmacro %}
+
+{% macro get_invitatition_status_class(invitationStatus) %}
+    {%- if invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_NONE') -%}
+        fa-reply
+    {%- elseif invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_TENTATIVE') -%}
+        fa-question
+    {%- elseif invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_ACCEPTED') -%}
+        fa-check
+    {%- elseif invitationStatus == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::STATUS_DECLINED') -%}
+        fa-close
+    {%- endif -%}
+{% endmacro %}
+
+{%- macro calendar_event_invitation_status(statusCode) -%}
+    {{ ('oro.calendar.calendarevent.statuses.' ~ statusCode ~ '.label')|trans }}
+{%- endmacro -%}
+
+{%- macro calendar_event_invitation_going_status(statusCode) -%}
+    {{ ('oro.calendar.calendarevent.action.going_status.' ~ statusCode ~ '.label')|trans }}
+{%- endmacro -%}
+
+{% macro notify_attendees_component() %}
+    <div style="display: none"
+         data-page-component-module="oroui/js/app/components/view-component"
+         data-page-component-options="{{ {'view': 'orocalendar/js/app/views/attendee-notifier-view'}|json_encode }}">
+    </div>
+{% endmacro %}
+
+{% macro get_attendee_type(typeId) %}
+    {%- if typeId == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::TYPE_ORGANIZER') -%}
+        {{ 'oro.calendar.attendee.type.organizer.label'|trans }}
+    {%- elseif typeId == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::TYPE_OPTIONAL') -%}
+        {{ 'oro.calendar.attendee.type.optional.label'|trans }}
+    {%- elseif typeId == constant('Oro\\Bundle\\CalendarBundle\\Entity\\Attendee::TYPE_REQUIRED') -%}
+        {{ 'oro.calendar.attendee.type.required.label'|trans }}
+    {%- endif -%}
+{% endmacro %}

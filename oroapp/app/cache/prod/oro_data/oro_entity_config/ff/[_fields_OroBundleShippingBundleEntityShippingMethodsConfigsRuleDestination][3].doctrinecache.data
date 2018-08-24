@@ -1,0 +1,2 @@
+0
+a:6:{s:2:"id";a:3:{s:1:"i";i:2536;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:10:"regionText";a:3:{s:1:"i";i:2537;s:1:"h";b:0;s:1:"t";s:6:"string";}s:11:"postalCodes";a:3:{s:1:"i";i:2538;s:1:"h";b:0;s:1:"t";s:8:"ref-many";}s:6:"region";a:3:{s:1:"i";i:2539;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:7:"country";a:3:{s:1:"i";i:2540;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}s:17:"methodConfigsRule";a:3:{s:1:"i";i:2541;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

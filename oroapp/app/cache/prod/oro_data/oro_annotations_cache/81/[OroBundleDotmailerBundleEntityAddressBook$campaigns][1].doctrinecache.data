@@ -1,0 +1,2 @@
+0
+a:2:{i:0;O:31:"Doctrine\ORM\Mapping\ManyToMany":7:{s:12:"targetEntity";s:42:"Oro\Bundle\DotmailerBundle\Entity\Campaign";s:8:"mappedBy";s:12:"addressBooks";s:10:"inversedBy";N;s:7:"cascade";N;s:5:"fetch";s:4:"LAZY";s:13:"orphanRemoval";b:0;s:7:"indexBy";N;}i:1;O:61:"Oro\Bundle\EntityConfigBundle\Metadata\Annotation\ConfigField":2:{s:4:"mode";s:7:"default";s:13:"defaultValues";a:1:{s:12:"importexport";a:1:{s:8:"excluded";b:1;}}}}

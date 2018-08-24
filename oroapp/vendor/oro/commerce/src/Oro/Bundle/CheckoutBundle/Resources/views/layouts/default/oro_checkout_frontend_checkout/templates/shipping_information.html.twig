@@ -1,0 +1,50 @@
+{% block _checkout_form_fields_widget -%}
+    {% from 'OroAddressBundle::macros.html.twig' import renderAddress %}
+    {% if workflowItem.data.get('disallow_shipping_address_edit') %}
+        <fieldset class="grid__row grid__row--offset-none">
+            <div class="grid__column grid__column--offset-y grid__column--6">
+                {{ renderAddress(checkout.shippingAddress) }}
+            </div>
+        </fieldset>
+    {% else %}
+        {% import 'OroCheckoutBundle:layouts/default/oro_checkout_frontend_checkout/templates:address.html.twig' as address %}
+        {% set hasCustomAddress = false %}
+        {% if form.shipping_address.id.vars.value %}
+            {% set hasCustomAddress = not form.shipping_address.vars.value.customerUserAddress and not form.shipping_address.vars.value.customerAddress %}
+        {% endif %}
+
+        <div data-page-component-module="oroui/js/app/components/view-component"
+             data-page-component-options="{{ {
+                 view: 'orocheckout/js/app/views/address-view',
+                 hideNewAddressForm: true,
+                 selectors: {
+                     address: '#' ~ form.shipping_address.customerAddress.vars.id,
+                     region: '#' ~ form.shipping_address.region.vars.id,
+                     fieldsContainer: '#checkout-address-fields-container',
+                     shipToBillingCheckbox: '#' ~ form.ship_to_billing_address.vars.id,
+                 }
+             }|json_encode }}">
+
+            <div class="grid">
+                <div class="grid__row grid__row--offset-none">
+                    <div class="grid__column grid__column--6">
+                        {{ form_row(form.shipping_address.customerAddress) }}
+                    </div>
+                </div>
+            </div>
+
+            {{ address.address_form(form.shipping_address, form.save_shipping_address, hasCustomAddress) }}
+
+            {% if workflowItem.data.get('billing_address_has_shipping') %}
+                <fieldset class="grid__row grid__row--offset-none">
+                    <div class="grid__column grid__column--offset-y">
+                        {{ form_row(form.ship_to_billing_address) }}
+                    </div>
+                </fieldset>
+            {% endif %}
+            {%  if  form.state_token is defined %}
+                {{ form_row(form.state_token) }}
+            {% endif %}
+        </div>
+    {% endif %}
+{%- endblock %}

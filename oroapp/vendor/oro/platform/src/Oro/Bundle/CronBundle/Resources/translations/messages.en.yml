@@ -1,0 +1,84 @@
+oro:
+    cron:
+        header:
+            command:      Command
+            error:        Error output
+            id:           ID
+            jobs:         Jobs
+            memory:       Memory usage, MB
+            output:       Output
+            priority:     Priority
+            queue:        Queue
+            retry:        Retry jobs
+            runtime:      Runtime, s
+            state:        State
+            statistics:   Statistics
+            trace:        Stack trace
+            view:         View
+            job:          'Job "%name%"'
+            started_at:   Started At
+            closed_at:    Closed At
+
+        menu:
+            cron_job.description:          Cron job queue
+            cron_job.label:                Job Queue
+            cron_job_shortcut.label:       Jobs List
+            cron_job_shortcut.description: List of cron jobs
+            cron_schedule.label:           Scheduled Tasks
+            cron_schedule.description:     Cron Scheduled Tasks
+
+        message:
+            start:
+                fail:     Failed to start daemon
+                success:  Daemon started
+            stop:
+                fail:     Failed to stop daemon
+                success:  Daemon stopped
+
+        sidebar:
+            check:        Check status
+            not_running:  Not running
+            pid:          Daemon PID
+            run:          Run daemon
+            running:      Running
+            status:       Daemon status
+            stop:         Stop daemon
+
+        view:
+            dependencies: Dendencies
+            in_deps:      Incoming Dependencies
+            original:     Original Job
+            related:      Related Entities
+
+        job:
+            status:
+                new:        New
+                pending:    Pending
+                canceled:   Canceled
+                running:    Running
+                finished:   Finished
+                failed:     Failed
+                terminated: Terminated
+                incomplete: Incomplete
+                unknown:    Unknown
+
+        schedule:
+            entity_label: 'Schedule'
+            entity_plural_label: 'Schedules'
+
+            id.label: 'Id'
+            command.label: 'Command'
+            arguments.label: 'Arguments'
+            arguments_hash.label: 'Arguments Hash'
+            definition.label: 'Definition'
+
+        schedule_interval:
+            active_at.label: 'Activate At'
+            deactivate_at.label: 'Deactivate At'
+            add: 'Add'
+            was_activated: 'Was activated on %date%.'
+            was_deactivated: 'Was deactivated on %date%.'
+            will_be_acitivated: 'Will become active on %date%.'
+            will_be_deacitivated: 'Will be deactivated on %date%.'
+            active_now: 'Is active now.'
+            not_active_now: 'Is not active now.'

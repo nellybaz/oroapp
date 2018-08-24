@@ -1,0 +1,50 @@
+navigation:
+    menu_config:
+        items:
+            tags_management:
+                label:    'oro.tag.menu.tags_management.label'
+                uri:      '#'
+                position: 90
+            oro_tag_list:
+                label:    'oro.tag.entity_plural_label'
+                route:    'oro_tag_index'
+                position: 10
+                extras:
+                    routes:      ['oro_tag_*']
+                    description: 'oro.tag.menu.tag_list.description'
+            oro_taxonomy_list:
+                label:    'oro.taxonomy.entity_plural_label'
+                route:    'oro_taxonomy_index'
+                position: 20
+                extras:
+                    routes:      ['oro_taxonomy_*']
+                    description: 'oro.taxonomy.menu.tag_list.description'
+            shortcut_new_tag:
+                label: 'oro.tag.menu.shortcut_new_tag.label'
+                route: 'oro_tag_create'
+                extras:
+                    description: 'oro.tag.menu.shortcut_new_tag.description'
+            shortcut_new_taxonomy:
+                label: 'oro.taxonomy.menu.shortcut_new_taxonomy.label'
+                route: 'oro_taxonomy_create'
+                extras:
+                    description: 'oro.taxonomy.menu.shortcut_new_taxonomy.description'
+        tree:
+            application_menu:
+                children:
+                    system_tab:
+                        children:
+                            tags_management:
+                                children:
+                                    oro_tag_list: ~
+                                    oro_taxonomy_list: ~
+            shortcuts:
+                children:
+                    shortcut_new_tag: ~
+                    shortcut_new_taxonomy: ~
+
+    titles:
+        oro_tag_index:  ~
+        oro_tag_update: '%tag.name% Tag - Edit'
+        oro_tag_create: 'Create Tag'
+        oro_tag_search: 'Records tagged as "%tag.name%"'

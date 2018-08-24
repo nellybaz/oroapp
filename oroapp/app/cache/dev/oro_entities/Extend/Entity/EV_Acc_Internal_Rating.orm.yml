@@ -1,0 +1,7 @@
+Extend\Entity\EV_Acc_Internal_Rating:
+    type: entity
+    table: oro_enum_acc_internal_rating
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

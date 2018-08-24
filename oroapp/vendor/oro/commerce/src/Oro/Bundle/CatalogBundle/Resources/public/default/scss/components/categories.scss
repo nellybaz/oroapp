@@ -1,0 +1,15 @@
+.categories-widget {
+  margin: 3px 0 0;
+
+  background: get-color('additional', 'base');
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &__badge {
+    i {
+      font-size: 16px;
+    }
+  }
+}

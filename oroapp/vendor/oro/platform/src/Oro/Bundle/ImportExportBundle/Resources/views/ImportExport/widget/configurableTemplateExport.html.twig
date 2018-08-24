@@ -1,0 +1,34 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+
+{% set exportConfigurableTemplateWidgetViewOptions = {
+    view: {
+        view: 'oroimportexport/js/app/views/export-configurable-template-widget-view',
+        wid: app.request.get('_wid'),
+        downloadMessage: 'Downloading data template...'|trans
+    }
+} %}
+
+<div class="widget-content import-widget-content">
+    <div class="form-container" {{ UI.renderPageComponentAttributes(exportConfigurableTemplateWidgetViewOptions) }}>
+        <form method="post"
+              data-nohash="true"
+              id="{{ form.vars.id }}"
+              name="{{ form.vars.name }}"
+              action="{{ path('oro_importexport_export_template_config', {entity: entityName, options: options}) }}"
+              class="form-horizontal"
+                {{ form_enctype(form) }}>
+
+            <fieldset class="form">
+                {{ form_rest(form) }}
+            </fieldset>
+
+            <div class="widget-actions">
+                <button class="btn" type="reset">{{ 'Cancel'|trans }}</button>
+                <button class="btn btn-primary" type="submit">
+                    {{ 'Download'|trans }}
+                </button>
+            </div>
+        </form>
+        {{ oro_form_js_validation(form) }}
+    </div>
+</div>

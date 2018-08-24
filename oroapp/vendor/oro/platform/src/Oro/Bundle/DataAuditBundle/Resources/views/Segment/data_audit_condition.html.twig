@@ -1,0 +1,17 @@
+{% set dataAuditConditionOptions = {
+    filters: params.metadata.filters|default([]),
+    hierarchy: params.metadata.hierarchy|default({}),
+    fieldChoice: {
+        filterPreset: 'dataaudit',
+        select2: {
+            placeholder: 'oro.query_designer.condition_builder.choose_entity_field'|trans,
+            formatSelectionTemplateSelector: params.column_chain_template_selector|default(null),
+        },
+    },
+}|merge_recursive(params.dataAuditConditionOptions|default({})) %}
+
+<li class="option condition-data-audit" data-criteria="condition-data-audit"
+    data-module="orodataaudit/js/app/views/data-audit-condition-view"
+    data-options="{{ dataAuditConditionOptions|json_encode }}">
+    {{ 'oro.dataaudit.condition_builder.criteria.data_audit'|trans }}
+</li>

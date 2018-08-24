@@ -1,0 +1,7 @@
+BUYER:
+    permissions:
+        entity|Oro\Bundle\SaleBundle\Entity\Quote: [VIEW_BASIC]
+
+ADMINISTRATOR:
+    permissions:
+        entity|Oro\Bundle\SaleBundle\Entity\Quote: [VIEW_DEEP, CREATE_DEEP, ASSIGN_DEEP]

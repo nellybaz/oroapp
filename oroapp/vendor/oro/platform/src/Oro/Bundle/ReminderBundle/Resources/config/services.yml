@@ -1,0 +1,83 @@
+parameters:
+    oro_reminder.entity.class:                    Oro\Bundle\ReminderBundle\Entity\Reminder
+    oro_reminder.entity.manager.class:            Oro\Bundle\ReminderBundle\Entity\Manager\ReminderManager
+    oro_reminder.sender.class:                    Oro\Bundle\ReminderBundle\Model\ReminderSender
+    oro_reminder.send_processor_registry.class:   Oro\Bundle\ReminderBundle\Model\SendProcessorRegistry
+    oro_reminder.model.email_notification.class:  Oro\Bundle\ReminderBundle\Model\Email\EmailNotification
+    oro_reminder.send_processor.email.class:      Oro\Bundle\ReminderBundle\Model\Email\EmailSendProcessor
+    oro_reminder.send_processor.web_socket.class: Oro\Bundle\ReminderBundle\Model\WebSocket\WebSocketSendProcessor
+    oro_reminder.web_socket.message_params_provider.class: Oro\Bundle\ReminderBundle\Model\WebSocket\MessageParamsProvider
+    oro_reminder.url_provider.class:              Oro\Bundle\ReminderBundle\Model\UrlProvider
+
+services:
+    oro_reminder.entity.manager:
+        class: %oro_reminder.entity.manager.class%
+        arguments:
+            - '@oro_entity.doctrine_helper'
+
+    oro_reminder.reminder_entity_listener:
+        class: Oro\Bundle\ReminderBundle\EventListener\ReminderListener
+        public: false
+        arguments:
+            - '@oro_reminder.entity.manager'
+        tags:
+            - { name: doctrine.event_listener, event: postLoad, lazy: false }
+            - { name: doctrine.event_listener, event: postPersist, lazy: false }
+
+    oro_reminder.sender:
+        class: %oro_reminder.sender.class%
+        arguments:
+            - '@oro_reminder.send_processor_registry'
+        lazy: true
+
+    oro_reminder.send_processor_registry:
+        class: %oro_reminder.send_processor_registry.class%
+        arguments:
+            - []
+
+    oro_reminder.model.email_notification:
+        class: %oro_reminder.model.email_notification.class%
+        arguments:
+            - '@doctrine.orm.entity_manager'
+            - '@oro_entity_config.provider.reminder'
+            - '@oro_entity.entity_name_resolver'
+
+    oro_reminder.send_processor.email:
+        class: %oro_reminder.send_processor.email.class%
+        arguments:
+            - '@oro_notification.manager.email_notification'
+            - '@oro_reminder.model.email_notification'
+            - '@event_dispatcher'
+        tags:
+            - { name: oro_reminder.send_processor }
+
+    oro_reminder.send_processor.web_socket:
+        class: %oro_reminder.send_processor.web_socket.class%
+        arguments:
+            - '@oro_wamp.publisher'
+            - '@oro_reminder.web_socket.message_params_provider'
+        tags:
+            - { name: oro_reminder.send_processor }
+
+    #Message params providers
+    oro_reminder.web_socket.message_params_provider:
+        class: %oro_reminder.web_socket.message_params_provider.class%
+        arguments:
+            - '@translator'
+            - '@oro_locale.formatter.date_time'
+            - '@oro_reminder.url_provider'
+            - '@oro_entity_config.provider.reminder'
+
+    oro_reminder.url_provider:
+        class: %oro_reminder.url_provider.class%
+        arguments:
+            - '@oro_entity_config.config_manager'
+            - '@router'
+
+    oro_reminder.twig.extension:
+        class: Oro\Bundle\ReminderBundle\Twig\ReminderExtension
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }

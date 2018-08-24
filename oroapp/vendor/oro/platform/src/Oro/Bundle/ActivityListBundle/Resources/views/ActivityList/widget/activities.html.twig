@@ -1,0 +1,103 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% set containerExtraClass = containerExtraClass is defined ? containerExtraClass : '' %}
+<div class="widget-content activity-list {{ containerExtraClass }}">
+    {% set pager = {
+        current: 1,
+        pagesize: oro_config_value('oro_activity_list.per_page'),
+        total: 1,
+        count: 1,
+        sortingField: oro_config_value('oro_activity_list.sorting_field')
+    } %}
+    {% block widget_content %}
+
+        {% placeholder oro_activity_list_before with {entityClass: oro_class_name(entity, true), entityId: entity.id} %}
+
+        {% block widget_actions %}
+        <div class="grid-toolbar">
+            <div class="filter-box oro-clearfix-width">
+                <div class="filter-container"></div>
+            </div>
+            <div class="pull-right">
+                <div class="actions-panel pull-right">
+                    {{ UI.clientLink({
+                        'aCss': 'action btn',
+                        'iCss': 'fa-refresh',
+                        'label': ' ' ~ ('Refresh'|trans),
+                        'dataAttributes': {'action-name': 'refresh', 'section': 'top'}
+                    }) }}
+                </div>
+            </div>
+            <div class="pagination">
+                <ul class="icons-holder">
+                    <li class="pagination-previous {% if pager.current == 1 %} disabled {% endif %}">
+                        <a href="#" data-section="top" data-action-name="goto_previous">
+                            <i class="fa-chevron-left hide-text"></i>
+                            {% if oro_config_value('oro_activity_list.sorting_direction') == 'DESC' %}
+                                {{ 'oro.activitylist.pagination.newer'|trans }}
+                            {% else %}
+                                {{ 'oro.activitylist.pagination.older'|trans }}
+                            {% endif %}
+                        </a>
+                    </li>
+                    <li class="pagination-next">
+                        <a href="#" data-section="top" data-action-name="goto_next">
+                            {% if oro_config_value('oro_activity_list.sorting_direction') == 'DESC' %}
+                                {{ 'oro.activitylist.pagination.older'|trans }}
+                            {% else %}
+                                {{ 'oro.activitylist.pagination.newer'|trans }}
+                            {% endif %}
+                            <i class="fa-chevron-right hide-text"></i>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {% endblock %}
+        {% block items_container %}
+            {% set options = {
+                widgetId: app.request.get('_wid'),
+                ignoreHead: oro_config_value('oro_activity_list.grouping') == false,
+                activityListData: render(path(
+                    'oro_activity_list_api_get_list',
+                    {
+                        entityClass: oro_class_name(entity, true),
+                        entityId: entity.id
+                    }
+                )),
+                activityListOptions: {
+                    configuration: configuration,
+                    template: '#template-activity-list',
+                    itemTemplate: '#template-activity-item',
+                    urls: {
+                        route: 'oro_activity_list_api_get_list',
+                        parameters: {
+                            entityClass: oro_class_name(entity, true),
+                            entityId: entity.id
+                        }
+                    },
+                    loadingContainerSelector: '.activity-list',
+                    pager: pager,
+                    dateRangeFilterMetadata: dateRangeFilterMetadata,
+                    routes: {}
+                },
+                commentOptions: {
+                    listTemplate: '#template-activity-item-comment',
+                    canCreate:    is_granted('oro_comment_create')
+                }
+            } %}
+
+            <div class="container-fluid accordion"
+                data-page-component-module="oroactivitylist/js/app/components/activity-list-component"
+                data-page-component-options="{{ options|json_encode }}"></div>
+            {% include 'OroActivityListBundle:ActivityList:js/list.html.twig' with {'id': 'template-activity-list'} %}
+            {% include 'OroActivityListBundle:ActivityList:js/view.html.twig' with {'id': 'template-activity-item'} %}
+            {% for activityClass, activityOptions in configuration %}
+                {% include activityOptions.template with {'id': ('template-activity-item-' ~ activityClass) } %}
+            {% endfor %}
+            {% include 'OroCommentBundle:Comment/js:list.html.twig' with {'id': 'template-activity-item-comment'} %}
+        {% endblock %}
+
+        {% placeholder oro_activity_list_after with {entityClass: oro_class_name(entity, true), entityId: entity.id} %}
+
+    {% endblock %}
+</div>

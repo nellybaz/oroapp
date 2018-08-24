@@ -1,0 +1,111 @@
+services:
+    oro_frontend.layout.type.exception:
+        parent: oro_layout.block_type.abstract_configurable
+        calls:
+            - [setOptionsConfig, [{status_code: {required: true}, status_text: {required: true}}]]
+            - [setName, ['exception']]
+        tags:
+             - { name: layout.block_type, alias: exception }
+
+    oro_frontend.block_type.extension.button_style:
+        parent: oro_layout.block_type.extension.abstract_configurable
+        calls:
+            - [setOptionsConfig, [{style: ~}]]
+            - [setExtendedType, ['button']]
+        tags:
+            - { name: layout.block_type_extension, alias: button }
+
+    oro_frontend.block_type.back_link:
+        parent: oro_layout.block_type.abstract_configurable
+        calls:
+            - [setOptionsConfig, [{icon: {default: 'left-open-mini'}}]]
+            - [setName, ['back_link']]
+            - [setParent, ['link']]
+        tags:
+            - { name: layout.block_type, alias: back_link }
+
+    oro_frontend.block_type.embedded_list:
+        parent: oro_layout.block_type.abstract_configurable_container
+        calls:
+            -
+                - setOptionsConfig
+                -
+                    -
+                        label: ~
+                        items: {required: true}
+                        items_data: {default: []}
+                        item_extra_class: {default: ''}
+                        item_key: {default: item}
+                        use_slider: {default: false}
+                        slider_options: {default: {slidesToShow: 4}}
+                        use_footer_align: {default: false}
+                        footer_align_component_options: {default: ''}
+            - [setName, ['embedded_list']]
+        tags:
+            - { name: layout.block_type, alias: embedded_list }
+
+    oro_frontend.block_type.sticky_panel:
+        parent: oro_layout.block_type.abstract_configurable_container
+        calls:
+            -
+                - setOptionsConfig
+                -
+                    -
+                        sticky_name: {default: ''}
+                        stick_to: {default: 'top'}
+            - [setName, ['sticky_panel']]
+        tags:
+            - { name: layout.block_type, alias: sticky_panel }
+
+    oro_frontend.block_type.scroll_top:
+        parent: oro_layout.block_type.abstract_configurable_container
+        calls:
+            -
+                - setOptionsConfig
+                -
+                    -
+                        enabled: {default: true}
+                        scroll_top_position: {default: 'bottom-left'}
+            - [setName, ['scroll_top']]
+        tags:
+            - { name: layout.block_type, alias: scroll_top }
+
+    oro_layout.block_type.groups_menu_item:
+        parent: oro_layout.block_type.abstract_configurable
+        calls:
+            -
+                - setOptionsConfig
+                -
+                    -
+                        label: {default: ''}
+                        group: {default: ''}
+                        isActive: {default: '=context["group"] == group'}
+            - [setName, ['groups_menu_item']]
+        tags:
+             - { name: layout.block_type, alias: groups_menu_item }
+
+    oro_layout.block_type.group_element:
+            parent: oro_layout.block_type.abstract_configurable_container
+            calls:
+                - [setOptionsConfig, [anchor: {required: true}, label: {required: true}]]
+                - [setName, ['group_element']]
+            tags:
+                 - { name: layout.block_type, alias: group_element }
+
+    oro_layout.block_type.group_element_item:
+            parent: oro_layout.block_type.abstract_configurable_container
+            calls:
+                -
+                    - setOptionsConfig
+                    -
+                        -
+                            description: {default: ''}
+                            anchor: {default: ''}
+                            label: {default: ''}
+                            subTreeLvl: {default: 1}
+                            preview: {default: true}
+                            source: {default: true}
+                            source_language: {default: markup}
+                - [setName, ['group_element_item']]
+            tags:
+                 - { name: layout.block_type, alias: group_element_item }

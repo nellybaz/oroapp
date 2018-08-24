@@ -1,0 +1,32 @@
+navigation:
+    menu_config:
+        items:
+            task_list:
+                label: 'oro.task.entity_plural_label'
+                route: 'oro_task_index'
+                position: 10
+                extras:
+                    routes: ['oro_task_update', 'oro_task_create', 'oro_task_view']
+                    description: 'oro.task.menu.task_list.description'
+
+            oro_task_my_tasks:
+                label: 'oro.task.menu.my_tasks'
+                route: 'oro_task_my_tasks'
+                position: 15
+
+        tree:
+            application_menu:
+                children:
+                    activities_tab:
+                        children:
+                            task_list: ~
+            usermenu:
+                children:
+                    oro_task_my_tasks: ~
+
+    titles:
+        oro_task_index: ~
+        oro_task_view: '%entity.subject%'
+        oro_task_create: oro.ui.create_entity
+        oro_task_update: '%entity.subject% - Edit'
+        oro_task_my_tasks: "My Tasks - %username%"

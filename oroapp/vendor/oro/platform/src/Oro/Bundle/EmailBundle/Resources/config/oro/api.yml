@@ -1,0 +1,48 @@
+api:
+    entities:
+#        Oro\Bundle\EmailBundle\Entity\EmailTemplate: ~
+#        Oro\Bundle\EmailBundle\Entity\AutoResponseRule: ~
+#        Oro\Bundle\EmailBundle\Entity\AutoResponseRuleCondition: ~
+
+        Oro\Bundle\EmailBundle\Entity\Email:
+            documentation_resource: '@OroEmailBundle/Resources/doc/api/email.md'
+            fields:
+                activityTargets:
+                    data_type: association:manyToMany:activity
+            actions:
+                get: false
+                get_list: false
+                update: false
+                create: false
+                delete: false
+                delete_list: false
+                get_relationship: false
+                update_relationship: false
+                add_relationship: false
+                delete_relationship: false
+            subresources:
+                recipients:
+                    exclude: true
+                suggestions:
+                    target_class: Oro\Bundle\ApiBundle\Model\EntityIdentifier
+                    target_type: collection
+                    actions:
+                        get_relationship: false
+                        update_relationship: false
+                        add_relationship: false
+                        delete_relationship: false
+                    filters:
+                        fields:
+                            exclude-current-user:
+                                data_type: boolean
+
+#        Oro\Bundle\EmailBundle\Entity\EmailAttachment: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailAttachmentContent: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailBody: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailFolder: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailOrigin: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailRecipient: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailThread: ~
+#        Oro\Bundle\EmailBundle\Entity\EmailUser: ~
+#        Oro\Bundle\EmailBundle\Entity\InternalEmailOrigin: ~
+#        Oro\Bundle\EmailBundle\Entity\Mailbox: ~

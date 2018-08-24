@@ -1,0 +1,20 @@
+{#
+    Available variables:
+    * entity       - user entity Oro\Bundle\TagBundle\Entity\Tag
+    * indexer_item - indexer item Oro\Bundle\SearchBundle\Query\Result\Item
+#}
+{% extends 'OroSearchBundle:Search:searchResultItem.html.twig' %}
+
+{% set showImage = false %}
+
+{% if entity %}
+    {% set recordUrl = indexer_item.recordUrl %}
+{% endif %}
+
+{% set title = entity.name|default('N/A') %}
+{% set entityType = oro_entity_config_value(indexer_item.entityName, 'label')|trans %}
+
+{% set entityInfo = [
+    {'title': 'oro.ui.created_at'|trans, 'value': entity.created ? entity.created|oro_format_datetime : 'N/A'},
+    {'title': 'oro.ui.updated_at'|trans, 'value': entity.updated ? entity.updated|oro_format_datetime : 'N/A'},
+] %}

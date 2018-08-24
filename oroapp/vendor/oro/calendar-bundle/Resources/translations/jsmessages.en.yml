@@ -1,0 +1,117 @@
+oro:
+    calendar:
+        control:
+            all_day: " "
+            today:   today
+            month:   month
+            week:    week
+            day:     day
+        error_message:
+            event_model:
+                end_date_earlier_than_start: "The end date can't be earlier than start date"
+        flash_message:
+            calendar_already_exists: "This calendar already exists"
+            calendar_adding: "Adding calendar, please wait ..."
+            calendar_added: "Calendar was added"
+            calendar_removing: "Removing calendar, please wait ..."
+            calendar_removed: "Calendar was removed"
+            calendar_updating: "Updating calendar, please wait ..."
+            calendar_updated: "Calendar was updated"
+        event:
+            na: 'N/A'
+            recurrence:
+                repeat:
+                    daily: Daily
+                    weekly: Weekly
+                    monthly: Monthly
+                    yearly: Yearly
+                instance:
+                    first: First
+                    second: Second
+                    third: Third
+                    fourth: Fourth
+                    last: Last
+                control-label:
+                    repeat: Repeat
+                    repeats: Repeats
+                    repeat-every: "Repeat every"
+                    repeat-on: "Repeat on"
+                    ends: Ends
+                    summary: Summary
+                control-modes:
+                    weekday: Weekday
+                    never: Never
+                    after: After
+                    by: By
+                controls:
+                    occurrences: occurrences
+                    days: "day(s)"
+                    weeks: "week(s)"
+                    months: "month(s)"
+                    years: "year(s)"
+                    monthly-repeat-on:
+                        day: Day
+                        first: First
+                        second: Second
+                        third: Third
+                        fourth: Fourth
+                        last: Last
+                    day: Day
+                    weekday: Weekday
+                    weekend-day: "Weekend Day"
+                warning:
+                    some-months-have-fewer-days: "Some months have fewer than {{ number }} days. For these months, the occurence will fall on the last day of the month."
+                    removing-all-series: "Note that all events in the series will be removed if you uncheck Repeat option."
+                    removing-all-exceptions: "Note that all exceptions in the series will be removed if you change recurrence pattern."
+                validation:
+                    dayOfWeek:
+                        minMessage: "You must select at least {{ limit }} day"
+                patterns:
+                    occurrences: "{1} , end after 1 occurrence|]1,Inf[ , end after {{ count }} occurrences"
+                    end-date: ", end by {{ date }}"
+                    timezone: '({{ timeZone }} GMT{{ timezone_offset }})'
+                    daily: "{1} Daily every 1 day|]1,Inf[ Daily every {{ count }} days"
+                    weekly: "{1} Weekly every 1 week on {{ day }}|]1,Inf[ Weekly every {{ count }} weeks on {{ day }}"
+                    monthly: "{1} Monthly day {{ day }} of every 1 month|]1,Inf[ Monthly day {{ day }} of every {{ count }} months"
+                    monthnth: "{1} Monthly the {{ instance }} {{ day }} of every 1 month|]1,Inf[ Monthly the {{ instance }} {{ day }} of every {{ count }} months"
+                    yearly: "{1} Yearly every 1 year on {{ day }}|]1,Inf[ Yearly every {{ count }} years on {{ day }}"
+                    yearnth: "{1} Yearly every 1 year on the {{ instance }} {{ day }} of {{ month }}|]1,Inf[ Yearly every {{ count }} years on the {{ instance }} {{ day }} of {{ month }}"
+                    weekday: "Daily, every weekday"
+                days:
+                    weekday:            weekday
+                    weekend:            weekend
+                    day:                day
+            select-edit-type:
+                only-this-event:
+                    title: "Only this event"
+                    description: "All other events in series will remain the same."
+                all-events:
+                    title: "All events"
+                    description: "All events in the series will be changed.<br>Any changes made to other events will be kept."
+                apply: "Apply"
+            select-delete-type:
+                all-events:
+                    description: "All events in the series will be deleted."
+                apply: "Delete"
+"Add New Event": "Add New Event"
+"View Event": "View Event"
+"Edit Event": "Edit Event"
+"Delete Event": "Delete Event"
+"Sorry, calendar events were not loaded correctly": "Sorry, calendar events were not loaded correctly"
+"Sorry, calendar event was not saved correctly": "Sorry, calendar event was not saved correctly"
+"Sorry, the calendar addition has failed.": "Sorry, the calendar addition has failed."
+"Sorry, the calendar excluding was failed": "Sorry, the calendar removal has failed."
+"Sorry, the calendar update has failed.": "Sorry, the calendar update has failed."
+"Sorry, a synchronization error has occurred.": "Sorry, a synchronization error has occurred."
+"The calendar cannot be changed because the event has guests": "The calendar cannot be changed because the event has guests"
+"Notify guests title": "Notification confirmation"
+"Notify guests message": "Do you want to send invitations to selected guests?"
+"Notify about update message": "Do you want to notify currently invited users about changes?"
+"Notify": "Notify"
+"Don't notify": "Don't notify"
+"Not responded": "Not responded"
+"Tentatively accepted": "Tentatively accepted"
+"Accepted": "Accepted"
+"Reminders": "Reminders"
+"Only this particular event will be deleted from the series.": "Only this particular event will be deleted from the series."
+"Calendar event doesn't exist. Please refresh page.": "Calendar event doesn't exist. Please refresh page."

@@ -1,0 +1,7 @@
+acls:
+    oro_integration_assign:
+        type: entity
+        class: OroIntegrationBundle:Channel
+        permission: ASSIGN
+        group_name: ""
+        bindings: ~

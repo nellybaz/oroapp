@@ -1,0 +1,3 @@
+Extend\Entity\EX_OroCaseBundle_CaseMailboxProcessSettings:
+    type: mappedSuperclass
+    fields: {  }

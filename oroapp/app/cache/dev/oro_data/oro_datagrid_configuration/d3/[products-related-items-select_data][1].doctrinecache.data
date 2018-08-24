@@ -1,0 +1,6 @@
+0
+a:1:{s:29:"products-related-items-select";a:6:{s:7:"extends";s:49:"products-select-grid-base-without-default-sorting";s:7:"options";a:1:{s:10:"entityHint";s:8:"products";}s:6:"source";a:2:{s:5:"query";a:2:{s:6:"select";a:1:{i:0;s:156:"(
+  CASE WHEN (product.id IN (:relatedItemsIds) OR product.id IN (:data_in)) AND product.id NOT IN (:data_not_in)
+  THEN true ELSE false END
+) as isRelated
+";}s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:24:"product.id != :productId";}}}s:15:"bind_parameters";a:2:{i:0;s:9:"productId";i:1;a:2:{s:4:"name";s:15:"relatedItemsIds";s:7:"default";a:0:{}}}}s:7:"columns";a:1:{s:9:"isRelated";a:4:{s:5:"label";s:28:"oro.product.is_related.label";s:13:"frontend_type";s:7:"boolean";s:8:"editable";b:1;s:5:"order";i:-10;}}s:7:"filters";a:1:{s:7:"columns";a:1:{s:9:"isRelated";a:2:{s:9:"data_name";s:9:"isRelated";s:4:"type";s:7:"boolean";}}}s:7:"sorters";a:2:{s:7:"columns";a:1:{s:9:"isRelated";a:1:{s:9:"data_name";s:9:"isRelated";}}s:7:"default";a:1:{s:9:"isRelated";s:57:"%oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC";}}}}

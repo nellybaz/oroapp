@@ -1,0 +1,35 @@
+{% import 'OroUIBundle::macros.html.twig' as UI %}
+{% import 'OroCronBundle::macros.html.twig' as cronSchedulIntervals %}
+{% import 'OroEntityConfigBundle::macros.html.twig' as entityConfig %}
+
+<div class="widget-content">
+    <div class="row-fluid form-horizontal">
+        <div class="responsive-block">
+            {{ UI.renderProperty('oro.pricing.pricelist.name.label'|trans, entity.name) }}
+
+            {% if entity.currencies %}
+                {% set currencies = [] %}
+                {% for currency in entity.currencies %}
+                    {% set currencies = currencies|merge([currency|oro_localized_currency_name]) %}
+                {% endfor %}
+                {{ UI.renderHtmlProperty('oro.pricing.pricelist.currencies.label'|trans, UI.renderList(currencies)) }}
+                {% set status = entity.active ? 'oro.pricing.pricelist.status.enabled'|trans : 'oro.pricing.pricelist.status.disabled'|trans %}
+                {{ UI.renderProperty('oro.pricing.pricelist.status.label'|trans, status) }}
+            {% endif %}
+
+            {% if entity.isActive() and not entity.schedules.isEmpty() %}
+                {% set labels = {
+                    wasActivatedLabel: 'oro.pricing.pricelist_schedule.was_activated',
+                    activeNowLabel: 'oro.pricing.pricelist_schedule.active_now',
+                    notActiveNowLabel: 'oro.pricing.pricelist_schedule.not_active_now',
+                    willBeActivatedLabel: 'oro.pricing.pricelist_schedule.will_be_acitivated',
+                    wasDeactivatedLabel: 'oro.pricing.pricelist_schedule.was_deactivated',
+                    willBeDeactivatedLabel: 'oro.pricing.pricelist_schedule.will_be_deacitivated'
+                } %}
+                {{ UI.renderHtmlProperty('oro.pricing.pricelist.schedule.label'|trans, cronSchedulIntervals.scheduleIntervalsInfo(entity.schedules, labels)) }}
+            {% endif %}
+
+            {{ entityConfig.renderDynamicFields(entity) }}
+        </div>
+    </div>
+</div>

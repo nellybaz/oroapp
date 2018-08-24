@@ -1,0 +1,33 @@
+imports:
+    - { resource: processors.transit.main.yml }
+    - { resource: processors.transit.template.yml }
+    - { resource: processors.transit.layout.yml }
+services:
+    oro_workflow.processor_factory:
+        class: Oro\Component\ChainProcessor\DependencyInjection\ProcessorFactory
+        arguments:
+            - '@service_container'
+
+    oro_workflow.processor_bag:
+        class: Oro\Component\ChainProcessor\ProcessorBag
+        arguments:
+            - '@oro_workflow.processor_bag_config_provider'
+            - '@oro_workflow.processor_factory'
+            - '%kernel.debug%'
+
+    oro_workflow.processor_bag_config_provider:
+        class: Oro\Component\ChainProcessor\ProcessorBagConfigProvider
+        public: false
+        arguments:
+            - # groups
+                'transit': ['initialize', 'configure', 'createForm', 'processForm', 'handle', 'normalize', 'result']
+            - [] # processors; injected by Oro\Component\ChainProcessor\DependencyInjection\LoadAndBuildProcessorsCompilerPass
+
+    oro_workflow.transit.action_processor:
+        class: Oro\Bundle\WorkflowBundle\Processor\TransitActionProcessor
+        arguments:
+            - '@oro_workflow.processor_bag'
+            - '@logger'
+        tags:
+            - { name: monolog.logger, channel: oro_workflow.processor }
+

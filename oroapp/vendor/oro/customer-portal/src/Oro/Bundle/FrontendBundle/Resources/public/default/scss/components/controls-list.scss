@@ -1,0 +1,51 @@
+// @theme: default;
+
+.controls-list {
+    & + .controls-list {
+        border-left: 1px solid get-color('ui', 'normal');
+        margin-left: $offset-x-m;
+        padding-left: $offset-x-m;
+    }
+
+    li {
+        display: inline-block;
+        margin-left: $offset-x-m;
+        padding-left: $offset-x-m;
+        vertical-align: top;
+
+        font-size: $base-font-size;
+        line-height: normal;
+
+        border-left: 1px solid get-color('ui', 'normal');
+
+        &:first-child {
+            margin-left: 0;
+            padding-left: 0;
+
+            border-left: 0;
+        }
+    }
+
+    [class^="fa-"],
+    [class*=" fa-"] {
+        vertical-align: baseline;
+    }
+
+    i {
+        margin-right: 3px;
+
+        font-size: $font-icon-button-m;
+    }
+
+    .btn {
+        padding: 0;
+
+        line-height: inherit;
+
+        border: 0;
+
+        @include element-state('hover') {
+            text-decoration: underline;
+        }
+    }
+}

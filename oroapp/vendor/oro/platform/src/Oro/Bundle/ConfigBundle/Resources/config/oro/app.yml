@@ -1,0 +1,15 @@
+doctrine:
+    orm:
+        entity_managers:
+            config:
+                mappings:
+                    OroConfigBundle:
+                        mapping:   true
+                        is_bundle: true
+                metadata_cache_driver:
+                    type: service
+                    id:   oro_config.cache.doctrine_metadata
+
+oro_message_queue:
+    persistent_services:
+        - 'oro_config.cache'

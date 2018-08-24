@@ -1,0 +1,9 @@
+title:     "Task list"
+iconClass: "fa-tasks"
+dialogIcon: "bundles/orotask/sidebar_widgets/assigned_tasks/img/icon-task.png"
+module:    "oro/sidebar/widget/assigned_tasks"
+placement: "both"
+cssClass:  "sidebar-widget-assigned-tasks"
+description: oro.task.assigned_tasks_widget.description
+settings:
+    perPage: 5

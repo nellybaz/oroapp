@@ -1,0 +1,13 @@
+oro_behat_extension:
+    elements:
+        Contact Reason Form:
+            selector: 'form[name="oro_contactus_contact_reason"]'
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Form
+            options:
+                mapping:
+                    Label: 'oro_contactus_contact_reason[label]'
+        Contact Email:
+            class: Oro\Bundle\TestFrameworkBundle\Behat\Element\Checkbox
+            selector:
+              locator: "//input[@type='checkbox'][@value='emailAddress']"
+              type: xpath

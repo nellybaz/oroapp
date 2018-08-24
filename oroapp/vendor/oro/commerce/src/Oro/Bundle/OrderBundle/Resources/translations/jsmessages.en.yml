@@ -1,0 +1,22 @@
+oro:
+    order:
+        shipping_method.label: Shipping Method
+        previous_shipping_method.label: Previously selected Shipping Method
+        possible_shipping_methods.no_method: No shipping methods are available
+        possible_shipping_methods.confirmation.title: Review Shipping Cost
+        possible_shipping_methods.confirmation.content: As order content has been modified, order totals and shipping costs may have changed. Please, review the shipping method selection before saving the order to make sure that the shipping cost is acceptable.
+
+        notes_widget:
+            edit: Edit Notes
+            add: Add Notes
+            remove: Remove Notes
+
+        continue_editing: Continue Editing
+
+        past_orders:
+            label: Past orders
+        payment_transaction:
+            capture:
+                title: Charge The Customer
+                message: The customer will be charged {{ amount }}. Are you sure you want to continue?
+                button.okText: Yes, Charge

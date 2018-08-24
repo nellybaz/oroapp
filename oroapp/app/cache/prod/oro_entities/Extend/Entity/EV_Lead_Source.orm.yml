@@ -1,0 +1,7 @@
+Extend\Entity\EV_Lead_Source:
+    type: entity
+    table: oro_enum_lead_source
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

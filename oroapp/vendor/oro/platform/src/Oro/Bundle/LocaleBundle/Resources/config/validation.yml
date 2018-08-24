@@ -1,0 +1,31 @@
+Oro\Bundle\LocaleBundle\Entity\Localization:
+    constraints:
+        - Oro\Bundle\LocaleBundle\Validator\Constraints\Localization: ~
+        - Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: name
+    properties:
+        name:
+            - Length:
+                min: 2
+                max: 255
+            - NotBlank: ~
+        titles:
+            - Valid: ~
+            - NotBlank:
+                message: 'oro.locale.localization.titles.blank'
+        language:
+            - NotBlank: ~
+        formattingCode:
+            - Length:
+                min: 2
+                max: 16
+            - NotBlank: ~
+
+Oro\Bundle\LocaleBundle\Entity\LocalizedFallbackValue:
+    properties:
+        fallback:
+            - Length:
+                max: 64
+            - Choice: { callback: getFallbacks }
+        string:
+            - Length:
+                max: 255

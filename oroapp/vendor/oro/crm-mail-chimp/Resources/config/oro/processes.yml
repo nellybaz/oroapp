@@ -1,0 +1,145 @@
+processes:
+    definitions:
+        synchronize_marketing_list_item_for_mailchimp_member_activity:
+            label:   'Synchronizes Oro Marketing List Item for MailChimp Member Activity'
+            enabled: true
+            order:   20
+            entity:  Oro\Bundle\MailChimpBundle\Entity\MemberActivity
+            actions_configuration:
+                - '@update_email_campaign_statistics': ~
+
+        create_email_campaign_for_mailchimp_campaign:
+            label:   Create Email Campaign for MailChimp Campaign
+            enabled: true
+            order:   10
+            entity:  Oro\Bundle\MailChimpBundle\Entity\Campaign
+            exclude_definitions: [create_email_campaign_for_mailchimp_campaign]
+            # If Oro EmailCampaign not exists and
+            # MailChimp Campaign relates to Oro MarketingList and
+            # MailChimp Campaign has "sent" status
+            preconditions:
+                '@and':
+                    - '@empty': $emailCampaign
+                    - '@not_empty': $staticSegment
+                    - '@not_empty': $staticSegment.marketingList
+                    - '@equal': [$status, 'sent']
+            actions_configuration:
+                - '@tree':
+                    actions:
+                        # Prepare constants values
+                        - '@assign_constant_value':
+                            attribute: $.scheduleManual
+                            value: Oro\Bundle\CampaignBundle\Entity\EmailCampaign::SCHEDULE_MANUAL
+                        - '@assign_constant_value':
+                            attribute: $.mailchimpTransport
+                            value: Oro\Bundle\MailChimpBundle\Transport\MailChimpTransport::NAME
+                        # Create Oro EmailCampaign
+                        - '@tree':
+                            actions:
+                                - '@create_entity': # Create Oro EmailCampaign
+                                    class:     Oro\Bundle\CampaignBundle\Entity\EmailCampaign
+                                    attribute: $emailCampaign
+                                    data:
+                                        name: $title
+                                        schedule: $.scheduleManual
+                                        sent: true
+                                        sentAt: $sendTime
+                                        senderEmail: $fromEmail
+                                        senderName: $fromName
+                                        transport: $.mailchimpTransport
+                                        owner: $channel.defaultUserOwner
+                                        organization: $channel.defaultUserOwner.organization
+                                        marketingLIst: $staticSegment.marketingList
+                                - '@create_entity': # Create MailChimpTransportSettings
+                                    class:     Oro\Bundle\MailChimpBundle\Entity\MailChimpTransportSettings
+                                    attribute: $emailCampaign.transportSettings
+                                    data:
+                                        receiveActivities: true
+                                        channel: $channel
+    #                                    template: $template
+
+        mailchimp_handle_member_state:
+            label:   Create MarketingListUnsubscribedItem for MailChimp unsubscribed Member
+            enabled: true
+            entity:  Oro\Bundle\MailChimpBundle\Entity\Member
+            preconditions:
+                '@or':
+                    - '@equal': [$status, 'unsubscribed']
+                    - '@equal': [$status, 'cleaned']
+            actions_configuration:
+                - '@tree':
+                    actions:
+                        # Create Oro MarketingListUnsubscribedItem
+                        - '@create_marketing_list_unsubscribed_item': ~
+
+
+        schedule_mailchimp_segment_synchronization:
+            label:   Schedule MailChimp Static Segment synchronization
+            enabled: true
+            entity:  Oro\Bundle\MailChimpBundle\Entity\StaticSegment
+            actions_configuration:
+                - '@call_service_method':
+                    attribute: $.staticSegmentSyncMode
+                    service: oro_config.manager
+                    method: get
+                    method_parameters: ['oro_mailchimp.static_segment_sync_mode']
+                - '@assign_constant_value':
+                    attribute: '$.syncModeScheduled'
+                    value: 'Oro\Bundle\MailChimpBundle\DependencyInjection\Configuration::STATIC_SEGMENT_SYNC_MODE_SCHEDULED'
+                - '@assign_constant_value':
+                    attribute: '$.syncModeOnUpdate'
+                    value: 'Oro\Bundle\MailChimpBundle\DependencyInjection\Configuration::STATIC_SEGMENT_SYNC_MODE_ON_UPDATE'
+                - '@assign_constant_value':
+                    attribute: '$.syncStatusScheduled'
+                    value: 'Oro\Bundle\MailChimpBundle\Entity\StaticSegment::STATUS_SCHEDULED'
+                - '@assign_constant_value':
+                    attribute: '$.syncStatusScheduledByChange'
+                    value: 'Oro\Bundle\MailChimpBundle\Entity\StaticSegment::STATUS_SCHEDULED_BY_CHANGE'
+                - '@assign_constant_value':
+                    attribute: '$.syncStatusNotSynced'
+                    value: 'Oro\Bundle\MailChimpBundle\Entity\StaticSegment::STATUS_NOT_SYNCED'
+                - '@tree':
+                    conditions:
+                        '@and':
+                            - '@or':
+                                - '@equal': [$syncStatus, $.syncStatusScheduledByChange]
+                                - '@equal': [$syncStatus, $.syncStatusScheduled]
+                                - '@equal': [$syncStatus, $.syncStatusNotSynced]
+                            - '@or':
+                                - '@equal': [$.staticSegmentSyncMode, $.syncModeOnUpdate]
+                                - '@and':
+                                    - '@equal': [$.staticSegmentSyncMode, $.syncModeScheduled]
+                                    - '@not_equal': [$syncStatus, $.syncStatusScheduledByChange]
+                    actions:
+                        - '@assign_constant_value':
+                            attribute: '$.topic'
+                            value: 'Oro\Bundle\MailChimpBundle\Async\Topics::EXPORT_MAILCHIMP_SEGMENTS'
+                        - '@call_service_method':
+                            service: 'oro_message_queue.message_producer'
+                            method: 'send'
+                            method_parameters:
+                                - '$.topic'
+                                - { integrationId: '$channel.id', segmentsIds: ['$id'] }
+
+    triggers:
+        synchronize_marketing_list_item_for_mailchimp_member_activity:
+            -
+                event:    create
+                # queued:   true # Disabled for now, as queued processing cause statistics lost
+
+        create_email_campaign_for_mailchimp_campaign:
+            -
+                event:    create
+
+        mailchimp_handle_member_state:
+            -
+                event:    update
+                field:    status
+                queued:   true
+
+        schedule_mailchimp_segment_synchronization:
+            -
+                event:    create
+            -
+                event:    update
+                field:    syncStatus

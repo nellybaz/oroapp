@@ -1,0 +1,76 @@
+navigation:
+    menu_config:
+        items:
+            sales_tab:
+                label:    'oro.menu.sales_tab.label'
+                uri:      '#'
+                position: 300
+
+            request_list:
+                label:           'oro.rfp.request.entity_plural_label'
+                route:           'oro_rfp_request_index'
+                position:        200
+                extras:
+                    routes:
+                        - 'oro_rfp_request_index'
+                        - 'oro_rfp_request_view'
+                        - 'oro_rfp_request_update'
+                    description: 'oro.rfp.menu.request_list.description'
+
+            shortcut_request_list:
+                label:           'oro.rfp.request.entity_plural_label'
+                route:           'oro_rfp_request_index'
+                extras:
+                    description: 'oro.rfp.menu.shortcut_request_list.description'
+
+            oro_rfp_frontend_request_index:
+                label: 'oro.frontend.rfp.request.entity_plural_label'
+                route: 'oro_rfp_frontend_request_index'
+                position: 50
+
+            oro_rfp_frontend_request_create:
+                label: 'oro.frontend.rfp.request.create_title.label'
+                extras:
+                    routes: ['oro_rfp_frontend_request_create']
+
+            oro_rfp_frontend_request_view:
+                label: 'oro.ui.view'
+                extras:
+                    routes: ['oro_rfp_frontend_request_view']
+
+        tree:
+            application_menu:
+                children:
+                    sales_tab:
+                        children:
+                            request_list: ~
+            shortcuts:
+                children:
+                    shortcut_request_list: ~
+
+            frontend_menu:
+                children:
+                    oro_customer_menu_customer_user_index:
+                        children:
+                            oro_rfp_frontend_request_index:
+                                children:
+                                    oro_rfp_frontend_request_create: ~
+                                    oro_rfp_frontend_request_view: ~
+
+            oro_customer_menu:
+                children:
+                    oro_rfp_frontend_request_index:
+                        children:
+                            oro_rfp_frontend_request_create: ~
+                            oro_rfp_frontend_request_view: ~
+
+    titles:
+        oro_rfp_request_index:           ~
+        oro_rfp_request_update:          'RFQ #%title% - oro.ui.edit'
+        oro_rfp_request_view:            'RFQ #%title%'
+
+        oro_rfp_frontend_request_create: 'oro.frontend.rfp.request.create_title.label'
+        oro_rfp_frontend_request_update: 'RFQ #%id% - oro.ui.edit'
+        oro_rfp_frontend_request_index:  'oro.frontend.rfp.request.entity_plural_label'
+        oro_rfp_frontend_request_view:   'RFQ #%id%: %firstName% %lastName%'
+        oro_rfp_frontend_request_success: 'Thank You For Your Request!'

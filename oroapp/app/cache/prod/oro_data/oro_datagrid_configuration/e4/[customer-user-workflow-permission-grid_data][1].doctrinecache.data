@@ -1,0 +1,2 @@
+0
+a:1:{s:38:"customer-user-workflow-permission-grid";a:4:{s:7:"extends";s:24:"workflow-permission-grid";s:6:"source";a:1:{s:4:"type";s:47:"customer-user-workflow-permission-grid-provider";}s:12:"acl_resource";s:38:"oro_customer_customer_user_role_update";s:7:"options";a:1:{s:18:"access_level_route";s:30:"oro_customer_acl_access_levels";}}}

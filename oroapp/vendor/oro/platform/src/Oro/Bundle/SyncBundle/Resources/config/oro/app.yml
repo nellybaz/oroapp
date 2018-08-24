@@ -1,0 +1,10 @@
+clank:
+    web_socket_server:
+        port:           "%websocket_bind_port%"      # The port the socket server will listen on
+        host:           "%websocket_bind_address%"   # (optional) The host ip to bind to
+twig:
+    globals:
+        ws:
+            port:       "%websocket_frontend_port%"  # Websocket port used in JS
+            host:       "%websocket_frontend_host%"  # Websocket host used in JS
+            path:       "%websocket_frontend_path%"  # Websocket request path used in JS

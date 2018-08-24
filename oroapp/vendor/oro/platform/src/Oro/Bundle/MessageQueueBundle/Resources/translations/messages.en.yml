@@ -1,0 +1,44 @@
+oro:
+    message_queue_job:
+        rest:
+            job_interrupted: Job interrupted
+        action:
+            job_management: Access job queue
+        no_alive_consumers: The application is not configured properly (message consumers are not available). Please contact the system administrator.
+
+        grid:
+            action:
+                interrupt: Interrupt
+            columns:
+                id: ID
+                name: Name
+                status: Status
+                unique: Unique
+                interrupted: Interrupted
+                createdAt: Created At
+                startedAt: Started At
+                stoppedAt: Stopped At
+                lastActiveAt: Last Active At
+        menu:
+            label: Jobs
+            shortcut.label: Jobs List
+            shortcut.description: List of Message Queue Jobs
+
+        header:
+            root_jobs: Jobs List
+            child_jobs: Child Jobs List
+            startedAt: Started At
+            stoppedAt: Stopped At
+            unique: Unique
+            interrupted: Interrupted
+            name: Job "%name%"
+            lastActiveAt: Last Active At
+
+        status:
+            new: New
+            cancelled: Cancelled
+            running: Running
+            success: Success
+            failed: Failed
+            failed_redelivered: Failed Redelivered
+            stale: Stale

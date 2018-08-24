@@ -1,0 +1,2 @@
+0
+a:8:{s:2:"id";a:3:{s:1:"i";i:2220;s:1:"h";b:0;s:1:"t";s:7:"integer";}s:4:"name";a:3:{s:1:"i";i:2221;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"label";a:3:{s:1:"i";i:2222;s:1:"h";b:0;s:1:"t";s:6:"string";}s:8:"required";a:3:{s:1:"i";i:2223;s:1:"h";b:0;s:1:"t";s:7:"boolean";}s:9:"fieldType";a:3:{s:1:"i";i:2224;s:1:"h";b:0;s:1:"t";s:6:"string";}s:3:"tag";a:3:{s:1:"i";i:2225;s:1:"h";b:0;s:1:"t";s:6:"string";}s:5:"state";a:3:{s:1:"i";i:2226;s:1:"h";b:0;s:1:"t";s:6:"string";}s:13:"staticSegment";a:3:{s:1:"i";i:2227;s:1:"h";b:0;s:1:"t";s:7:"ref-one";}}

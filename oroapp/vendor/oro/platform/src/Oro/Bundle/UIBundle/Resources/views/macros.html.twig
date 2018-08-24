@@ -1,0 +1,1242 @@
+{% macro collection_prototype(widget) %}
+    {% if 'prototype' in widget.vars|keys %}
+        {% set form = widget.vars.prototype %}
+        {% set name = widget.vars.prototype.vars.name %}
+    {% else %}
+        {% set form = widget %}
+        {% set name = widget.vars.full_name %}
+    {% endif %}
+
+    <div data-content="{{ name }}">
+        <div class="row-oro oro-multiselect-holder">
+            <div class="float-holder ">
+                {{ form_errors(form) }}
+                {% if form.children|length  %}
+                    {% for child in form %}
+                        {{ form_widget(child) }}
+                        {{ form_errors(child) }}
+                    {% endfor %}
+                {% else %}
+                    {{ form_widget(form) }}
+                {% endif %}
+                {{ form_rest(form) }}
+            </div>
+            <button class="removeRow btn btn-action btn-link" type="button" data-related="{{ name }}">×</button>
+        </div>
+    </div>
+{% endmacro %}
+
+{% macro tooltip(tooltip_raw, tooltip_parameters, tooltip_placement, details_enabled, details_link, details_anchor) %}
+    {% set tooltip_parameters = tooltip_parameters|default({}) %}
+    {# deprecated tooltips domain since 1.9:1:11 for tooltips use instead 'messages' translation domain #}
+    {% set tooltip = tooltip_raw|trans(tooltip_parameters, "messages") %}
+    {% if (tooltip == tooltip_raw) %}
+        {% set tooltip = tooltip_raw|trans(tooltip_parameters, "tooltips") %}
+    {% endif %}
+    {% if tooltip is not empty %}
+        {% set details_anchor = details_anchor|default(null) %}
+        {% set details_link = details_link|default(null) %}
+        {% set details_enabled = details_enabled|default(false) %}
+        {% set tooltip_placement = tooltip_placement|default(null) %}
+
+        {# Help link logic #}
+        {% if details_enabled or details_anchor or details_link %}
+            {% set helpLink = details_link|default(get_help_link()) %}
+            {% if details_anchor %}
+                {% set helpLink = helpLink ~ '#' ~ details_anchor %}
+            {% endif %}
+            {% set tooltip = tooltip
+                ~ '<div class="clearfix"><div class="pull-right"><a href="' ~ helpLink ~ '">'
+                ~ 'oro.form.tooltip.read_more'|trans ~ '</a></div></div>'
+            %}
+        {% endif %}
+        {# End help link logic #}
+
+        {% set tooltip = '<div class="oro-popover-content">'
+            ~ tooltip
+            ~ '</div>'
+        %}
+
+        <i class="fa-info-circle tooltip-icon"
+           {% if tooltip_placement %}data-placement="{{ tooltip_placement }}"{% endif %}
+           data-content="{{ tooltip }}"
+           data-toggle="popover"></i>
+    {% endif %}
+{% endmacro %}
+
+{#
+    Render attribute row
+    Parameters:
+        title - attribute title
+        value - attribute value
+        additionalData - array with additional data
+#}
+{% macro attibuteRow(title, value, additionalData) %}
+    {% set attributeValue %}
+        <div class="clearfix-oro">
+            {% if value.value is not defined  %}
+                <div class="control-label">{{ value }}</div>
+            {% else %}
+                <div class="control-label">{{ value.value }} <strong>{{ value.hint }}</strong></div>
+            {% endif %}
+        </div>
+        {% if additionalData|length %}
+            {% for data in additionalData.data %}
+                <div class="clearfix-oro">
+                    <div class="control-label">{{ attribute(data, additionalData.field) }}</div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endset %}
+    {{ _self.renderAttribute(title, attributeValue) }}
+{% endmacro %}
+
+{#
+    Render attribute row with custom data block
+    Parameters:
+        title - row title
+        data - row data
+#}
+{% macro renderAttribute(title, data) %}
+    <div class="control-group attribute-row">
+        <label class="control-label">{{ title }}</label>
+        <div class="controls">
+            {{ data|raw }}
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Render property block
+    Parameters:
+        title - property title
+        data  - property data
+        entity - the entitty instance on wich Field ACL should be checked
+        fieldName - the name of field on wich Field ACL should be checked
+#}
+{% macro renderProperty(title, data, entity = null, fieldName = null) %}
+    {{ _self.renderHtmlProperty(title, data|escape, entity, fieldName) }}
+{% endmacro %}
+
+{#
+    Render html property block
+    Parameters:
+        title - property title
+        data  - property data
+        entity - the entitty instance on wich Field ACL should be checked
+        fieldName - the name of field on wich Field ACL should be checked
+#}
+{% macro renderHtmlProperty(title, data, entity = null, fieldName = null) %}
+    {% if entity is defined and fieldName is defined and not is_granted('VIEW', entity, fieldName) %}
+    {% else %}
+        {{ _self.renderAttribute(title, '<div class="control-label">' ~ data|default('oro.ui.empty'|trans) ~ '</div>') }}
+    {% endif %}
+{% endmacro %}
+
+{#
+    Render collapsible html property block
+    Parameters:
+        title - property title
+        data  - property data
+        entity - the entitty instance on wich Field ACL should be checked
+        fieldName - the name of field on wich Field ACL should be checked
+#}
+{% macro renderCollapsibleHtmlProperty(title, data, entity, fieldName, moreText = 'Show more', lessText = 'Show less') %}
+    {% if is_granted('VIEW', entity, fieldName) %}
+        {% set collapseView = {
+                storageKey: 'collapseBlock[' ~ oro_class_name(entity) ~ ']',
+                uid: '[' ~ title ~ '][' ~ entity.id ~ ']',
+                animationSpeed: 0,
+                closeClass: 'overflows',
+                checkOverflow: true,
+                open: false
+            } %}
+        <div class="collapse-block" data-page-component-collapse="{{ collapseView|json_encode }}">
+            {{ _self.renderAttribute(title,
+                '<div class="control-label" data-collapse-container>' ~
+                    data|default('oro.ui.empty'|trans) ~
+                '</div>' ~
+                '<a href="#" class="control-label toggle-more" data-collapse-trigger>' ~ moreText|trans ~ '</a>' ~
+                '<a href="#" class="control-label toggle-less" data-collapse-trigger>' ~ lessText|trans ~ '</a>'
+            ) }}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{#
+    Render html property block. HTML rendering may be switched off with system config.
+    Parameters:
+        title - property title
+        data  - property data
+#}
+{% macro renderSwitchableHtmlProperty(title, data) %}
+    {% if oro_config_value('oro_form.wysiwyg_enabled') %}
+        {% set data = data|oro_html_sanitize %}
+    {%  else %}
+        {% set data = data|striptags|nl2br %}
+    {% endif %}
+
+    {{ _self.renderAttribute(title, '<div class="control-label html-property">' ~ data|default('oro.ui.empty'|trans) ~ '</div>') }}
+{% endmacro %}
+
+{#
+    Render color property block
+    Parameters:
+        title - property title
+        data  - property data
+        empty - a value which should be used if data is empty
+#}
+{% macro renderColorProperty(title, data, empty) %}
+    {% if data is not none %}
+       {% set data = '<i class="color hide-text" title="' ~ data ~ '" style="background-color: ' ~ data ~ ';">' ~ data ~ '</i>' %}
+    {% endif %}
+    {{ _self.renderAttribute(title, '<div class="control-label">' ~ data|default(empty)|default('oro.ui.empty'|trans) ~ '</div>') }}
+{% endmacro %}
+
+{#
+    Create the link
+    Parameters - array:
+        [
+            'path'  - button url
+            'class' - default class
+            'aCss'  - additional button class
+            'title' - button title
+            'iCss'  - css class for 'i' tag (icon)
+            'label' - button label
+        ]
+#}
+{% macro link(parameters) %}
+    {# need to remove spaces just before label #}
+    {% set iconHtml = '' %}
+    {% if parameters.iCss is defined and parameters.iCss %}
+        {% set iconHtml %}
+        <i class="{{ parameters.iCss }} hide-text" >
+            {% if not parameters.noIconText|default(false)%}
+                {{ parameters.label }}
+            {% endif %}
+        </i>
+        {% endset %}
+    {% else %}
+    {% endif %}
+    {% spaceless %}
+    <a href="{{ parameters.path }}"
+        {% if (parameters.id is defined) %}
+            id="{{ parameters.id }}"
+        {% endif %}
+        {% if parameters.data is defined %}
+            {% for dataItemName,dataItemValue in parameters.data %}
+                data-{{ dataItemName }}="{{ dataItemValue|e('html_attr')|raw }}"
+            {% endfor %}
+        {% endif %}
+        class="{{ parameters.class is defined? parameters.class : '' }} {{ parameters.aCss is defined? parameters.aCss : '' }}"
+        {% if parameters.title is defined %}title="{{ parameters.title }}"{% endif %}>{{ iconHtml|trim|raw }}
+        {{- parameters.label|trim }}
+    </a>
+    {% endspaceless %}
+{% endmacro %}
+
+{#
+    Create the button
+    Parameters - array:
+        [
+            'path'  - button url
+            'aCss'  - additional button class
+            'title' - button title
+            'iCss'  - css class for 'i' tag (icon)
+            'label' - button label
+        ]
+#}
+{% macro button(parameters) %}
+    <div class="pull-left btn-group icons-holder">
+        {{ _self.link(parameters|merge({'class': 'btn back icons-holder-text'})) }}
+    </div>
+{% endmacro %}
+
+{#
+    Create dropdown button
+    Parameters - array:
+        [
+            'label' - button label
+            'elements' - dropdown elements
+            'html' - html from placeholder
+            'aCss'  - additional drop down class
+        ]
+#}
+{% macro dropdownButton(parameters) %}
+    <div class="btn-group">
+        <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+            {% if parameters.iCss is defined %}
+                <i class="{{ parameters.iCss }}"></i>
+            {% endif %}
+            {{ parameters.label }}
+            <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu {{ parameters.aCss is defined? parameters.aCss : '' }}">
+            {% if parameters.elements is defined and parameters.elements is not empty %}
+                {% for item in parameters.elements %}
+                    {{ _self.dropdownItem(item) }}
+                {% endfor %}
+            {% endif %}
+            {% if parameters.html is defined and parameters.html is not empty %}
+                {{ parameters.html|raw }}
+            {% endif %}
+        </ul>
+    </div>
+{% endmacro %}
+
+{#
+    Create the dropdown button item
+    Parameters - array:
+        [
+            'path'  - button url
+            'aCss'  - additional button class
+            'title' - button title
+            'iCss'  - css class for 'i' tag (icon)
+            'label' - button label
+        ]
+#}
+{% macro dropdownItem(parameters) %}
+    <li>{{ _self.link(parameters) }}</li>
+{% endmacro %}
+
+{#
+    Create the dropdown button wich preserves last used button
+    Parameters - array:
+        [
+            'html'     - original buttons markup
+            'groupKey' - key, to remember last used button
+            'options'  - options for pinnedDropdownButtonProcessor widget
+        ]
+#}
+{% macro pinnedDropdownButton(parameters) %}
+    {% if isDesktopVersion() or parameters.mobileEnabled|default(false) %}
+        {% set options = parameters.options|default({}) %}
+        {% set options = options|merge({
+            widgetModule: options.widgetModule|default('oroui/js/content-processor/pinned-dropdown-button'),
+            widgetName: options.widgetName|default('pinnedDropdownButtonProcessor'),
+            groupKey: parameters.groupKey is defined ? parameters.groupKey : '',
+            useMainButtonsClone: true
+        }) %}
+        {% spaceless %}
+            <div class="pull-right pinned-dropdown"
+                 {{ _self.renderAttributes(parameters.dataAttributes|default({})|merge({
+                     'page-component-module': 'oroui/js/app/components/jquery-widget-component',
+                     'page-component-options': options
+                 })) }}>
+                {{ parameters.html|raw }}
+            </div>
+        {% endspaceless %}
+    {% else %}
+        {{ parameters.html|raw }}
+    {% endif %}
+{% endmacro %}
+
+{#
+    Predefined pinnedDropdownButton's settings for save button
+#}
+{% macro dropdownSaveButton(parameters) %}
+    {% set parameters = {
+        'groupKey': 'saveButtons',
+        'options': {
+            'moreButtonAttrs': {
+                'class': 'btn-success'
+            }
+        }
+    }|merge(parameters|default({})) %}
+    {{ _self.pinnedDropdownButton(parameters) }}
+{% endmacro %}
+
+{#
+    Create 'Cancel' button
+    Parameters
+        'path' - button url
+        'label' - button label | 'Cancel' by default
+#}
+{% macro cancelButton(path, label) %}
+    {% if label is empty %}
+        {% set label = 'Cancel'|trans %}
+    {% endif %}
+    {{ _self.button({'path' : path, 'title' : label, 'label' : label, data: {action: 'cancel'} }) }}
+{% endmacro %}
+
+{#
+    Create 'Edit' button
+    Parameters - array:
+        [
+            'path'  - button url
+            'aCss'  - additional button class
+            'title' - button title | 'Edit' by default
+            'label' - button label | 'Edit' by default
+            'entity_label' - if specified will be added for title and label
+        ]
+#}
+{% macro editButton(parameters) %}
+    {% set iCss = ['fa-pencil-square-o'] %}
+    {% set aCss = ['edit-button', 'main-group'] %}
+    {% if parameters.iCss is defined %}
+        {% set iCss = parameters.iCss|split(' ')|merge(iCss) %}
+    {% endif %}
+    {% if parameters.aCss is defined %}
+        {% set aCss = parameters.aCss|split(' ')|merge(aCss) %}
+    {% endif %}
+    {% if parameters.title is defined %}
+        {% set title = parameters.title %}
+    {% else %}
+        {% set title = parameters.entity_label is defined
+            ? 'oro.ui.edit_entity'|trans({'%entityName%': parameters.entity_label})
+            : 'oro.ui.edit'|trans
+        %}
+    {% endif %}
+    {% set label = parameters.label is defined
+        ? parameters.label
+        : 'oro.ui.edit'|trans
+    %}
+    {% set parameters = parameters|merge({
+        'iCss': iCss|join(' '),
+        'aCss': aCss|join(' '),
+        'title': title,
+        'label': label
+    }) %}
+
+    {# Add URL parameters to button path #}
+    {% set parameters = parameters|merge({ 'path' : oro_url_add_query(parameters['path']) }) %}
+
+    {{ _self.button(parameters) }}
+{% endmacro %}
+
+{#
+    Create 'add' button
+    Parameters - array:
+        [
+            'path'  - button url
+            'aCss'  - additional button class
+            'title' - button title | 'Create' by default
+            'label' - button label | 'Create' by default
+            'entity_label' - if specified will be added for title and label
+        ]
+#}
+{% macro addButton(parameters) %}
+    {% if parameters.label is defined %}
+        {% set label = parameters.label %}
+    {% else %}
+        {% set label = parameters.entity_label is defined
+            ? 'oro.ui.create_entity'|trans({'%entityName%': parameters.entity_label})
+            : 'oro.ui.create'|trans
+        %}
+    {% endif %}
+    {% if parameters.title is defined %}
+        {% set title = parameters.title %}
+    {% else %}
+        {% set title = parameters.entity_label is defined
+            ? 'oro.ui.create_entity'|trans({'%entityName%': parameters.entity_label})
+            : 'oro.ui.create'|trans
+        %}
+    {% endif %}
+    <a href="{{ parameters.path }}"
+        class="btn main-group btn-primary pull-right {{ parameters.aCss is defined? parameters.aCss : '' }}"
+        title="{{ title }}"
+    >
+        {{ label }}
+    </a>
+{% endmacro %}
+
+{#
+    Delete button with javascript handler
+    Parameters - array:
+        [
+            'aCss' - additional css class for 'a' tag
+            'dataId' - data-id parameter
+            'dataMessage' - message before delete record | 'Are you sure you want to delete this %entity_label%?' by default
+            'dataRedirect' - url to redirect after delete | '%entity_label% deleted' by default
+            'dataUrl' - data-url parameter
+            'title' - button title | 'Delete' by default
+            'label' - button label | 'Delete' by default
+            'entity_label' - if specified will be added for title, label and messages| 'item' by default
+            'disabled' - if true this control is rendered as disabled
+        ]
+#}
+{% macro deleteButton(parameters) %}
+    {% set aCss = 'btn icons-holder-text' %}
+
+    {% if parameters.disabled is defined and parameters.disabled %}
+        {% set aCss = aCss ~ ' disabled' %}
+    {% endif %}
+
+    {% if parameters.aCss is defined %}
+        {% set aCss = aCss ~ ' ' ~ parameters.aCss %}
+    {% endif %}
+
+    {% set parameters = parameters|merge({'aCss': aCss}) %}
+
+    <div class="pull-left btn-group icons-holder">
+        {{ _self.deleteLink(parameters) }}
+    </div>
+{% endmacro %}
+
+{% macro deleteLink(parameters) %}
+    {% set entityLabel = parameters.entity_label is defined ? parameters.entity_label : 'oro.ui.item'|trans %}
+    {% set label = parameters.label is defined ? parameters.label : 'oro.ui.delete'|trans %}
+    {% if parameters.title is defined %}
+        {% set title = parameters.title %}
+    {% else %}
+        {% set title = parameters.entity_label is defined
+            ? 'oro.ui.delete_entity'|trans({'%entityName%': parameters.entity_label})
+            : 'oro.ui.delete'|trans
+        %}
+    {% endif %}
+
+    {% set message = parameters.dataMessage is defined ? parameters.dataMessage : 'oro.ui.delete_confirm'|trans({ '%entity_label%' : entityLabel }) %}
+    {% set successMessage = parameters.successMessage is defined ? parameters.successMessage : 'oro.ui.delete_message'|trans({ '%entity_label%' : entityLabel }) %}
+    {% set url = parameters.dataUrl is defined ? parameters.dataUrl : '' %}
+    {% set linkParams = {
+        'data': {
+            'message': message,
+            'success-message': successMessage,
+            'url': url
+        },
+        'iCss': parameters.iCss is defined ? parameters.iCss: 'fa-trash-o',
+        'aCss': parameters.aCss,
+        'title': title,
+        'label': label,
+        'path': 'javascript:void(0);'
+    } %}
+
+
+    {% if (parameters.dataId is defined) %}
+        {% set data = linkParams.data|merge({'id': parameters.dataId}) %}
+        {% set linkParams = linkParams|merge({ 'data': data }) %}
+    {% endif %}
+    {% if parameters.dataRedirect is defined %}
+        {% set data = linkParams.data|merge({'redirect': parameters.dataRedirect}) %}
+        {% set linkParams = linkParams|merge({ 'data': data }) %}
+    {% endif %}
+    {% if parameters.data is defined %}
+        {% for dataItemName,dataItemValue in parameters.data %}
+            {% set data = linkParams.data|merge({(dataItemName): dataItemValue}) %}
+            {% set linkParams = linkParams|merge({ 'data': data }) %}
+        {% endfor %}
+    {% endif %}
+    {{ _self.link(linkParams) }}
+{% endmacro %}
+
+{#
+    A button with javascript handler
+
+    Parameters - array:
+        [
+            'class' - default class
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'title' - button title
+            'label' - button label
+            'labelInIcon' - determine whether the label is include in icon or not. Defaults to true
+            'visible' - determined whether the button is visible or not. Defaults to true,
+            'dataAttributes' - additional data attributes
+        ]
+#}
+{% macro clientLink(parameters) %}
+    {% spaceless %}
+        <a href="javascript: void(0);" class="{{ parameters.class is defined ? parameters.class : '' }} {{ parameters.aCss is defined ? parameters.aCss : '' }}"
+            title="{{ parameters.title is defined ? parameters.title : (parameters.label is defined ? parameters.label : '') }}"
+            {% if (parameters.id is defined) %}
+                id="{{ parameters.id }}"
+            {% endif %}
+            {%- if (parameters.dataId is defined) -%}
+                data-id ="{{ parameters.dataId }}"
+            {%- endif -%}
+            {%- if (parameters.dataUrlRaw is defined) -%}
+                data-url="{{ parameters.dataUrlRaw|raw }}"
+            {% elseif (parameters.dataUrl is defined) %}
+                data-url="{{ parameters.dataUrl }}"
+            {%- endif -%}
+            {%- if (parameters.successMessage is defined) -%}
+                data-success-message="{{ parameters.successMessage }}"
+            {%- endif -%}
+            {%- if parameters.dataRedirect is defined -%}
+                data-redirect="{{ parameters.dataRedirect }}"
+            {%- endif -%}
+            {%- if (parameters.visible is defined and not parameters.visible) -%}
+                style="display: none"
+            {%- endif -%}
+            {%- if parameters.widget is defined and parameters.widget|length -%}
+                {% set options = parameters.widget %}
+                {%- if (options.createOnEvent is not defined) -%}
+                    {% set options = options|merge({
+                        'createOnEvent' : options.event|default('click')
+                    }) %}
+                {%- endif -%}
+                {{ _self.renderWidgetAttributes(options) }}
+            {%- endif -%}
+            {%- if parameters.pageComponent is defined -%}
+                {{ _self.renderPageComponentAttributes(parameters.pageComponent) }}
+            {%- endif -%}
+            {%- if parameters.dataAttributes is defined and parameters.dataAttributes|length -%}
+                {{ _self.renderAttributes(parameters.dataAttributes) }}
+            {%- endif -%}>
+            {%- set labelInIcon = parameters.labelInIcon|default(true) -%}
+            {%- if (parameters.iCss is defined) -%}
+                <i class="{{ parameters.iCss }}{% if labelInIcon %} hide-text{% endif %}">{{ (parameters.label is defined and labelInIcon) ? parameters.label : '' }}</i>
+            {%- endif %}
+            {{- parameters.label is defined ? parameters.label : '' -}}
+        </a>
+    {% endspaceless %}
+{% endmacro %}
+
+{#
+    Renders page component attributes passed in array
+#}
+{% macro renderPageComponentAttributes(pageComponent) %}
+    {% for key,value in pageComponent %}
+        {% if key == 'layout' %}
+            data-layout="{{ pageComponent.layout }}"
+        {% elseif value is iterable %}
+            data-page-component-{{ key }}="{{ value|json_encode }}"
+        {% else %}
+            data-page-component-{{ key }}="{{ value }}"
+        {% endif %}
+    {% endfor %}
+{% endmacro %}
+
+{#
+    Renders attributes for widget
+
+    Parameters: options array for widget
+#}
+{% macro renderWidgetAttributes(options) %}
+    {% set pageComponent = {
+        module:  "oroui/js/app/components/widget-component",
+        options: options
+    }  %}
+    {% if options.options.pageComponentName is defined %}
+        {% set pageComponent = pageComponent|merge({name: options.options.pageComponentName}) %}
+    {% endif %}
+    {{ _self.renderPageComponentAttributes(pageComponent) }}
+{% endmacro %}
+{#
+    @deprecated
+    Please use renderWidgetAttributes() with createOnEvent option specified instead
+#}
+{% macro renderWidgetDataAttributes(options) %}
+    {% if (options.createOnEvent is not defined) %}
+        {% set options = options|merge({
+            'createOnEvent' : options.event|default('click')
+        }) %}
+    {% endif %}
+    {{ _self.renderWidgetAttributes(options) }}
+{% endmacro %}
+
+{% macro renderAttributes(options, prefix) %}
+    {% for name, value in options %}
+        {% if (value is iterable) %}
+            {% set value = value|json_encode(constant('JSON_FORCE_OBJECT')) %}
+        {% endif %}
+        data-{% if prefix is not empty %}{{ prefix }}-{% endif %}{{ name }}="{{ value }}"
+    {% endfor %}
+{% endmacro %}
+
+{#
+    A button with javascript handler
+    Parameters - array:
+        [
+            'class' - default class
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'title' - button title
+            'label' - button label
+            'visible' - determined whether the button is visible or not. Defaults to true
+        ]
+#}
+{% macro clientButton(parameters) %}
+    {#{% espaceless %}#}
+        <div class="pull-left btn-group icons-holder">
+            {{ _self.clientLink(parameters|merge({'class': 'btn icons-holder-text'})) }}
+        </div>
+    {#{% endspaceless %}#}
+{% endmacro %}
+
+{#
+    A button that sends request to server
+    Parameters - array:
+        [
+            'class' - default class
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataMethod' - request http method
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'errorMessage' - a message which will be shown if operation failed
+            'title' - button title
+            'label' - button label
+            'visible' - determined whether the button is visible or not. Defaults to true
+        ]
+#}
+{% macro ajaxButton(parameters) %}
+    <div class="pull-left btn-group icons-holder">
+        {{ _self.ajaxLink(parameters|merge({'class': 'btn icons-holder-text'})) }}
+    </div>
+{% endmacro %}
+
+{#
+    A link that sends request to server
+    Parameters - array:
+        [
+            'class' - default class
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataMethod' - request http method
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'errorMessage' - a message which will be shown if operation failed
+            'title' - button title
+            'label' - button label
+            'visible' - determined whether the link is visible or not. Defaults to true
+        ]
+#}
+{% macro ajaxLink(parameters) %}
+    {% set additionalParameters = {
+        'pageComponent': {
+            'module': 'oroui/js/app/components/ajax-button'
+        },
+        'dataAttributes': {
+            'method': parameters.dataMethod is defined ? parameters.dataMethod : 'GET',
+            'error-message': parameters.errorMessage is defined ? parameters.errorMessage : 'oro.ui.unexpected_error'
+        }
+    } %}
+
+    {{ _self.clientLink(parameters|merge(additionalParameters)) }}
+{% endmacro %}
+
+{#
+    A button with javascript handler
+    Parameters - array:
+        [
+            'class' - default class
+            'aCss' - additional css class for 'a' tag
+            'iCss' - additional css class for 'i' tag
+            'dataId' - data-id parameter
+            'dataUrl' - data-url parameter
+            'dataRedirect' - url to redirect after an operation finished
+            'successMessage' - a message which will be shown after an operation finished
+            'title' - button title
+            'label' - button label
+            'visible' - determined whether the button is visible or not. Defaults to true
+        ]
+#}
+{% macro dropdownClientItem(parameters) %}
+    <li>{{ _self.clientLink(parameters) }}</li>
+{% endmacro %}
+
+{#
+    Outputs a button with "Save and Close" label. After save application will show a page configured by parameter with name "action".
+    For parameters description see documentation of saveActionButton macros.
+
+    For backward compatibility macros supports input parameter as a label of button.
+#}
+{% macro saveAndCloseButton(parametersOrLabel) %}
+    {% set defaultParameters = {
+        'class': 'btn-success',
+        'label': 'Save and Close'|trans
+    } %}
+
+    {% if parametersOrLabel is iterable %}
+        {% set parameters = parametersOrLabel %}
+    {% else %}
+        {# @deprecated since 1.10, support backward compatibility #}
+        {% set parameters = {
+            'label': parametersOrLabel|default('Save and Close'|trans),
+            'action': 'save_and_close'
+        } %}
+    {% endif %}
+
+    {% set parameters = defaultParameters|merge(parameters) %}
+
+    {{ _self.saveActionButton(parameters) }}
+{% endmacro %}
+
+{#
+    Outputs a button with "Save and Stay" label. After save application will show a page configured by parameter with name "action".
+    For parameters description see documentation of saveActionButton macros.
+
+    For backward compatibility macros supports input parameter as a label of button.
+#}
+{% macro saveAndStayButton(parametersOrLabel) %}
+    {% if parametersOrLabel is iterable %}
+        {% set parameters = parametersOrLabel %}
+    {% else %}
+        {# @deprecated since 1.10, support backward compatibility #}
+        {% set parameters = {
+            'label': parametersOrLabel|default('Save'|trans),
+            'action': 'save_and_stay'
+        } %}
+    {% endif %}
+
+    {{ _self.saveActionButton(parameters) }}
+{% endmacro %}
+
+{#
+    Outputs a button with "Save and New" label. After save application will show a page configured by parameter with name "action".
+    For parameters description see documentation of saveActionButton macros.
+#}
+{% macro saveAndNewButton(parameters) %}
+    {% set defaultParameters = {
+        'label': 'Save and New'|trans
+    } %}
+
+    {% set parameters = defaultParameters|merge(parameters) %}
+
+    {{ _self.saveActionButton(parameters) }}
+{% endmacro %}
+
+{#
+    Outputs generic button with "Save" label and redirect behavior. Redirect is configured with parameter "route"
+    and "route_params". Route params could contain paths instead of values if value will be available only after save.
+
+    Parameters - array
+        [
+            'type' - button type, should be "button" or "submit"
+            'class' - CSS class
+            'label' - label of button
+            'route' - Optional name of route to make a redirect.
+            'params' - Optional list of route parameters. In case if value of parameter will be available only
+                after save you can pass property path. For example: ['id': '$id']. '$' at the means property path.
+                So when controller will handle save it will redirect to route using actual id value of entity.
+            'action' - Contains data used by controller to make redirect. This value is prepared automatically
+                based on route and route_params so you don't need to use this attribute directly.
+        ]
+#}
+{% macro saveActionButton(parameters) %}
+    {% set defaultParameters = {
+        'type' : 'submit',
+        'class': 'btn-success main-group',
+        'label': 'Save'|trans,
+    } %}
+
+    {% if parameters.action is defined %}
+        {# @deprecated since 1.10, support backward compatibility #}
+    {% elseif parameters.route is defined %}
+        {# Prepare action parameter based on route #}
+        {% set action = {'route': parameters.route} %}
+        {% if parameters.params is defined %}
+            {% set action = action|merge({'params': parameters.params}) %}
+        {% endif %}
+        {% set parameters = parameters|merge({'action': action|json_encode}) %}
+    {% endif %}
+
+    {% set parameters = defaultParameters|merge(parameters) %}
+
+    {{ _self.buttonType(parameters) }}
+{% endmacro %}
+
+
+{#
+    Button macros with custom button type
+    Parameters - array:
+        [
+            'type' - button type
+            'class' - additional button css classes
+            'label' - label of button
+        ]
+#}
+{% macro buttonType(parameters) %}
+    {% set defaultParameters = {
+        'type' : 'button'
+    } %}
+    {% set parameters = defaultParameters|merge(parameters) %}
+    <div class="btn-group">
+        <button type="{{ parameters.type }}" class="btn {% if (parameters.class is defined) %}{{ parameters.class }}{% endif %}{% if (parameters.action is defined) %} action-button{% endif %}"
+                {% if (parameters.action is defined) %}data-action="{{ parameters.action }}"{% endif %}
+                {% if parameters.data is defined %}
+                    {% for dataItemName,dataItemValue in parameters.data %}
+                        data-{{ dataItemName }}="{{ dataItemValue|e('html_attr')|raw }}"
+                    {% endfor %}
+                {% endif %}>
+            {{ parameters.label }}
+        </button>
+    </div>
+{% endmacro %}
+
+{#
+    Separator between buttons
+#}
+{% macro buttonSeparator() %}
+    <div class="pull-left">
+        <div class="separator-btn"></div>
+    </div>
+{% endmacro %}
+
+{#
+    Create scroll sub block for scroll block
+    Parameters:
+        title - title of sub block
+        data - array with data fields (i.e. form_row() or attibuteRow() data)
+        isForm - flag what scroll block mut contain the form
+        useSpan - flag to indicate is subblock must have css class specified in spanClass parameter or not
+        spanClass - css class name of subblock, if this parameter is not specified the css class is span6
+#}
+{% macro scrollSubblock(title, data, isForm, useSpan, spanClass) %}
+    {% set spanClass = spanClass|default('responsive-cell') %}
+    {#% if useSpan is not defined or useSpan == true %}
+        {% set span = spanClass %}
+    {% else %}
+        {% set span = '' %}
+    {% endif %}
+    {% if span %}
+        <div class="{{ span }}">
+    {% endif %#}
+    <div class="{{ spanClass }}">
+    {% if title|length %}<h5 class="user-fieldset"><span>{{ title }}</span></h5>{% endif %}
+    {% for dataBlock in data %}
+        {{ dataBlock|raw }}
+    {% endfor %}
+    </div>
+    {#% if span %}
+        </div>
+    {% endif %#}
+{% endmacro %}
+
+{#
+    Create scroll block for scroll data area
+    Parameters:
+        blockId - id of block
+        title - block title
+        'subblocks' - array with scroll sub blocks:
+            [
+                'title' - title of sub block
+                'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+            ]
+        isForm - flag what scroll block mut contain the form
+        contentAttributes - additional attributes for block content
+        useSubBlockDivider - indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
+#}
+{% macro scrollBlock(blockId, title, subblocks, isForm, contentAttributes, useSubBlockDivider, headerLinkContent = '') %}
+    {% set cols = subblocks|length %}
+    <div class="responsive-section">
+        <h4 class="scrollspy-title">{{ title }}{% if headerLinkContent is defined %}{{ headerLinkContent }}{% endif %}</h4>
+        <div id="{{ blockId }}" class="scrollspy-nav-target"></div>
+        <div class="section-content">
+            <div class="row-fluid{% if (contentAttributes is defined and contentAttributes.class is defined and contentAttributes.class|length) %} {{ contentAttributes.class }}{% endif %}{% if cols > 1 and (useSubBlockDivider is not defined or useSubBlockDivider == true) %} row-fluid-divider{% endif %}" {{ _self.attributes(contentAttributes, ['class']) }}>
+                {% if isForm is defined and isForm == true %}
+                    <fieldset class="form-horizontal">
+                {% else %}
+                    <div class="form-horizontal">
+                {% endif %}
+                    {% for subblock in subblocks %}
+                        {{ _self.scrollSubblock(subblock.title is defined and subblock.title|length ? subblock.title : null, subblock.data, isForm, subblock.useSpan is defined ? subblock.useSpan : true, subblock.spanClass is defined ? subblock.spanClass : '') }}
+                    {% endfor %}
+                {% if isForm is defined and isForm == true %}
+                    </fieldset>
+                {% else %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Create scroll blocks (like in view or update pages)
+    Parameters:
+        dataTarget - id of scroll block
+        data - array with scroll data blocks
+        form
+    data parameter structure:
+        [
+            'dataBlocks' - array of blocks. each block consist of:
+                [
+                    'title' - title of scroll block
+                    'priority' - a number that can be used to change the order of blocks
+                    'class' - additional css class for scroll block menu item
+                    'useSubBlockDivider' - [optional] indicates if 'row-fluid-divider' css class should be added to a row when there are more than one subblocks
+                    'subblocks' - array with scroll sub blocks:
+                        [
+                            'title' - title of sub block
+                            'data' - array with data fields (i.e. form_row() or attibuteRow() data)
+                        ]
+                ]
+            'formErrors' - errors from the form
+            'hiddenData' - additional data (hidden fields from the form)
+        ]
+#}
+{% macro scrollData(dataTarget, data, entity, form = null) %}
+    {% set data = oro_ui_scroll_data_before(dataTarget, data, entity, form) %}
+
+    {% if form is defined and form %}
+        {% set isForm = true %}
+    {% else %}
+        {% set isForm = false %}
+    {% endif %}
+
+    {% set dataBlocks = data.dataBlocks|oro_sort_by %}
+
+    <div id="{{ dataTarget }}" class="navbar navbar-static scrollspy-nav">
+        <div class="navbar-inner">
+            <div class="container-fluid" style="width: auto;">
+                <ul class="nav">
+                    {% for navElement in dataBlocks %}
+                        <li {% if navElement.class is defined %}class="{{ navElement.class }}"{% endif %}><a href="#scroll-{{ loop.index }}">{{ navElement.title }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="clearfix">
+        {% if data.formErrors is defined and data.formErrors | length%}
+            <div class="customer-info-actions container-fluid well-small alert-wrap">
+                <div class="alert alert-error">
+                    <button class="close" type="button" data-dismiss="alert" data-target=".alert-wrap">×</button>
+                    {{ data.formErrors|raw }}
+                </div>
+            </div>
+        {% endif %}
+        <div data-spy="scroll" data-target="#{{ dataTarget }}" data-offset="1" class="scrollspy container-fluid scrollable-container{% if isForm %} form-container{% endif %}">
+            {% for scrollBlock in dataBlocks %}
+                {{ _self.scrollBlock("scroll-" ~ loop.index, scrollBlock.title, scrollBlock.subblocks, isForm, scrollBlock.content_attr is defined ? scrollBlock.content_attr : null, scrollBlock.useSubBlockDivider is defined ? scrollBlock.useSubBlockDivider : true, scrollBlock.headerLinkContent is defined ? scrollBlock.headerLinkContent : null) }}
+            {% endfor %}
+            {% if data.hiddenData is defined or isForm %}
+                <div class="hide" data-skip-input-widgets data-layout="separate">
+                    {% if data.hiddenData is defined %}
+                        {{ data.hiddenData|raw }}
+                    {% endif %}
+                    {% if isForm %}
+                        {{ form_rest(form) }}
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Create collection field block
+    Parameters:
+        field - form collection field
+        label - label of block
+        buttonCaption - Caption of add entity button
+        tooltipText (optional) - text to render a tooltip for the collection field
+#}
+{% macro collectionField(field, label, buttonCaption, tooltipText = null) %}
+    <div class="control-group">
+        <div class="control-label wrap">
+            {% if tooltipText is not null %}
+                {{ _self.tooltip(tooltipText) }}
+            {% endif %}
+            <label>{{ label }}</label>
+        </div>
+        <div class="controls">
+            <div class="row-oro">
+                <div class="oro-item-collection collection-fields-list" data-prototype="{{ _self.collection_prototype(field)|escape }}">
+                    {% for emailField in field.children %}
+                        {{ _self.collection_prototype(emailField) }}
+                    {% endfor %}
+                </div>
+                <a class="btn add-list-item" href="javascript: void(0);">{{ buttonCaption }}</a>
+            </div>
+        </div>
+    </div>
+{% endmacro %}
+
+{#
+    Render attributes of HTML element.
+    Parameters:
+        attr - attributes
+        excludes - names of attributes which should not be rendered even if they exist in attr parameter
+#}
+{% macro attributes(attr, excludes) %}
+    {% spaceless %}
+        {% set attr = attr|default({}) %}
+        {% for attrname, attrvalue in attr %}{% if not excludes is defined or not excludes[attrname] is defined %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue is iterable ? attrvalue|json_encode : attrvalue }}" {% endif %}{% endif %}{% endfor %}
+    {% endspaceless %}
+{% endmacro %}
+
+{#
+    Render link to entity owner
+    Parameters:
+        entity - entity record
+        renderLabel - need render default label
+#}
+{%- macro entityOwnerLink(entity, renderLabel = true) -%}
+    {% spaceless %}
+        {%- if entity %}
+            {% set ownerType = oro_get_owner_type(entity) %}
+            {%- if ownerType %}
+                {% if  is_granted('VIEW', entity, oro_get_owner_field_name(entity)) %}
+                    {% set owner = oro_get_entity_owner(entity) %}
+                    {% if owner %}
+                        {% if (ownerType == 'USER') %}
+                            {% set ownerPath = path('oro_user_view', {'id': owner.id}) %}
+                            {% set ownerName = owner|oro_format_name %}
+                        {% elseif (ownerType == 'BUSINESS_UNIT') %}
+                            {% set ownerPath = path('oro_business_unit_view', {'id': owner.id}) %}
+                            {% set ownerName = owner.name %}
+                        {% endif %}
+                        {% if ownerName is defined %}
+                            {% if renderLabel %}
+                                {% set entityClassName = oro_class_name(entity) %}
+                                {{ oro_field_config_value(
+                                        entityClassName,
+                                        oro_entity_config_value(entityClassName, 'owner_field_name', 'ownership'),
+                                        'label'
+                                    )|trans
+                                }}:
+                            {% endif %}
+                            {% if ownerPath is defined and is_granted('VIEW', owner) %}
+                                {{ _self.renderUrl(ownerPath, ownerName) }}
+                            {% else %}
+                                {{ ownerName }}
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endif -%}
+        {% endif -%}
+    {% endspaceless %}
+{%- endmacro -%}
+
+{%- macro renderUrl(url, text, class, title) -%}
+    {% spaceless %}
+        {% if text is empty %}
+            {% set text = url %}
+        {% endif %}
+        {% if title is empty %}
+            {% set title = text %}
+        {% endif %}
+        {% if class is empty %}
+            {% set class = '' %}
+        {% endif %}
+        {% if url is not empty %}
+            <a href="{{ url|escape('html_attr') }}" title="{{ title|escape('html_attr') }}" class="{{ class }}"
+                    {% if (not oro_is_url_local(url)) %} target="_blank"{% endif %}>{{ text }}</a>
+        {% endif %}
+    {% endspaceless %}
+{%- endmacro -%}
+
+{%- macro renderPhone(phone, title) -%}
+    {% if title is empty %}
+        {% set title = phone %}
+    {% endif %}
+    {% if phone is not empty %}
+        <a href="tel:{{ phone|escape('html_attr') }}" title="{{ title|escape('html_attr') }}" class="phone">{{ title }}</a>
+    {% endif %}
+{%- endmacro -%}
+
+{#
+    Render phone number with related actions block
+    Parameters:
+        phone - PhoneInterface object or string
+        entity - related entity record
+#}
+{% macro renderPhoneWithActions(phone, entity) -%}
+    {% if phone is not empty %}
+        {%- set actions %}
+            {%- placeholder phone_actions with {phone: phone, entity: entity} -%}
+        {% endset -%}
+        {% set actions = actions|trim %}
+        <span class="inline-actions-element{% if actions is empty %} inline-actions-element_no-actions{% endif %}">
+            <span class="inline-actions-element_wrapper">{{ _self.renderPhone(phone) }}</span>
+            {% if actions is not empty -%}
+                <span class="inline-actions-element_actions phone-actions">{{ actions|raw }}</span>
+            {%- endif %}
+        </span>
+    {% endif %}
+{%- endmacro %}
+
+{% macro getApplicableForUnderscore(str) %}
+    {{ str|replace({
+        "<script": '<% print("<sc" + "ript"); %>',
+        "</script": '<% print("</sc" + "ript"); %>',
+        "<%": '<% print("<" + "%"); %>',
+        "%>": '<% print("%" + ">"); %>',
+    })|raw }}
+{% endmacro %}
+
+{%- macro renderList(elements) -%}
+    <ul class="extra-list">
+        {%- for element in elements %}
+            <li class="extra-list-element">{{ element }}</li>
+        {% endfor -%}
+    </ul>
+{% endmacro %}
+
+{%- macro renderTable(titles, rows, style) -%}
+     <table class="{{ style }}">
+     <thead>
+     <tr>
+    {%- for title in titles %}
+        <th>{{ title }}</th>
+    {% endfor -%}
+     </tr>
+     </thead>
+    {%- for row in rows %}
+        <tr>
+            {%- for element in row %}
+                <td>{{ element }}</td>
+            {% endfor -%}
+        </tr>
+    {% endfor -%}
+    </table>
+{% endmacro %}
+
+{%- macro entityViewLink(entity, label, route, permission) -%}
+    {% if entity %}
+        {% if route and is_granted(permission|default('VIEW'), entity) %}
+            {{ _self.renderUrl(path(route, {'id': entity.id}), label) }}
+        {% else %}
+            {{ label|escape }}
+        {% endif %}
+    {% endif %}
+{%- endmacro -%}
+
+{%- macro entityViewLinks(entities, labelProperty, route, permission) -%}
+    {% set links = [] %}
+    {% for entity in entities %}
+        {% set links = links|merge([_self.entityViewLink(entity, attribute(entity, labelProperty), route, permission)]) %}
+    {% endfor %}
+    {{ _self.renderList(links) }}
+{%- endmacro -%}
+
+{#
+    Renders text that should be rendered instead of not accessable entity field
+    Parameters:
+        labelText - Text that should be rendered
+#}
+{%- macro renderDisabledLabel(labelText) -%}
+    <i>{{ labelText }}</i>
+{%- endmacro -%}
+
+{#
+    Renders entity label by it's field. In case if VIEW permission is notgranted, returns
+    the 'view entity_name' string in case if entityLabelIfNotGranted was set and empty string otherwise
+    Parameters:
+        entity - Entity whete field value should be takes
+        fieldName - Field name wich value should be rendered
+        entityLabelIfNotGranted - Entity label that should be rendered in case if user have no access to see field value
+#}
+{%- macro renderEntityViewLabel(entity, fieldName, entityLabelIfNotGranted = null) -%}
+    {% if entity is not null and is_granted('VIEW', entity, fieldName) %}
+        {{ attribute(entity, fieldName) }}
+    {% else %}
+        {% if entityLabelIfNotGranted is not null %}
+            {{ 'view %entityName%'|trans({'%entityName%' : entityLabelIfNotGranted|trans}) }}
+        {% endif %}
+    {% endif %}
+{%- endmacro -%}
+
+{%- macro renderJsTree(data, actions) -%}
+    {% embed "OroUIBundle::jstree.html.twig" with {
+        data: data,
+        actions: actions
+    } %}
+    {% endembed %}
+{%- endmacro -%}

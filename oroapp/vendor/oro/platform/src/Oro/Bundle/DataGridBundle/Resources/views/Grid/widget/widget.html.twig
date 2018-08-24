@@ -1,0 +1,14 @@
+{% import 'OroDataGridBundle::macros.html.twig' as dataGrid %}
+
+<div class="widget-content">
+    {% block widget_content %}
+    <div class="flash-messages">
+        <div class="flash-messages-frame">
+            <div class="flash-messages-holder"></div>
+        </div>
+    </div>
+    <div class="filters-view-container"></div>
+
+    {{ dataGrid.renderGrid(gridName, params, {'enableViews': false, 'enableToggleFilters': false}|merge(renderParams)) }}
+    {% endblock %}
+</div>

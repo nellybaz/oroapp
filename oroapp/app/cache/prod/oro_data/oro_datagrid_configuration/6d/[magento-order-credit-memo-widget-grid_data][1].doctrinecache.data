@@ -1,0 +1,2 @@
+0
+a:1:{s:37:"magento-order-credit-memo-widget-grid";a:2:{s:7:"extends";s:29:"magento-credit-memo-grid-base";s:6:"source";a:2:{s:5:"query";a:1:{s:5:"where";a:1:{s:3:"and";a:1:{i:0;s:18:"c.order = :orderId";}}}s:15:"bind_parameters";a:1:{i:0;s:7:"orderId";}}}}

@@ -1,0 +1,15 @@
+Extend\Entity\EX_OroWebCatalogBundle_ContentVariant:
+    type: mappedSuperclass
+    fields:
+        exclude_subcategories:
+            column: exclude_subcategories
+            type: boolean
+            nullable: true
+            length: null
+            precision: null
+            scale: null
+            default: null
+        serialized_data:
+            column: serialized_data
+            type: array
+            nullable: true

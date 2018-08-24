@@ -1,0 +1,151 @@
+{% block oro_sale_quote_product_demand_widget %}
+    {% set product = quoteProduct.productReplacement|default(quoteProduct.product) %}
+    {% set isQuantityValid = form.quantity.vars.valid %}
+    {% set selectedOffer = form.quoteProductOffer.vars.data %}
+    {% set defaultUnitCode = selectedOffer.productUnit.code|oro_format_product_unit_label(true) %}
+    {% if isQuantityValid %}
+        {% set defaultPriceValue = selectedOffer.price|oro_format_price %}
+    {% else %}
+        {% set defaultPriceValue = 'oro.frontend.sale.quoteproductoffer.not_available.message'|trans %}
+    {% endif %}
+
+    {% set componentOptions = {
+        offerSelector: '[name="%s"]'|format(form.quoteProductOffer.vars.full_name),
+        quantitySelector: '[name="%s"]'|format(form.quantity.vars.full_name),
+        unitInputSelector: '[name="%s"]'|format(form.unit.vars.full_name),
+        unitSelector: '[data-role="unit-view"]',
+        unitPriceSelector: '[data-role="price-view"]',
+        quoteProductId: quoteProduct.id,
+        calculatingMessage: 'oro.frontend.sale.quoteproductoffer.price_calculating.message'|trans,
+        notAvailableMessage: 'oro.frontend.sale.quoteproductoffer.not_available.message'|trans,
+        currentLineItemSelector: '#' ~ id
+    } %}
+    <tr id="{{ id }}"
+        class="quote-line-items grid-row"
+        data-page-component-module="orosale/js/app/components/quote-product-to-order-component"
+        data-page-component-options="{{ componentOptions|json_encode }}">
+        <td class="grid-cell grid-cell--offset-l-none-mobile primary-cell">
+            <h3 class="oro-grid-table__title">
+                {{ quoteProduct.productName }}
+            </h3>
+            <div>
+                {{ 'oro.frontend.sale.quoteproduct.product_sku.label'|trans }}
+                <span class="customer-line-items__sku-value">
+                    {% if quoteProduct.isTypeNotAvailable %}
+                        {{ quoteProduct.productReplacementSku }}
+                    {% else %}
+                        {{ quoteProduct.productSku }}
+                    {% endif %}
+                </span>
+            </div>
+        </td>
+        <td class="grid-cell grid-cell--offset-l-none-mobile">
+            {{ form_widget(form.quoteProductOffer) }}
+            {{ form_errors(form.quoteProductOffer) }}
+        </td>
+        <td class="grid-cell qty-cell">
+            <div class="product__qty-input product__qty-input_inline product__qty-input_more-info">
+                {{ form_widget(form.quantity, {'attr': {'data-valid': isQuantityValid|json_encode}}) }}
+                {{ form_widget(form.unit) }}
+                <span data-role="unit-view">
+                    {% if oro_is_unit_code_visible(defaultUnitCode) %}
+                        {{ defaultUnitCode }}
+                    {% endif %}
+                </span>
+            </div>
+            {{ form_errors(form.quantity) }}
+            {{ form_errors(form.unit) }}
+        </td>
+        <td class="grid-cell grid-cell--offset-l-none-mobile">
+            <span class="hide-on-desktop hide-on-strict-tablet" aria-hidden="true">
+                {{ 'oro.frontend.sale.quoteproductoffer.unit_price.label'|trans }}:
+            </span>
+            <span data-role="price-view">{{ defaultPriceValue }}</span>
+        </td>
+    </tr>
+    {% if (quoteProduct.commentCustomer is not empty) %}
+        <tr class="grid-row">
+            <td class="grid-cell notes-cell grid-cell--offset-l-none-mobile" colspan="4">
+                <div class="customer-line-items__notes">
+                    {{ 'oro.frontend.sale.quoteproduct.comment_customer.label'|trans }}: {{ quoteProduct.commentCustomer }}
+                </div>
+            </td>
+        </tr>
+    {% endif %}
+
+    {% if (quoteProduct.comment is not empty) %}
+        <tr class="grid-row">
+            <td class="grid-cell notes-cell" colspan="4">
+                <div class="customer-line-items__notes">
+                    {{ 'oro.frontend.sale.quoteproduct.comment.label'|trans }}: {{ quoteProduct.comment }}
+                </div>
+            </td>
+        </tr>
+    {% endif %}
+{% endblock %}
+
+{% block oro_sale_quote_product_demand_collection_widget %}
+    {% set attr = attr|merge({'class': (attr.class is defined ? attr.class ~ ' ' : '') ~ 'grid-container customer-line-items' }) %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            <table class="oro-grid-table customer-line-items__table">
+                <thead class="grid-header hide-on-mobile-landscape">
+                <tr class="grid-header-row">
+                    <th class="grid-cell">{{ 'oro.frontend.sale.quoteproduct.product_name.label'|trans }}</th>
+                    <th class="grid-cell">{{ 'oro.frontend.sale.quoteproductoffer.select_offer.label'|trans }}</th>
+                    <th class="grid-cell">{{ 'oro.frontend.sale.quoteproductoffer.quantity_to_order.label'|trans }}</th>
+                    <th class="grid-cell">{{ 'oro.frontend.sale.quoteproductoffer.unit_price.label'|trans }}</th>
+                </tr>
+                </thead>
+                {% for child in form.children %}
+                    <tbody class="grid-body">
+                        {% if (child.vars.unique_block_prefix) == form.vars.unique_block_prefix ~ '_entry' %}
+                            {{ form_widget(child) }}
+                        {% endif %}
+                    </tbody>
+                {% endfor %}
+            </table>
+            {{ form_rest(form) }}
+            {{ form_errors(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock %}
+
+{% block oro_sale_quote_product_demand_offer_choice_widget %}
+    <table class="oro-grid-table">
+        <tbody>
+            {% for child in form %}
+                {% set choice = choices[child.vars.value] %}
+                {% set offer = choice.data %}
+                <tr>
+                    <td class="grid-cell grid-cell--offset-l-none" >
+                        {% set formattedUnitCode = '' %}
+                        {% if oro_is_unit_code_visible(offer.productUnit.code) %}
+                            {% set formattedUnitCode = offer.productUnit.code|oro_format_product_unit_label(true) %}
+                        {% endif %}
+
+                        {% set attr = {
+                            'data-value': offer.id,
+                            'data-unit': offer.productUnitCode,
+                            'data-formatted-unit': formattedUnitCode,
+                            'data-quantity': offer.quantity,
+                            'data-price': offer.price|oro_format_price
+                        } %}
+
+                        {% set label_attr = {
+                            'class': 'absolute'
+                        } %}
+
+                        {{ form_widget(child, {
+                            attr: attr,
+                            label_attr: label_attr
+                        }) }}
+                    </td>
+                    <td class="grid-cell quote-product-offer-select-offer-price">
+                        {{ offer.price|oro_format_price }}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

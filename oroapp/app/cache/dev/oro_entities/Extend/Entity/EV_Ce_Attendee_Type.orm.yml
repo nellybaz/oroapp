@@ -1,0 +1,7 @@
+Extend\Entity\EV_Ce_Attendee_Type:
+    type: entity
+    table: oro_enum_ce_attendee_type
+    repositoryClass: Oro\Bundle\EntityExtendBundle\Entity\Repository\EnumValueRepository
+    gedmo:
+        translation:
+            entity: Oro\Bundle\EntityExtendBundle\Entity\EnumValueTranslation

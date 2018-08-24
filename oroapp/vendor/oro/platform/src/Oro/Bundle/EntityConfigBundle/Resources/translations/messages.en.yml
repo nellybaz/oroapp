@@ -1,0 +1,151 @@
+oro:
+    entity_config:
+        action:
+            manage:              Access entity management
+            view_entities:       View configurable entities
+            update_entity:       Update configurable entity
+            view_entity:         View configurable entity
+            update_entity_field: Update configurable entity field
+            field_search:        Return varchar type field(s) in given entity
+
+        attribute:
+            entity_label: Attribute
+            entity_plural_label: Attributes
+            entity_not_supported: This entity does not support attributes
+            not_attribute: This field is not an attribute
+            successfully_deleted: Attribute successfully deleted
+            successfully_saved: Attribute was successfully saved
+            was_restored: Attribute was restored
+            cannot_be_restored: This attribute cannot be restored because an attribute with similar name exists.
+            confirm_delete: Do you really want to delete this attribute?
+
+        attribute_family:
+            entity_label: Product Family
+            entity_plural_label: Product Families
+            code.label: Code
+            enabled.label: Enabled
+            labels.label: Label
+            image.label: Image
+            attribute_groups.label: Attribute Groups
+            message.deleted:  Successfully deleted
+            message.updated:  Successfully updated
+            message.cant_delete:  Can not be deleted
+
+        attribute_group:
+            labels.label: Label
+            attribute_relations.label: Attributes
+            code.label: Code
+            is_visible.label: Visible
+
+        block_titles:
+            general.label:       General Information
+            fields.label:        Fields
+            attribute.label:     Attribute
+            other.label:         Other
+            associations.label:  Communication & Collaboration
+
+        config_log:
+            user.label:      Author
+            diffs.label:     Diffs
+            logged_at.label: Logged at
+
+        menu:
+            attributes_list.label:         Attributes
+            entities_list.label:           Entities
+            entities_list.description:     List of entities
+            entity_management.label:       Entity Management
+            entity_management.description: List of entities
+
+        controller:
+            attribute_family:
+                message:
+                    update: Product Family successfully updated
+                    saved: Product Family was successfully saved
+            config_entity:
+                message:
+                    saved:  Entity saved
+                    update: Schema updated
+            config_field:
+                message:
+                    saved: Field saved
+
+        entity:
+            plural_label:      Entities
+            information.label: Entity Information
+            unique.label:      Unique Keys
+
+        entity_config:
+            entity_name.label: Name
+            module_name.label: Module
+            attribute:
+                grid_action:
+                    remove: "Remove"
+                    restore: "Restore"
+                field.items:
+                    is_attribute: Attribute
+                    searchable: Searchable
+                    sortable: Sortable
+                    filterable: Filterable
+                    filter_by:
+                        label: Filter by
+                        tooltip: 'This field defines the type of filtering to be applied to the attribute. It will be applied only to fields that have string representation in the search index.'
+                    enabled: Enabled
+                    visible: Visible
+
+        field_config:
+            field_name.label: Name
+            type.label:       Data Type
+            records_count.label: Number of records
+            filter_by:
+                exact_value.label: Exact value
+                fuzzy_search.label: Fuzzy search
+
+        info:
+            new_field.label:     New Field
+            records_count.label: 'Number of records: %count%'
+
+        form:
+            default_group_label: General
+            name.label: Name
+            type.label: Type
+
+        import:
+            title: Import Entity Fields
+            label: Import Fields
+            message:
+                invalid_field_name: Invalid field name.
+                invalid_field_type: Invalid field type.
+                change_type_not_allowed: Changing type of existing fields is not allowed.
+                require_update_schema: "Please, click 'Update Schema' to apply changes"
+                cant_replace_extend_field: Can not create attribute with such name.
+
+        sections:
+            attribute_family:
+                attributes: Attributes
+                settings: Settings
+
+    entityconfig:
+        attribute.entity:
+            attributefamily:
+                entity_label:             Product Family
+                entity_plural_label:      Product Families
+                entity_description:       A product family is a set of the <a href="https://www.oroinc.com/doc/orocommerce/current/user-guide/products/product-families#products-product-families">product attributes</a> that are enough to store complete information about the products of a similar type (e.g., TV attributes vs T-shirts attributes). In the product family, attributes are organized into attribute groups that are displayed as titled sections on the OroCommerce front store.
+                code:
+                    label:                Code
+                    description:          The code of the attribute family.
+                entity_class:
+                    label:                AttributeFamily
+                    description:          The entity class of the attribute family.
+                id.label:                 ID
+                is_enabled:
+                    label:                Is enabled
+                    description:          A flag that says if the attribute family is available or not.
+                attribute_groups.label:   Group
+                image:
+                    label:                Image
+                    description:          The image of the attribute family.
+                labels:
+                    label:                Labels
+                    description:          The labels of the attribute family.
+                owner.label:              Owner
+                organization.label:       Organization

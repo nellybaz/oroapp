@@ -1,0 +1,23 @@
+workflows:
+    quote_flow:
+        transition_definitions:
+            empty_definition: ~
+            quote_creating_definition:
+                preconditions:
+                   '@and':
+                       - '@neq':  [$status.id, 'lost']
+                       - '@neq':  [$status.id, 'won']
+                       - '@type': [$customer.getTarget, 'Oro\Bundle\CustomerBundle\Entity\Customer']
+                actions:
+                       - '@call_service_method':
+                           service: oro_quote_sales.opportunity_to_quote_data_storage
+                           method: saveToStorage
+                           method_parameters: [$opportunity]
+                       - '@call_service_method':
+                           service: oro_quote_sales.opportunity_to_route_data_storage
+                           method: saveToStorage
+                           method_parameters:  [$opportunity]
+                       - '@redirect':
+                           parameters:
+                               route: oro_sale_quote_create
+                               route_parameters: { storage: true, redirect_back: true }

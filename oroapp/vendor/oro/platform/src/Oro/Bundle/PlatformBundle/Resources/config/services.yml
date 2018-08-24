@@ -1,0 +1,103 @@
+parameters:
+    oro_platform.composer.local_repo_factory.class: Oro\Bundle\PlatformBundle\Composer\LocalRepositoryFactory
+    oro_platform.composer.installed_json:           %kernel.root_dir%/../vendor/composer/installed.json
+
+    oro_platform.composer.version_helper.class:     Oro\Bundle\PlatformBundle\Composer\VersionHelper
+
+    oro_platform.maintenance.class:                 Oro\Bundle\PlatformBundle\Maintenance\Mode
+    oro_platform.event_listener.driver_lock.class:  Oro\Bundle\PlatformBundle\EventListener\Console\DriverLockCommandListener
+
+    oro_platform.optional_listeners.manager.class: Oro\Bundle\PlatformBundle\Manager\OptionalListenerManager
+    jms_serializer.twig_extension.class: Oro\Bundle\PlatformBundle\Twig\SerializerExtension
+
+services:
+    jms_serializer.twig_extension.serializer:
+        class: Oro\Bundle\PlatformBundle\Twig\SerializerExtension
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    oro_platform.maintenance:
+        class:                                %oro_platform.maintenance.class%
+        arguments:
+            - "@lexik_maintenance.driver.factory"
+            - "@event_dispatcher"
+
+    oro_platform.event_listener.driver_lock:
+        class: %oro_platform.event_listener.driver_lock.class%
+        arguments:
+            - "@event_dispatcher"
+        tags:
+            - { name: kernel.event_listener, event: console.terminate, method: afterExecute }
+
+    oro_platform.composer.local_repo_factory:
+        class: %oro_platform.composer.local_repo_factory.class%
+        arguments:
+            - '@filesystem'
+            - %oro_platform.composer.installed_json%
+
+    oro_platform.version.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_platform_version' ] ]
+
+    oro_platform.url.cache:
+        parent: oro.cache.abstract
+        calls:
+            - [ setNamespace, [ 'oro_platform_url' ] ]
+
+    oro_platform.composer.version_helper:
+        class: %oro_platform.composer.version_helper.class%
+        calls:
+            - [ setCache, [ '@oro_platform.version.cache' ] ]
+        arguments:
+            - '@oro_platform.composer.local_repo_factory'
+
+    oro_platform.form.url_generator:
+        class: 'Oro\Bundle\PlatformBundle\Form\UrlGenerator'
+        arguments:
+            - '@oro_platform.provider.package'
+            - '@oro_platform.url.cache'
+
+    oro_platform.provider.package:
+        class: 'Oro\Bundle\PlatformBundle\Provider\PackageProvider'
+        arguments:
+            - '@oro_platform.composer.local_repo_factory'
+
+    oro_platform.twig.platform_extension:
+        class: Oro\Bundle\PlatformBundle\Twig\PlatformExtension
+        public: false
+        arguments:
+            - '@service_container'
+        tags:
+            - { name: twig.extension }
+
+    oro_platform.optional_listeners.manager:
+        class: %oro_platform.optional_listeners.manager.class%
+        arguments:
+           - []
+           - '@service_container'
+
+    oro_platform.event_listener.demo_data_fixtures_listener.abstract:
+        class: 'Oro\Bundle\PlatformBundle\EventListener\AbstractDemoDataFixturesListener'
+        abstract: true
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+
+    oro_platform.provider.console.global_options_provider_registry:
+        class: Oro\Bundle\PlatformBundle\Provider\Console\GlobalOptionsProviderRegistry
+
+    oro_platform.provider.console.optional_listeners_global_options_provider:
+        class: Oro\Bundle\PlatformBundle\Provider\Console\OptionalListenersGlobalOptionsProvider
+        arguments:
+            - '@oro_platform.optional_listeners.manager'
+        tags:
+            - { name: oro_platform.console.global_options_provider }
+
+    oro_platform.event_listener.console.global_options_listener:
+        class: Oro\Bundle\PlatformBundle\EventListener\Console\GlobalOptionsListener
+        arguments:
+            - '@oro_platform.provider.console.global_options_provider_registry'
+        tags:
+            - { name: kernel.event_listener, event: console.command, method: onConsoleCommand, priority: 250 }

@@ -1,0 +1,201 @@
+datagrids:
+    shopping-list-grid:
+        acl_resource: oro_shopping_list_view
+        extended_entity_name: %oro_shopping_list.entity.shopping_list.class%
+        options:
+            entityHint:        shopping lists
+            entity_pagination: true
+        source:
+            type:         orm
+            query:
+                select:
+                    - shopping_list.id
+                    - shopping_list.label
+                    - shopping_list.notes
+                    - cachedTotal.subtotalValue as subtotal
+                    - cachedTotal.currency
+                    - shopping_list.createdAt
+                    - shopping_list.updatedAt
+                    - shopping_list_customer.name as customer
+                    - CONCAT(shopping_list_acc_user.firstName, ' ', shopping_list_acc_user.lastName) as customer_user
+                from:
+                    - { table: %oro_shopping_list.entity.shopping_list.class%, alias: shopping_list }
+                join:
+                    left:
+                        - { join: shopping_list.customer, alias: shopping_list_customer }
+                        - { join: shopping_list.customerUser, alias: shopping_list_acc_user }
+                        - { join: %oro_shopping_list.entity.shopping_list_total.class%, alias: cachedTotal, conditionType: WITH, condition: "cachedTotal.shoppingList = shopping_list AND cachedTotal.currency = @oro_shopping_list.datagrid.total_currency_helper->getCurrencyStatement()" }
+
+        columns:
+            id:
+                label:         oro.shoppinglist.id.label
+            label:
+                label:         oro.shoppinglist.label.label
+            notes:
+                label:         oro.shoppinglist.notes.label
+            customer:
+                label:         oro.shoppinglist.customer.label
+                type:          twig
+                frontend_type: html
+                template:      OroShoppingListBundle:Datagrid:Column/customer.html.twig
+            customer_user:
+                label:         oro.shoppinglist.customer_user.label
+                type:          twig
+                frontend_type: html
+                template:      OroShoppingListBundle:Datagrid:Column/customer_user.html.twig
+            subtotal:
+                label:         oro.shoppinglist.subtotal.label
+                type:          twig
+                frontend_type: html
+                template:      OroPricingBundle:Datagrid:Column/subtotal.html.twig
+            createdAt:
+                label:         oro.ui.created_at
+                frontend_type: datetime
+            updatedAt:
+                label:         oro.ui.updated_at
+                frontend_type: datetime
+        properties:
+            view_link:
+                type:  url
+                route: oro_shopping_list_view
+                params: [ id ]
+        sorters:
+            columns:
+                id:
+                    data_name: shopping_list.id
+                label:
+                    data_name: shopping_list.label
+                customer:
+                    data_name: customer
+                customer_user:
+                    data_name: customer_user
+                subtotal:
+                    data_name: subtotal
+                createdAt:
+                    data_name: shopping_list.createdAt
+                updatedAt:
+                    data_name: shopping_list.updatedAt
+            default:
+                createdAt: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_DESC
+        filters:
+            columns:
+                id:
+                    type:      number
+                    data_name: shopping_list.id
+                label:
+                    type:      string
+                    data_name: shopping_list.label
+                customer:
+                    type:      string
+                    data_name: customer
+                customer_user:
+                    type:      string
+                    data_name: customer_user
+                subtotal:
+                    type:      number
+                    data_name: subtotal
+                createdAt:
+                    type:      datetime
+                    data_name: shopping_list.createdAt
+                updatedAt:
+                    type:      datetime
+                    data_name: shopping_list.updatedAt
+        actions:
+            view:
+                type:          navigate
+                label:         oro.grid.action.view
+                link:          view_link
+                icon:          eye
+                acl_resource:  oro_shopping_list_view
+                rowAction:     true
+
+    shopping-list-line-items-grid:
+        acl_resource:      oro_shopping_list_view
+        extended_entity_name: %oro_shopping_list.entity.line_item.class%
+        options:
+            entityHint:        shopping list line items
+        source:
+            type:              orm
+            query:
+                select:
+                    - product.id as productId
+                    - product.sku as productSku
+                    - product.skuUppercase as productSkuUppercase
+                    - product.denormalizedDefaultName as productName
+                    - product.denormalizedDefaultNameUppercase as productNameUppercase
+                    - lineItem.id
+                    - lineItem.quantity
+                    - lineItem.notes
+                    - IDENTITY(lineItem.unit) as unitCode
+                from:
+                    - { table: %oro_shopping_list.entity.line_item.class%, alias: lineItem }
+                join:
+                    inner:
+                        - { join: lineItem.product, alias: product }
+                where:
+                    and:
+                        - IDENTITY(lineItem.shoppingList) = :shopping_list_id
+            bind_parameters:
+                - shopping_list_id
+        columns:
+            productSku:
+                label:         oro.shoppinglist.lineitem.product_sku.label
+            productName:
+                label:         oro.shoppinglist.lineitem.product_name.label
+            quantity:
+                label:         oro.shoppinglist.lineitem.quantity.label
+            unitCode:
+                label:         oro.shoppinglist.lineitem.unit.label
+                type:          twig
+                frontend_type: html
+                template:      OroProductBundle:ProductUnit:Datagrid/unitFullSingle.html.twig
+            notes:
+                label:         oro.shoppinglist.lineitem.notes.label
+        sorters:
+            columns:
+                productSku:
+                    data_name: productSku
+                productName:
+                    data_name: productName
+                quantity:
+                    data_name: lineItem.quantity
+                unitCode:
+                    data_name: unitCode
+            default:
+                productSku: %oro_datagrid.extension.orm_sorter.class%::DIRECTION_ASC
+        filters:
+            columns:
+                productSku:
+                    type:      string
+                    data_name: productSkuUppercase
+                    case_insensitive: false
+                    value_conversion: mb_strtoupper
+                productName:
+                    type:      string
+                    data_name: productNameUppercase
+                    case_insensitive: false
+                    value_conversion: mb_strtoupper
+                quantity:
+                    type:      number
+                    data_name: lineItem.quantity
+                unitCode:
+                    type:      choice
+                    data_name: unitCode
+                    options:
+                        field_type: oro_product_unit_selection
+        properties:
+            id: ~
+            productId: ~
+            view_product_link:
+                type:  url
+                route: oro_product_view
+                params:
+                    id: productId
+        actions:
+            view_product:
+                type:          navigate
+                label:         oro.shoppinglist.lineitem.grid.action.view.product
+                link:          view_product_link
+                icon:          eye
+                acl_resource:  oro_product_view
+                rowAction:     true

@@ -1,0 +1,119 @@
+parameters:
+    oro_message_queue.job.unique_job_table_name: 'oro_message_queue_job_unique'
+
+services:
+    oro_message_queue.job.configuration_provider:
+        class: 'Oro\Bundle\MessageQueueBundle\Provider\JobConfigurationProvider'
+        public: false
+
+    oro_message_queue.job.storage:
+        class: 'Oro\Component\MessageQueue\Job\JobStorage'
+        arguments:
+            - '@doctrine'
+            - 'Oro\Bundle\MessageQueueBundle\Entity\Job'
+            - '%oro_message_queue.job.unique_job_table_name%'
+
+    oro_message_queue.job.processor:
+        class: 'Oro\Component\MessageQueue\Job\JobProcessor'
+        arguments:
+            - '@oro_message_queue.job.storage'
+            - '@oro_message_queue.client.message_producer'
+        calls:
+            - ['setJobConfigurationProvider', ['@oro_message_queue.job.configuration_provider']]
+
+    oro_message_queue.job.runner:
+        class: 'Oro\Component\MessageQueue\Job\JobRunner'
+        public: false
+        arguments:
+            - '@oro_message_queue.job.processor'
+            - '@oro_message_queue.job.extensions'
+
+    oro_message_queue.job.extensions:
+        class: 'Oro\Component\MessageQueue\Job\ChainExtension'
+        public: false
+        arguments:
+            - []
+
+    oro_message_queue.job.root_job_status_calculator:
+        class: 'Oro\Component\MessageQueue\Job\RootJobStatusCalculator'
+        public: false
+        arguments:
+            - '@oro_message_queue.job.storage'
+            - '@oro_message_queue.checker.job_status_checker'
+            - '@oro_message_queue.status_calculator.status_calculator_resolver'
+
+    oro_message_queue.checker.job_status_checker:
+        class: 'Oro\Component\MessageQueue\Checker\JobStatusChecker'
+        public: false
+
+    oro_message_queue.status_calculator.abstract_status_calculator:
+        class: 'Oro\Component\MessageQueue\StatusCalculator\AbstractStatusCalculator'
+        abstract: true
+        public: false
+        calls:
+            - ['setJobStatusChecker', ['@oro_message_queue.checker.job_status_checker']]
+
+    oro_message_queue.status_calculator.collection_calculator:
+        class: 'Oro\Component\MessageQueue\StatusCalculator\CollectionCalculator'
+        parent: oro_message_queue.status_calculator.abstract_status_calculator
+        public: false
+
+    oro_message_queue.status_calculator.query_calculator:
+        class: 'Oro\Component\MessageQueue\StatusCalculator\QueryCalculator'
+        parent: oro_message_queue.status_calculator.abstract_status_calculator
+        public: false
+        arguments:
+            - '@oro_message_queue.job.storage'
+
+    oro_message_queue.status_calculator.status_calculator_resolver:
+        class: 'Oro\Component\MessageQueue\StatusCalculator\StatusCalculatorResolver'
+        public: false
+        arguments:
+            - '@oro_message_queue.status_calculator.collection_calculator'
+            - '@oro_message_queue.status_calculator.query_calculator'
+
+    oro_message_queue.job.calculate_root_job_status_processor:
+        class: 'Oro\Component\MessageQueue\Job\CalculateRootJobStatusProcessor'
+        arguments:
+            - '@oro_message_queue.job.storage'
+            - '@oro_message_queue.job.root_job_status_calculator'
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_message_queue.job.calculate_root_job_progress_processor:
+        class: 'Oro\Component\MessageQueue\Job\CalculateRootJobProgressProcessor'
+        arguments:
+            - '@oro_message_queue.job.storage'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_message_queue.job.dependent_job_processor:
+        class: 'Oro\Component\MessageQueue\Job\DependentJobMessageProcessor'
+        arguments:
+            - '@oro_message_queue.job.storage'
+            - '@oro_message_queue.client.message_producer'
+            - '@logger'
+        tags:
+            - { name: 'oro_message_queue.client.message_processor' }
+
+    oro_message_queue.job.dependent_job_service:
+        class: 'Oro\Component\MessageQueue\Job\DependentJobService'
+        public: false
+        arguments:
+            - '@oro_message_queue.job.storage'
+
+    oro_message_queue.job.grid.root_job_action_configuration:
+        class: 'Oro\Bundle\MessageQueueBundle\Datagrid\RootJobActionConfiguration'
+
+    oro_message_queue.job.security_aware_extension:
+        class: 'Oro\Bundle\MessageQueueBundle\Security\SecurityAwareJobExtension'
+        public: false
+        arguments:
+            - '@security.token_storage'
+            - '@oro_security.token_serializer'
+            - '@oro_message_queue.job.storage'
+        tags:
+            - { name: oro_message_queue.job.extension }
